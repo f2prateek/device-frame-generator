@@ -65,7 +65,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-light"
-            android:paddingBottom="8dp"
+            android:paddingBottom="16dp"
             android:text="720x1280" />
     </RelativeLayout>
 

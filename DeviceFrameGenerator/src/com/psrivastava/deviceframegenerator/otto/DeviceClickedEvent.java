@@ -25,6 +25,6 @@ public class DeviceClickedEvent {
 
     @Override
     public String toString() {
-        return number+"";
+        return number + "";
     }
 }

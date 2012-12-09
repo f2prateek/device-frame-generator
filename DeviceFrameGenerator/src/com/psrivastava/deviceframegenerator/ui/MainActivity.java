@@ -73,6 +73,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
     SharedPreferences mPrefs;
 
+    // TODO: bad?
     static Activity mActivity;
 
     static ArrayList<Device> mDeviceList;
@@ -149,8 +150,6 @@ public class MainActivity extends SherlockFragmentActivity {
             mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         }
 
-        mPager.setCurrentItem(mPrefs.getInt(AppConstants.KEY_DEVICE_POSITION, 0));
-
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(final int position) {
@@ -158,6 +157,8 @@ public class MainActivity extends SherlockFragmentActivity {
                         : MenuDrawer.TOUCH_MODE_NONE);
             }
         });
+
+        mPager.setCurrentItem(mPrefs.getInt(AppConstants.KEY_DEVICE_POSITION, 0));
 
         // Get intent, action and MIME type
         Intent intent = getIntent();
@@ -228,6 +229,7 @@ public class MainActivity extends SherlockFragmentActivity {
         public Fragment getItem(int position) {
             return DeviceFragment.newInstance(position);
         }
+
     }
 
     @Subscribe
@@ -265,7 +267,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
         mAdapter = new DevicePagerAdapter(getSupportFragmentManager());
         mPager.setAdapter(mAdapter);
-        mPager.setCurrentItem(deviceNumber, false);
+        mPager.setCurrentItem(deviceNumber);
 
         Crouton.cancelAllCroutons();
         Crouton.makeText(
