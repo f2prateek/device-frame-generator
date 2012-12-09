@@ -1,6 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">DeviceFrameGenerator</string>
+    <string name="app_name">Device Frame Generator</string>
+
+    <!-- Content Description -->
+    <string name="generate_image_button">Generate Image Button</string>
+    <string name="device_thumbnail">Device Thumbnail</string>
+
+    <!-- Error string -->
+    <string name="error">Error</string>
+    <string name="error_dimensions_not_matched">ERROR: Dimensions for the screenshot and selected device do not match.</string>
+    <string name="error_unable_to_save">ERROR: Unable to save screenshot</string>
+    <string name="error_storage_unavailable">ERRROR: Storage unavailable. Please ensure that storage is mounted and writeable</string>
+
+    <!-- Crouton Text -->
+    <string name="images_generated">%1$d images succesfully generated</string>
+    <string name="images_not_generated">%1$d images could not be generated</string>
+
+    <!-- Settings -->
+    <string name="glare_preference">Glare</string>
+    <string name="shadow_preference">Shadows</string>
+    <string name="shadow_enabled">Shadows will be added to screenshots</string>
+    <string name="glare_enabled">Glare will be added to screenshots</string>
+    <string name="shadow_disabled">Shadows will NOT be added to screenshots</string>
+    <string name="glare_disabled">Glare will NOT be added to screenshots</string>
+    <string name="device_saved">%1$s saved as default device.</string>
 
 </resources>

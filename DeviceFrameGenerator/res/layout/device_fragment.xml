@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#e3e3e3"
+    android:padding="8dp" >
+
+    <RelativeLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white"
+        android:orientation="vertical" >
+
+        <ToggleButton
+            android:id="@+id/tb_default_device"
+            style="@style/starToggle"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:padding="8dp" />
+
+        <ImageButton
+            android:id="@+id/iv_device_thumbnail"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_above="@+id/tv_device_title"
+            android:layout_alignParentTop="true"
+            android:background="@drawable/thumbnail_button"
+            android:contentDescription="@string/device_thumbnail"
+            android:scaleType="centerInside"
+            android:src="@drawable/galaxy_nexus_thumb" />
+
+        <TextView
+            android:id="@+id/tv_device_title"
+            style="@style/DeviceTitleText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_device_size"
+            android:layout_centerHorizontal="true"
+            android:fontFamily="sans-serif-light"
+            android:gravity="center_horizontal"
+            android:maxLines="2"
+            android:text="Galaxy Nexus" />
+
+        <TextView
+            android:id="@+id/tv_device_size"
+            style="@style/DeviceInfoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/tv_device_resolution"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif-light"
+            android:text="4.65&apos; @ 320dpi" />
+
+        <TextView
+            android:id="@+id/tv_device_resolution"
+            style="@style/DeviceInfoText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_gravity="center_horizontal"
+            android:fontFamily="sans-serif-light"
+            android:paddingBottom="8dp"
+            android:text="720x1280" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="match_parent"
+    android:orientation="horizontal" >
+
+    <CheckBox
+        android:id="@+id/check_shadow"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/tv_shadow_preference"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/check_shadow"
+        android:gravity="center_vertical"
+        android:text="@string/shadow_preference" />
+
+    <CheckBox
+        android:id="@+id/check_glare"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/tv_shadow_preference"
+        android:gravity="center_vertical" />
+
+    <TextView
+        android:id="@+id/tv_glare_preference"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@+id/check_glare"
+        android:gravity="center_vertical"
+        android:text="@string/glare_preference" />
+
+</RelativeLayout>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <color name="dkblue">#0099CC</color>
+    <color name="ltblue">#33B5E5</color>
+    <color name="dkred">#CC0000</color>
+    <color name="ltred">#FF4444</color>
+    <color name="dkgreen">#669900</color>
+    <color name="ltgreen">#99CC00</color>
+    <color name="ltgray">#555555</color>
+    <color name="md__transparent">#00000000</color>
+    <color name="md__defaultBackground">#FF555555</color>
+
+</resources>

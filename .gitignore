@@ -1,3 +1,6 @@
+#WIP
+DeviceFrameGeneratorTest
+
 #Android generated
 bin
 gen
@@ -32,4 +35,5 @@ proguard-project.txt
 
 #Other
 .DS_Store
+Thumbs.db
 tmp
