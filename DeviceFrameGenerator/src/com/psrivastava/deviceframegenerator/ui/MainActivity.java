@@ -144,12 +144,6 @@ public class MainActivity extends SherlockFragmentActivity {
         mActivity = this;
 
         mPager = (ViewPager)findViewById(R.id.pager);
-        mPager.setAdapter(mAdapter);
-
-        if (mPrefs == null) {
-            mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        }
-
         mPager.setOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
             @Override
             public void onPageSelected(final int position) {
@@ -158,7 +152,16 @@ public class MainActivity extends SherlockFragmentActivity {
             }
         });
 
+        mPager.setAdapter(mAdapter);
+
+        if (mPrefs == null) {
+            mPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        }
+
         mPager.setCurrentItem(mPrefs.getInt(AppConstants.KEY_DEVICE_POSITION, 0));
+
+        mMenuDrawer.setTouchMode(mPager.getCurrentItem() == 0 ? MenuDrawer.TOUCH_MODE_FULLSCREEN
+                : MenuDrawer.TOUCH_MODE_NONE);
 
         // Get intent, action and MIME type
         Intent intent = getIntent();
@@ -274,6 +277,7 @@ public class MainActivity extends SherlockFragmentActivity {
                 this,
                 getResources().getString(R.string.device_saved,
                         mDeviceList.get(deviceNumber).getTitle()), Style.CONFIRM).show();
+
     }
 
     private class FrameGeneratorTask extends AsyncTask<String, Integer, String> {
@@ -375,19 +379,38 @@ public class MainActivity extends SherlockFragmentActivity {
             setSupportProgress(0);
 
             if (successCount != maxCount) {
-                Crouton.makeText(
-                        activity,
-                        String.format(
-                                ((Context)activity).getResources().getString(
-                                        R.string.images_not_generated), maxCount - successCount),
-                        Style.CONFIRM).show();
+
+                mActivity.runOnUiThread(new Runnable() {
+
+                    @Override
+                    public void run() {
+                        Crouton.makeText(
+                                activity,
+                                String.format(
+                                        ((Context)activity).getResources().getString(
+                                                R.string.images_not_generated), maxCount
+                                                - successCount), Style.CONFIRM).show();
+
+                    }
+
+                });
+
             }
 
-            Crouton.makeText(
-                    activity,
-                    String.format(
-                            ((Context)activity).getResources().getString(R.string.images_generated),
-                            successCount), Style.CONFIRM).show();
+            mActivity.runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Crouton.makeText(
+                            mActivity,
+                            String.format(
+                                    ((Context)mActivity).getResources().getString(
+                                            R.string.images_generated), successCount),
+                            Style.CONFIRM).show();
+
+                }
+
+            });
 
             super.onPostExecute(result);
         }
@@ -423,7 +446,15 @@ public class MainActivity extends SherlockFragmentActivity {
                     .decodeFile(selectedImagePath));
         } catch (IOException e) {
             e.printStackTrace();
-            Crouton.makeText(this, R.string.error_unable_to_save, Style.ALERT).show();
+            mActivity.runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Crouton.makeText(mActivity, R.string.error_unable_to_save, Style.ALERT).show();
+
+                }
+
+            });
             return null;
         }
 
@@ -435,11 +466,28 @@ public class MainActivity extends SherlockFragmentActivity {
                     mPrefs.getBoolean(AppConstants.KEY_WITH_GLARE, true));
         } catch (IOException e) {
             e.printStackTrace();
-            Crouton.makeText(this, R.string.error_unable_to_save, Style.ALERT).show();
+            mActivity.runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Crouton.makeText(mActivity, R.string.error_unable_to_save, Style.ALERT).show();
+
+                }
+
+            });
             return null;
         } catch (UnmatchedDimensionsException e) {
             e.printStackTrace();
-            Crouton.makeText(this, R.string.error_dimensions_not_matched, Style.ALERT).show();
+            mActivity.runOnUiThread(new Runnable() {
+
+                @Override
+                public void run() {
+                    Crouton.makeText(mActivity, R.string.error_dimensions_not_matched, Style.ALERT)
+                            .show();
+
+                }
+
+            });
             return null;
         }
 
