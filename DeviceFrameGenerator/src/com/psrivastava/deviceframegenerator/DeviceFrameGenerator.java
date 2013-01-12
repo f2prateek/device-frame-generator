@@ -90,8 +90,10 @@ public class DeviceFrameGenerator {
         }
 
         comboImage.drawBitmap(back, 0f, 0f, null);
-
+        screenshot.createScaledBitmap(screenshot, device.getPortSize()[0], device.getPortSize()[1],
+                false);
         comboImage.drawBitmap(screenshot, offset[0], offset[1], null);
+
         if (withGlare) {
             comboImage.drawBitmap(fore, 0f, 0f, null);
         }
@@ -104,7 +106,8 @@ public class DeviceFrameGenerator {
         Calendar c = Calendar.getInstance();
         String fileName = device.getId() + "_" + c.get(Calendar.YEAR) + "-"
                 + (c.get(Calendar.MONTH) + 1) + "-" + c.get(Calendar.DAY_OF_MONTH) + "-"
-                + files.length + ".png";
+                + c.get(Calendar.HOUR_OF_DAY) + "-" + c.get(Calendar.MINUTE) + "-" + files.length
+                + ".png";
 
         os = new FileOutputStream(STORAGE_DIRECTORY + fileName);
         if (withShadow) {
@@ -137,16 +140,19 @@ public class DeviceFrameGenerator {
     public static String checkDimensions(Device device, Bitmap screenshot)
             throws UnmatchedDimensionsException {
 
-        if (screenshot.getHeight() == device.getPortSize()[1]
-                && screenshot.getWidth() == device.getPortSize()[0]) {
+        float aspect1 = (float)screenshot.getHeight() / (float)screenshot.getWidth();
+        float aspect2 = (float)device.getPortSize()[1] / (float)device.getPortSize()[0];
+
+        Log.e(LOGTAG,
+                "Screenshot height is " + screenshot.getHeight() + " " + device.getPortSize()[1]
+                        + " and width is " + screenshot.getWidth() + " " + device.getPortSize()[0]
+                        + " aspect1 = " + aspect1 + " aspect2 = " + aspect2);
+
+        if (aspect1 == aspect2) {
             return "port";
-        } else if (screenshot.getHeight() == device.getPortSize()[0]
-                && screenshot.getWidth() == device.getPortSize()[1]) {
+        } else if (aspect1 == 1 / aspect2) {
             return "land";
         }
-
-        Log.e(LOGTAG, "Screenshot height is " + screenshot.getHeight() + " and width is "
-                + screenshot.getWidth());
 
         throw new UnmatchedDimensionsException();
 

@@ -26,7 +26,7 @@ public class Nexus10 extends Device {
     };
 
     private static final int[] portSize = {
-            1600, 2560
+            800, 1280
     };
 
     @Override
