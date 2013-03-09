@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+
+    <string name="app_name">Device Frame Generator</string>
+    <string name="content_column">Content</string>
+    <string name="page_referrers">Referrers</string>
+    <string name="refresh_action">Refresh</string>
+    <string name="logout_action">Logout</string>
+    <string name="page_news">News</string>
+    <string name="page_users">Users</string>
+    <string name="page_checkins">Check In\'s</string>
+    <string name="title_column">Title</string>
+    <string name="location_column">Location</string>
+    <string name="user_column">User</string>
+    <string name="date_column">Date</string>
+    <string name="error_loading_users">Loading users failed</string>
+    <string name="error_loading_news">Loading news failed</string>
+    <string name="error_loading_checkins">Loading check-ins failed</string>
+    <string name="no_users">No Users</string>
+    <string name="no_news">No News</string>
+    <string name="avatar">Avatar</string>
+    <string name="choose">Choose</string>
+
+    <!-- AuthenticatorActivity -->
+    <string name="label_email_address">Email Address</string>
+    <string name="label_password">Password</string>
+    <string name="label_sign_in">Sign In</string>
+    <string name="message_signing_in">Signing in…</string>
+    <string name="blank_field_warning">Please populate this field</string>
+    <string name="signup_link">New to Bootstrap? &lt;a href=http://www.androidbootstrap.com>Click here&lt;/a> to learn more.</string>
+    <string name="message_bad_credentials">Email Address or Password is incorrect</string>
+    <string name="message_auth_failed">Please enter a valid password</string>
+    <string name="message_auth_failed_new_account">Please enter a valid email address &amp; password</string>
+    <string name="timer_running">Timer is running</string>
+    <string name="timer_is_paused">Timer is paused</string>
+    <string name="stop">Stop</string>
+    <string name="start">Start</string>
+    <string name="pause">Pause</string>
+    <string name="resume">Resume</string>
+    <string name="timer">Timer</string>
+
+
+</resources>

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="140" android:versionName="1.4-SNAPSHOT" package="com.f2prateek.dfg.tests">
+    <!-- Note: This file will be auto-formatted by the build (specifically android:manifest-update goal) -->
+
+	<uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16"/>
+
+	<application android:debuggable="true">
+		<uses-library android:name="android.test.runner"/>
+	</application>
+
+	<instrumentation android:label="Device Frame Generator - Integration Tests" android:name="android.test.InstrumentationTestRunner" android:targetPackage="com.f2prateek.dfg"/>
+
+</manifest>
