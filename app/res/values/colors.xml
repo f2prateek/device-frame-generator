@@ -2,39 +2,25 @@
 
 <resources>
 
-    <color name="text">#FCFCFC</color>
-    <color name="text_light">#999999</color>
-    <color name="text_inverted">#FFFFFF</color>
-    <color name="text_title">#DFDFDF</color>
-    <color name="pager_footer">#1fb6ed</color>
-    <color name="pager_selected_text">#FFFFFF</color>
-    <color name="pager_background">#F4F4F4</color>
-    <color name="pager_background_alternate">#E7E7E7</color>
-    <color name="text_link">#1fb6ed</color>
-    <color name="table_text">#484848</color>
-    <color name="table_text_inverted">#FFFFFF</color>
-    <color name="table_text_light">#A6A6A6</color>
-    <color name="table_text_header">#636363</color>
-    <color name="header_background_start">#ECECEC</color>
-    <color name="header_background_end">#C3C3C3</color>
-    <color name="header_background_top">#F9F9F9</color>
-    <color name="header_background_bottom">#A7A7A7</color>
-    <color name="actionbar_background_start">#272727</color>
-    <color name="actionbar_background_end">#1A1A1A</color>
-    <color name="bootstrap_divider_top">#000000</color>
-    <color name="bootstrap_divider_bottom">#5A5A5A</color>
-    <color name="main_background_start">#2E2E2E</color>
-    <color name="main_background_end">#2C2C2C</color>
-    <color name="button_background_enabled_start">#1fb6ed</color>
-    <color name="button_background_enabled_end">#1c9ac8</color>
-    <color name="button_background_pressed_start">#f76500</color>
-    <color name="button_background_pressed_end">#fb812c</color>
-    <color name="edit_text_background_start">#EFF6FF</color>
-    <color name="edit_text_background_end">#FBFDFF</color>
-    <color name="button_background_disabled_start">#7b7b7b</color>
-    <color name="button_background_disabled_end">#646464</color>
-    <color name="text_shadow">#000000</color>
-
-    <color name="background_selected">#1fb6ed</color>
+    <!-- A light Holo shade of blue -->
+    <color name="holo_blue_light">#ff33b5e5</color>
+    <!-- A light Holo shade of green -->
+    <color name="holo_green_light">#ff99cc00</color>
+    <!-- A light Holo shade of red -->
+    <color name="holo_red_light">#ffff4444</color>
+    <!-- A dark Holo shade of blue -->
+    <color name="holo_blue_dark">#ff0099cc</color>
+    <!-- A dark Holo shade of green -->
+    <color name="holo_green_dark">#ff669900</color>
+    <!-- A dark Holo shade of red -->
+    <color name="holo_red_dark">#ffcc0000</color>
+    <!-- A Holo shade of purple -->
+    <color name="holo_purple">#ffaa66cc</color>
+    <!-- A light Holo shade of orange -->
+    <color name="holo_orange_light">#ffffbb33</color>
+    <!-- A dark Holo shade of orange -->
+    <color name="holo_orange_dark">#ffff8800</color>
+    <!-- A really bright Holo shade of blue -->
+    <color name="holo_blue_bright">#ff00ddff</color>
 
 </resources>

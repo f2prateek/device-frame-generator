@@ -10,7 +10,7 @@
     <url>https://github.com.f2prateek.dfg</url>
 
     <parent>
-        <version>1.0</version>
+        <version>1.0-SNAPSHOT</version>
         <groupId>com.f2prateek.dfg</groupId>
         <artifactId>com-f2prateek-dfg-parent</artifactId>
     </parent>

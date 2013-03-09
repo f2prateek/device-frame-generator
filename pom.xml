@@ -4,7 +4,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <version>1.0</version>
+    <version>1.0-SNAPSHOT</version>
     <groupId>com.f2prateek.dfg</groupId>
     <artifactId>com-f2prateek-dfg-parent</artifactId>
     <name>Device Frame Generator parent</name>
@@ -31,10 +31,10 @@
 
     <developers>
         <developer>
-            <email>donn@donnfelker.com</email>
-            <name>Donn Felker</name>
-            <url>https://github.com/donnfelker</url>
-            <id>donnfelker</id>
+            <email>f2prateek@gmail.com</email>
+            <name>Prateek Srivastava</name>
+            <url>https://github.com/f2prateek</url>
+            <id>f2prateek</id>
         </developer>
     </developers>
 

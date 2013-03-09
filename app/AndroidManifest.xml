@@ -1,69 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.f2prateek.dfg"
-    android:versionCode="100"
-    android:versionName="1.0" >
+          package="com.f2prateek.dfg"
+          android:versionCode="100"
+          android:versionName="1.0">
 
     <uses-sdk
-        android:minSdkVersion="8"
-        android:targetSdkVersion="16" />
-
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
-    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.USE_CREDENTIALS" />
+            android:minSdkVersion="8"
+            android:targetSdkVersion="16"/>
 
     <application
-        android:name=".BootstrapApplication"
-        android:icon="@drawable/icon"
-        android:label="@string/app_name"
-        android:theme="@style/Theme.Bootstrap.Dark"
-        android:debuggable="true">
+            android:name=".DFGApplication"
+            android:icon="@drawable/app_icon"
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme"
+            android:debuggable="true">
 
         <activity
-            android:name=".ui.CarouselActivity"
-            android:configChanges="orientation|keyboardHidden|screenSize" android:label="@string/app_name">
+                android:name=".ui.MainActivity"
+                android:configChanges="orientation|keyboardHidden|screenSize" android:label="@string/app_name">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
+                <action android:name="android.intent.action.MAIN"/>
 
-                <category android:name="android.intent.category.LAUNCHER" />
+                <category android:name="android.intent.category.LAUNCHER"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
-
-        <activity android:name=".ui.BootstrapTimerActivity"
-                  android:configChanges="orientation|keyboardHidden|screenSize" android:label="@string/app_name"
-                  android:launchMode="singleTop"/>
-
-        <service android:name=".core.TimerService" android:enabled="true" android:exported="false" />
-
-        <service
-            android:name=".authenticator.AccountAuthenticatorService"
-            android:process=":auth" >
-            <intent-filter>
-                <action android:name="android.accounts.AccountAuthenticator" />
-            </intent-filter>
-
-            <meta-data
-                android:name="android.accounts.AccountAuthenticator"
-                android:resource="@xml/authenticator" />
-        </service>
-
-        <activity
-            android:name=".authenticator.BootstrapAuthenticatorActivity"
-            android:excludeFromRecents="true" >
-
-            <!--
-                No intent-filter here! This activity is only ever launched by
-                someone who explicitly knows the class name
-            -->
-        </activity>
-
-        <activity android:name=".ui.NewsActivity" />
-        <activity android:name=".ui.UserActivity" android:label="@string/app_name" />
 
     </application>
 
