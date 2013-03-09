@@ -61,7 +61,7 @@
                         </sdk>
                         <!--<undeployBeforeDeploy>true</undeployBeforeDeploy>-->
                         <proguard>
-                            <skip>false</skip>
+                            <skip>true</skip>
                             <config>../proguard.cfg</config>
                         </proguard>
                     </configuration>
