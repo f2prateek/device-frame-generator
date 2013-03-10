@@ -44,24 +44,24 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
     }
 
     public void testActivityExists() {
-        Spoon.screenshot(activity, "initial_state");
+        String state = "pager_item_";
         assertThat(activity).isNotNull();
         final ViewPager pager = (ViewPager) activity.findViewById(R.id.pager);
         assertThat(pager).isNotNull();
+
         assertThat(pager.getAdapter()).isNotNull().hasCount(DeviceProvider.getDevices().size());
 
-        // Click the "login" button.
-        instrumentation.runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                pager.setCurrentItem(1);
-            }
-        });
-        instrumentation.waitForIdleSync();
-
-        Spoon.screenshot(activity, "second_tab");
-
+        for (int i = 0; i < pager.getAdapter().getCount(); i++) {
+            final int count = i;
+            instrumentation.runOnMainSync(new Runnable() {
+                @Override
+                public void run() {
+                    pager.setCurrentItem(count);
+                }
+            });
+            instrumentation.waitForIdleSync();
+            Spoon.screenshot(activity, state + count);
+        }
     }
-
 
 }

@@ -39,6 +39,24 @@ public class DeviceProvider {
                 setLandOffset(new int[]{371, 199}).setPortOffset(new int[]{216, 353}).setPortSize(new int[]{720, 1280}).
                 setThumbnail(R.drawable.galaxy_nexus_thumb).build();
         devices.add(galaxy_nexus);
+        Device nexus_4 = new Device.DeviceBuilder().setId("nexus_4").
+                setName("Nexus 4").setUrl("http://www.google.com/nexus/4/").
+                setPhysicalSize(4.7f).setDensity(320).
+                setLandOffset(new int[]{349, 214}).setPortOffset(new int[]{213, 350}).setPortSize(new int[]{768, 1280}).
+                setThumbnail(R.drawable.nexus_4_thumb).build();
+        devices.add(nexus_4);
+        Device nexus_7 = new Device.DeviceBuilder().setId("nexus_7").
+                setName("Nexus 7").setUrl("http://www.android.com/devices/detail/nexus-7").
+                setPhysicalSize(7f).setDensity(213).
+                setLandOffset(new int[]{315, 270}).setPortOffset(new int[]{264, 311}).setPortSize(new int[]{800, 1280}).
+                setThumbnail(R.drawable.nexus_7_thumb).build();
+        devices.add(nexus_7);
+        Device nexus_10 = new Device.DeviceBuilder().setId("nexus_10").
+                setName("Nexus 10").setUrl("http://www.google.com/nexus/10/").
+                setPhysicalSize(10f).setDensity(320).
+                setLandOffset(new int[]{227, 217}).setPortOffset(new int[]{217, 223}).setPortSize(new int[]{800, 1280}).
+                setThumbnail(R.drawable.nexus_10_thumb).build();
+        devices.add(nexus_10);
         return devices;
     }
 
