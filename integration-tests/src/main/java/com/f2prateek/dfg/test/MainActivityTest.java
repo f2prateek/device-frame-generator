@@ -16,7 +16,11 @@
 
 package com.f2prateek.dfg.test;
 
+import android.support.v4.view.ViewPager;
+import com.f2prateek.dfg.R;
+import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.ui.MainActivity;
+import com.jayway.android.robotium.solo.Solo;
 import com.squareup.spoon.Spoon;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
@@ -26,8 +30,12 @@ import static org.fest.assertions.api.ANDROID.assertThat;
  */
 public class MainActivityTest extends ActivityTest<MainActivity> {
 
+    private Solo solo;
+
     public MainActivityTest() {
         super(MainActivity.class);
+        solo = new Solo(getInstrumentation(), activity);
+
     }
 
     @Override
@@ -38,6 +46,22 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
     public void testActivityExists() {
         Spoon.screenshot(activity, "initial_state");
         assertThat(activity).isNotNull();
+        final ViewPager pager = (ViewPager) activity.findViewById(R.id.pager);
+        assertThat(pager).isNotNull();
+        assertThat(pager.getAdapter()).isNotNull().hasCount(DeviceProvider.getDevices().size());
+
+        // Click the "login" button.
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                pager.setCurrentItem(1);
+            }
+        });
+        instrumentation.waitForIdleSync();
+
+        Spoon.screenshot(activity, "second_tab");
+
     }
+
 
 }

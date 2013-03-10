@@ -17,13 +17,14 @@
 package com.f2prateek.dfg.core.core;
 
 import org.junit.Test;
+
 import static org.junit.Assert.assertEquals;
 
 public class StubbedUnitTest {
 
     @Test
     public void stubbedTest() throws Exception {
-        assertEquals(5 * 1, 5);
+        assertEquals(2, 2);
     }
 
 }

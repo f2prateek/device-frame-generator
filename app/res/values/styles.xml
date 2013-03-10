@@ -2,5 +2,27 @@
 
 <resources>
 
+    <!-- Style for a custom toggle button, in this case a star to select the default device -->
+    <style name="starToggle">
+        <item name="android:textOn"></item>
+        <item name="android:text"></item>
+        <item name="android:textOff"></item>
+        <item name="android:layout_height">@dimen/star_button_size</item>
+        <item name="android:layout_width">@dimen/star_button_size</item>
+        <item name="android:scaleType">center</item>
+        <item name="android:background">@drawable/star_toggle</item>
+    </style>
+
+    <style name="DeviceTitleText">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/holo_blue_dark</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="DeviceInfoText">
+        <item name="android:textSize">16sp</item>
+        <item name="android:textStyle">normal</item>
+    </style>
+
 
 </resources>

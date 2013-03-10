@@ -20,7 +20,7 @@ package com.f2prateek.dfg.util;
 // copied from https://code.google.com/p/iosched/source/browse/android/src/com/google/android/apps/iosched/util/LogUtils.java
 public class LogUtils {
 
-    private static final String LOG_PREFIX = "foodbot_";
+    private static final String LOG_PREFIX = "dfg_";
     private static final int LOG_PREFIX_LENGTH = LOG_PREFIX.length();
     private static final int MAX_LOG_TAG_LENGTH = 23;
     // usage example

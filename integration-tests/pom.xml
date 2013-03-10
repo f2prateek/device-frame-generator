@@ -51,6 +51,11 @@
             <artifactId>fest-android</artifactId>
             <version>1.0.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.jayway.android.robotium</groupId>
+            <artifactId>robotium-solo</artifactId>
+            <version>3.6</version>
+        </dependency>
     </dependencies>
     <build>
         <resources>

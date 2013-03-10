@@ -17,9 +17,11 @@
 package com.f2prateek.dfg.ui;
 
 import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import com.f2prateek.dfg.R;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.squareup.otto.Bus;
+import roboguice.inject.InjectView;
 
 import javax.inject.Inject;
 
@@ -27,12 +29,16 @@ public class MainActivity extends RoboSherlockFragmentActivity {
 
     @Inject
     Bus bus;
+    @InjectView(R.id.pager)
+    ViewPager pager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        pager.setAdapter(new DeviceFragmentPagerAdapter(getSupportFragmentManager()));
 
     }
 
