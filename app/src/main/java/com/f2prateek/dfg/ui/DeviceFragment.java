@@ -16,6 +16,7 @@
 
 package com.f2prateek.dfg.ui;
 
+import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -23,12 +24,13 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.util.LruCache;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
@@ -43,6 +45,9 @@ import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 public class DeviceFragment extends RoboSherlockFragment {
 
     private static final String LOGTAG = makeLogTag(DeviceFragment.class);
+
+    private static LruCache<String, Bitmap> mMemoryCache;
+
     @Inject
     Bus bus;
     Device mDevice;
@@ -60,6 +65,30 @@ public class DeviceFragment extends RoboSherlockFragment {
         return f;
     }
 
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        if (mMemoryCache == null) {
+            Log.d(LOGTAG, "creating new memory cache");
+            // Get max available VM memory, exceeding this amount will throw an
+            // OutOfMemory exception. Stored in kilobytes as LruCache takes an
+            // int in its constructor.
+            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+            // Use 1/8th of the available memory for this memory cache.
+            final int cacheSize = maxMemory / 8;
+
+            mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+                @Override
+                protected int sizeOf(String key, Bitmap bitmap) {
+                    // The cache size will be measured in kilobytes rather than
+                    // number of items.
+                    return bitmap.getByteCount() / 1024;
+                }
+            };
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -126,7 +155,7 @@ public class DeviceFragment extends RoboSherlockFragment {
     public void loadBitmap(int resId, ImageButton imageButton) {
         final String imageKey = String.valueOf(resId);
 
-        final Bitmap bitmap = ((DFGApplication) getSherlockActivity().getApplication()).getBitmapFromMemCache(imageKey);
+        final Bitmap bitmap = getBitmapFromMemCache(imageKey);
         if (bitmap != null) {
             imageButton.setImageBitmap(bitmap);
             return;
@@ -189,7 +218,7 @@ public class DeviceFragment extends RoboSherlockFragment {
             // - better for different sizes
             if (isAdded()) {
                 final Bitmap bitmap = decodeSampledBitmapFromResource(getResources(), data);
-                ((DFGApplication) getSherlockActivity().getApplication()).addBitmapToMemoryCache(String.valueOf(params[0]), bitmap);
+                addBitmapToMemoryCache(String.valueOf(params[0]), bitmap);
                 return bitmap;
             }
 
@@ -206,6 +235,16 @@ public class DeviceFragment extends RoboSherlockFragment {
                 }
             }
         }
+    }
+
+    public static void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            mMemoryCache.put(key, bitmap);
+        }
+    }
+
+    public static Bitmap getBitmapFromMemCache(String key) {
+        return mMemoryCache.get(key);
     }
 
 
