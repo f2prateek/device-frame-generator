@@ -20,8 +20,7 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
     <ToggleButton
             android:id="@+id/tb_default_device"
@@ -29,7 +28,7 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:padding="8dp" />
+            android:padding="8dp"/>
 
     <ImageButton
             android:id="@+id/ib_device_thumbnail"
@@ -39,7 +38,7 @@
             android:layout_alignParentTop="true"
             android:background="@drawable/thumbnail_button"
             android:scaleType="centerInside"
-            android:src="@drawable/galaxy_nexus_thumb" />
+            android:src="@drawable/galaxy_nexus_thumb"/>
 
     <TextView
             android:id="@+id/tv_device_name"
@@ -51,7 +50,7 @@
             android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
             android:maxLines="2"
-            android:text="Galaxy Nexus" />
+            android:text="Galaxy Nexus"/>
 
     <TextView
             android:id="@+id/tv_device_size"
@@ -62,7 +61,7 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-light"
-            android:text="4.65&apos; @ 320dpi" />
+            android:text="4.65&apos; @ 320dpi"/>
 
     <TextView
             android:id="@+id/tv_device_resolution"
@@ -74,5 +73,5 @@
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-light"
             android:paddingBottom="16dp"
-            android:text="720x1280" />
+            android:text="720x1280"/>
 </RelativeLayout>
