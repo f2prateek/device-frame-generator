@@ -22,14 +22,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <ToggleButton
-            android:id="@+id/tb_default_device"
-            style="@style/starToggle"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:padding="8dp"/>
-
     <ImageButton
             android:id="@+id/ib_device_thumbnail"
             android:layout_width="match_parent"

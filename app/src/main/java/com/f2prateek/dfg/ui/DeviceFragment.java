@@ -16,7 +16,6 @@
 
 package com.f2prateek.dfg.ui;
 
-import android.app.Activity;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -60,16 +59,14 @@ public class DeviceFragment extends RoboSherlockFragment {
 
     public static DeviceFragment newInstance(int num) {
         DeviceFragment f = new DeviceFragment();
+        buildCache();
         Bundle args = new Bundle();
         args.putInt("num", num);
         f.setArguments(args);
         return f;
     }
 
-    @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-
+    private static void buildCache() {
         if (mMemoryCache == null) {
             Log.d(LOGTAG, "creating new memory cache");
             // Get max available VM memory, exceeding this amount will throw an
@@ -106,7 +103,6 @@ public class DeviceFragment extends RoboSherlockFragment {
         mDevice = DeviceProvider.getDevices().get(mNum);
     }
 
-
     @Override
     public void onResume() {
         super.onResume();
@@ -115,6 +111,7 @@ public class DeviceFragment extends RoboSherlockFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        Log.d(LOGTAG, "onCreateView");
         View v = inflater.inflate(R.layout.fragment_device, container, false);
         tv_device_size = (TextView) v.findViewById(R.id.tv_device_size);
         tv_device_size.setText(mDevice.getPhysicalSize() + "\" @ " + mDevice.getDensity() + "dpi");
@@ -126,12 +123,10 @@ public class DeviceFragment extends RoboSherlockFragment {
         return v;
     }
 
-
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         loadBitmap(mDevice.getThumbnail(), ib_device_thumbnail);
     }
-
 
     @Override
     public void onPause() {
