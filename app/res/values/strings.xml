@@ -6,5 +6,6 @@
 
     <!-- Device Fragment !-->
     <string name="save_default">Save as default</string>
+    <string name="saved_as_default_message">%s saved as default device.</string>
 
 </resources>

@@ -42,6 +42,8 @@ import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.squareup.otto.Bus;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 import javax.inject.Inject;
 import java.lang.ref.WeakReference;
@@ -107,6 +109,7 @@ public class DeviceFragment extends RoboSherlockFragment {
         super.onCreate(savedInstanceState);
         mNum = getArguments() != null ? getArguments().getInt("num") : 1;
         mDevice = DeviceProvider.getDevices().get(mNum);
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -154,6 +157,8 @@ public class DeviceFragment extends RoboSherlockFragment {
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putInt(AppConstants.KEY_DEVICE_POSITION, mNum);
         editor.commit();
+        Crouton.cancelAllCroutons();
+        Crouton.makeText(getSherlockActivity(), getSherlockActivity().getResources().getString(R.string.saved_as_default_message, mDevice.getName()), Style.CONFIRM).show();
     }
 
     @Override
