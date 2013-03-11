@@ -16,6 +16,7 @@
 
 package com.f2prateek.dfg.ui;
 
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +25,7 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -31,6 +33,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
+import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
@@ -126,6 +132,28 @@ public class DeviceFragment extends RoboSherlockFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         loadBitmap(mDevice.getThumbnail(), ib_device_thumbnail);
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.fragment_device, menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.save_default_device:
+                saveDeviceAsDefault();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void saveDeviceAsDefault() {
+        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getSherlockActivity());
+        SharedPreferences.Editor editor = mPrefs.edit();
+        editor.putInt(AppConstants.KEY_DEVICE_POSITION, mNum);
+        editor.commit();
     }
 
     @Override

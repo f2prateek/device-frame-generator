@@ -4,4 +4,7 @@
 
     <string name="app_name">Device Frame Generator</string>
 
+    <!-- Device Fragment !-->
+    <string name="save_default">Save as default</string>
+
 </resources>
