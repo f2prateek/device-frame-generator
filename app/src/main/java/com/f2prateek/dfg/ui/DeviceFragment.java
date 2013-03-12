@@ -23,7 +23,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v4.util.LruCache;
@@ -41,6 +40,7 @@ import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
+import com.f2prateek.dfg.util.BitmapUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.squareup.otto.Bus;
 
@@ -87,13 +87,7 @@ public class DeviceFragment extends RoboSherlockFragment {
             mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
                 @Override
                 protected int sizeOf(String key, Bitmap bitmap) {
-                    final int byteCount;
-
-                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1) {
-                        byteCount = bitmap.getRowBytes() * bitmap.getHeight();
-                    } else {
-                        byteCount = bitmap.getByteCount();
-                    }
+                    final int byteCount = BitmapUtils.getByteCount(bitmap);
 
                     // The cache size will be measured in kilobytes rather than
                     // number of items.
