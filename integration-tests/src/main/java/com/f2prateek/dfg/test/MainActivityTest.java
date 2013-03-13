@@ -43,7 +43,7 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
         super.setUp();
     }
 
-    public void testActivityExists() {
+    public void testDevicesShown() {
         String state = "pager_item_";
         assertThat(activity).isNotNull();
         final ViewPager pager = (ViewPager) activity.findViewById(R.id.pager);
