@@ -201,11 +201,8 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     }
 
     public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId) {
-
-        // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = false;
-
         return BitmapFactory.decodeResource(res, resId, options);
     }
 
@@ -243,7 +240,7 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
         final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageButton);
 
         if (bitmapWorkerTask != null) {
-            final int bitmapData = bitmapWorkerTask.data;
+            final int bitmapData = bitmapWorkerTask.resId;
             if (bitmapData != data) {
                 // Cancel previous task
                 bitmapWorkerTask.cancel(true);
@@ -271,7 +268,7 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
         private final WeakReference imageButtonReference;
 
-        private int data = 0;
+        private int resId = 0;
 
         public BitmapWorkerTask(ImageButton imageButton) {
             // Use a WeakReference to ensure the ImageButton can be garbage
@@ -282,12 +279,10 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
         // Decode image in background.
         @Override
         protected Bitmap doInBackground(Integer... params) {
-            data = params[0];
+            resId = params[0];
 
-            // TODO: change height and width to dyanmic values of the imageButton
-            // - better for different sizes
             if (isAdded()) {
-                final Bitmap bitmap = decodeSampledBitmapFromResource(getResources(), data);
+                final Bitmap bitmap = decodeSampledBitmapFromResource(getResources(), resId);
                 addBitmapToMemoryCache(String.valueOf(params[0]), bitmap);
                 return bitmap;
             }
@@ -295,9 +290,9 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
             return null;
         }
 
-        // Once complete, see if ImageButton is still around and set bitmap.
         @Override
         protected void onPostExecute(Bitmap bitmap) {
+            // Once complete, see if ImageButton is still around and set bitmap.
             if (imageButtonReference != null && bitmap != null) {
                 final ImageButton imageButton = (ImageButton) imageButtonReference.get();
                 if (imageButton != null) {
@@ -316,6 +311,5 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     public static Bitmap getBitmapFromMemCache(String key) {
         return mMemoryCache.get(key);
     }
-
 
 }
