@@ -30,6 +30,7 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 import com.f2prateek.dfg.AppConstants;
@@ -60,7 +61,7 @@ public class GenerateFrameService extends IntentService {
 
     private int mNotificationId;
     private NotificationManager mNotificationManager;
-    private Notification.Builder mNotificationBuilder;
+    private NotificationCompat.Builder mNotificationBuilder;
     private Intent mLaunchIntent;
     private String mImageDir;
     private String mImageFileName;
@@ -151,7 +152,7 @@ public class GenerateFrameService extends IntentService {
         // Show the intermediate notification
         mTickerAddSpace = !mTickerAddSpace;
         mNotificationId = SCREENSHOT_NOTIFICATION_ID;
-        mNotificationBuilder = new Notification.Builder(this)
+        mNotificationBuilder = new NotificationCompat.Builder(this)
                 .setLargeIcon(croppedIcon)
                 .setTicker(r.getString(R.string.screenshot_saving_ticker)
                         + (mTickerAddSpace ? " " : ""))
