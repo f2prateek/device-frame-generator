@@ -18,7 +18,7 @@ package com.f2prateek.dfg.model;
 
 public class Device {
 
-    // Unique identifier for each device
+    // Unique identifier for each device, used to identify resources.
     private String id;
     // Device name to display
     private String name;

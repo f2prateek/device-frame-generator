@@ -14,22 +14,16 @@
  * limitations under the License.
  */
 
-package com.f2prateek.dfg;
+package com.f2prateek.dfg.core;
 
-public class AppConstants {
+public class UnmatchedDimensionsException extends Exception {
 
-    /*
-     * Key for preferences; saves default device
-     */
-    public static final String KEY_PREF_DEFAULT_DEVICE_POSITION = "KEY_PREF_DEFAULT_DEVICE_POSITION";
+    public UnmatchedDimensionsException() {
+        super();
+    }
 
-    /*
-     * Key for Intent extras;
-     */
-    public static final String KEY_EXTRA_DEVICE = "KEY_EXTRA_DEVICE";
-    public static final String KEY_EXTRA_SCREENSHOT = "KEY_EXTRA_SCREENSHOT";
-    public static final String KEY_EXTRA_OPTION_SHADOW = "KEY_EXTRA_OPTION_SHADOW";
-    public static final String KEY_EXTRA_OPTION_GLARE = "KEY_EXTRA_OPTION_GLARE";
-
+    public UnmatchedDimensionsException(String s) {
+        super(s);
+    }
 
 }

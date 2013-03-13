@@ -31,7 +31,8 @@ public class StorageUtils {
     /**
      * Folder for storage finished images.
      */
-    public static final String APP_FOLDER = "/Device-Frame-Generator/";
+    private static final String APP_FOLDER = "/Device-Frame-Generator/";
+
     /**
      * Storage directory, obtained by combining {@link #APP_FOLDER} and the
      * environment path
@@ -39,6 +40,7 @@ public class StorageUtils {
     public static final String STORAGE_DIRECTORY = Environment.getExternalStoragePublicDirectory(
             Environment.DIRECTORY_PICTURES).toString()
             + APP_FOLDER;
+
     private static final String LOGTAG = makeLogTag(StorageUtils.class);
 
     /**

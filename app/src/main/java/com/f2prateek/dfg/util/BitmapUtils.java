@@ -16,9 +16,14 @@
 
 package com.f2prateek.dfg.util;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
+import com.f2prateek.dfg.model.Device;
 
 import java.io.File;
 import java.io.IOException;
@@ -27,6 +32,68 @@ import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
 public class BitmapUtils {
+
+    /**
+     * Decode a file path into a bitmap. If the specified file name is null, or cannot be decoded into a bitmap, the function returns null.
+     * Returns a mutable Bitmap.
+     *
+     * @param pathName
+     * @return the decoded {@link Bitmap}, mutable; null if failed.
+     */
+    public static Bitmap decodeFile(String pathName) throws IOException {
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            return convertToMutable(BitmapFactory.decodeFile(pathName));
+        } else {
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inMutable = true;
+            return BitmapFactory.decodeFile(pathName, opt);
+        }
+    }
+
+    /**
+     * Decodes the appropriate resources for the device.
+     *
+     * @param context     everything needs a context =(
+     * @param device      device whose resources are needed
+     * @param orientation orientation of the resources to choose from
+     * @return
+     * @throws IOException if unable to make it mutable
+     */
+    public static Bitmap[] decodeDeviceResources(Context context, Device device, String orientation) throws IOException {
+        String backString = device.getId() + "_" + orientation + "_" + "back";
+        String shadowString = device.getId() + "_" + orientation + "_" + "shadow";
+        String glareString = device.getId() + "_" + orientation + "_" + "glare";
+
+        Log.d("bitmap", "backString + " + backString);
+        Log.d("bitmap", "shadowString + " + shadowString);
+        Log.d("bitmap", "glareString + " + glareString);
+
+        Bitmap[] bitmaps = new Bitmap[3];
+        bitmaps[0] = decodeResource(context, backString);
+        bitmaps[1] = decodeResource(context, shadowString);
+        bitmaps[2] = decodeResource(context, glareString);
+        return bitmaps;
+    }
+
+    /**
+     * Compatibility version of decode resources, returns a mutable bitmap.
+     * Uses {@link #convertToMutable} if less than API 11
+     *
+     * @param context
+     * @return a mutable copy of the resource
+     * @throws IOException if unable to make it mutable
+     */
+    private static Bitmap decodeResource(Context context, String resourceName) throws IOException {
+        Resources resources = context.getResources();
+        String packageName = context.getPackageName();
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
+            return convertToMutable(BitmapFactory.decodeResource(resources, resources.getIdentifier(resourceName, "drawable", packageName)));
+        } else {
+            BitmapFactory.Options opt = new BitmapFactory.Options();
+            opt.inMutable = true;
+            return BitmapFactory.decodeResource(resources, resources.getIdentifier(resourceName, "drawable", packageName), opt);
+        }
+    }
 
     /**
      * Converts a immutable bitmap to a mutable bitmap. This operation doesn't
@@ -38,7 +105,7 @@ public class BitmapUtils {
      * @return a copy of imgIn, but mutable.
      * @throws IOException
      */
-    public static Bitmap convertToMutable(Bitmap imgIn) throws IOException {
+    private static Bitmap convertToMutable(Bitmap imgIn) throws IOException {
         // this is the file going to use temporally to save the bytes.
         // This file will not be a image, it will store the raw image data.
         File file = new File(Environment.getExternalStorageDirectory() + File.separator
