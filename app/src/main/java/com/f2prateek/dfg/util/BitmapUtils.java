@@ -23,6 +23,7 @@ import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Environment;
 import android.util.Log;
+import com.f2prateek.dfg.core.UnmatchedDimensionsException;
 import com.f2prateek.dfg.model.Device;
 
 import java.io.File;
@@ -31,20 +32,27 @@ import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
+import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
+
 public class BitmapUtils {
 
+    private static final String LOGTAG = makeLogTag(BitmapUtils.class);
+
     /**
-     * Decode a file path into a bitmap. If the specified file name is null, or cannot be decoded into a bitmap, the function returns null.
+     * Decode a file path into a bitmap.
+     * If the specified file name is null, or cannot be decoded into a bitmap, the function returns null.
      * Returns a mutable Bitmap.
      *
-     * @param pathName
-     * @return the decoded {@link Bitmap}, mutable; null if failed.
+     * @param pathName path to the file
+     * @return A mutable copy of the decoded {@link Bitmap}; null if failed.
+     * @throws IOException if unable to make it mutable
      */
     public static Bitmap decodeFile(String pathName) throws IOException {
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inJustDecodeBounds = false;
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            return convertToMutable(BitmapFactory.decodeFile(pathName));
+            return convertToMutable(BitmapFactory.decodeFile(pathName, opt));
         } else {
-            BitmapFactory.Options opt = new BitmapFactory.Options();
             opt.inMutable = true;
             return BitmapFactory.decodeFile(pathName, opt);
         }
@@ -53,10 +61,10 @@ public class BitmapUtils {
     /**
      * Decodes the appropriate resources for the device.
      *
-     * @param context     everything needs a context =(
-     * @param device      device whose resources are needed
-     * @param orientation orientation of the resources to choose from
-     * @return
+     * @param context     Everything needs a context =(
+     * @param device      Device whose resources are needed.
+     * @param orientation Orientation of the resources.
+     * @return Bitmap Array holding bitmaps.
      * @throws IOException if unable to make it mutable
      */
     public static Bitmap[] decodeDeviceResources(Context context, Device device, String orientation) throws IOException {
@@ -76,11 +84,11 @@ public class BitmapUtils {
     }
 
     /**
-     * Compatibility version of decode resources, returns a mutable bitmap.
-     * Uses {@link #convertToMutable} if less than API 11
+     * Compatibility version of, returns a mutable bitmap.
+     * Uses {@link #convertToMutable} if less than API 11.
      *
-     * @param context
-     * @return a mutable copy of the resource
+     * @param context     Everything needs a context =(
+     * @return A mutable copy of the resource
      * @throws IOException if unable to make it mutable
      */
     private static Bitmap decodeResource(Context context, String resourceName) throws IOException {
@@ -149,12 +157,39 @@ public class BitmapUtils {
     }
 
     /**
+     * Checks if screenshot matches the aspect ratio of the device.
+     *
+     * @param device The Device to frame.
+     * @param screenshot The screenshot to frame.
+     * @return "port" if matched to portrait and "land" if matched to landscape
+     * @throws UnmatchedDimensionsException If it could not match any orientation to the device.
+     */
+    public static String checkDimensions(Device device, Bitmap screenshot)
+            throws UnmatchedDimensionsException {
+
+        float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
+        float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
+
+        if (aspect1 == aspect2) {
+            return "port";
+        } else if (aspect1 == 1 / aspect2) {
+            return "land";
+        }
+
+        Log.e(LOGTAG, String.format(
+                "Screenshot height = %d, width = %d. Device height = %d, width = %d. Aspect1 = %d, Aspect 2 = %d",
+                screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1], device.getPortSize()[0],
+                aspect1, aspect2));
+        throw new UnmatchedDimensionsException();
+    }
+
+    /**
      * Returns the number of bytes used to store this bitmap's pixels.
      * Support version, checks SDK version to switch between custom version,
      * and API provided version.
      *
-     * @param bitmap
-     * @return bytes used to store this bitmap's pixels
+     * @param bitmap Whose byteCount is requested
+     * @return Bytes used to store this bitmap's pixels
      */
     public static int getByteCount(Bitmap bitmap) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB_MR1) {

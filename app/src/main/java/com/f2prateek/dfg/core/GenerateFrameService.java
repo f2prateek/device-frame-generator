@@ -178,7 +178,7 @@ public class GenerateFrameService extends IntentService {
 
         Bitmap screenshot = BitmapUtils.decodeFile(screenshotPath);
         setup(screenshot);
-        String orientation = checkDimensions(device, screenshot);
+        String orientation = BitmapUtils.checkDimensions(device, screenshot);
         int[] offset = orientation.compareTo("port") == 0 ? device.getPortOffset() : device
                 .getLandOffset();
 
@@ -239,31 +239,6 @@ public class GenerateFrameService extends IntentService {
         return uri;
     }
 
-    /**
-     * Checks if screenshot matches the aspect ratio of the device.
-     *
-     * @param device
-     * @param screenshot
-     * @return "port" if matched to portrait and "land" if matched to landscape
-     * @throws UnmatchedDimensionsException if could not match to the device
-     */
-    public static String checkDimensions(Device device, Bitmap screenshot)
-            throws UnmatchedDimensionsException {
 
-        float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
-        float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
-
-        if (aspect1 == aspect2) {
-            return "port";
-        } else if (aspect1 == 1 / aspect2) {
-            return "land";
-        }
-
-        Log.e(LOGTAG, String.format(
-                "Screenshot height = %d, width = %d. Device height = %d, width = %d. Aspect1 = %d, Aspect 2 = %d",
-                screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1], device.getPortSize()[0],
-                aspect1, aspect2));
-        throw new UnmatchedDimensionsException();
-    }
 
 }
