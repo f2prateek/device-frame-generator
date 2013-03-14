@@ -85,15 +85,18 @@ public class Device {
         return thumbnail;
     }
 
+    // Get the name of the shadow resource
     public String getShadowString(String orientation) {
         return id + "_" + orientation + "_shadow";
     }
 
+    // Get the name of the glare resource
     public String getGlareString(String orientation) {
         return id + "_" + orientation + "_glare";
     }
 
-    public String getBackString(String orientation) {
+    // Get the name of the background resource
+    public String getBackgroundString(String orientation) {
         return id + "_" + orientation + "_back";
     }
 

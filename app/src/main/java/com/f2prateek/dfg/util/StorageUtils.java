@@ -62,8 +62,7 @@ public class StorageUtils {
     /**
      * Gets path of selected image
      *
-     * @param context
-     * @param uri
+     * @param uri path of the image
      * @return path of selected image
      */
     public static String getPath(Context context, Uri uri) {

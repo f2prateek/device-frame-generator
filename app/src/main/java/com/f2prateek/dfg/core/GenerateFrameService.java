@@ -82,7 +82,6 @@ public class GenerateFrameService extends IntentService {
         super(LOGTAG);
     }
 
-
     @Override
     protected void onHandleIntent(Intent intent) {
         // Get all the intent data.
@@ -189,7 +188,7 @@ public class GenerateFrameService extends IntentService {
     }
 
     /**
-     * Generate the frame
+     * Generate the frame.
      *
      * @param withShadow true if to be drawn with shadow
      * @param withGlare  true if to be drawn with glare
@@ -260,6 +259,9 @@ public class GenerateFrameService extends IntentService {
         }
     }
 
+    /**
+     * Notify user when the processing is done.
+     */
     private void notifyDone() {
         // Show the final notification to indicate screenshot saved
         Resources r = getResources();
@@ -303,7 +305,7 @@ public class GenerateFrameService extends IntentService {
     private void retrieveResourceBitmaps(boolean withShadow, boolean withGlare) throws IOException,
             UnmatchedDimensionsException {
         mOrientation = checkDimensions(mDevice, mScreenshot);
-        mBackground = BitmapUtils.decodeResource(this, mDevice.getBackString(mOrientation));
+        mBackground = BitmapUtils.decodeResource(this, mDevice.getBackgroundString(mOrientation));
         mShadow = withShadow ? BitmapUtils.decodeResource(this, mDevice.getShadowString(mOrientation)) : null;
         mGlare = withGlare ? BitmapUtils.decodeResource(this, mDevice.getGlareString(mOrientation)) : null;
     }
@@ -333,13 +335,23 @@ public class GenerateFrameService extends IntentService {
         throw new UnmatchedDimensionsException();
     }
 
+    /**
+     * Notify user with an unknown error
+     *
+     * @param context             everything needs a context =(
+     * @param notificationManager to display the notification
+     */
     static void notifyError(Context context, NotificationManager notificationManager) {
         notifyError(context, notificationManager, R.string.unknown_error_text, R.string.unknown_error_title);
     }
 
     /**
      * Notify the user of a error.
-     * TODO : post to Bus
+     *
+     * @param context             everything needs a context =(
+     * @param notificationManager to display the notification
+     * @param failed_text         Text for notification.
+     * @param failed_title        Title for notification.
      */
     static void notifyError(Context context, NotificationManager notificationManager, int failed_text, int failed_title) {
         Resources r = context.getResources();

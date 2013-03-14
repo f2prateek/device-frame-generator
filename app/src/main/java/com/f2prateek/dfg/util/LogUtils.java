@@ -29,14 +29,14 @@ public class LogUtils {
     /**
      * Make a LOGTAG for this class.
      *
-     * @param cls
-     * @return
+     * @param cls class
+     * @return formatted LOGTAG for this class
      */
     public static String makeLogTag(Class cls) {
         return makeLogTag(cls.getSimpleName());
     }
 
-    public static String makeLogTag(String str) {
+    private static String makeLogTag(String str) {
         if (str.length() > MAX_LOG_TAG_LENGTH - LOG_PREFIX_LENGTH) {
             return LOG_PREFIX
                     + str.substring(0, MAX_LOG_TAG_LENGTH - LOG_PREFIX_LENGTH

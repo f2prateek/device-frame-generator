@@ -35,11 +35,8 @@ public class MainActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.activity_main);
-
         pager.setAdapter(new DeviceFragmentPagerAdapter(getSupportFragmentManager()));
-
     }
 
     @Override

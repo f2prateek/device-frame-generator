@@ -16,6 +16,9 @@
 
 package com.f2prateek.dfg.core;
 
+/**
+ * An exception indicating that dimensions for screenshot and device don't match.
+ */
 public class UnmatchedDimensionsException extends Exception {
 
     public UnmatchedDimensionsException() {
