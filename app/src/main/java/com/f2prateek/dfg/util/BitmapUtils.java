@@ -22,9 +22,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Build;
 import android.os.Environment;
-import android.util.Log;
-import com.f2prateek.dfg.core.UnmatchedDimensionsException;
-import com.f2prateek.dfg.model.Device;
 
 import java.io.File;
 import java.io.IOException;
@@ -59,39 +56,14 @@ public class BitmapUtils {
     }
 
     /**
-     * Decodes the appropriate resources for the device.
-     *
-     * @param context     Everything needs a context =(
-     * @param device      Device whose resources are needed.
-     * @param orientation Orientation of the resources.
-     * @return Bitmap Array holding bitmaps.
-     * @throws IOException if unable to make it mutable
-     */
-    public static Bitmap[] decodeDeviceResources(Context context, Device device, String orientation) throws IOException {
-        String backString = device.getId() + "_" + orientation + "_" + "back";
-        String shadowString = device.getId() + "_" + orientation + "_" + "shadow";
-        String glareString = device.getId() + "_" + orientation + "_" + "glare";
-
-        Log.d("bitmap", "backString + " + backString);
-        Log.d("bitmap", "shadowString + " + shadowString);
-        Log.d("bitmap", "glareString + " + glareString);
-
-        Bitmap[] bitmaps = new Bitmap[3];
-        bitmaps[0] = decodeResource(context, backString);
-        bitmaps[1] = decodeResource(context, shadowString);
-        bitmaps[2] = decodeResource(context, glareString);
-        return bitmaps;
-    }
-
-    /**
      * Compatibility version of, returns a mutable bitmap.
      * Uses {@link #convertToMutable} if less than API 11.
      *
-     * @param context     Everything needs a context =(
+     * @param context Everything needs a context =(
      * @return A mutable copy of the resource
      * @throws IOException if unable to make it mutable
      */
-    private static Bitmap decodeResource(Context context, String resourceName) throws IOException {
+    public static Bitmap decodeResource(Context context, String resourceName) throws IOException {
         Resources resources = context.getResources();
         String packageName = context.getPackageName();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
@@ -154,33 +126,6 @@ public class BitmapUtils {
         file.delete();
 
         return imgIn;
-    }
-
-    /**
-     * Checks if screenshot matches the aspect ratio of the device.
-     *
-     * @param device The Device to frame.
-     * @param screenshot The screenshot to frame.
-     * @return "port" if matched to portrait and "land" if matched to landscape
-     * @throws UnmatchedDimensionsException If it could not match any orientation to the device.
-     */
-    public static String checkDimensions(Device device, Bitmap screenshot)
-            throws UnmatchedDimensionsException {
-
-        float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
-        float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
-
-        if (aspect1 == aspect2) {
-            return "port";
-        } else if (aspect1 == 1 / aspect2) {
-            return "land";
-        }
-
-        Log.e(LOGTAG, String.format(
-                "Screenshot height = %d, width = %d. Device height = %d, width = %d. Aspect1 = %d, Aspect 2 = %d",
-                screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1], device.getPortSize()[0],
-                aspect1, aspect2));
-        throw new UnmatchedDimensionsException();
     }
 
     /**

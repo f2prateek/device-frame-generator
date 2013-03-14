@@ -120,7 +120,6 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.d(LOGTAG, "onCreateView");
         View v = inflater.inflate(R.layout.fragment_device, container, false);
         tv_device_size = (TextView) v.findViewById(R.id.tv_device_size);
         tv_device_size.setText(mDevice.getPhysicalSize() + "\" @ " + mDevice.getDensity() + "dpi");

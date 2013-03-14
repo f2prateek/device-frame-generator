@@ -37,6 +37,18 @@ public class Device {
     // Handle to resource for thumbnail
     private int thumbnail;
 
+    public Device(String id, String name, String url, float physicalSize, int density, int[] landOffset, int[] portOffset, int[] portSize, int thumbnail) {
+        this.id = id;
+        this.name = name;
+        this.url = url;
+        this.physicalSize = physicalSize;
+        this.density = density;
+        this.landOffset = landOffset;
+        this.portOffset = portOffset;
+        this.portSize = portSize;
+        this.thumbnail = thumbnail;
+    }
+
     public String getId() {
         return id;
     }
@@ -73,16 +85,16 @@ public class Device {
         return thumbnail;
     }
 
-    public Device(String id, String name, String url, float physicalSize, int density, int[] landOffset, int[] portOffset, int[] portSize, int thumbnail) {
-        this.id = id;
-        this.name = name;
-        this.url = url;
-        this.physicalSize = physicalSize;
-        this.density = density;
-        this.landOffset = landOffset;
-        this.portOffset = portOffset;
-        this.portSize = portSize;
-        this.thumbnail = thumbnail;
+    public String getShadowString(String orientation) {
+        return id + "_" + orientation + "_shadow";
+    }
+
+    public String getGlareString(String orientation) {
+        return id + "_" + orientation + "_glare";
+    }
+
+    public String getBackString(String orientation) {
+        return id + "_" + orientation + "_back";
     }
 
     @Override
