@@ -32,7 +32,6 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import android.widget.Toast;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
@@ -83,7 +82,6 @@ public class GenerateFrameService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
-        Toast.makeText(this, "starting ", Toast.LENGTH_LONG).show();
 
         int deviceNum = intent.getIntExtra(AppConstants.KEY_EXTRA_DEVICE, 0);
         Device device = DeviceProvider.getDevices().get(deviceNum);
@@ -94,21 +92,19 @@ public class GenerateFrameService extends IntentService {
 
         try {
             Uri imageUri = combine(device, screenshotPath, withShadow, withGlare);
+
             // Show the final notification to indicate screenshot saved
             Resources r = getResources();
-
             // Create the intent to show the screenshot in gallery
             mLaunchIntent = new Intent(Intent.ACTION_VIEW);
             mLaunchIntent.setDataAndType(imageUri, "image/png");
             mLaunchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
             mNotificationBuilder
                     .setContentTitle(r.getString(R.string.screenshot_saved_title))
                     .setContentText(r.getString(R.string.screenshot_saved_text))
                     .setContentIntent(PendingIntent.getActivity(this, 0, mLaunchIntent, 0))
                     .setWhen(System.currentTimeMillis())
                     .setAutoCancel(true);
-
             Notification n = mNotificationBuilder.getNotification();
             n.flags &= ~Notification.FLAG_NO_CLEAR;
             mNotificationManager.notify(mNotificationId, n);
@@ -124,7 +120,6 @@ public class GenerateFrameService extends IntentService {
 
     private void setup(Bitmap screenshot) {
         Resources r = getResources();
-
         // Prepare all the output metadata
         mImageTime = System.currentTimeMillis();
         mImageDate = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date(mImageTime));
@@ -249,7 +244,7 @@ public class GenerateFrameService extends IntentService {
      *
      * @param device
      * @param screenshot
-     * @return port if matched to portrait and land if matched to landscape
+     * @return "port" if matched to portrait and "land" if matched to landscape
      * @throws UnmatchedDimensionsException if could not match to the device
      */
     public static String checkDimensions(Device device, Bitmap screenshot)
@@ -258,19 +253,17 @@ public class GenerateFrameService extends IntentService {
         float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
         float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
 
-        Log.e(LOGTAG,
-                "Screenshot height is " + screenshot.getHeight() + " " + device.getPortSize()[1]
-                        + " and width is " + screenshot.getWidth() + " " + device.getPortSize()[0]
-                        + " aspect1 = " + aspect1 + " aspect2 = " + aspect2);
-
         if (aspect1 == aspect2) {
             return "port";
         } else if (aspect1 == 1 / aspect2) {
             return "land";
         }
 
+        Log.e(LOGTAG, String.format(
+                "Screenshot height = %d, width = %d. Device height = %d, width = %d. Aspect1 = %d, Aspect 2 = %d",
+                screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1], device.getPortSize()[0],
+                aspect1, aspect2));
         throw new UnmatchedDimensionsException();
-
     }
 
 }
