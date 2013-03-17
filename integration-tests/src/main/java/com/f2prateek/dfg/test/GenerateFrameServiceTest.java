@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Environment;
-import android.os.FileObserver;
 import android.test.ServiceTestCase;
 import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
@@ -55,6 +54,8 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
     public void setUp() throws Exception {
         super.setUp();
 
+        deleteFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                "Device-Frame-Generator"));
         mAppDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                 "Device-Frame-Generator");
 
@@ -63,15 +64,12 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         mScreenShot = makeTestScreenShot(mDevice);
     }
 
-
     public void testFrameGeneration() throws Exception {
         Log.i(LOGTAG, String.format("Starting test for device %s from screenshot %s. Output is in %s.",
                 mDevice.getName(), mScreenShot.getAbsolutePath(), mAppDirectory.getAbsolutePath()));
 
         Assertions.assertThat(new File(mScreenShot.getAbsolutePath())).isNotNull().isFile();
-        Assertions.assertThat(mAppDirectory).isNotNull();
-        NewFileObserver observer = new NewFileObserver(mAppDirectory.getAbsolutePath());
-        observer.startWatching();
+        Assertions.assertThat(mAppDirectory).isNotNull(); // Don't test for it being a directory yet.
 
         Intent intent = new Intent(getSystemContext(), GenerateFrameService.class);
         intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, mDevice);
@@ -79,20 +77,17 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         startService(intent);
         ANDROID.assertThat(getService()).isNotNull();
 
-        // unlikely, but check if a new screenshot file was already created
-        if (observer.getCreatedPath() == null) {
-            // wait for screenshot to be created
-            synchronized (observer) {
-                observer.wait(WAIT_TIME * 1000);
-            }
-        }
+        Thread.sleep(WAIT_TIME * 1000);
 
-        mGeneratedFilePath = observer.getCreatedPath();
+        Assertions.assertThat(mAppDirectory).isDirectory();
+        mGeneratedFilePath = getGeneratedImagePath();
         Assertions.assertThat(mGeneratedFilePath).isNotNull();
 
         File generatedImage = new File(mAppDirectory.getAbsolutePath(), mGeneratedFilePath);
         Assertions.assertThat(generatedImage).isNotNull().isFile();
-        Bitmap b = BitmapFactory.decodeFile(mAppDirectory.getAbsolutePath() + File.separator + mGeneratedFilePath);
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 8;
+        Bitmap b = BitmapFactory.decodeFile(mAppDirectory.getAbsolutePath() + File.separator + mGeneratedFilePath, options);
         ANDROID.assertThat(b).isNotNull();
     }
 
@@ -137,25 +132,18 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         }
     }
 
-    private static class NewFileObserver extends FileObserver {
-        private String mAddedPath = null;
-
-        NewFileObserver(String path) {
-            super(path, FileObserver.CREATE);
-            Log.d(LOGTAG, "Watching directory : " + path);
-        }
-
-        synchronized String getCreatedPath() {
-            return mAddedPath;
-        }
-
-        @Override
-        public void onEvent(int event, String path) {
-            Log.d(LOGTAG, String.format("Detected new file created %s", path));
-            synchronized (this) {
-                mAddedPath = path;
-                notify();
-            }
+    /**
+     * Get the generated image path.
+     * Looks through mAppDirectory and returns the first image.
+     *
+     * @return
+     */
+    private String getGeneratedImagePath() {
+        String files[] = mAppDirectory.list();
+        if (files.length == 0) {
+            return null;
+        } else {
+            return files[0];
         }
     }
 
