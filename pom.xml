@@ -58,7 +58,7 @@
                     <extensions>true</extensions>
                     <configuration>
                         <sdk>
-                            <platform>17</platform>
+                            <platform>16</platform>
                         </sdk>
                         <!--<undeployBeforeDeploy>true</undeployBeforeDeploy>-->
                         <proguard>
