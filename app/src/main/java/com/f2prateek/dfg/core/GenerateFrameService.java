@@ -97,8 +97,9 @@ public class GenerateFrameService extends IntentService {
         try {
             retrieveScreenshot(screenshotPath);
         } catch (IOException e) {
-            GenerateFrameService.notifyError(this, mNotificationManager, R.string.failed_open_screenshot_text, R.string.failed_open_screenshot_title);
-            e.printStackTrace();
+            GenerateFrameService.notifyError(this, mNotificationManager, R.string.failed_open_screenshot_title, R.string.failed_open_screenshot_text);
+            Log.e(LOGTAG, e.toString());
+            return;
         }
 
         prepareMetadata();
@@ -107,11 +108,13 @@ public class GenerateFrameService extends IntentService {
         try {
             retrieveResourceBitmaps(withShadow, withGlare);
         } catch (UnmatchedDimensionsException e) {
-            GenerateFrameService.notifyError(this, mNotificationManager, R.string.failed_match_dimensions_text, R.string.failed_match_dimensions_title);
-            e.printStackTrace();
+            GenerateFrameService.notifyUnmatchedDimenstionsError(this, mNotificationManager, e);
+            Log.e(LOGTAG, e.toString());
+            return;
         } catch (IOException e) {
             GenerateFrameService.notifyError(this, mNotificationManager);
-            e.printStackTrace();
+            Log.e(LOGTAG, e.toString());
+            return;
         }
 
         if (generateFrame(withShadow, withGlare) != 0) {
@@ -343,7 +346,7 @@ public class GenerateFrameService extends IntentService {
                 "Screenshot height = %d, width = %d. Device height = %d, width = %d. Aspect1 = %f, Aspect 2 = %f",
                 screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1], device.getPortSize()[0],
                 aspect1, aspect2));
-        throw new UnmatchedDimensionsException();
+        throw new UnmatchedDimensionsException(device, screenshot.getHeight(), screenshot.getWidth());
     }
 
     /**
@@ -353,7 +356,7 @@ public class GenerateFrameService extends IntentService {
      * @param notificationManager to display the notification
      */
     static void notifyError(Context context, NotificationManager notificationManager) {
-        notifyError(context, notificationManager, R.string.unknown_error_text, R.string.unknown_error_title);
+        notifyError(context, notificationManager, R.string.unknown_error_title, R.string.unknown_error_text);
     }
 
     /**
@@ -364,13 +367,40 @@ public class GenerateFrameService extends IntentService {
      * @param failed_text         Text for notification.
      * @param failed_title        Title for notification.
      */
-    static void notifyError(Context context, NotificationManager notificationManager, int failed_text, int failed_title) {
+    static void notifyError(Context context, NotificationManager notificationManager, int failed_title, int failed_text) {
         Resources r = context.getResources();
+        notifyError(context, notificationManager, r.getString(failed_title), r.getString(failed_text));
+    }
+
+    /**
+     * Notify the user of a error.
+     *
+     * @param context             everything needs a context =(
+     * @param notificationManager to display the notification
+     * @param e                   {@link UnmatchedDimensionsException} that was thrown.
+     */
+    static void notifyUnmatchedDimenstionsError(Context context, NotificationManager notificationManager, UnmatchedDimensionsException e) {
+        Resources r = context.getResources();
+        String failed_text = r.getString(R.string.failed_match_dimensions_text,
+                e.device.getName(), e.device.getPortSize()[0], e.device.getPortSize()[1],
+                e.screenshotHeight, e.screenshotWidth);
+        notifyError(context, notificationManager, r.getString(R.string.failed_match_dimensions_title), failed_text);
+    }
+
+    /**
+     * Notify the user of a error.
+     *
+     * @param context             everything needs a context =(
+     * @param notificationManager to display the notification
+     * @param failed_text         Text for notification.
+     * @param failed_title        Title for notification.
+     */
+    static void notifyError(Context context, NotificationManager notificationManager, String failed_title, String failed_text) {
         // Clear all existing notification, compose the new notification and show it
         Notification notification = new NotificationCompat.Builder(context)
-                .setTicker(r.getString(failed_title))
-                .setContentTitle(r.getString(failed_title))
-                .setContentText(r.getString(failed_text))
+                .setTicker(failed_title)
+                .setContentTitle(failed_title)
+                .setContentText(failed_text)
                 .setSmallIcon(R.drawable.ic_action_error)
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)

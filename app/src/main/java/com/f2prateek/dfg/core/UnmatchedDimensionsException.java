@@ -16,17 +16,22 @@
 
 package com.f2prateek.dfg.core;
 
+import com.f2prateek.dfg.model.Device;
+
 /**
  * An exception indicating that dimensions for screenshot and device don't match.
  */
 public class UnmatchedDimensionsException extends Exception {
 
-    public UnmatchedDimensionsException() {
-        super();
-    }
+    Device device;
+    int screenshotHeight;
+    int screenshotWidth;
 
-    public UnmatchedDimensionsException(String s) {
-        super(s);
+    public UnmatchedDimensionsException(Device device, int screenshotHeight, int screenshotWidth) {
+        super();
+        this.device = device;
+        this.screenshotHeight = screenshotHeight;
+        this.screenshotWidth = screenshotWidth;
     }
 
 }

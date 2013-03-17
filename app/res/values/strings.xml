@@ -33,9 +33,9 @@
     <!-- Notification Error Messages !-->
     <string name="failed_open_screenshot_title">Couldn\'t open screenshot</string>
     <string name="failed_open_screenshot_text">Failed to retrieve the screenshot.</string>
-    <string name="failed_match_dimensions_title">Couldn\'t match dimensions.</string>
-    <string name="failed_match_dimensions_text">Dimensions of the device and screenshot do not match.</string>
-    <string name="unknown_error_text">An unknown error occurred.</string>
+    <string name="failed_match_dimensions_title">Screenshot and device dimensions do not match.</string>
+    <string name="failed_match_dimensions_text">%1$s is %2$d by %3$d. Screenshot is %4$d by %5$d.</string>
     <string name="unknown_error_title">Unknown Error</string>
+    <string name="unknown_error_text">An unknown error occurred.</string>
 
 </resources>
