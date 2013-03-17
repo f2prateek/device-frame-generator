@@ -50,7 +50,7 @@ public class GenerateFrameService extends IntentService {
     private static final String LOGTAG = makeLogTag(GenerateFrameService.class);
 
     private static final String DFG_DIR_NAME = "/Device-Frame-Generator/";
-    private static final String DFG_FILE_NAME_TEMPLATE = "Screenshot_%s.png";
+    private static final String DFG_FILE_NAME_TEMPLATE = "DFG_%s.png";
     private static final String DFG_FILE_PATH_TEMPLATE = "%s/%s/%s";
     private static final int DFG_NOTIFICATION_ID = 789;
 
