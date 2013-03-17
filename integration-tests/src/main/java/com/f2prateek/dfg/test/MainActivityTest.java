@@ -38,7 +38,7 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
         super.setUp();
     }
 
-    public void testDevicesShown() {
+    public void testDevicesShown() throws Exception {
         String log = "pager_item_";
         assertThat(activity).isNotNull();
 

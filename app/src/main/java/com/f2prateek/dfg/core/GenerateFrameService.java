@@ -20,14 +20,12 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.ContentResolver;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
+import android.content.*;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.net.Uri;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.provider.MediaStore;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -86,8 +84,15 @@ public class GenerateFrameService extends IntentService {
         // Get all the intent data.
         mDevice = (Device) intent.getParcelableExtra(AppConstants.KEY_EXTRA_DEVICE);
         String screenshotPath = intent.getStringExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
-        boolean withShadow = intent.getBooleanExtra(AppConstants.KEY_EXTRA_OPTION_SHADOW, true);
-        boolean withGlare = intent.getBooleanExtra(AppConstants.KEY_EXTRA_OPTION_GLARE, true);
+
+        SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
+        boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
+
+        Log.d(LOGTAG, String.format("Generating for %s %s and %s from file [%s].", mDevice.getName(),
+                withGlare ? " with glare " : " without glare ",
+                withShadow ? " with shadow " : " without shadow ",
+                screenshotPath));
 
         try {
             retrieveScreenshot(screenshotPath);

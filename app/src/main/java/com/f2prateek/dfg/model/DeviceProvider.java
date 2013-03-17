@@ -22,7 +22,6 @@ import java.util.ArrayList;
 
 public class DeviceProvider {
 
-    // TODO : best way to store this?
     private static ArrayList<Device> devices;
 
     private static ArrayList<Device> generateDevices() {

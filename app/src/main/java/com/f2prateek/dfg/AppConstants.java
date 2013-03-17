@@ -21,14 +21,14 @@ public class AppConstants {
     /*
      * Key for preferences; saves default device
      */
-    public static final String KEY_PREF_DEFAULT_DEVICE_POSITION = "KEY_PREF_DEFAULT_DEVICE_POSITION";
+    public static final String KEY_PREF_DEFAULT_DEVICE = "KEY_PREF_DEFAULT_DEVICE";
+    public static final String KEY_PREF_OPTION_GLARE = "KEY_PREF_OPTION_GLARE";
+    public static final String KEY_PREF_OPTION_SHADOW = "KEY_PREF_OPTION_SHADOW";
 
     /*
      * Key for Intent extras;
      */
     public static final String KEY_EXTRA_DEVICE = "KEY_EXTRA_DEVICE";
     public static final String KEY_EXTRA_SCREENSHOT = "KEY_EXTRA_SCREENSHOT";
-    public static final String KEY_EXTRA_OPTION_SHADOW = "KEY_EXTRA_OPTION_SHADOW";
-    public static final String KEY_EXTRA_OPTION_GLARE = "KEY_EXTRA_OPTION_GLARE";
 
 }

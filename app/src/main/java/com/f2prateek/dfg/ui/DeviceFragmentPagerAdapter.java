@@ -33,7 +33,7 @@ public class DeviceFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return DeviceFragment.newInstance(DeviceProvider.getDevices().get(position));
+        return DeviceFragment.newInstance(position);
     }
 
     @Override
