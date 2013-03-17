@@ -104,6 +104,12 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         super.tearDown();
     }
 
+    /**
+     * Delete a file.
+     * If it is a folder, delete all files recursively.
+     *
+     * @param file
+     */
     private void deleteFile(File file) {
         Log.d(LOGTAG, "deleting : " + file.getAbsolutePath());
         if (file.isDirectory()) {
