@@ -43,7 +43,6 @@ import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
-import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.util.BitmapUtils;
 import com.f2prateek.dfg.util.StorageUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
@@ -65,17 +64,16 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     @Inject
     Bus bus;
     Device mDevice;
-    int mNum;
     TextView tv_device_resolution;
     TextView tv_device_size;
     TextView tv_device_name;
     ImageButton ib_device_thumbnail;
 
-    public static DeviceFragment newInstance(int num) {
+    public static DeviceFragment newInstance(Device device) {
         DeviceFragment f = new DeviceFragment();
         buildCache();
         Bundle args = new Bundle();
-        args.putInt("num", num);
+        args.putParcelable("device", device);
         f.setArguments(args);
         return f;
     }
@@ -107,8 +105,8 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mNum = getArguments() != null ? getArguments().getInt("num") : 1;
-        mDevice = DeviceProvider.getDevices().get(mNum);
+        Bundle args = getArguments();
+        mDevice = args != null ? (Device) args.getParcelable("device") : null;
         setHasOptionsMenu(true);
     }
 
@@ -155,7 +153,7 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     private void saveDeviceAsDefault() {
         SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getSherlockActivity());
         SharedPreferences.Editor editor = mPrefs.edit();
-        editor.putInt(AppConstants.KEY_PREF_DEFAULT_DEVICE_POSITION, mNum);
+        editor.putString(AppConstants.KEY_PREF_DEFAULT_DEVICE_POSITION, mDevice.getId());
         editor.commit();
         Toast.makeText(getSherlockActivity(), getSherlockActivity().getResources().getString(R.string.saved_as_default_message, mDevice.getName()), Toast.LENGTH_LONG).show();
     }
@@ -190,7 +188,7 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
             Uri selectedImageUri = data.getData();
             String screenshotPath = StorageUtils.getPath(getSherlockActivity(), selectedImageUri);
             Intent intent = new Intent(getActivity(), GenerateFrameService.class);
-            intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, mNum);
+            intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, mDevice);
             intent.putExtra(AppConstants.KEY_EXTRA_OPTION_GLARE, true);
             intent.putExtra(AppConstants.KEY_EXTRA_OPTION_SHADOW, true);
             intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, screenshotPath);

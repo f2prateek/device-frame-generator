@@ -16,7 +16,10 @@
 
 package com.f2prateek.dfg.model;
 
-public class Device {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Device implements Parcelable {
 
     // Unique identifier for each device, used to identify resources.
     private String id;
@@ -108,7 +111,50 @@ public class Device {
                 '}';
     }
 
-    public static class DeviceBuilder {
+    protected Device(Parcel in) {
+        id = in.readString();
+        name = in.readString();
+        url = in.readString();
+        physicalSize = in.readFloat();
+        density = in.readInt();
+        landOffset = new int[2];
+        in.readIntArray(landOffset);
+        portOffset = new int[2];
+        in.readIntArray(portOffset);
+        portSize = new int[2];
+        in.readIntArray(portSize);
+        thumbnail = in.readInt();
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(id);
+        dest.writeString(name);
+        dest.writeString(url);
+        dest.writeFloat(physicalSize);
+        dest.writeInt(density);
+        dest.writeIntArray(landOffset);
+        dest.writeIntArray(portOffset);
+        dest.writeIntArray(portSize);
+        dest.writeInt(thumbnail);
+    }
+
+    public static final Parcelable.Creator<Device> CREATOR = new Parcelable.Creator<Device>() {
+        public Device createFromParcel(Parcel in) {
+            return new Device(in);
+        }
+
+        public Device[] newArray(int size) {
+            return new Device[size];
+        }
+    };
+
+    public static class Builder {
         private String id;
         private String name;
         private String url;
@@ -119,47 +165,47 @@ public class Device {
         private int[] portSize;
         private int thumbnail;
 
-        public DeviceBuilder setId(String id) {
+        public Builder setId(String id) {
             this.id = id;
             return this;
         }
 
-        public DeviceBuilder setName(String name) {
+        public Builder setName(String name) {
             this.name = name;
             return this;
         }
 
-        public DeviceBuilder setUrl(String url) {
+        public Builder setUrl(String url) {
             this.url = url;
             return this;
         }
 
-        public DeviceBuilder setPhysicalSize(float physicalSize) {
+        public Builder setPhysicalSize(float physicalSize) {
             this.physicalSize = physicalSize;
             return this;
         }
 
-        public DeviceBuilder setDensity(int density) {
+        public Builder setDensity(int density) {
             this.density = density;
             return this;
         }
 
-        public DeviceBuilder setLandOffset(int[] landOffset) {
+        public Builder setLandOffset(int[] landOffset) {
             this.landOffset = landOffset;
             return this;
         }
 
-        public DeviceBuilder setPortOffset(int[] portOffset) {
+        public Builder setPortOffset(int[] portOffset) {
             this.portOffset = portOffset;
             return this;
         }
 
-        public DeviceBuilder setPortSize(int[] portSize) {
+        public Builder setPortSize(int[] portSize) {
             this.portSize = portSize;
             return this;
         }
 
-        public DeviceBuilder setThumbnail(int thumbnail) {
+        public Builder setThumbnail(int thumbnail) {
             this.thumbnail = thumbnail;
             return this;
         }

@@ -31,5 +31,4 @@ public class AppConstants {
     public static final String KEY_EXTRA_OPTION_SHADOW = "KEY_EXTRA_OPTION_SHADOW";
     public static final String KEY_EXTRA_OPTION_GLARE = "KEY_EXTRA_OPTION_GLARE";
 
-
 }

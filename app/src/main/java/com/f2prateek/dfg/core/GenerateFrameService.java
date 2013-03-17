@@ -34,7 +34,6 @@ import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
-import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.util.BitmapUtils;
 
 import java.io.File;
@@ -85,7 +84,7 @@ public class GenerateFrameService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         // Get all the intent data.
-        mDevice = DeviceProvider.getDevices().get(intent.getIntExtra(AppConstants.KEY_EXTRA_DEVICE, 0));
+        mDevice = (Device) intent.getParcelableExtra(AppConstants.KEY_EXTRA_DEVICE);
         String screenshotPath = intent.getStringExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
         boolean withShadow = intent.getBooleanExtra(AppConstants.KEY_EXTRA_OPTION_SHADOW, true);
         boolean withGlare = intent.getBooleanExtra(AppConstants.KEY_EXTRA_OPTION_GLARE, true);
@@ -203,10 +202,17 @@ public class GenerateFrameService extends IntentService {
             canvas = new Canvas(mBackground);
         }
 
-        int[] offset = mOrientation.compareTo("port") == 0 ?
-                mDevice.getPortOffset() : mDevice.getLandOffset();
-        mScreenshot = Bitmap.createScaledBitmap(mScreenshot, mDevice.getPortSize()[0],
-                mDevice.getPortSize()[1], false);
+        final int[] offset;
+        if (isPortrait(mOrientation)) {
+            mScreenshot = Bitmap.createScaledBitmap(mScreenshot, mDevice.getPortSize()[0],
+                    mDevice.getPortSize()[1], false);
+            offset = mDevice.getPortOffset();
+        } else {
+            mScreenshot = Bitmap.createScaledBitmap(mScreenshot, mDevice.getPortSize()[1],
+                    mDevice.getPortSize()[0], false);
+            offset = mDevice.getLandOffset();
+        }
+
         canvas.drawBitmap(mScreenshot, offset[0], offset[1], null);
 
         if (withGlare) {
@@ -329,7 +335,7 @@ public class GenerateFrameService extends IntentService {
         }
 
         Log.e(LOGTAG, String.format(
-                "Screenshot height = %d, width = %d. Device height = %d, width = %d. Aspect1 = %d, Aspect 2 = %d",
+                "Screenshot height = %d, width = %d. Device height = %d, width = %d. Aspect1 = %f, Aspect 2 = %f",
                 screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1], device.getPortSize()[0],
                 aspect1, aspect2));
         throw new UnmatchedDimensionsException();
@@ -365,6 +371,10 @@ public class GenerateFrameService extends IntentService {
                 .setAutoCancel(true)
                 .getNotification();
         notificationManager.notify(DFG_NOTIFICATION_ID, notification);
+    }
+
+    private static boolean isPortrait(String orientation) {
+        return (orientation.compareTo("port") == 0);
     }
 
 }

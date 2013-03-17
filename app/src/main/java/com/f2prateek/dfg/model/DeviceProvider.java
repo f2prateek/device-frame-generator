@@ -27,61 +27,61 @@ public class DeviceProvider {
 
     private static ArrayList<Device> generateDevices() {
         ArrayList<Device> devices = new ArrayList<Device>();
-        Device nexus_s = new Device.DeviceBuilder().setId("nexus_s").
+        Device nexus_s = new Device.Builder().setId("nexus_s").
                 setName("Nexus S").setUrl("http://www.google.com/phone/detail/nexus-s").
                 setPhysicalSize(4.0f).setDensity(240).
                 setLandOffset(new int[]{247, 135}).setPortOffset(new int[]{134, 247}).setPortSize(new int[]{400, 800}).
                 setThumbnail(R.drawable.nexus_s_thumb).build();
         devices.add(nexus_s);
-        Device galaxy_nexus = new Device.DeviceBuilder().setId("galaxy_nexus").
+        Device galaxy_nexus = new Device.Builder().setId("galaxy_nexus").
                 setName("Galaxy Nexus").setUrl("http://www.android.com/devices/detail/galaxy-nexus").
                 setPhysicalSize(4.65f).setDensity(320).
                 setLandOffset(new int[]{371, 199}).setPortOffset(new int[]{216, 353}).setPortSize(new int[]{720, 1280}).
                 setThumbnail(R.drawable.galaxy_nexus_thumb).build();
         devices.add(galaxy_nexus);
-        Device nexus_4 = new Device.DeviceBuilder().setId("nexus_4").
+        Device nexus_4 = new Device.Builder().setId("nexus_4").
                 setName("Nexus 4").setUrl("http://www.google.com/nexus/4/").
                 setPhysicalSize(4.7f).setDensity(320).
                 setLandOffset(new int[]{349, 214}).setPortOffset(new int[]{213, 350}).setPortSize(new int[]{768, 1280}).
                 setThumbnail(R.drawable.nexus_4_thumb).build();
         devices.add(nexus_4);
-        Device nexus_7 = new Device.DeviceBuilder().setId("nexus_7").
+        Device nexus_7 = new Device.Builder().setId("nexus_7").
                 setName("Nexus 7").setUrl("http://www.android.com/devices/detail/nexus-7").
                 setPhysicalSize(7f).setDensity(213).
                 setLandOffset(new int[]{315, 270}).setPortOffset(new int[]{264, 311}).setPortSize(new int[]{800, 1280}).
                 setThumbnail(R.drawable.nexus_7_thumb).build();
         devices.add(nexus_7);
-        Device nexus_10 = new Device.DeviceBuilder().setId("nexus_10").
+        Device nexus_10 = new Device.Builder().setId("nexus_10").
                 setName("Nexus 10").setUrl("http://www.google.com/nexus/10/").
                 setPhysicalSize(10f).setDensity(320).
                 setLandOffset(new int[]{227, 217}).setPortOffset(new int[]{217, 223}).setPortSize(new int[]{800, 1280}).
                 setThumbnail(R.drawable.nexus_10_thumb).build();
         devices.add(nexus_10);
-        Device htc_one_x = new Device.DeviceBuilder().setId("htc_one_x").
+        Device htc_one_x = new Device.Builder().setId("htc_one_x").
                 setName("HTC One X").setUrl("http://www.htc.com/www/smartphones/htc-one-x/").
                 setPhysicalSize(4.7f).setDensity(320).
                 setLandOffset(new int[]{346, 211}).setPortOffset(new int[]{302, 306}).setPortSize(new int[]{720, 1280}).
                 setThumbnail(R.drawable.htc_one_x_thumb).build();
         devices.add(htc_one_x);
-        Device samsung_galaxy_note = new Device.DeviceBuilder().setId("samsung_galaxy_note").
+        Device samsung_galaxy_note = new Device.Builder().setId("samsung_galaxy_note").
                 setName("Samsung Galaxy Note").setUrl("http://www.samsung.com/global/microsite/galaxynote/note/index.html").
                 setPhysicalSize(5.3f).setDensity(320).
                 setLandOffset(new int[]{353, 209}).setPortOffset(new int[]{289, 312}).setPortSize(new int[]{800, 1280}).
                 setThumbnail(R.drawable.samsung_galaxy_note_thumb).build();
         devices.add(samsung_galaxy_note);
-        Device samsung_galaxy_s3 = new Device.DeviceBuilder().setId("samsung_galaxy_s3").
+        Device samsung_galaxy_s3 = new Device.Builder().setId("samsung_galaxy_s3").
                 setName("Samsung Galaxy S III").setUrl("http://www.samsung.com/global/galaxys3/").
                 setPhysicalSize(4.8f).setDensity(320).
                 setLandOffset(new int[]{346, 211}).setPortOffset(new int[]{302, 307}).setPortSize(new int[]{720, 1280}).
                 setThumbnail(R.drawable.samsung_galaxy_s3_thumb).build();
         devices.add(samsung_galaxy_s3);
-        Device samsung_galaxy_tab_2 = new Device.DeviceBuilder().setId("samsung_galaxy_tab_2").
+        Device samsung_galaxy_tab_2 = new Device.Builder().setId("samsung_galaxy_tab_2").
                 setName("Samsung Galaxy Tab 2").setUrl("http://www.samsung.com/global/microsite/galaxytab2/7.0/index.html").
                 setPhysicalSize(7f).setDensity(160).
                 setLandOffset(new int[]{230, 203}).setPortOffset(new int[]{274, 222}).setPortSize(new int[]{600, 1024}).
                 setThumbnail(R.drawable.samsung_galaxy_tab_2_thumb).build();
         devices.add(samsung_galaxy_tab_2);
-        Device xoom = new Device.DeviceBuilder().setId("xoom").
+        Device xoom = new Device.Builder().setId("xoom").
                 setName("Motorola XOOM").setUrl("http://www.google.com/phone/detail/motorola-xoom").
                 setPhysicalSize(10f).setDensity(160).
                 setLandOffset(new int[]{218, 191}).setPortOffset(new int[]{199, 200}).setPortSize(new int[]{800, 1280}).
