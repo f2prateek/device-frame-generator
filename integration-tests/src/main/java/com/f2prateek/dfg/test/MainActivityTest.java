@@ -20,7 +20,6 @@ import android.support.v4.view.ViewPager;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.ui.MainActivity;
-import com.jayway.android.robotium.solo.Solo;
 import com.squareup.spoon.Spoon;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
@@ -30,12 +29,8 @@ import static org.fest.assertions.api.ANDROID.assertThat;
  */
 public class MainActivityTest extends ActivityTest<MainActivity> {
 
-    private Solo solo;
-
     public MainActivityTest() {
         super(MainActivity.class);
-        solo = new Solo(getInstrumentation(), activity);
-
     }
 
     @Override
@@ -44,11 +39,11 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
     }
 
     public void testDevicesShown() {
-        String state = "pager_item_";
+        String log = "pager_item_";
         assertThat(activity).isNotNull();
+
         final ViewPager pager = (ViewPager) activity.findViewById(R.id.pager);
         assertThat(pager).isNotNull();
-
         assertThat(pager.getAdapter()).isNotNull().hasCount(DeviceProvider.getDevices().size());
 
         for (int i = 0; i < pager.getAdapter().getCount(); i++) {
@@ -60,7 +55,7 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
                 }
             });
             instrumentation.waitForIdleSync();
-            Spoon.screenshot(activity, state + count);
+            Spoon.screenshot(activity, log + count);
         }
     }
 

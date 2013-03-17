@@ -1,11 +1,11 @@
 /*
- * Copyright 2013 Prateek Srivastava (@f2prateek)
+ * Copyright 2012 Google Inc.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -16,7 +16,7 @@
 
 package com.f2prateek.dfg.util;
 
-// LogUtil class, consistent naming
+// LogUtil class, helps with consistent naming
 // copied from https://code.google.com/p/iosched/source/browse/android/src/com/google/android/apps/iosched/util/LogUtils.java
 public class LogUtils {
 

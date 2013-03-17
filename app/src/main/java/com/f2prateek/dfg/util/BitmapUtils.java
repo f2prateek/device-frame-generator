@@ -36,9 +36,8 @@ public class BitmapUtils {
     private static final String LOGTAG = makeLogTag(BitmapUtils.class);
 
     /**
-     * Decode a file path into a bitmap.
-     * If the specified file name is null, or cannot be decoded into a bitmap, the function returns null.
-     * Returns a mutable Bitmap.
+     * Compatibility version decodeFile, returns a mutable bitmap.
+     * Uses {@link #convertToMutable} if less than API 11.
      *
      * @param pathName path to the file
      * @return A mutable copy of the decoded {@link Bitmap}; null if failed.
@@ -56,7 +55,7 @@ public class BitmapUtils {
     }
 
     /**
-     * Compatibility version of, returns a mutable bitmap.
+     * Compatibility version decodeResource, returns a mutable bitmap.
      * Uses {@link #convertToMutable} if less than API 11.
      *
      * @param context Everything needs a context =(
