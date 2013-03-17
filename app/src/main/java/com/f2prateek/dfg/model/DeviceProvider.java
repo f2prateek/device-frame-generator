@@ -57,6 +57,36 @@ public class DeviceProvider {
                 setLandOffset(new int[]{227, 217}).setPortOffset(new int[]{217, 223}).setPortSize(new int[]{800, 1280}).
                 setThumbnail(R.drawable.nexus_10_thumb).build();
         devices.add(nexus_10);
+        Device htc_one_x = new Device.DeviceBuilder().setId("htc_one_x").
+                setName("HTC One X").setUrl("http://www.htc.com/www/smartphones/htc-one-x/").
+                setPhysicalSize(4.7f).setDensity(320).
+                setLandOffset(new int[]{346, 211}).setPortOffset(new int[]{302, 306}).setPortSize(new int[]{720, 1280}).
+                setThumbnail(R.drawable.htc_one_x_thumb).build();
+        devices.add(htc_one_x);
+        Device samsung_galaxy_note = new Device.DeviceBuilder().setId("samsung_galaxy_note").
+                setName("Samsung Galaxy Note").setUrl("http://www.samsung.com/global/microsite/galaxynote/note/index.html").
+                setPhysicalSize(5.3f).setDensity(320).
+                setLandOffset(new int[]{353, 209}).setPortOffset(new int[]{289, 312}).setPortSize(new int[]{800, 1280}).
+                setThumbnail(R.drawable.samsung_galaxy_note_thumb).build();
+        devices.add(samsung_galaxy_note);
+        Device samsung_galaxy_s3 = new Device.DeviceBuilder().setId("samsung_galaxy_s3").
+                setName("Samsung Galaxy S III").setUrl("http://www.samsung.com/global/galaxys3/").
+                setPhysicalSize(4.8f).setDensity(320).
+                setLandOffset(new int[]{346, 211}).setPortOffset(new int[]{302, 307}).setPortSize(new int[]{720, 1280}).
+                setThumbnail(R.drawable.samsung_galaxy_s3_thumb).build();
+        devices.add(samsung_galaxy_s3);
+        Device samsung_galaxy_tab_2 = new Device.DeviceBuilder().setId("samsung_galaxy_tab_2").
+                setName("Samsung Galaxy Tab 2").setUrl("http://www.samsung.com/global/microsite/galaxytab2/7.0/index.html").
+                setPhysicalSize(7f).setDensity(160).
+                setLandOffset(new int[]{230, 203}).setPortOffset(new int[]{274, 222}).setPortSize(new int[]{600, 1024}).
+                setThumbnail(R.drawable.samsung_galaxy_tab_2_thumb).build();
+        devices.add(samsung_galaxy_tab_2);
+        Device xoom = new Device.DeviceBuilder().setId("xoom").
+                setName("Motorola XOOM").setUrl("http://www.google.com/phone/detail/motorola-xoom").
+                setPhysicalSize(10f).setDensity(160).
+                setLandOffset(new int[]{218, 191}).setPortOffset(new int[]{199, 200}).setPortSize(new int[]{800, 1280}).
+                setThumbnail(R.drawable.xoom_thumb).build();
+        devices.add(xoom);
         return devices;
     }
 
