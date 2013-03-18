@@ -70,10 +70,6 @@ public class GenerateFrameService extends IntentService {
     private Device mDevice;
     private Uri mImageUri;
     private Bitmap mScreenshot;
-    private Bitmap mShadow;
-    private Bitmap mGlare;
-    private Bitmap mBackground;
-    private String mOrientation;
 
     public GenerateFrameService() {
         super(LOGTAG);
@@ -106,9 +102,9 @@ public class GenerateFrameService extends IntentService {
         notifyStarting();
 
         try {
-            retrieveResourceBitmaps(withShadow, withGlare);
+            generateFrame(withShadow, withGlare);
         } catch (UnmatchedDimensionsException e) {
-            GenerateFrameService.notifyUnmatchedDimenstionsError(this, mNotificationManager, e);
+            GenerateFrameService.notifyUnmatchedDimensionsError(this, mNotificationManager, e);
             Log.e(LOGTAG, e.toString());
             return;
         } catch (IOException e) {
@@ -117,13 +113,7 @@ public class GenerateFrameService extends IntentService {
             return;
         }
 
-        if (generateFrame(withShadow, withGlare) != 0) {
-            // Show a message that we've failed to save this
-            GenerateFrameService.notifyError(this, mNotificationManager);
-        } else {
-            notifyDone();
-        }
-
+        notifyDone();
     }
 
     /**
@@ -200,18 +190,23 @@ public class GenerateFrameService extends IntentService {
      * @param withShadow true if to be drawn with shadow
      * @param withGlare  true if to be drawn with glare
      */
-    private int generateFrame(boolean withShadow, boolean withGlare) {
-        Canvas canvas;
+    private void generateFrame(boolean withShadow, boolean withGlare) throws IOException, UnmatchedDimensionsException {
+        String orientation = checkDimensions(mDevice, mScreenshot);
+        final Bitmap mBackground = BitmapUtils.decodeResource(this, mDevice.getBackgroundString(orientation));
+
+        Bitmap frame = Bitmap.createBitmap(mBackground.getWidth(), mBackground.getHeight(), mBackground.getConfig());
+        Canvas canvas = new Canvas(frame);
 
         if (withShadow) {
-            canvas = new Canvas(mShadow);
-            canvas.drawBitmap(mBackground, 0f, 0f, null);
-        } else {
-            canvas = new Canvas(mBackground);
+            final Bitmap shadow = BitmapUtils.decodeResource(this, mDevice.getShadowString(orientation));
+            canvas.drawBitmap(shadow, 0f, 0f, null);
+            shadow.recycle();
         }
 
+        canvas.drawBitmap(mBackground, 0f, 0f, null);
+
         final int[] offset;
-        if (isPortrait(mOrientation)) {
+        if (isPortrait(orientation)) {
             mScreenshot = Bitmap.createScaledBitmap(mScreenshot, mDevice.getPortSize()[0],
                     mDevice.getPortSize()[1], false);
             offset = mDevice.getPortOffset();
@@ -220,57 +215,50 @@ public class GenerateFrameService extends IntentService {
                     mDevice.getPortSize()[0], false);
             offset = mDevice.getLandOffset();
         }
-
         canvas.drawBitmap(mScreenshot, offset[0], offset[1], null);
 
         if (withGlare) {
-            canvas.drawBitmap(mGlare, 0f, 0f, null);
+            final Bitmap glare = BitmapUtils.decodeResource(this, mDevice.getGlareString(orientation));
+            canvas.drawBitmap(glare, 0f, 0f, null);
+            glare.recycle();
         }
 
-        try {
-            // Save the screenshot to the MediaStore
-            ContentValues values = new ContentValues();
-            ContentResolver resolver = getContentResolver();
-            values.put(MediaStore.Images.ImageColumns.DATA, mImageFilePath);
-            values.put(MediaStore.Images.ImageColumns.TITLE, mImageFileName);
-            values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, mImageFileName);
-            values.put(MediaStore.Images.ImageColumns.DATE_TAKEN, mImageTime);
-            values.put(MediaStore.Images.ImageColumns.DATE_ADDED, mImageTime);
-            values.put(MediaStore.Images.ImageColumns.DATE_MODIFIED, mImageTime);
-            values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/png");
-            mImageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+        // Save the screenshot to the MediaStore
+        ContentValues values = new ContentValues();
+        ContentResolver resolver = getContentResolver();
+        values.put(MediaStore.Images.ImageColumns.DATA, mImageFilePath);
+        values.put(MediaStore.Images.ImageColumns.TITLE, mImageFileName);
+        values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, mImageFileName);
+        values.put(MediaStore.Images.ImageColumns.DATE_TAKEN, mImageTime);
+        values.put(MediaStore.Images.ImageColumns.DATE_ADDED, mImageTime);
+        values.put(MediaStore.Images.ImageColumns.DATE_MODIFIED, mImageTime);
+        values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/png");
+        mImageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-            Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-            sharingIntent.setType("image/png");
-            sharingIntent.putExtra(Intent.EXTRA_STREAM, mImageUri);
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("image/png");
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, mImageUri);
 
-            Intent chooserIntent = Intent.createChooser(sharingIntent, null);
-            chooserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                    | Intent.FLAG_ACTIVITY_NEW_TASK);
+        Intent chooserIntent = Intent.createChooser(sharingIntent, null);
+        chooserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                | Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            mNotificationBuilder.addAction(R.drawable.ic_action_share,
-                    getResources().getString(R.string.share),
-                    PendingIntent.getActivity(this, 0, chooserIntent,
-                            PendingIntent.FLAG_CANCEL_CURRENT));
+        mNotificationBuilder.addAction(R.drawable.ic_action_share,
+                getResources().getString(R.string.share),
+                PendingIntent.getActivity(this, 0, chooserIntent,
+                        PendingIntent.FLAG_CANCEL_CURRENT));
 
-            OutputStream out = resolver.openOutputStream(mImageUri);
-            if (withShadow) {
-                mShadow.compress(Bitmap.CompressFormat.PNG, 100, out);
-            } else {
-                mBackground.compress(Bitmap.CompressFormat.PNG, 100, out);
-            }
-            out.flush();
-            out.close();
+        OutputStream out = resolver.openOutputStream(mImageUri);
+        frame.compress(Bitmap.CompressFormat.PNG, 100, out);
+        mBackground.compress(Bitmap.CompressFormat.PNG, 100, out);
+        out.flush();
+        out.close();
 
-            // update file size in the database
-            values.clear();
-            values.put(MediaStore.Images.ImageColumns.SIZE, new File(mImageFilePath).length());
-            resolver.update(mImageUri, values, null, null);
+        // update file size in the database
+        values.clear();
+        values.put(MediaStore.Images.ImageColumns.SIZE, new File(mImageFilePath).length());
+        resolver.update(mImageUri, values, null, null);
 
-            return 0;
-        } catch (IOException e) {
-            return -1;
-        }
     }
 
     /**
@@ -306,22 +294,6 @@ public class GenerateFrameService extends IntentService {
      */
     private void retrieveScreenshot(String screenshotPath) throws IOException {
         mScreenshot = BitmapUtils.decodeFile(screenshotPath);
-    }
-
-    /**
-     * Get the resources in their right orientation
-     *
-     * @param withShadow true if shadow should be drawn
-     * @param withGlare  true if glare should be drawn
-     * @throws IOException                  couldn't make the file mutable
-     * @throws UnmatchedDimensionsException couldn't match the orientation.
-     */
-    private void retrieveResourceBitmaps(boolean withShadow, boolean withGlare) throws IOException,
-            UnmatchedDimensionsException {
-        mOrientation = checkDimensions(mDevice, mScreenshot);
-        mBackground = BitmapUtils.decodeResource(this, mDevice.getBackgroundString(mOrientation));
-        mShadow = withShadow ? BitmapUtils.decodeResource(this, mDevice.getShadowString(mOrientation)) : null;
-        mGlare = withGlare ? BitmapUtils.decodeResource(this, mDevice.getGlareString(mOrientation)) : null;
     }
 
     /**
@@ -379,7 +351,7 @@ public class GenerateFrameService extends IntentService {
      * @param notificationManager to display the notification
      * @param e                   {@link UnmatchedDimensionsException} that was thrown.
      */
-    static void notifyUnmatchedDimenstionsError(Context context, NotificationManager notificationManager, UnmatchedDimensionsException e) {
+    static void notifyUnmatchedDimensionsError(Context context, NotificationManager notificationManager, UnmatchedDimensionsException e) {
         Resources r = context.getResources();
         String failed_text = r.getString(R.string.failed_match_dimensions_text,
                 e.device.getName(), e.device.getPortSize()[0], e.device.getPortSize()[1],
