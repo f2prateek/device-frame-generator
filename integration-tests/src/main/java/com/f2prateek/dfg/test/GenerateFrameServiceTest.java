@@ -54,8 +54,6 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
     public void setUp() throws Exception {
         super.setUp();
 
-        deleteFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                "Device-Frame-Generator"));
         mAppDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                 "Device-Frame-Generator");
 

@@ -4,6 +4,7 @@
           android:versionName="1.0-SNAPSHOT"
           package="com.f2prateek.dfg.tests">
     <!-- Note: This file will be auto-formatted by the build (specifically android:manifest-update goal) -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="16"/>
 
