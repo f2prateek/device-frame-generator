@@ -38,33 +38,22 @@ import java.util.Random;
 public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameService> {
 
     private static final int WAIT_TIME = 10;
-
     private static final String LOGTAG = "GenerateFrameService";
-
-    File mScreenShot;
-    File mAppDirectory;
-    String mGeneratedFilePath;
-    Device mDevice;
 
     public GenerateFrameServiceTest() {
         super(GenerateFrameService.class);
     }
 
-    @Override
-    public void setUp() throws Exception {
-        super.setUp();
-
+    public void testFrameGeneration() throws Exception {
         deleteFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                "Device-Frame-Generator")); //Start fresh
-        mAppDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                "Device-Frame-Generator");
+                GenerateFrameService.DFG_DIR_NAME)); //Start fresh
+        File mAppDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                GenerateFrameService.DFG_DIR_NAME);
 
         // Pick a random device
-        mDevice = getRandomDevice();
-        mScreenShot = makeTestScreenShot(mDevice);
-    }
+        Device mDevice = getRandomDevice();
+        File mScreenShot = makeTestScreenShot(mDevice);
 
-    public void testFrameGeneration() throws Exception {
         Log.i(LOGTAG, String.format("Starting test for device %s from screenshot %s. Output is in %s.",
                 mDevice.getName(), mScreenShot.getAbsolutePath(), mAppDirectory.getAbsolutePath()));
 
@@ -80,7 +69,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         Thread.sleep(WAIT_TIME * 1000);
 
         Assertions.assertThat(mAppDirectory).isDirectory();
-        mGeneratedFilePath = getGeneratedImagePath();
+        String mGeneratedFilePath = getGeneratedImagePath(mAppDirectory);
         Assertions.assertThat(mGeneratedFilePath).isNotNull();
 
         File generatedImage = new File(mAppDirectory.getAbsolutePath(), mGeneratedFilePath);
@@ -89,15 +78,12 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         options.inSampleSize = 8;
         Bitmap b = BitmapFactory.decodeFile(mAppDirectory.getAbsolutePath() + File.separator + mGeneratedFilePath, options);
         ANDROID.assertThat(b).isNotNull();
-    }
 
-    @Override
-    public void tearDown() throws Exception {
         // Delete our files.
         deleteFile(mScreenShot);
         deleteFile(mAppDirectory);
-        super.tearDown();
     }
+
 
     /**
      * Delete a file.
@@ -106,7 +92,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
      * @param file
      */
     private void deleteFile(File file) {
-        Log.d(LOGTAG, "deleting : " + file.getAbsolutePath());
+        Log.d(LOGTAG, "Deleting : " + file.getAbsolutePath());
         if (file.isDirectory()) {
             //directory is empty, then delete it
             if (file.list().length == 0) {
@@ -138,8 +124,8 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
      *
      * @return
      */
-    private String getGeneratedImagePath() {
-        String files[] = mAppDirectory.list();
+    private String getGeneratedImagePath(File directory) {
+        String files[] = directory.list();
         if (files.length == 0) {
             return null;
         } else {
@@ -173,6 +159,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         os.flush();
         os.close();
         bmp.recycle();
+        Log.d(LOGTAG, "Saved image to : " + screenshot.getAbsolutePath());
         return screenshot;
     }
 
