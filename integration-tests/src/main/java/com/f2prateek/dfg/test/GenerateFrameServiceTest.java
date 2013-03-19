@@ -162,7 +162,12 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
     private File makeTestScreenShot(Device device) throws IOException {
         File screenshot = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "test.png");
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-        Bitmap bmp = Bitmap.createBitmap(device.getPortSize()[1], device.getPortSize()[0], conf);
+        Bitmap bmp;
+        if (new Random().nextBoolean()) {
+            bmp = Bitmap.createBitmap(device.getPortSize()[1], device.getPortSize()[0], conf);
+        } else {
+            bmp = Bitmap.createBitmap(device.getPortSize()[0], device.getPortSize()[1], conf);
+        }
         OutputStream os = new FileOutputStream(screenshot.getAbsolutePath());
         bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
         os.flush();
