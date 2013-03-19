@@ -23,6 +23,9 @@ import android.widget.Toast;
 import com.f2prateek.dfg.util.StorageUtils;
 import com.google.inject.Injector;
 import com.google.inject.Stage;
+import com.nostra13.universalimageloader.core.DisplayImageOptions;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import roboguice.RoboGuice;
 
 /**
@@ -62,5 +65,17 @@ public class DFGApplication extends Application {
         if (!StorageUtils.checkStorageAvailable()) {
             Toast.makeText(this, "Storage unavilable", Toast.LENGTH_SHORT).show();
         }
+        buildImageCache();
+    }
+
+    private void buildImageCache() {
+        DisplayImageOptions defaultOptions = new DisplayImageOptions.Builder()
+                .cacheInMemory()
+                .cacheOnDisc()
+                .build();
+        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext())
+                .defaultDisplayImageOptions(defaultOptions)
+                .build();
+        ImageLoader.getInstance().init(config);
     }
 }

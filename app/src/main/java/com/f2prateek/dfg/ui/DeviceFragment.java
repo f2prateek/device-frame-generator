@@ -19,17 +19,9 @@ package com.f2prateek.dfg.ui;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v4.util.LruCache;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,13 +36,12 @@ import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
-import com.f2prateek.dfg.util.BitmapUtils;
 import com.f2prateek.dfg.util.StorageUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
+import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
-import java.lang.ref.WeakReference;
 
 import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 
@@ -59,8 +50,6 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     private static final String LOGTAG = makeLogTag(DeviceFragment.class);
 
     private static final int RESULT_SELECT_PICTURE = 542;
-
-    private static LruCache<String, Bitmap> mMemoryCache;
 
     @Inject
     Bus bus;
@@ -73,35 +62,10 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
 
     public static DeviceFragment newInstance(int num) {
         DeviceFragment f = new DeviceFragment();
-        buildCache();
         Bundle args = new Bundle();
         args.putInt("num", num);
         f.setArguments(args);
         return f;
-    }
-
-    private static void buildCache() {
-        if (mMemoryCache == null) {
-            Log.d(LOGTAG, "creating new memory cache");
-            // Get max available VM memory, exceeding this amount will throw an
-            // OutOfMemory exception. Stored in kilobytes as LruCache takes an
-            // int in its constructor.
-            final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-
-            // Use 1/8th of the available memory for this memory cache.
-            final int cacheSize = maxMemory / 8;
-
-            mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
-                @Override
-                protected int sizeOf(String key, Bitmap bitmap) {
-                    final int byteCount = BitmapUtils.getByteCount(bitmap);
-
-                    // The cache size will be measured in kilobytes rather than
-                    // number of items.
-                    return byteCount / 1024;
-                }
-            };
-        }
     }
 
     @Override
@@ -134,7 +98,8 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
-        loadBitmap(mDevice.getThumbnail(), ib_device_thumbnail);
+        String uri = "drawable://" + mDevice.getThumbnail();
+        ImageLoader.getInstance().displayImage(uri, ib_device_thumbnail);
     }
 
     @Override
@@ -196,117 +161,4 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
         }
         super.onActivityResult(requestCode, resultCode, data);
     }
-
-    public static Bitmap decodeSampledBitmapFromResource(Resources res, int resId) {
-        final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = false;
-        return BitmapFactory.decodeResource(res, resId, options);
-    }
-
-    static class AsyncDrawable extends BitmapDrawable {
-        private final WeakReference bitmapWorkerTaskReference;
-
-        public AsyncDrawable(Resources res, Bitmap bitmap, BitmapWorkerTask bitmapWorkerTask) {
-            super(res, bitmap);
-            bitmapWorkerTaskReference = new WeakReference(bitmapWorkerTask);
-        }
-
-        public BitmapWorkerTask getBitmapWorkerTask() {
-            return (BitmapWorkerTask) bitmapWorkerTaskReference.get();
-        }
-    }
-
-    public void loadBitmap(int resId, ImageButton imageButton) {
-        final String imageKey = String.valueOf(resId);
-
-        final Bitmap bitmap = getBitmapFromMemCache(imageKey);
-        if (bitmap != null) {
-            imageButton.setImageBitmap(bitmap);
-            return;
-        }
-
-        if (cancelPotentialWork(resId, imageButton)) {
-            final BitmapWorkerTask task = new BitmapWorkerTask(imageButton);
-            final AsyncDrawable asyncDrawable = new AsyncDrawable(getResources(), null, task);
-            imageButton.setImageDrawable(asyncDrawable);
-            task.execute(resId);
-        }
-    }
-
-    public static boolean cancelPotentialWork(int data, ImageButton imageButton) {
-        final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageButton);
-
-        if (bitmapWorkerTask != null) {
-            final int bitmapData = bitmapWorkerTask.resId;
-            if (bitmapData != data) {
-                // Cancel previous task
-                bitmapWorkerTask.cancel(true);
-            } else {
-                // The same work is already in progress
-                return false;
-            }
-        }
-        // No task associated with the ImageButton, or an existing task was
-        // cancelled
-        return true;
-    }
-
-    private static BitmapWorkerTask getBitmapWorkerTask(ImageButton imageButton) {
-        if (imageButton != null) {
-            final Drawable drawable = imageButton.getDrawable();
-            if (drawable instanceof AsyncDrawable) {
-                final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-                return asyncDrawable.getBitmapWorkerTask();
-            }
-        }
-        return null;
-    }
-
-    class BitmapWorkerTask extends AsyncTask<Integer, Void, Bitmap> {
-        private final WeakReference imageButtonReference;
-
-        private int resId = 0;
-
-        public BitmapWorkerTask(ImageButton imageButton) {
-            // Use a WeakReference to ensure the ImageButton can be garbage
-            // collected
-            imageButtonReference = new WeakReference(imageButton);
-        }
-
-        // Decode image in background.
-        @Override
-        protected Bitmap doInBackground(Integer... params) {
-            resId = params[0];
-
-            if (isAdded()) {
-                final Bitmap bitmap = decodeSampledBitmapFromResource(getResources(), resId);
-                addBitmapToMemoryCache(String.valueOf(params[0]), bitmap);
-                return bitmap;
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Bitmap bitmap) {
-            // Once complete, see if ImageButton is still around and set bitmap.
-            if (imageButtonReference != null && bitmap != null) {
-                final ImageButton imageButton = (ImageButton) imageButtonReference.get();
-                if (imageButton != null) {
-                    imageButton.setImageBitmap(bitmap);
-                }
-            }
-        }
-    }
-
-    public static void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (getBitmapFromMemCache(key) == null) {
-            mMemoryCache.put(key, bitmap);
-        }
-    }
-
-    public static Bitmap getBitmapFromMemCache(String key) {
-        return mMemoryCache.get(key);
-    }
-
 }
