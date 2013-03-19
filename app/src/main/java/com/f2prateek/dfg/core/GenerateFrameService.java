@@ -93,10 +93,18 @@ public class GenerateFrameService extends IntentService {
 
         ImageMetadata imageMetadata = prepareMetadata();
 
-        Uri imageUri = generateFrame(screenshotPath, withShadow, withGlare, imageMetadata);
-
-        if (imageUri != null) {
+        try {
+            Uri imageUri = generateFrame(screenshotPath, withShadow, withGlare, imageMetadata);
             notifyDone(imageUri);
+        } catch (FailedOpenScreenshotException e) {
+            GenerateFrameService.notifyError(this, mNotificationManager, R.string.failed_open_screenshot_title, R.string.failed_open_screenshot_text);
+            Log.e(LOGTAG, e.toString());
+        } catch (UnmatchedDimensionsException e) {
+            GenerateFrameService.notifyUnmatchedDimensionsError(this, mNotificationManager, e);
+            Log.e(LOGTAG, e.toString());
+        } catch (IOException e) {
+            GenerateFrameService.notifyError(this, mNotificationManager);
+            Log.e(LOGTAG, e.toString());
         }
     }
 
@@ -176,63 +184,51 @@ public class GenerateFrameService extends IntentService {
      * @param withShadow true if to be drawn with shadow
      * @param withGlare  true if to be drawn with glare
      */
-    private Uri generateFrame(String screenshotPath, boolean withShadow, boolean withGlare, ImageMetadata imageMetadata) {
+    private Uri generateFrame(String screenshotPath, boolean withShadow, boolean withGlare, ImageMetadata imageMetadata)
+            throws FailedOpenScreenshotException, UnmatchedDimensionsException, IOException {
 
         Bitmap screenshot;
         try {
             screenshot = BitmapUtils.decodeFile(screenshotPath);
         } catch (IOException e) {
-            GenerateFrameService.notifyError(this, mNotificationManager, R.string.failed_open_screenshot_title, R.string.failed_open_screenshot_text);
-            Log.e(LOGTAG, e.toString());
-            return null;
+            throw new FailedOpenScreenshotException(e);
         }
 
         notifyStarting(screenshot);
 
         Canvas frame;
-        String orientation = null;
-        try {
-            orientation = checkDimensions(mDevice, screenshot);
-        } catch (UnmatchedDimensionsException e) {
-            GenerateFrameService.notifyUnmatchedDimensionsError(this, mNotificationManager, e);
-            Log.e(LOGTAG, e.toString());
-            return null;
-        }
+        String orientation = checkDimensions(mDevice, screenshot);
 
         Bitmap background;
         Bitmap shadow = null;
 
-        try {
-            background = BitmapUtils.decodeResource(this, mDevice.getBackgroundString(orientation));
+        background = BitmapUtils.decodeResource(this, mDevice.getBackgroundString(orientation));
 
-            if (withShadow) {
-                shadow = BitmapUtils.decodeResource(this, mDevice.getShadowString(orientation));
-                frame = new Canvas(shadow);
-                frame.drawBitmap(background, 0f, 0f, null);
-            } else {
-                frame = new Canvas(background);
-            }
+        if (withShadow) {
+            shadow = BitmapUtils.decodeResource(this, mDevice.getShadowString(orientation));
+            frame = new Canvas(shadow);
+            frame.drawBitmap(background, 0f, 0f, null);
+            background.recycle();
+        } else {
+            frame = new Canvas(background);
+        }
 
-            final int[] offset;
-            if (isPortrait(orientation)) {
-                screenshot = Bitmap.createScaledBitmap(screenshot, mDevice.getPortSize()[0],
-                        mDevice.getPortSize()[1], false);
-                offset = mDevice.getPortOffset();
-            } else {
-                screenshot = Bitmap.createScaledBitmap(screenshot, mDevice.getPortSize()[1],
-                        mDevice.getPortSize()[0], false);
-                offset = mDevice.getLandOffset();
-            }
-            frame.drawBitmap(screenshot, offset[0], offset[1], null);
+        final int[] offset;
+        if (isPortrait(orientation)) {
+            screenshot = Bitmap.createScaledBitmap(screenshot, mDevice.getPortSize()[0],
+                    mDevice.getPortSize()[1], false);
+            offset = mDevice.getPortOffset();
+        } else {
+            screenshot = Bitmap.createScaledBitmap(screenshot, mDevice.getPortSize()[1],
+                    mDevice.getPortSize()[0], false);
+            offset = mDevice.getLandOffset();
+        }
+        frame.drawBitmap(screenshot, offset[0], offset[1], null);
 
-            if (withGlare) {
-                final Bitmap glare = BitmapUtils.decodeResource(this, mDevice.getGlareString(orientation));
-                frame.drawBitmap(glare, 0f, 0f, null);
-            }
-        } catch (IOException e) {
-            GenerateFrameService.notifyError(this, mNotificationManager);
-            Log.e(LOGTAG, e.toString());
-            return null;
+        if (withGlare) {
+            final Bitmap glare = BitmapUtils.decodeResource(this, mDevice.getGlareString(orientation));
+            frame.drawBitmap(glare, 0f, 0f, null);
+            glare.recycle();
         }
 
         // Save the screenshot to the MediaStore
@@ -259,21 +255,16 @@ public class GenerateFrameService extends IntentService {
                 getResources().getString(R.string.share),
                 PendingIntent.getActivity(this, 0, chooserIntent,
                         PendingIntent.FLAG_CANCEL_CURRENT));
-        try {
 
-            OutputStream out = resolver.openOutputStream(imageUri);
-            if (withShadow) {
-                shadow.compress(Bitmap.CompressFormat.PNG, 100, out);
-            } else {
-                background.compress(Bitmap.CompressFormat.PNG, 100, out);
-            }
-            out.flush();
-            out.close();
-        } catch (IOException e) {
-            GenerateFrameService.notifyError(this, mNotificationManager);
-            Log.e(LOGTAG, e.toString());
-            return null;
+        OutputStream out = resolver.openOutputStream(imageUri);
+        if (withShadow) {
+            shadow.compress(Bitmap.CompressFormat.PNG, 100, out);
+        } else {
+            background.compress(Bitmap.CompressFormat.PNG, 100, out);
         }
+        out.flush();
+        out.close();
+
 
         // update file size in the database
         values.clear();
