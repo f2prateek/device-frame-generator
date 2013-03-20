@@ -32,7 +32,6 @@ import org.fest.assertions.api.Assertions;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.util.Random;
 
 public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameService> {
@@ -57,7 +56,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         Log.i(LOGTAG, String.format("Starting test for device %s from screenshot %s. Output is in %s.",
                 mDevice.getName(), mScreenShot.getAbsolutePath(), mAppDirectory.getAbsolutePath()));
 
-        Assertions.assertThat(new File(mScreenShot.getAbsolutePath())).isNotNull().isFile();
+        Assertions.assertThat(mScreenShot).isNotNull().isFile();
         Assertions.assertThat(mAppDirectory).isNotNull(); // Don't test for it being a directory yet.
 
         Intent intent = new Intent(getSystemContext(), GenerateFrameService.class);
@@ -68,15 +67,15 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
 
         Thread.sleep(WAIT_TIME * 1000);
 
-        Assertions.assertThat(mAppDirectory).isDirectory();
         String mGeneratedFilePath = getGeneratedImagePath(mAppDirectory);
         Assertions.assertThat(mGeneratedFilePath).isNotNull();
-
-        File generatedImage = new File(mAppDirectory.getAbsolutePath(), mGeneratedFilePath);
+        // The file Path is relative to the app directory, make it absolute
+        mGeneratedFilePath = mAppDirectory + File.separator + mGeneratedFilePath;
+        File generatedImage = new File(mGeneratedFilePath);
         Assertions.assertThat(generatedImage).isNotNull().isFile();
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inSampleSize = 8;
-        Bitmap b = BitmapFactory.decodeFile(mAppDirectory.getAbsolutePath() + File.separator + mGeneratedFilePath, options);
+        Bitmap b = BitmapFactory.decodeFile(mGeneratedFilePath, options);
         ANDROID.assertThat(b).isNotNull();
 
         // Delete our files.
@@ -146,7 +145,10 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
      * Make a screenshot matching this device's dimension.
      */
     private File makeTestScreenShot(Device device) throws IOException {
+        File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        directory.mkdirs();
         File screenshot = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "test.png");
+        deleteFile(screenshot);
         Bitmap.Config conf = Bitmap.Config.ARGB_8888;
         Bitmap bmp;
         if (new Random().nextBoolean()) {
@@ -154,7 +156,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         } else {
             bmp = Bitmap.createBitmap(device.getPortSize()[0], device.getPortSize()[1], conf);
         }
-        OutputStream os = new FileOutputStream(screenshot.getAbsolutePath());
+        FileOutputStream os = new FileOutputStream(screenshot);
         bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
         os.flush();
         os.close();

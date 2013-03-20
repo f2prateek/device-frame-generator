@@ -27,11 +27,12 @@ import android.net.Uri;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.provider.MediaStore;
-import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
+import com.f2prateek.dfg.compat.NotificationCompat;
 import com.f2prateek.dfg.model.Device;
+import com.f2prateek.dfg.ui.MainActivity;
 import com.f2prateek.dfg.util.BitmapUtils;
 
 import java.io.File;
@@ -55,8 +56,7 @@ public class GenerateFrameService extends IntentService {
     private static final int DFG_NOTIFICATION_ID = 789;
 
     private NotificationManager mNotificationManager;
-    private Notification.Builder mNotificationBuilder;
-    private Notification.BigPictureStyle mNotificationStyle;
+    private NotificationCompat.Builder mNotificationBuilder;
     // WORKAROUND: We want the same notification across screenshots that we update so that we don't
     // spam a user's notification drawer.  However, we only show the ticker for the saving state
     // and if the ticker text is the same as the previous notification, then it will not show. So
@@ -153,18 +153,23 @@ public class GenerateFrameService extends IntentService {
 
         // Show the intermediate notification
         mTickerAddSpace = !mTickerAddSpace;
+
+        Intent nullIntent = new Intent(this, MainActivity.class);
+        nullIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationBuilder = new Notification.Builder(this)
+        mNotificationBuilder = new NotificationCompat.Builder(this)
                 .setTicker(r.getString(R.string.screenshot_saving_ticker)
                         + (mTickerAddSpace ? " " : ""))
                 .setContentTitle(r.getString(R.string.screenshot_saving_title))
                 .setContentText(r.getString(R.string.screenshot_saving_text))
                 .setSmallIcon(R.drawable.ic_action_picture)
+                .setContentIntent(PendingIntent.getActivity(this, 0, nullIntent, 0))
                 .setWhen(System.currentTimeMillis());
 
-        mNotificationStyle = new Notification.BigPictureStyle()
+        NotificationCompat.BigPictureStyle notificationStyle = new NotificationCompat.BigPictureStyle()
                 .bigPicture(preview);
-        mNotificationBuilder.setStyle(mNotificationStyle);
+        mNotificationBuilder.setStyle(notificationStyle);
 
         Notification n = mNotificationBuilder.build();
         n.flags |= Notification.FLAG_NO_CLEAR;
@@ -174,8 +179,6 @@ public class GenerateFrameService extends IntentService {
         // on small devices, the large icon is not shown) so defer showing the large icon until
         // we compose the final post-save notification below.
         mNotificationBuilder.setLargeIcon(croppedIcon);
-        // But we still don't set it for the expanded view, allowing the smallIcon to show here.
-        mNotificationStyle.bigLargeIcon(null);
     }
 
     /**
@@ -196,7 +199,6 @@ public class GenerateFrameService extends IntentService {
 
         notifyStarting(screenshot);
 
-        Canvas frame;
         String orientation = checkDimensions(mDevice, screenshot);
 
         Bitmap background;
@@ -204,6 +206,7 @@ public class GenerateFrameService extends IntentService {
 
         background = BitmapUtils.decodeResource(this, mDevice.getBackgroundString(orientation));
 
+        Canvas frame;
         if (withShadow) {
             shadow = BitmapUtils.decodeResource(this, mDevice.getShadowString(orientation));
             frame = new Canvas(shadow);
@@ -243,19 +246,6 @@ public class GenerateFrameService extends IntentService {
         values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/png");
         Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
-        sharingIntent.setType("image/png");
-        sharingIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
-
-        Intent chooserIntent = Intent.createChooser(sharingIntent, null);
-        chooserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-                | Intent.FLAG_ACTIVITY_NEW_TASK);
-
-        mNotificationBuilder.addAction(R.drawable.ic_action_share,
-                getResources().getString(R.string.share),
-                PendingIntent.getActivity(this, 0, chooserIntent,
-                        PendingIntent.FLAG_CANCEL_CURRENT));
-
         OutputStream out = resolver.openOutputStream(imageUri);
         if (withShadow) {
             shadow.compress(Bitmap.CompressFormat.PNG, 100, out);
@@ -264,7 +254,6 @@ public class GenerateFrameService extends IntentService {
         }
         out.flush();
         out.close();
-
 
         // update file size in the database
         values.clear();
@@ -280,6 +269,19 @@ public class GenerateFrameService extends IntentService {
     private void notifyDone(Uri imageUri) {
         // Show the final notification to indicate screenshot saved
         Resources r = getResources();
+
+        Intent sharingIntent = new Intent(Intent.ACTION_SEND);
+        sharingIntent.setType("image/png");
+        sharingIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
+
+        Intent chooserIntent = Intent.createChooser(sharingIntent, null);
+        chooserIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+                | Intent.FLAG_ACTIVITY_NEW_TASK);
+
+        mNotificationBuilder.addAction(R.drawable.ic_action_share,
+                getResources().getString(R.string.share),
+                PendingIntent.getActivity(this, 0, chooserIntent,
+                        PendingIntent.FLAG_CANCEL_CURRENT));
 
         // Create the intent to show the screenshot in gallery
         Intent launchIntent = new Intent(Intent.ACTION_VIEW);
