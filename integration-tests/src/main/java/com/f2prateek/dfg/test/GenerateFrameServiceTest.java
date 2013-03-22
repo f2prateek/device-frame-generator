@@ -23,6 +23,7 @@ import android.os.Environment;
 import android.test.ServiceTestCase;
 import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
+import com.f2prateek.dfg.core.DeviceFrameGenerator;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
@@ -45,9 +46,9 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
 
     public void testFrameGeneration() throws Exception {
         deleteFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                GenerateFrameService.DFG_DIR_NAME)); //Start fresh
+                DeviceFrameGenerator.DFG_DIR_NAME)); //Start fresh
         File mAppDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-                GenerateFrameService.DFG_DIR_NAME);
+                DeviceFrameGenerator.DFG_DIR_NAME);
 
         // Pick a random device
         Device mDevice = getRandomDevice();
