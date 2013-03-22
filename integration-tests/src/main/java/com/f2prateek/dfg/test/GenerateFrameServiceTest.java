@@ -18,7 +18,6 @@ package com.f2prateek.dfg.test;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Environment;
 import android.test.ServiceTestCase;
 import android.util.Log;
@@ -53,12 +52,9 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         // Pick a random device
         Device mDevice = getRandomDevice();
         File mScreenShot = makeTestScreenShot(mDevice);
-
         Log.i(LOGTAG, String.format("Starting test for device %s from screenshot %s. Output is in %s.",
                 mDevice.getName(), mScreenShot.getAbsolutePath(), mAppDirectory.getAbsolutePath()));
-
-        Assertions.assertThat(mScreenShot).isNotNull().isFile();
-        Assertions.assertThat(mAppDirectory).isNotNull(); // Don't test for it being a directory yet.
+        Assertions.assertThat(mScreenShot).isFile();
 
         Intent intent = new Intent(getSystemContext(), GenerateFrameService.class);
         intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, mDevice);
@@ -69,15 +65,10 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         Thread.sleep(WAIT_TIME * 1000);
 
         String mGeneratedFilePath = getGeneratedImagePath(mAppDirectory);
-        Assertions.assertThat(mGeneratedFilePath).isNotNull();
         // The file Path is relative to the app directory, make it absolute
         mGeneratedFilePath = mAppDirectory + File.separator + mGeneratedFilePath;
         File generatedImage = new File(mGeneratedFilePath);
-        Assertions.assertThat(generatedImage).isNotNull().isFile();
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 8;
-        Bitmap b = BitmapFactory.decodeFile(mGeneratedFilePath, options);
-        ANDROID.assertThat(b).isNotNull();
+        Assertions.assertThat(generatedImage).isFile();
 
         // Delete our files.
         deleteFile(mScreenShot);
@@ -162,7 +153,6 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         os.flush();
         os.close();
         bmp.recycle();
-        Log.d(LOGTAG, "Saved image to : " + screenshot.getAbsolutePath());
         return screenshot;
     }
 
