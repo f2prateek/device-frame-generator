@@ -46,23 +46,23 @@ public class DeviceFrameGenerator {
 
     private Context mContext;
     private Callback mCallback;
+    private Device mDevice;
+    boolean withShadow;
+    boolean withGlare;
 
-    public DeviceFrameGenerator(Context context, Callback callback) {
+    public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow, boolean withGlare) {
         mContext = context;
         mCallback = callback;
+        mDevice = device;
     }
 
     /**
      * Generate the frame.
      *
-     * @param device         Device to be drawn on
-     * @param screenshotPath path to the screenshot file
-     * @param withShadow     true if to be drawn with shadow
-     * @param withGlare      true if to be drawn with glare
+     * @param screenshotPath path to the screenshot file.
      */
-    public void generateFrame(Device device, String screenshotPath, boolean withShadow,
-                              boolean withGlare) {
-        Log.i(LOGTAG, String.format("Generating for %s %s and %s from file %s.", device.getName(),
+    public void generateFrame(String screenshotPath) {
+        Log.i(LOGTAG, String.format("Generating for %s %s and %s from file %s.", mDevice.getName(),
                 withGlare ? " with glare " : " without glare ",
                 withShadow ? " with shadow " : " without shadow ",
                 screenshotPath));
@@ -74,22 +74,21 @@ public class DeviceFrameGenerator {
             mCallback.notifyFailedOpenScreenshotError(screenshotPath);
             return;
         }
-        generateFrame(device, screenshot, withShadow, withGlare);
+        generateFrame(screenshot);
     }
 
     /**
      * Generate the frame.
      *
-     * @param withShadow true if to be drawn with shadow
-     * @param withGlare  true if to be drawn with glare
+     * @param screenshot Screenshot to use.
      */
-    private void generateFrame(Device device, Bitmap screenshot, boolean withShadow, boolean withGlare) {
+    private void generateFrame(Bitmap screenshot) {
         mCallback.notifyStarting(screenshot);
         String orientation = null;
         try {
-            orientation = checkDimensions(device, screenshot);
+            orientation = checkDimensions(mDevice, screenshot);
         } catch (UnmatchedDimensionsException e) {
-            mCallback.notifyUnmatchedDimensionsError(device, screenshot.getHeight(), screenshot.getWidth());
+            mCallback.notifyUnmatchedDimensionsError(mDevice, screenshot.getHeight(), screenshot.getWidth());
             Log.e(LOGTAG, e.toString());
             return;
         }
@@ -98,9 +97,9 @@ public class DeviceFrameGenerator {
         Bitmap glare;
         Bitmap shadow;
         try {
-            background = BitmapUtils.decodeResource(mContext, device.getBackgroundString(orientation));
-            glare = BitmapUtils.decodeResource(mContext, device.getGlareString(orientation));
-            shadow = BitmapUtils.decodeResource(mContext, device.getShadowString(orientation));
+            background = BitmapUtils.decodeResource(mContext, mDevice.getBackgroundString(orientation));
+            glare = BitmapUtils.decodeResource(mContext, mDevice.getGlareString(orientation));
+            shadow = BitmapUtils.decodeResource(mContext, mDevice.getShadowString(orientation));
         } catch (IOException e) {
             mCallback.notifyFailed();
             Log.e(LOGTAG, e.toString());
@@ -117,13 +116,13 @@ public class DeviceFrameGenerator {
 
         final int[] offset;
         if (isPortrait(orientation)) {
-            screenshot = Bitmap.createScaledBitmap(screenshot, device.getPortSize()[0],
-                    device.getPortSize()[1], false);
-            offset = device.getPortOffset();
+            screenshot = Bitmap.createScaledBitmap(screenshot, mDevice.getPortSize()[0],
+                    mDevice.getPortSize()[1], false);
+            offset = mDevice.getPortOffset();
         } else {
-            screenshot = Bitmap.createScaledBitmap(screenshot, device.getPortSize()[1],
-                    device.getPortSize()[0], false);
-            offset = device.getLandOffset();
+            screenshot = Bitmap.createScaledBitmap(screenshot, mDevice.getPortSize()[1],
+                    mDevice.getPortSize()[0], false);
+            offset = mDevice.getLandOffset();
         }
         frame.drawBitmap(screenshot, offset[0], offset[1], null);
 
@@ -188,6 +187,8 @@ public class DeviceFrameGenerator {
 
     /**
      * Prepare the metadata for our image.
+     *
+     * @return {@link ImageMetadata} that will be used for the image.
      */
     private ImageMetadata prepareMetadata() {
         ImageMetadata imageMetadata = new ImageMetadata();
@@ -209,7 +210,7 @@ public class DeviceFrameGenerator {
      * @return "port" if matched to portrait and "land" if matched to landscape
      * @throws UnmatchedDimensionsException If it could not match any orientation to the device.
      */
-    public static String checkDimensions(Device device, Bitmap screenshot) throws UnmatchedDimensionsException {
+    private static String checkDimensions(Device device, Bitmap screenshot) throws UnmatchedDimensionsException {
         float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
         float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
 
@@ -226,6 +227,12 @@ public class DeviceFrameGenerator {
         throw new UnmatchedDimensionsException(device, screenshot.getHeight(), screenshot.getWidth());
     }
 
+    /**
+     * Check if the orientation is portrait
+     *
+     * @param orientation Orientation to check.
+     * @return true if orientation is portrait
+     */
     private static boolean isPortrait(String orientation) {
         return (orientation.compareTo("port") == 0);
     }

@@ -67,8 +67,8 @@ public class GenerateFrameService extends IntentService implements DeviceFrameGe
         boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
         boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
 
-        DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this);
-        deviceFrameGenerator.generateFrame(device, screenshotPath, withShadow, withGlare);
+        DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
+        deviceFrameGenerator.generateFrame(screenshotPath);
     }
 
     @Override
