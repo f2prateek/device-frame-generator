@@ -63,7 +63,7 @@ public class DFGApplication extends Application {
         super.onCreate();
         setApplicationInjector(this);
         if (!StorageUtils.checkStorageAvailable()) {
-            Toast.makeText(this, "Storage unavilable", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Storage unavailable", Toast.LENGTH_SHORT).show();
         }
         buildImageCache();
     }

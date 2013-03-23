@@ -27,7 +27,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -40,6 +39,8 @@ import com.f2prateek.dfg.util.StorageUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.otto.Bus;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 
 import javax.inject.Inject;
 
@@ -122,7 +123,8 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
         SharedPreferences.Editor editor = mPrefs.edit();
         editor.putInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, mNum);
         editor.commit();
-        Toast.makeText(getSherlockActivity(), getSherlockActivity().getResources().getString(R.string.saved_as_default_message, mDevice.getName()), Toast.LENGTH_LONG).show();
+        String text = getSherlockActivity().getResources().getString(R.string.saved_as_default_message, mDevice.getName());
+        Crouton.makeText(getSherlockActivity(), text, Style.CONFIRM).show();
     }
 
     @Override

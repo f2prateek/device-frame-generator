@@ -29,7 +29,7 @@ public class DeviceProvider {
         Device nexus_s = new Device.Builder().setId("nexus_s").
                 setName("Nexus S").setUrl("http://www.google.com/phone/detail/nexus-s").
                 setPhysicalSize(4.0f).setDensity(240).
-                setLandOffset(new int[]{247, 135}).setPortOffset(new int[]{134, 247}).setPortSize(new int[]{400, 800}).
+                setLandOffset(new int[]{247, 135}).setPortOffset(new int[]{134, 247}).setPortSize(new int[]{480, 800}).
                 setThumbnail(R.drawable.nexus_s_thumb).build();
         devices.add(nexus_s);
         Device galaxy_nexus = new Device.Builder().setId("galaxy_nexus").

@@ -27,9 +27,9 @@ import android.content.res.Resources;
 import android.graphics.*;
 import android.net.Uri;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
-import com.f2prateek.dfg.compat.NotificationCompat;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.ui.MainActivity;
 

@@ -17,8 +17,6 @@ consistent, great looking header across all Android platforms.
   * [NineOldAndroids](https://github.com/JakeWharton/NineOldAndroids) for
   view animations.
   * [RoboGuice](http://code.google.com/p/roboguice/) for dependency-injection.
-  * [Robotium](http://code.google.com/p/robotium/)
-  for driving our app during integration tests.
   * [android-maven-plugin](https://github.com/jayway/maven-android-plugin)
   for automating our build and producing release-ready APKs.
   * [Otto](https://github.com/square/otto) - An event bus for publish subscribe style communication between application components
