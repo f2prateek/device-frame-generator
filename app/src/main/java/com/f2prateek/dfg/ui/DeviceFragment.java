@@ -41,6 +41,7 @@ import com.nostra13.universalimageloader.core.ImageLoader;
 import com.squareup.otto.Bus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import roboguice.inject.InjectView;
 
 import javax.inject.Inject;
 
@@ -55,9 +56,13 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     @Inject
     Bus bus;
     Device mDevice;
+    @InjectView(R.id.tv_device_resolution)
     TextView tv_device_resolution;
+    @InjectView(R.id.tv_device_size)
     TextView tv_device_size;
+    @InjectView(R.id.tv_device_name)
     TextView tv_device_name;
+    @InjectView(R.id.ib_device_thumbnail)
     ImageButton ib_device_thumbnail;
     int mNum;
 
@@ -86,21 +91,18 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_device, container, false);
-        tv_device_size = (TextView) v.findViewById(R.id.tv_device_size);
-        tv_device_size.setText(mDevice.getPhysicalSize() + "\" @ " + mDevice.getDensity() + "dpi");
-        tv_device_name = (TextView) v.findViewById(R.id.tv_device_name);
-        tv_device_name.setText(mDevice.getName());
-        tv_device_resolution = (TextView) v.findViewById(R.id.tv_device_resolution);
-        tv_device_resolution.setText(mDevice.getPortSize()[0] + "x" + mDevice.getPortSize()[1]);
-        ib_device_thumbnail = (ImageButton) v.findViewById(R.id.ib_device_thumbnail);
-        ib_device_thumbnail.setOnClickListener(this);
         return v;
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
         String uri = "drawable://" + mDevice.getThumbnail();
         ImageLoader.getInstance().displayImage(uri, ib_device_thumbnail);
+        tv_device_size.setText(mDevice.getPhysicalSize() + "\" @ " + mDevice.getDensity() + "dpi");
+        tv_device_name.setText(mDevice.getName());
+        tv_device_resolution.setText(mDevice.getPortSize()[0] + "x" + mDevice.getPortSize()[1]);
+        ib_device_thumbnail.setOnClickListener(this);
     }
 
     @Override
