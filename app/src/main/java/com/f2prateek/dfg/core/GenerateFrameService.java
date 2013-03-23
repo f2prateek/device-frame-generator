@@ -42,7 +42,7 @@ public class GenerateFrameService extends IntentService implements DeviceFrameGe
 
     private static final String LOGTAG = makeLogTag(GenerateFrameService.class);
 
-    private static final int DFG_NOTIFICATION_ID = 789;
+    public static final int DFG_NOTIFICATION_ID = 789;
 
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotificationBuilder;

@@ -16,6 +16,8 @@
 
 package com.f2prateek.dfg.test;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Environment;
@@ -61,6 +63,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, mScreenShot.getAbsolutePath());
         startService(intent);
         ANDROID.assertThat(getService()).isNotNull();
+        NotificationManager mNotificationManager = (NotificationManager) getService().getSystemService(Context.NOTIFICATION_SERVICE);
 
         Thread.sleep(WAIT_TIME * 1000);
 
@@ -69,6 +72,8 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         mGeneratedFilePath = mAppDirectory + File.separator + mGeneratedFilePath;
         File generatedImage = new File(mGeneratedFilePath);
         Assertions.assertThat(generatedImage).isFile();
+
+        mNotificationManager.cancel(GenerateFrameService.DFG_NOTIFICATION_ID);
 
         // Delete our files.
         deleteFile(mScreenShot);

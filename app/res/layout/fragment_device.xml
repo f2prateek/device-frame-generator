@@ -29,8 +29,7 @@
             android:layout_above="@+id/tv_device_name"
             android:layout_alignParentTop="true"
             android:background="@drawable/thumbnail_button"
-            android:scaleType="centerInside"
-            android:src="@drawable/galaxy_nexus_thumb"/>
+            android:scaleType="fitCenter"/>
 
     <TextView
             android:id="@+id/tv_device_name"
@@ -39,10 +38,9 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/tv_device_size"
             android:layout_centerHorizontal="true"
-            android:fontFamily="sans-serif-light"
+            android:fontFamily="sans-serif"
             android:gravity="center_horizontal"
-            android:maxLines="2"
-            android:text="Galaxy Nexus"/>
+            android:maxLines="2"/>
 
     <TextView
             android:id="@+id/tv_device_size"
@@ -52,8 +50,7 @@
             android:layout_above="@+id/tv_device_resolution"
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
-            android:fontFamily="sans-serif-light"
-            android:text="4.65&apos; @ 320dpi"/>
+            android:fontFamily="sans-serif-light"/>
 
     <TextView
             android:id="@+id/tv_device_resolution"
@@ -64,6 +61,5 @@
             android:layout_centerHorizontal="true"
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-light"
-            android:paddingBottom="16dp"
-            android:text="720x1280"/>
+            android:paddingBottom="16dp"/>
 </RelativeLayout>
