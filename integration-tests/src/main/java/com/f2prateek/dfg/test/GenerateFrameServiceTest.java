@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Environment;
 import android.test.ServiceTestCase;
-import android.test.suitebuilder.annotation.Suppress;
 import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.core.DeviceFrameGenerator;
@@ -35,7 +34,6 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Random;
 
-@Suppress
 public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameService> {
 
     private static final int WAIT_TIME = 10;
