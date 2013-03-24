@@ -20,7 +20,7 @@ before_install:
 
     # Install the support library
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-    - git clone git@github.com:mosabua/maven-android-sdk-deployer.git
+    - git clone https://github.com/mosabua/maven-android-sdk-deployer.git
     - cd maven-android-sdk-deployer
     - mvn install
     - cd ..
