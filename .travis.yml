@@ -18,7 +18,7 @@ before_install:
     # Install required Android components.
     - android update sdk --filter platform-tools,android-16,extra-android-support,$ANDROID_SDKS --no-ui --force
 
-    # Install the support library
+    # Install the support library, that isn't available in Maven Central
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - git clone https://github.com/mosabua/maven-android-sdk-deployer.git
     - cd maven-android-sdk-deployer/ && mvn install -N
