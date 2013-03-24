@@ -21,9 +21,10 @@ before_install:
     # Install the support library
     - echo -e "Host github.com\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
     - git clone https://github.com/mosabua/maven-android-sdk-deployer.git
-    - cd maven-android-sdk-deployer
-    - mvn install
-    - cd ..
+    - cd maven-android-sdk-deployer/ && mvn install -N
+    - cd extras/ && mvn install -N
+    - cd compatibility-v4/ && mvn install
+    - cd ../../..
     - rm -rf maven-android-sdk-deployer
 
     # Create and start emulator
