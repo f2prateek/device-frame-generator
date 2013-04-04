@@ -23,9 +23,9 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.core.GenerateFrameService;
+import com.f2prateek.dfg.core.GenerateMultipleFramesService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
-import com.f2prateek.dfg.util.StorageUtils;
 import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 
 import java.util.ArrayList;
@@ -62,32 +62,22 @@ public class ReceiverActivity extends RoboSherlockActivity {
     private void handleReceivedImage(Intent i) {
         Uri imageUri = (Uri) i.getParcelableExtra(Intent.EXTRA_STREAM);
         Device device = getDefaultDeviceFromPreferences();
-        handleUri(imageUri, device);
+        Intent intent = new Intent(this, GenerateFrameService.class);
+        intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
+        intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, imageUri);
+        startService(intent);
     }
 
     /**
      * Handle an intent that provides multiple images.
      */
-    void handleReceivedMultipleImages(Intent intent) {
-        ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
+    void handleReceivedMultipleImages(Intent i) {
+        ArrayList<Uri> imageUris = i.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         Device device = getDefaultDeviceFromPreferences();
-
-        for (Uri uri : imageUris) {
-            handleUri(uri, device);
-        }
-    }
-
-    /**
-     * Handle an Uri that is the path to a screenshot image.
-     */
-    private void handleUri(Uri imageUri, Device device) {
-        if (imageUri != null) {
-            String screenshotPath = StorageUtils.getPath(this, imageUri);
-            Intent intent = new Intent(this, GenerateFrameService.class);
-            intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
-            intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, screenshotPath);
-            startService(intent);
-        }
+        Intent intent = new Intent(this, GenerateMultipleFramesService.class);
+        intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
+        intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOTS, imageUris);
+        startService(intent);
     }
 
     private Device getDefaultDeviceFromPreferences() {

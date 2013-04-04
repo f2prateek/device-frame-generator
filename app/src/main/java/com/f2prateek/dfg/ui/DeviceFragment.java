@@ -130,6 +130,7 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
         loadBitmap(mDevice.getThumbnail(), ib_device_thumbnail);
         tv_device_size.setText(mDevice.getPhysicalSize() + "\" @ " + mDevice.getDensity() + "dpi");
         tv_device_name.setText(mDevice.getName());
+        tv_device_name.setOnClickListener(this);
         tv_device_resolution.setText(mDevice.getPortSize()[0] + "x" + mDevice.getPortSize()[1]);
         ib_device_thumbnail.setOnClickListener(this);
     }
@@ -164,12 +165,14 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
         bus.unregister(this);
     }
 
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ib_device_thumbnail:
                 getScreenshotImageFromUser();
+                break;
+            case R.id.tv_device_name:
+                openDevicePage();
                 break;
         }
     }
@@ -178,8 +181,14 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
-        startActivityForResult(Intent.createChooser(intent, "Select Picture"),
+        startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)),
                 RESULT_SELECT_PICTURE);
+    }
+
+    private void openDevicePage() {
+        Intent i = new Intent(Intent.ACTION_VIEW);
+        i.setData(Uri.parse(mDevice.getUrl()));
+        startActivity(i);
     }
 
     @Override

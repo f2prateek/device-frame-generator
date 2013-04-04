@@ -37,5 +37,6 @@
     <string name="failed_match_dimensions_text">%1$s is %2$d by %3$d. Screenshot is %4$d by %5$d.</string>
     <string name="unknown_error_title">Unknown Error</string>
     <string name="unknown_error_text">An unknown error occurred.</string>
+    <string name="select_picture">Select Picture</string>
 
 </resources>

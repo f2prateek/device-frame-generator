@@ -34,15 +34,14 @@ import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.ui.MainActivity;
 import com.f2prateek.dfg.util.StorageUtils;
 
+import java.util.ArrayList;
+
 import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 
-/**
- * A service that generates our frames.
- */
-public class GenerateFrameService extends IntentService implements DeviceFrameGenerator.Callback {
+public class GenerateMultipleFramesService extends IntentService implements DeviceFrameGenerator.Callback {
 
     public static final int DFG_NOTIFICATION_ID = 789;
-    private static final String LOGTAG = makeLogTag(GenerateFrameService.class);
+    private static final String LOGTAG = makeLogTag(GenerateMultipleFramesService.class);
     // WORKAROUND: We want the same notification across screenshots that we update so that we don't
     // spam a user's notification drawer.  However, we only show the ticker for the saving state
     // and if the ticker text is the same as the previous notification, then it will not show. So
@@ -52,23 +51,29 @@ public class GenerateFrameService extends IntentService implements DeviceFrameGe
     private NotificationManager mNotificationManager;
     private NotificationCompat.Builder mNotificationBuilder;
 
-    public GenerateFrameService() {
-        super(LOGTAG);
+    int max_count;
+    int done_count;
+
+    public GenerateMultipleFramesService(String name) {
+        super(name);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         // Get all the intent data.
         Device device = (Device) intent.getParcelableExtra(AppConstants.KEY_EXTRA_DEVICE);
-        Uri imageUri = (Uri) intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
-        String screenshotPath = StorageUtils.getPath(this, imageUri);
+        ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(AppConstants.KEY_EXTRA_SCREENSHOTS);
+        max_count = imageUris.size();
 
         SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
         boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
 
-        DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
-        deviceFrameGenerator.generateFrame(screenshotPath);
+        for (Uri uri : imageUris) {
+            String screenshotPath = StorageUtils.getPath(this, uri);
+            DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
+            deviceFrameGenerator.generateFrame(screenshotPath);
+        }
     }
 
     @Override
@@ -198,5 +203,4 @@ public class GenerateFrameService extends IntentService implements DeviceFrameGe
                 .getNotification();
         mNotificationManager.notify(DFG_NOTIFICATION_ID, notification);
     }
-
 }
