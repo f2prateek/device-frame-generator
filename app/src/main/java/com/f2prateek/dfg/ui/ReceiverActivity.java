@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
@@ -45,11 +46,13 @@ public class ReceiverActivity extends RoboSherlockActivity {
             if (Intent.ACTION_SEND.equals(action) && type != null) {
                 if (type.startsWith("image/")) {
                     // Got a single image
+                    Log.d("ReceiverActivity", "got single");
                     handleReceivedImage(intent);
                 }
             } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
                 if (type.startsWith("image/")) {
                     // Got multiple images
+                    Log.d("ReceiverActivity", "got multiple");
                     handleReceivedMultipleImages(intent);
                 }
             }

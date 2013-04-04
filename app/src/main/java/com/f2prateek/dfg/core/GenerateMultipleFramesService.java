@@ -54,8 +54,8 @@ public class GenerateMultipleFramesService extends IntentService implements Devi
     int max_count;
     int done_count;
 
-    public GenerateMultipleFramesService(String name) {
-        super(name);
+    public GenerateMultipleFramesService() {
+        super(LOGTAG);
     }
 
     @Override
@@ -64,6 +64,7 @@ public class GenerateMultipleFramesService extends IntentService implements Devi
         Device device = (Device) intent.getParcelableExtra(AppConstants.KEY_EXTRA_DEVICE);
         ArrayList<Uri> imageUris = intent.getParcelableArrayListExtra(AppConstants.KEY_EXTRA_SCREENSHOTS);
         max_count = imageUris.size();
+        done_count = 0;
 
         SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
@@ -119,10 +120,12 @@ public class GenerateMultipleFramesService extends IntentService implements Devi
         NotificationCompat.BigPictureStyle notificationStyle = new NotificationCompat.BigPictureStyle()
                 .bigPicture(preview);
         mNotificationBuilder.setStyle(notificationStyle);
+        mNotificationBuilder.setProgress(max_count, done_count, false);
 
         Notification n = mNotificationBuilder.build();
         n.flags |= Notification.FLAG_NO_CLEAR;
         mNotificationManager.notify(DFG_NOTIFICATION_ID, n);
+
 
         // On the tablet, the large icon makes the notification appear as if it is clickable (and
         // on small devices, the large icon is not shown) so defer showing the large icon until
@@ -152,6 +155,8 @@ public class GenerateMultipleFramesService extends IntentService implements Devi
 
     @Override
     public void notifyDone(Uri imageUri) {
+        done_count++;
+
         Resources r = getResources();
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("image/png");
@@ -172,6 +177,8 @@ public class GenerateMultipleFramesService extends IntentService implements Devi
                 .setContentIntent(PendingIntent.getActivity(this, 0, launchIntent, 0))
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true);
+
+        mNotificationBuilder.setProgress(max_count, done_count, false);
 
         Notification n = mNotificationBuilder.build();
         n.flags &= ~Notification.FLAG_NO_CLEAR;
