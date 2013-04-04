@@ -43,7 +43,6 @@ import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.util.BitmapUtils;
-import com.f2prateek.dfg.util.StorageUtils;
 import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.squareup.otto.Bus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -195,10 +194,9 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_SELECT_PICTURE && resultCode == Activity.RESULT_OK) {
             Uri selectedImageUri = data.getData();
-            String screenshotPath = StorageUtils.getPath(getSherlockActivity(), selectedImageUri);
             Intent intent = new Intent(getActivity(), GenerateFrameService.class);
             intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, mDevice);
-            intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, screenshotPath);
+            intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, selectedImageUri);
             getActivity().startService(intent);
         }
         super.onActivityResult(requestCode, resultCode, data);
