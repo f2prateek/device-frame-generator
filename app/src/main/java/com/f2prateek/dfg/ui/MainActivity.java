@@ -19,18 +19,16 @@ package com.f2prateek.dfg.ui;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import butterknife.InjectView;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockFragmentActivity;
 import com.squareup.otto.Bus;
-import roboguice.inject.InjectView;
-
 import javax.inject.Inject;
 
-public class MainActivity extends RoboSherlockFragmentActivity {
+public class MainActivity extends BaseActivity {
 
     @Inject
-    Bus bus;
+    Bus BUS;
     @InjectView(R.id.pager)
     ViewPager pager;
     @Inject
@@ -47,12 +45,12 @@ public class MainActivity extends RoboSherlockFragmentActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        bus.register(this);
+        BUS.register(this);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        bus.unregister(this);
+        BUS.unregister(this);
     }
 }

@@ -22,18 +22,28 @@ import android.app.NotificationManager;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dfg.AppConstants;
+import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
+
+import javax.inject.Inject;
 
 public abstract class AbstractGenerateFrameService extends IntentService implements DeviceFrameGenerator.Callback {
 
     protected static final int DFG_NOTIFICATION_ID = 789;
-    protected NotificationManager mNotificationManager;
     protected NotificationCompat.Builder mNotificationBuilder;
     protected Device mDevice;
+    @Inject
+    NotificationManager mNotificationManager;
 
     public AbstractGenerateFrameService(String name) {
         super(name);
+    }
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        DFGApplication.getInstance().inject(this);
     }
 
     @Override

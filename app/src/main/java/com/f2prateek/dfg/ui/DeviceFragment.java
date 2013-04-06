@@ -34,6 +34,9 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import butterknife.InjectView;
+import butterknife.Views;
+import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -43,25 +46,20 @@ import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.util.BitmapUtils;
-import com.github.rtyley.android.sherlock.roboguice.fragment.RoboSherlockFragment;
 import com.squareup.otto.Bus;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import roboguice.inject.InjectView;
 
 import javax.inject.Inject;
 import java.lang.ref.WeakReference;
 
 import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 
-public class DeviceFragment extends RoboSherlockFragment implements View.OnClickListener {
+public class DeviceFragment extends SherlockFragment implements View.OnClickListener {
 
     private static final String LOGTAG = makeLogTag(DeviceFragment.class);
     private static final int RESULT_SELECT_PICTURE = 542;
 
-    @Inject
-    Bus bus;
-    Device mDevice;
     @InjectView(R.id.tv_device_resolution)
     TextView tv_device_resolution;
     @InjectView(R.id.tv_device_size)
@@ -71,8 +69,9 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     @InjectView(R.id.ib_device_thumbnail)
     ImageButton ib_device_thumbnail;
 
+    private Device mDevice;
     private static LruCache<String, Bitmap> mMemoryCache;
-    int mNum;
+    private int mNum;
 
     public static DeviceFragment newInstance(int num) {
         DeviceFragment f = new DeviceFragment();
@@ -114,12 +113,12 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     @Override
     public void onResume() {
         super.onResume();
-        bus.register(this);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_device, container, false);
+        Views.inject(this, v);
         return v;
     }
 
@@ -161,7 +160,6 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     @Override
     public void onPause() {
         super.onPause();
-        bus.unregister(this);
     }
 
     @Override

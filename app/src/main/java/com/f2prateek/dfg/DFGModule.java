@@ -1,35 +1,42 @@
-/*
- * Copyright 2013 Prateek Srivastava (@f2prateek)
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- * 	http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package com.f2prateek.dfg;
 
-import com.google.inject.AbstractModule;
-import com.google.inject.Singleton;
+import com.f2prateek.dfg.core.GenerateFrameService;
+import com.f2prateek.dfg.core.GenerateMultipleFramesService;
+import com.f2prateek.dfg.ui.BaseActivity;
+import com.f2prateek.dfg.ui.DeviceFragment;
+import com.f2prateek.dfg.ui.MainActivity;
+import com.f2prateek.dfg.ui.ReceiverActivity;
 import com.squareup.otto.Bus;
+import dagger.Module;
+import dagger.Provides;
+
+import javax.inject.Singleton;
 
 /**
- * Module for setting up custom bindings in RoboGuice.
+ * Dagger module for setting up provides statements.
+ * Register all of your entry points below.
  */
-public class DFGModule extends AbstractModule {
+@Module
+        (
+                complete = false,
 
-    @Override
-    protected void configure() {
-        // We want Otto to be bound as a singleton as one instance only needs
-        // to be present in this app
-        bind(Bus.class).in(Singleton.class);
+                entryPoints = {
+                        DFGApplication.class,
+                        BaseActivity.class,
+                        MainActivity.class,
+                        ReceiverActivity.class,
+                        DeviceFragment.class,
+                        GenerateFrameService.class,
+                        GenerateMultipleFramesService.class
+                }
+
+        )
+public class DFGModule {
+
+    @Provides
+    @Singleton
+    Bus provideOttoBus() {
+        return new Bus();
     }
 
 }

@@ -64,6 +64,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
     @Override
     public void startingImage(Bitmap screenshot) {
+        Log.d(LOGTAG, "starting Image");
         Resources r = getResources();
         // Create the large notification icon
         int imageWidth = screenshot.getWidth();
@@ -105,6 +106,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
     @Override
     public void doneImage(Uri imageUri) {
+        Log.d(LOGTAG, "done Image");
         Resources r = getResources();
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("image/png");

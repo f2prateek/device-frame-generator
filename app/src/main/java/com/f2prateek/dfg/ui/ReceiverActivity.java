@@ -27,11 +27,10 @@ import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
-import com.github.rtyley.android.sherlock.roboguice.activity.RoboSherlockActivity;
 
 import java.util.ArrayList;
 
-public class ReceiverActivity extends RoboSherlockActivity {
+public class ReceiverActivity extends BaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
