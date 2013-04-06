@@ -52,7 +52,6 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
         super.onHandleIntent(intent);
         // Get all the intent data.
         Uri imageUri = (Uri) intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
-        Log.d(LOGTAG, "path " + imageUri.getPath());
         String screenshotPath = StorageUtils.getPath(this, imageUri);
 
         SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -65,8 +64,6 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
     @Override
     public void startingImage(Bitmap screenshot) {
-        Log.d(LOGTAG, "startingImage");
-
         Resources r = getResources();
         // Create the large notification icon
         int imageWidth = screenshot.getWidth();
@@ -108,7 +105,6 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
     @Override
     public void doneImage(Uri imageUri) {
-        Log.d(LOGTAG, "doneImage");
         Resources r = getResources();
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("image/png");

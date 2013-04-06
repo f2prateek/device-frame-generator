@@ -21,7 +21,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
@@ -50,8 +49,6 @@ public abstract class AbstractGenerateFrameService extends IntentService impleme
      */
     @Override
     public void failedImage(String failed_title, String failed_text) {
-        Log.d("AbstractService", "failedImage");
-
         Notification notification = new NotificationCompat.Builder(this)
                 .setTicker(failed_title)
                 .setContentTitle(failed_title)

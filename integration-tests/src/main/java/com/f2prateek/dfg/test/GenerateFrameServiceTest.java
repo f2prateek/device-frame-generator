@@ -24,10 +24,12 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.test.ServiceTestCase;
+import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
+import com.f2prateek.dfg.util.StorageUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -35,40 +37,81 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Random;
 
+import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 import static org.fest.assertions.api.ANDROID.assertThat;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameService> {
 
     private static final int WAIT_TIME = 10;
-    private static final String LOGTAG = "GenerateFrameService";
+    private static final String LOGTAG = makeLogTag(GenerateFrameServiceTest.class);
 
     public GenerateFrameServiceTest() {
         super(GenerateFrameService.class);
     }
 
     public void testFrameGeneration() throws Exception {
+        deleteFile(new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                AppConstants.DFG_DIR_NAME));
         File mAppDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                 AppConstants.DFG_DIR_NAME);
 
         // Pick a random device
         Device mDevice = getRandomDevice();
         // Make the test screenshot
-        Uri mScreenShot = makeTestScreenShot(mDevice);
+        Uri screenshotUri = makeTestScreenShot(mDevice);
 
         Intent intent = new Intent(getSystemContext(), GenerateFrameService.class);
         intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, mDevice);
-        intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, mScreenShot);
+        intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, screenshotUri);
         startService(intent);
         assertThat(getService()).isNotNull();
 
         Thread.sleep(WAIT_TIME * 1000);
 
+        assertThat(mAppDirectory).exists().isDirectory();
         String mGeneratedFilePath = getGeneratedImagePath(mAppDirectory);
         // The file Path is relative to the app directory, make it absolute
         mGeneratedFilePath = mAppDirectory + File.separator + mGeneratedFilePath;
         File generatedImage = new File(mGeneratedFilePath);
-        assertThat(generatedImage).isFile().exists();
+        assertThat(generatedImage).exists().isFile();
+
+        // Clean up
+        deleteFile(generatedImage);
+        deleteFile(new File(StorageUtils.getPath(mContext, screenshotUri)));
+    }
+
+    /**
+     * Delete a file.
+     * If it is a folder, delete all files recursively.
+     *
+     * @param file
+     */
+    private void deleteFile(File file) {
+        Log.d(LOGTAG, "Deleting : " + file.getAbsolutePath());
+        if (file.isDirectory()) {
+            //directory is empty, then delete it
+            if (file.list().length == 0) {
+                file.delete();
+            } else {
+                //list all the directory contents
+                String files[] = file.list();
+                for (String temp : files) {
+                    //construct the file structure
+                    File fileDelete = new File(file, temp);
+                    //recursive delete
+                    deleteFile(fileDelete);
+                }
+
+                //check the directory again, if empty then delete it
+                if (file.list().length == 0) {
+                    file.delete();
+                }
+            }
+        } else {
+            //if file, then delete it
+            file.delete();
+        }
     }
 
     /**
