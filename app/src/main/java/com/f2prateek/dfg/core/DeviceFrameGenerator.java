@@ -19,12 +19,14 @@ package com.f2prateek.dfg.core;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.util.BitmapUtils;
 
@@ -38,22 +40,55 @@ import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 
 public class DeviceFrameGenerator {
 
-    private static final String LOGTAG = makeLogTag(DeviceFrameGenerator.class);
-
     public static final String DFG_DIR_NAME = "/Device-Frame-Generator/";
+    private static final String LOGTAG = makeLogTag(DeviceFrameGenerator.class);
     private static final String DFG_FILE_NAME_TEMPLATE = "DFG_%s.png";
     private static final String DFG_FILE_PATH_TEMPLATE = "%s/%s/%s";
-
+    boolean withShadow;
+    boolean withGlare;
     private Context mContext;
     private Callback mCallback;
     private Device mDevice;
-    boolean withShadow;
-    boolean withGlare;
 
     public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow, boolean withGlare) {
         mContext = context;
         mCallback = callback;
         mDevice = device;
+    }
+
+    /**
+     * Checks if screenshot matches the aspect ratio of the device.
+     *
+     * @param device     The Device to frame.
+     * @param screenshot The screenshot to frame.
+     * @return "port" if matched to portrait and "land" if matched to landscape
+     * @throws UnmatchedDimensionsException If it could not match any orientation to the device.
+     */
+    private static String checkDimensions(Device device, Bitmap screenshot) throws UnmatchedDimensionsException {
+        float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
+        float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
+
+        if (aspect1 == aspect2) {
+            return "port";
+        } else if (aspect1 == 1 / aspect2) {
+            return "land";
+        }
+
+        Log.e(LOGTAG, String.format(
+                "Screenshot height = %d, width = %d. Device height = %d, width = %d. Aspect1 = %f, Aspect 2 = %f",
+                screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1], device.getPortSize()[0],
+                aspect1, aspect2));
+        throw new UnmatchedDimensionsException(device, screenshot.getHeight(), screenshot.getWidth());
+    }
+
+    /**
+     * Check if the orientation is portrait
+     *
+     * @param orientation Orientation to check.
+     * @return true if orientation is portrait
+     */
+    private static boolean isPortrait(String orientation) {
+        return (orientation.compareTo("port") == 0);
     }
 
     /**
@@ -71,7 +106,9 @@ public class DeviceFrameGenerator {
         try {
             screenshot = BitmapUtils.decodeFile(screenshotPath);
         } catch (IOException e) {
-            mCallback.notifyFailedOpenScreenshotError(screenshotPath);
+            Resources r = mContext.getResources();
+            mCallback.failedImage(r.getString(R.string.failed_open_screenshot_title),
+                    r.getString(R.string.failed_open_screenshot_text, screenshotPath));
             return;
         }
         generateFrame(screenshot);
@@ -83,13 +120,18 @@ public class DeviceFrameGenerator {
      * @param screenshot Screenshot to use.
      */
     private void generateFrame(Bitmap screenshot) {
-        mCallback.notifyStarting(screenshot);
+        mCallback.startingImage(screenshot);
         String orientation = null;
         try {
             orientation = checkDimensions(mDevice, screenshot);
         } catch (UnmatchedDimensionsException e) {
-            mCallback.notifyUnmatchedDimensionsError(mDevice, screenshot.getHeight(), screenshot.getWidth());
             Log.e(LOGTAG, e.toString());
+            Resources r = mContext.getResources();
+            String failed_title = r.getString(R.string.failed_match_dimensions_title);
+            String failed_text = r.getString(R.string.failed_match_dimensions_text,
+                    e.device.getName(), e.device.getPortSize()[0], e.device.getPortSize()[1],
+                    e.screenshotHeight, e.screenshotWidth);
+            mCallback.failedImage(failed_title, failed_text);
             return;
         }
 
@@ -101,8 +143,9 @@ public class DeviceFrameGenerator {
             glare = BitmapUtils.decodeResource(mContext, mDevice.getGlareString(orientation));
             shadow = BitmapUtils.decodeResource(mContext, mDevice.getShadowString(orientation));
         } catch (IOException e) {
-            mCallback.notifyFailed();
             Log.e(LOGTAG, e.toString());
+            Resources r = mContext.getResources();
+            mCallback.failedImage(r.getString(R.string.unknown_error_title), r.getString(R.string.unknown_error_text));
             return;
         }
 
@@ -153,36 +196,23 @@ public class DeviceFrameGenerator {
             out.flush();
             out.close();
         } catch (IOException e) {
-            mCallback.notifyFailed();
             Log.e(LOGTAG, e.toString());
+            Resources r = mContext.getResources();
+            mCallback.failedImage(r.getString(R.string.unknown_error_title), r.getString(R.string.unknown_error_text));
             return;
         }
+
+        background.recycle();
+        screenshot.recycle();
+        glare.recycle();
+        shadow.recycle();
 
         // update file size in the database
         values.clear();
         values.put(MediaStore.Images.ImageColumns.SIZE, new File(imageMetadata.imageFilePath).length());
         resolver.update(imageUri, values, null, null);
 
-        mCallback.notifyDone(imageUri);
-    }
-
-    // Views should have these methods to notify the user.
-    public interface Callback {
-        public void notifyStarting(Bitmap screenshot);
-
-        public void notifyFailedOpenScreenshotError(String screenshotPath);
-
-        public void notifyUnmatchedDimensionsError(Device device, int screenhotHeight, int screenshotWidth);
-
-        public void notifyFailed();
-
-        public void notifyDone(Uri imageUri);
-    }
-
-    public class ImageMetadata {
-        String imageFileName;
-        String imageFilePath;
-        long imageTime;
+        mCallback.doneImage(imageUri);
     }
 
     /**
@@ -202,39 +232,19 @@ public class DeviceFrameGenerator {
         return imageMetadata;
     }
 
-    /**
-     * Checks if screenshot matches the aspect ratio of the device.
-     *
-     * @param device     The Device to frame.
-     * @param screenshot The screenshot to frame.
-     * @return "port" if matched to portrait and "land" if matched to landscape
-     * @throws UnmatchedDimensionsException If it could not match any orientation to the device.
-     */
-    private static String checkDimensions(Device device, Bitmap screenshot) throws UnmatchedDimensionsException {
-        float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
-        float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
+    // Views should have these methods to notify the user.
+    public interface Callback {
+        public void startingImage(Bitmap screenshot);
 
-        if (aspect1 == aspect2) {
-            return "port";
-        } else if (aspect1 == 1 / aspect2) {
-            return "land";
-        }
+        public void failedImage(String title, String text);
 
-        Log.e(LOGTAG, String.format(
-                "Screenshot height = %d, width = %d. Device height = %d, width = %d. Aspect1 = %f, Aspect 2 = %f",
-                screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1], device.getPortSize()[0],
-                aspect1, aspect2));
-        throw new UnmatchedDimensionsException(device, screenshot.getHeight(), screenshot.getWidth());
+        public void doneImage(Uri imageUri);
     }
 
-    /**
-     * Check if the orientation is portrait
-     *
-     * @param orientation Orientation to check.
-     * @return true if orientation is portrait
-     */
-    private static boolean isPortrait(String orientation) {
-        return (orientation.compareTo("port") == 0);
+    public class ImageMetadata {
+        String imageFileName;
+        String imageFilePath;
+        long imageTime;
     }
 
 }

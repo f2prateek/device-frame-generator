@@ -35,6 +35,10 @@ public class BitmapUtils {
 
     private static final String LOGTAG = makeLogTag(BitmapUtils.class);
 
+    private BitmapUtils() {
+        // no instances
+    }
+
     /**
      * Compatibility version decodeFile, returns a mutable bitmap.
      * Uses {@link #convertToMutable} if less than API 11.

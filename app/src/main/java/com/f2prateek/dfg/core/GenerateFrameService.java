@@ -16,7 +16,6 @@
 
 package com.f2prateek.dfg.core;
 
-import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -28,9 +27,9 @@ import android.graphics.*;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
-import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.ui.MainActivity;
 import com.f2prateek.dfg.util.StorageUtils;
 
@@ -39,18 +38,10 @@ import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 /**
  * A service that generates our frames.
  */
-public class GenerateFrameService extends IntentService implements DeviceFrameGenerator.Callback {
+public class GenerateFrameService extends AbstractGenerateFrameService {
 
-    public static final int DFG_NOTIFICATION_ID = 789;
     private static final String LOGTAG = makeLogTag(GenerateFrameService.class);
-    // WORKAROUND: We want the same notification across screenshots that we update so that we don't
-    // spam a user's notification drawer.  However, we only show the ticker for the saving state
-    // and if the ticker text is the same as the previous notification, then it will not show. So
-    // for now, we just add and remove a space from the ticker text to trigger the animation when
-    // necessary.
-    private static boolean mTickerAddSpace;
-    private NotificationManager mNotificationManager;
-    private NotificationCompat.Builder mNotificationBuilder;
+    protected NotificationCompat.BigPictureStyle mNotificationStyle;
 
     public GenerateFrameService() {
         super(LOGTAG);
@@ -58,8 +49,8 @@ public class GenerateFrameService extends IntentService implements DeviceFrameGe
 
     @Override
     protected void onHandleIntent(Intent intent) {
+        super.onHandleIntent(intent);
         // Get all the intent data.
-        Device device = (Device) intent.getParcelableExtra(AppConstants.KEY_EXTRA_DEVICE);
         Uri imageUri = (Uri) intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
         String screenshotPath = StorageUtils.getPath(this, imageUri);
 
@@ -67,19 +58,20 @@ public class GenerateFrameService extends IntentService implements DeviceFrameGe
         boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
         boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
 
-        DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
+        DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, mDevice, withShadow, withGlare);
+
         deviceFrameGenerator.generateFrame(screenshotPath);
     }
 
     @Override
-    public void notifyStarting(Bitmap screenshot) {
-        Resources r = getResources();
+    public void startingImage(Bitmap screenshot) {
+        Log.d(LOGTAG, "startingImage");
 
+        Resources r = getResources();
         // Create the large notification icon
         int imageWidth = screenshot.getWidth();
         int imageHeight = screenshot.getHeight();
         int iconSize = r.getDimensionPixelSize(android.R.dimen.notification_large_icon_height);
-
         final int shortSide = imageWidth < imageHeight ? imageWidth : imageHeight;
         Bitmap preview = Bitmap.createBitmap(shortSide, shortSide, screenshot.getConfig());
         Canvas c = new Canvas(preview);
@@ -95,58 +87,28 @@ public class GenerateFrameService extends IntentService implements DeviceFrameGe
 
         Bitmap croppedIcon = Bitmap.createScaledBitmap(preview, iconSize, iconSize, true);
 
-        // Show the intermediate notification
-        mTickerAddSpace = !mTickerAddSpace;
-
         Intent nullIntent = new Intent(this, MainActivity.class);
         nullIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
         mNotificationBuilder = new NotificationCompat.Builder(this)
-                .setTicker(r.getString(R.string.screenshot_saving_ticker)
-                        + (mTickerAddSpace ? " " : ""))
+                .setTicker(r.getString(R.string.screenshot_saving_ticker))
                 .setContentTitle(r.getString(R.string.screenshot_saving_title))
-                .setContentText(r.getString(R.string.screenshot_saving_text))
                 .setSmallIcon(R.drawable.ic_action_picture)
+                .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(preview))
                 .setContentIntent(PendingIntent.getActivity(this, 0, nullIntent, 0))
-                .setWhen(System.currentTimeMillis());
-
-        NotificationCompat.BigPictureStyle notificationStyle = new NotificationCompat.BigPictureStyle()
-                .bigPicture(preview);
-        mNotificationBuilder.setStyle(notificationStyle);
+                .setWhen(System.currentTimeMillis())
+                .setProgress(0, 0, true)
+                .setLargeIcon(croppedIcon);
 
         Notification n = mNotificationBuilder.build();
         n.flags |= Notification.FLAG_NO_CLEAR;
         mNotificationManager.notify(DFG_NOTIFICATION_ID, n);
-
-        // On the tablet, the large icon makes the notification appear as if it is clickable (and
-        // on small devices, the large icon is not shown) so defer showing the large icon until
-        // we compose the final post-save notification below.
-        mNotificationBuilder.setLargeIcon(croppedIcon);
     }
 
     @Override
-    public void notifyFailedOpenScreenshotError(String screenshotPath) {
-        notifyError(R.string.failed_open_screenshot_title, R.string.failed_open_screenshot_text);
-    }
-
-    @Override
-    public void notifyUnmatchedDimensionsError(Device device, int screenhotHeight, int screenshotWidth) {
-        Resources r = getResources();
-        String failed_title = r.getString(R.string.failed_match_dimensions_title);
-        String failed_text = r.getString(R.string.failed_match_dimensions_text,
-                device.getName(), device.getPortSize()[0], device.getPortSize()[1],
-                screenhotHeight, screenshotWidth);
-        notifyError(failed_title, failed_text);
-    }
-
-    @Override
-    public void notifyFailed() {
-        notifyError(R.string.unknown_error_title, R.string.unknown_error_text);
-    }
-
-    @Override
-    public void notifyDone(Uri imageUri) {
+    public void doneImage(Uri imageUri) {
+        Log.d(LOGTAG, "doneImage");
         Resources r = getResources();
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("image/png");
@@ -163,40 +125,12 @@ public class GenerateFrameService extends IntentService implements DeviceFrameGe
 
         mNotificationBuilder
                 .setContentTitle(r.getString(R.string.screenshot_saved_title))
-                .setContentText(r.getString(R.string.screenshot_saved_text))
                 .setContentIntent(PendingIntent.getActivity(this, 0, launchIntent, 0))
                 .setWhen(System.currentTimeMillis())
+                .setProgress(0, 0, false)
                 .setAutoCancel(true);
 
-        Notification n = mNotificationBuilder.build();
-        n.flags &= ~Notification.FLAG_NO_CLEAR;
-        mNotificationManager.notify(DFG_NOTIFICATION_ID, n);
-    }
-
-    private void notifyError(int failed_title_resource, int failed_text_resource) {
-        Resources r = getResources();
-        String failed_title = r.getString(failed_title_resource);
-        String failed_text = r.getString(failed_text_resource);
-        notifyError(failed_title, failed_text);
-    }
-
-    /**
-     * Notify the user of a error.
-     *
-     * @param failed_text  Text for notification.
-     * @param failed_title Title for notification.
-     */
-    private void notifyError(String failed_title, String failed_text) {
-        // Clear all existing notification, compose the new notification and show it
-        Notification notification = new NotificationCompat.Builder(this)
-                .setTicker(failed_title)
-                .setContentTitle(failed_title)
-                .setContentText(failed_text)
-                .setSmallIcon(R.drawable.ic_action_error)
-                .setWhen(System.currentTimeMillis())
-                .setAutoCancel(true)
-                .getNotification();
-        mNotificationManager.notify(DFG_NOTIFICATION_ID, notification);
+        mNotificationManager.notify(DFG_NOTIFICATION_ID, mNotificationBuilder.build());
     }
 
 }

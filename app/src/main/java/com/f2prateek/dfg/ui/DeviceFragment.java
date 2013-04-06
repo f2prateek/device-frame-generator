@@ -194,10 +194,10 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_SELECT_PICTURE && resultCode == Activity.RESULT_OK) {
             Uri selectedImageUri = data.getData();
-            Intent intent = new Intent(getActivity(), GenerateFrameService.class);
+            Intent intent = new Intent(getSherlockActivity(), GenerateFrameService.class);
             intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, mDevice);
             intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, selectedImageUri);
-            getActivity().startService(intent);
+            getSherlockActivity().startService(intent);
         }
         super.onActivityResult(requestCode, resultCode, data);
     }

@@ -23,19 +23,21 @@
     <!-- Device Fragment !-->
     <string name="save_default">Save as default</string>
     <string name="saved_as_default_message">%s saved as default device.</string>
-    <string name="screenshot_saving_ticker">Saving Device Frame</string>
-    <string name="screenshot_saving_title">Saving screenshot</string>
-    <string name="screenshot_saving_text">Saving</string>
-    <string name="screenshot_saved_title">Saved Device Frame</string>
-    <string name="screenshot_saved_text">Saved Device Frame</string>
+
+    <!-- Notifications !-->
+    <string name="screenshot_saving_ticker">@string/screenshot_saving_title</string>
+    <string name="screenshot_saving_title">Saving....</string>
+    <string name="screenshot_saved_title">Saved Device Frame.</string>
+    <string name="screenshots_saved_title">Saved %d images.</string>
+    <string name="processing_image">Processing image %1$d of %2$d.</string>
     <string name="share">Share</string>
 
     <!-- Notification Error Messages !-->
-    <string name="failed_open_screenshot_title">Couldn\'t open screenshot</string>
-    <string name="failed_open_screenshot_text">Failed to retrieve the screenshot.</string>
+    <string name="failed_open_screenshot_title">Couldn\'t open screenshot.</string>
+    <string name="failed_open_screenshot_text">Failed to retrieve the screenshot at %s.</string>
     <string name="failed_match_dimensions_title">Screenshot and device dimensions do not match.</string>
     <string name="failed_match_dimensions_text">%1$s is %2$d by %3$d. Screenshot is %4$d by %5$d.</string>
-    <string name="unknown_error_title">Unknown Error</string>
+    <string name="unknown_error_title">Unknown Error.</string>
     <string name="unknown_error_text">An unknown error occurred.</string>
     <string name="select_picture">Select Picture</string>
 

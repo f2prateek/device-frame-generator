@@ -45,12 +45,12 @@
         <dependency>
             <groupId>com.squareup.spoon</groupId>
             <artifactId>spoon-client</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.3</version>
         </dependency>
         <dependency>
             <groupId>com.squareup</groupId>
             <artifactId>fest-android</artifactId>
-            <version>1.0.3</version>
+            <version>1.0.4</version>
         </dependency>
     </dependencies>
     <build>

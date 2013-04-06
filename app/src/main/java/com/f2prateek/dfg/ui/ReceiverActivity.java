@@ -47,7 +47,7 @@ public class ReceiverActivity extends RoboSherlockActivity {
                 if (type.startsWith("image/")) {
                     // Got a single image
                     Log.d("ReceiverActivity", "got single");
-                    handleReceivedImage(intent);
+                    handleReceivedSingleImage(intent);
                 }
             } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
                 if (type.startsWith("image/")) {
@@ -62,7 +62,7 @@ public class ReceiverActivity extends RoboSherlockActivity {
     /**
      * Handle an intent that provides a single image.
      */
-    private void handleReceivedImage(Intent i) {
+    private void handleReceivedSingleImage(Intent i) {
         Uri imageUri = (Uri) i.getParcelableExtra(Intent.EXTRA_STREAM);
         Device device = getDefaultDeviceFromPreferences();
         Intent intent = new Intent(this, GenerateFrameService.class);
