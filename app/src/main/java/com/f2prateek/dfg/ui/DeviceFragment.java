@@ -98,7 +98,7 @@ public class DeviceFragment extends RoboSherlockFragment implements View.OnClick
             protected int sizeOf(String key, Bitmap bitmap) {
                 // The cache size will be measured in kilobytes rather than
                 // number of items.
-                return bitmap.getByteCount() / 1024;
+                return BitmapUtils.getByteCount(bitmap) / 1024;
             }
         };
     }
