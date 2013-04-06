@@ -40,7 +40,7 @@ public class Device implements Parcelable {
     // Handle to resource for thumbnail
     private int thumbnail;
 
-    public Device(String id, String name, String url, float physicalSize, int density, int[] landOffset, int[] portOffset, int[] portSize, int thumbnail) {
+    private Device(String id, String name, String url, float physicalSize, int density, int[] landOffset, int[] portOffset, int[] portSize, int thumbnail) {
         this.id = id;
         this.name = name;
         this.url = url;
