@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.util.Log;
+import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.util.BitmapUtils;
@@ -40,10 +41,8 @@ import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 
 public class DeviceFrameGenerator {
 
-    public static final String DFG_DIR_NAME = "/Device-Frame-Generator/";
     private static final String LOGTAG = makeLogTag(DeviceFrameGenerator.class);
-    private static final String DFG_FILE_NAME_TEMPLATE = "DFG_%s.png";
-    private static final String DFG_FILE_PATH_TEMPLATE = "%s/%s/%s";
+
     boolean withShadow;
     boolean withGlare;
     private Context mContext;
@@ -226,9 +225,9 @@ public class DeviceFrameGenerator {
         String imageDate = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date(imageMetadata.imageTime));
         String imageDir = Environment.getExternalStoragePublicDirectory(
                 Environment.DIRECTORY_PICTURES).getAbsolutePath();
-        imageMetadata.imageFileName = String.format(DFG_FILE_NAME_TEMPLATE, imageDate);
-        imageMetadata.imageFilePath = String.format(DFG_FILE_PATH_TEMPLATE, imageDir,
-                DFG_DIR_NAME, imageMetadata.imageFileName);
+        imageMetadata.imageFileName = String.format(AppConstants.DFG_FILE_NAME_TEMPLATE, imageDate);
+        imageMetadata.imageFilePath = String.format(AppConstants.DFG_FILE_PATH_TEMPLATE, imageDir,
+                AppConstants.DFG_DIR_NAME, imageMetadata.imageFileName);
         return imageMetadata;
     }
 

@@ -52,6 +52,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
         super.onHandleIntent(intent);
         // Get all the intent data.
         Uri imageUri = (Uri) intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
+        Log.d(LOGTAG, "path " + imageUri.getPath());
         String screenshotPath = StorageUtils.getPath(this, imageUri);
 
         SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
@@ -59,7 +60,6 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
         boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
 
         DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, mDevice, withShadow, withGlare);
-
         deviceFrameGenerator.generateFrame(screenshotPath);
     }
 
