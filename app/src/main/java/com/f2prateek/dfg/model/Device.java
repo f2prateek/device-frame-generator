@@ -37,10 +37,13 @@ public class Device implements Parcelable {
     private int[] portOffset;
     // Screen resolution in portrait
     private int[] portSize;
+    // Screen resolution in portrait, will be displayed to the user. This may or may not be same as portSize
+    private int[] realSize;
     // Handle to resource for thumbnail
     private int thumbnail;
 
-    private Device(String id, String name, String url, float physicalSize, int density, int[] landOffset, int[] portOffset, int[] portSize, int thumbnail) {
+    private Device(String id, String name, String url, float physicalSize, int density, int[] landOffset,
+                   int[] portOffset, int[] portSize, int[] realSize, int thumbnail) {
         this.id = id;
         this.name = name;
         this.url = url;
@@ -49,6 +52,7 @@ public class Device implements Parcelable {
         this.landOffset = landOffset;
         this.portOffset = portOffset;
         this.portSize = portSize;
+        this.realSize = realSize;
         this.thumbnail = thumbnail;
     }
 
@@ -82,6 +86,10 @@ public class Device implements Parcelable {
 
     public int[] getPortSize() {
         return portSize;
+    }
+
+    public int[] getRealSize() {
+        return realSize;
     }
 
     public int getThumbnail() {
@@ -123,6 +131,8 @@ public class Device implements Parcelable {
         in.readIntArray(portOffset);
         portSize = new int[2];
         in.readIntArray(portSize);
+        realSize = new int[2];
+        in.readIntArray(realSize);
         thumbnail = in.readInt();
     }
 
@@ -141,6 +151,7 @@ public class Device implements Parcelable {
         dest.writeIntArray(landOffset);
         dest.writeIntArray(portOffset);
         dest.writeIntArray(portSize);
+        dest.writeIntArray(realSize);
         dest.writeInt(thumbnail);
     }
 
@@ -163,6 +174,7 @@ public class Device implements Parcelable {
         private int[] landOffset;
         private int[] portOffset;
         private int[] portSize;
+        private int[] realSize;
         private int thumbnail;
 
         public Builder setId(String id) {
@@ -205,13 +217,19 @@ public class Device implements Parcelable {
             return this;
         }
 
+        public Builder setRealSize(int[] realSize) {
+            this.realSize = realSize;
+            return this;
+        }
+
         public Builder setThumbnail(int thumbnail) {
             this.thumbnail = thumbnail;
             return this;
         }
 
         public Device build() {
-            return new Device(id, name, url, physicalSize, density, landOffset, portOffset, portSize, thumbnail);
+            return new Device(id, name, url, physicalSize, density, landOffset, portOffset, portSize, realSize,
+                    thumbnail);
         }
     }
 }

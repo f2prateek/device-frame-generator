@@ -129,7 +129,7 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
         tv_device_size.setText(mDevice.getPhysicalSize() + "\" @ " + mDevice.getDensity() + "dpi");
         tv_device_name.setText(mDevice.getName());
         tv_device_name.setOnClickListener(this);
-        tv_device_resolution.setText(mDevice.getPortSize()[0] + "x" + mDevice.getPortSize()[1]);
+        tv_device_resolution.setText(mDevice.getRealSize()[0] + "x" + mDevice.getRealSize()[1]);
         ib_device_thumbnail.setOnClickListener(this);
     }
 
