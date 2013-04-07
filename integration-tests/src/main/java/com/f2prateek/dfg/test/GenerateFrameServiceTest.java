@@ -20,6 +20,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -29,7 +30,6 @@ import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
-import com.f2prateek.dfg.util.StorageUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -160,6 +160,8 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         } else {
             bmp = Bitmap.createBitmap(device.getPortSize()[0], device.getPortSize()[1], conf);
         }
+        Canvas canvas = new Canvas(bmp);
+        canvas.drawARGB(255, 237, 28, 36);
         OutputStream os = new FileOutputStream(screenshot);
         bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
         os.flush();
