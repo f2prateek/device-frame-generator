@@ -35,7 +35,7 @@ public class StorageUtils {
      *
      * @return true if storage is available and writeable
      */
-    public static boolean checkStorageAvailable() {
+    public static boolean isStorageAvailable() {
         boolean mExternalStorageAvailable = false;
         boolean mExternalStorageWriteable = false;
         String state = Environment.getExternalStorageState();

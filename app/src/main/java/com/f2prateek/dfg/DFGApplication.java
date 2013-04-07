@@ -24,18 +24,17 @@ public class DFGApplication extends Application {
     /**
      * Create main application
      *
-     * @param context
+     * @param context Attach a context
      */
     public DFGApplication(final Context context) {
         this();
         attachBaseContext(context);
-
     }
 
     /**
      * Create main application
      *
-     * @param instrumentation
+     * @param instrumentation Instrumentation to attach
      */
     public DFGApplication(final Instrumentation instrumentation) {
         this();
@@ -50,8 +49,8 @@ public class DFGApplication extends Application {
     public void onCreate() {
         super.onCreate();
 
-        if (!StorageUtils.checkStorageAvailable()) {
-            Toast.makeText(this, "Storage unavailable", Toast.LENGTH_SHORT).show();
+        if (!StorageUtils.isStorageAvailable()) {
+            Toast.makeText(this, R.string.storage_unavailable, Toast.LENGTH_SHORT).show();
         }
 
         instance = this;

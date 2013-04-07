@@ -90,8 +90,7 @@ public class ReceiverActivity extends BaseActivity {
     private Device getDefaultDeviceFromPreferences() {
         SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         int deviceNum = sPrefs.getInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, 0);
-        Device device = DeviceProvider.getDevices().get(deviceNum);
-        return device;
+        return DeviceProvider.getDevices().get(deviceNum);
     }
 
 }
