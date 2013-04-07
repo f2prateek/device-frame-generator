@@ -30,6 +30,9 @@ import com.f2prateek.dfg.model.DeviceProvider;
 
 import java.util.ArrayList;
 
+/**
+ * A receiver activity, that is registered to receive images.
+ */
 public class ReceiverActivity extends BaseActivity {
 
     @Override
@@ -56,6 +59,8 @@ public class ReceiverActivity extends BaseActivity {
                 }
             }
         }
+
+        finish();
     }
 
     /**
