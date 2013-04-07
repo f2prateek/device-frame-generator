@@ -29,6 +29,7 @@
             android:layout_above="@+id/tv_device_name"
             android:layout_alignParentTop="true"
             android:background="@drawable/thumbnail_button"
+            android:contentDescription="@string/description_device_thumbnail"
             android:scaleType="fitCenter"/>
 
     <TextView

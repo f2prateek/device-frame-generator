@@ -45,9 +45,9 @@ public class DeviceFrameGenerator {
 
     boolean withShadow;
     boolean withGlare;
-    private Context mContext;
-    private Callback mCallback;
-    private Device mDevice;
+    private final Context mContext;
+    private final Callback mCallback;
+    private final Device mDevice;
 
     public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow, boolean withGlare) {
         mContext = context;
@@ -120,7 +120,7 @@ public class DeviceFrameGenerator {
      */
     private void generateFrame(Bitmap screenshot) {
         mCallback.startingImage(screenshot);
-        String orientation = null;
+        String orientation;
         try {
             orientation = checkDimensions(mDevice, screenshot);
         } catch (UnmatchedDimensionsException e) {

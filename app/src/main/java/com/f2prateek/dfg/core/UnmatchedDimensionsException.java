@@ -23,9 +23,9 @@ import com.f2prateek.dfg.model.Device;
  */
 public class UnmatchedDimensionsException extends Exception {
 
-    Device device;
-    int screenshotHeight;
-    int screenshotWidth;
+    final Device device;
+    final int screenshotHeight;
+    final int screenshotWidth;
 
     public UnmatchedDimensionsException(Device device, int screenshotHeight, int screenshotWidth) {
         super();

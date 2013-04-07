@@ -41,5 +41,6 @@
     <string name="unknown_error_text">An unknown error occurred.</string>
     <string name="select_picture">Select Picture</string>
     <string name="storage_unavailable">Storage Unavailable</string>
+    <string name="description_device_thumbnail">Device Thumbnail</string>
 
 </resources>

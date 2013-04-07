@@ -158,11 +158,6 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
     }
 
     @Override
-    public void onPause() {
-        super.onPause();
-    }
-
-    @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.ib_device_thumbnail:

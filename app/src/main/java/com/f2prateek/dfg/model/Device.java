@@ -22,25 +22,25 @@ import android.os.Parcelable;
 public class Device implements Parcelable {
 
     // Unique identifier for each device, used to identify resources.
-    private String id;
+    private final String id;
     // Device name to display
-    private String name;
+    private final String name;
     // Device product URL
-    private String url;
+    private final String url;
     // Physical size of device, just for displaying to user
-    private float physicalSize;
+    private final float physicalSize;
     // DPI; just for displaying to user
-    private int density;
+    private final int density;
     // offset of screenshot from edges when in landscape
-    private int[] landOffset;
+    private final int[] landOffset;
     // offset of screenshot from edges when in portrait
-    private int[] portOffset;
+    private final int[] portOffset;
     // Screen resolution in portrait
-    private int[] portSize;
+    private final int[] portSize;
     // Screen resolution in portrait, will be displayed to the user. This may or may not be same as portSize
-    private int[] realSize;
+    private final int[] realSize;
     // Handle to resource for thumbnail
-    private int thumbnail;
+    private final int thumbnail;
 
     private Device(String id, String name, String url, float physicalSize, int density, int[] landOffset,
                    int[] portOffset, int[] portSize, int[] realSize, int thumbnail) {
