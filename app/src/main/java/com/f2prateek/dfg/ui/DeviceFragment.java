@@ -18,7 +18,6 @@ package com.f2prateek.dfg.ui;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -26,7 +25,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.support.v4.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,20 +35,13 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.Views;
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.util.BitmapUtils;
-import com.squareup.otto.Bus;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 
-import javax.inject.Inject;
 import java.lang.ref.WeakReference;
 
 import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
@@ -107,7 +98,6 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
         super.onCreate(savedInstanceState);
         mNum = getArguments() != null ? getArguments().getInt("num", 0) : 0;
         mDevice = DeviceProvider.getDevices().get(mNum);
-        setHasOptionsMenu(true);
     }
 
     @Override
@@ -131,30 +121,6 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
         tv_device_name.setOnClickListener(this);
         tv_device_resolution.setText(mDevice.getRealSize()[0] + "x" + mDevice.getRealSize()[1]);
         ib_device_thumbnail.setOnClickListener(this);
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.fragment_device, menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.save_default_device:
-                saveDeviceAsDefault();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void saveDeviceAsDefault() {
-        SharedPreferences mPrefs = PreferenceManager.getDefaultSharedPreferences(getSherlockActivity());
-        SharedPreferences.Editor editor = mPrefs.edit();
-        editor.putInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, mNum);
-        editor.commit();
-        String text = getSherlockActivity().getResources().getString(R.string.saved_as_default_message, mDevice.getName());
-        Crouton.makeText(getSherlockActivity(), text, Style.CONFIRM).show();
     }
 
     @Override

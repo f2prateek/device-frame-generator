@@ -2,15 +2,27 @@
 
 <resources>
 
-    <style name="DeviceTitleText">
+    <style name="DeviceText">
         <item name="android:textSize">32sp</item>
-        <item name="android:textColor">@color/holo_blue_dark</item>
+        <item name="android:fontFamily">sans-serif-light</item>
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:layout_gravity">center_horizontal</item>
         <item name="android:textStyle">normal</item>
     </style>
 
-    <style name="DeviceInfoText">
+    <style name="DeviceText.Title">
+        <item name="android:textSize">32sp</item>
+        <item name="android:textColor">@color/holo_blue_dark</item>
+    </style>
+
+    <style name="DeviceText.Info">
         <item name="android:textSize">16sp</item>
-        <item name="android:textStyle">normal</item>
+    </style>
+
+    <style name="ActionText">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:layout_centerVertical">true</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
 </resources>

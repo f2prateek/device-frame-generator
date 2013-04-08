@@ -122,7 +122,7 @@ public class DeviceProvider {
                 .setThumbnail(R.drawable.samsung_galaxy_s3_thumb)
                 .build());
         devices.add(new Device.Builder().setId("samsung_galaxy_tab_2_7inch")
-                .setName("Samsung Galaxy Tab 2 7 inch")
+                .setName("Samsung Galaxy Tab 2")
                 .setUrl("http://www.samsung.com/global/microsite/galaxytab2/7.0/index.html")
                 .setPhysicalSize(7f).setDensity(160)
                 .setLandOffset(new int[]{230, 203})
