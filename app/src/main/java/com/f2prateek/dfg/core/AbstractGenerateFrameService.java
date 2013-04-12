@@ -25,6 +25,7 @@ import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
+import com.squareup.otto.Bus;
 
 import javax.inject.Inject;
 
@@ -35,6 +36,8 @@ public abstract class AbstractGenerateFrameService extends IntentService impleme
     protected Device mDevice;
     @Inject
     NotificationManager mNotificationManager;
+    @Inject
+    Bus BUS;
 
     public AbstractGenerateFrameService(String name) {
         super(name);

@@ -27,8 +27,8 @@ import android.graphics.*;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
+import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.ui.MainActivity;
 import com.f2prateek.dfg.util.StorageUtils;
@@ -41,7 +41,6 @@ import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 public class GenerateFrameService extends AbstractGenerateFrameService {
 
     private static final String LOGTAG = makeLogTag(GenerateFrameService.class);
-    protected NotificationCompat.BigPictureStyle mNotificationStyle;
 
     public GenerateFrameService() {
         super(LOGTAG);
@@ -64,7 +63,6 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
     @Override
     public void startingImage(Bitmap screenshot) {
-        Log.d(LOGTAG, "starting Image");
         Resources r = getResources();
         // Create the large notification icon
         int imageWidth = screenshot.getWidth();
@@ -106,7 +104,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
     @Override
     public void doneImage(Uri imageUri) {
-        Log.d(LOGTAG, "done Image");
+        BUS.post(new Events.SingleImageProcessed(mDevice));
         Resources r = getResources();
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("image/png");
@@ -122,7 +120,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         mNotificationBuilder
-                .setContentTitle(r.getString(R.string.screenshot_saved_title))
+                .setContentTitle(r.getString(R.string.single_screenshot_saved, mDevice.getName()))
                 .setContentIntent(PendingIntent.getActivity(this, 0, launchIntent, 0))
                 .setWhen(System.currentTimeMillis())
                 .setProgress(0, 0, false)

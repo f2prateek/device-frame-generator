@@ -7,6 +7,7 @@ import com.f2prateek.dfg.ui.DeviceFragment;
 import com.f2prateek.dfg.ui.MainActivity;
 import com.f2prateek.dfg.ui.ReceiverActivity;
 import com.squareup.otto.Bus;
+import com.squareup.otto.ThreadEnforcer;
 import dagger.Module;
 import dagger.Provides;
 
@@ -36,7 +37,7 @@ public class DFGModule {
     @Provides
     @Singleton
     Bus provideOttoBus() {
-        return new Bus();
+        return new Bus(ThreadEnforcer.ANY);
     }
 
 }

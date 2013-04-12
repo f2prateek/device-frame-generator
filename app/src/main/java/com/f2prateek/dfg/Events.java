@@ -1,5 +1,7 @@
 package com.f2prateek.dfg;
 
+import com.f2prateek.dfg.model.Device;
+
 /**
  * Copyright 2013 prateek
  * <p/>
@@ -21,11 +23,45 @@ public class Events {
         // no instances
     }
 
+    public static class GlareSettingUpdated {
+        public boolean isEnabled;
+
+        public GlareSettingUpdated(boolean isEnabled) {
+            this.isEnabled = isEnabled;
+        }
+    }
+
+    public static class ShadowSettingUpdated {
+        public boolean isEnabled;
+
+        public ShadowSettingUpdated(boolean isEnabled) {
+            this.isEnabled = isEnabled;
+        }
+    }
+
     public static class DefaultDeviceUpdated {
         public int newDevice;
 
         public DefaultDeviceUpdated(int newDevice) {
             this.newDevice = newDevice;
+        }
+    }
+
+    public static class SingleImageProcessed {
+        public Device device;
+
+        public SingleImageProcessed(Device device) {
+            this.device = device;
+        }
+    }
+
+    public static class MultipleImagesProcessed {
+        public Device device;
+        public int count;
+
+        public MultipleImagesProcessed(Device device, int count) {
+            this.device = device;
+            this.count = count;
         }
     }
 

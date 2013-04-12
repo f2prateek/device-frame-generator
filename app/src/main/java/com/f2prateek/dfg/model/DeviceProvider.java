@@ -17,6 +17,7 @@
 package com.f2prateek.dfg.model;
 
 import com.f2prateek.dfg.R;
+
 import java.util.ArrayList;
 
 public class DeviceProvider {

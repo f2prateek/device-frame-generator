@@ -28,6 +28,7 @@ import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dfg.AppConstants;
+import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.ui.MainActivity;
 import com.f2prateek.dfg.util.StorageUtils;
@@ -100,13 +101,13 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     }
 
     public void notifyFinished() {
+        BUS.post(new Events.MultipleImagesProcessed(mDevice, imagesProcessed));
         Resources resources = getResources();
         mNotificationBuilder
-                .setContentTitle(resources.getString(R.string.screenshots_saved_title, imagesProcessed))
+                .setContentTitle(resources.getString(R.string.multiple_screenshots_saved, imagesProcessed, mDevice.getName()))
                 .setContentText("")
                 .setProgress(0, 0, false);
         mNotificationManager.notify(DFG_NOTIFICATION_ID, mNotificationBuilder.build());
     }
-
 
 }
