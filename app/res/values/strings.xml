@@ -34,6 +34,7 @@
     <!-- Notifications !-->
     <string name="screenshot_saving_ticker">@string/screenshot_saving_title</string>
     <string name="screenshot_saving_title">Saving....</string>
+    <string name="screenshot_saved_title">Saved Device Frame</string>
     <string name="single_screenshot_saved">Saved frame for %s.</string>
     <string name="multiple_screenshots_saved">Saved %1$d images for %2$s.</string>
     <string name="processing_image">Processing image %1$d of %2$d.</string>

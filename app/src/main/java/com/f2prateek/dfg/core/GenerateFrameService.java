@@ -105,7 +105,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
     @Override
     public void doneImage(Uri imageUri) {
         BUS.post(new Events.SingleImageProcessed(mDevice));
-        Resources r = getResources();
+        Resources resources = getResources();
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("image/png");
         sharingIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
@@ -120,7 +120,8 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
         launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
         mNotificationBuilder
-                .setContentTitle(r.getString(R.string.single_screenshot_saved, mDevice.getName()))
+                .setContentTitle(resources.getString(R.string.screenshot_saved_title))
+                .setContentText(resources.getString(R.string.single_screenshot_saved, mDevice.getName()))
                 .setContentIntent(PendingIntent.getActivity(this, 0, launchIntent, 0))
                 .setWhen(System.currentTimeMillis())
                 .setProgress(0, 0, false)
