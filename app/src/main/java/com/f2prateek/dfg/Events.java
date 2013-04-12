@@ -21,22 +21,6 @@ public class Events {
         // no instances
     }
 
-    public static class GlareSettingUpdated {
-        public boolean isEnabled;
-
-        public GlareSettingUpdated(boolean isEnabled) {
-            this.isEnabled = isEnabled;
-        }
-    }
-
-    public static class ShadowSettingUpdated {
-        public boolean isEnabled;
-
-        public ShadowSettingUpdated(boolean isEnabled) {
-            this.isEnabled = isEnabled;
-        }
-    }
-
     public static class DefaultDeviceUpdated {
         public int newDevice;
 

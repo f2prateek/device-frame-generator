@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import butterknife.InjectView;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
@@ -59,7 +60,24 @@ public class MainActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getSupportMenuInflater().inflate(R.menu.activity_main, menu);
+        MenuItem glare = menu.findItem(R.id.menu_checkbox_glare);
+        glare.setChecked(sharedPreferences.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true));
+        MenuItem shadow = menu.findItem(R.id.menu_checkbox_shadow);
+        shadow.setChecked(sharedPreferences.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true));
         return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_checkbox_glare:
+                updateGlareSetting(!item.isChecked());
+                return true;
+            case R.id.menu_checkbox_shadow:
+                updateShadowSetting(!item.isChecked());
+                return true;
+        }
+        return super.onOptionsItemSelected(item);    //To change body of overridden methods use File | Settings | File Templates.
     }
 
     @Override
@@ -76,23 +94,29 @@ public class MainActivity extends BaseActivity {
         supportInvalidateOptionsMenu();
     }
 
-    @Subscribe
-    public void onGlareSettingUpdated(Events.GlareSettingUpdated event) {
+    public void updateGlareSetting(boolean newSetting) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(AppConstants.KEY_PREF_OPTION_GLARE, newSetting);
+        editor.commit();
         Crouton.cancelAllCroutons();
-        if (event.isEnabled) {
+        if (newSetting) {
             Crouton.makeText(this, R.string.glare_enabled, Style.CONFIRM).show();
         } else {
             Crouton.makeText(this, R.string.glare_disabled, Style.ALERT).show();
         }
+        invalidateOptionsMenu();
     }
 
-    @Subscribe
-    public void onShadowSettingUpdated(Events.ShadowSettingUpdated event) {
+    public void updateShadowSetting(boolean newSetting) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, newSetting);
+        editor.commit();
         Crouton.cancelAllCroutons();
-        if (event.isEnabled) {
+        if (newSetting) {
             Crouton.makeText(this, R.string.shadow_enabled, Style.CONFIRM).show();
         } else {
             Crouton.makeText(this, R.string.shadow_disabled, Style.ALERT).show();
         }
+        invalidateOptionsMenu();
     }
 }
