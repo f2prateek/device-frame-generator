@@ -21,8 +21,16 @@
     <string name="app_name">Device Frame Generator</string>
 
     <!-- Device Fragment !-->
-    <string name="save_default">Save as default</string>
+    <string name="menu_save_default">Save as default</string>
     <string name="saved_as_default_message">%s saved as default device.</string>
+
+    <string name="shadow_preference">Shadow</string>
+    <string name="glare_preference">Glare</string>
+    <string name="glare_enabled">Glare enabled.</string>
+    <string name="glare_disabled">Glare disabled</string>
+    <string name="shadow_enabled">Shadow enabled</string>
+    <string name="shadow_disabled">Shadow disabled</string>
+    <string name="menu_settings">Settings</string>
 
     <!-- Notifications !-->
     <string name="screenshot_saving_ticker">@string/screenshot_saving_title</string>
@@ -42,12 +50,5 @@
     <string name="select_picture">Select Picture</string>
     <string name="storage_unavailable">Storage Unavailable</string>
     <string name="description_device_thumbnail">Device Thumbnail</string>
-    <string name="shadow_preference">Shadow</string>
-    <string name="glare_preference">Glare</string>
-    <string name="glare_enabled">Glare enabled.</string>
-    <string name="glare_disabled">Glare disabled</string>
-    <string name="shadow_enabled">Shadow enabled</string>
-    <string name="shadow_disabled">Shadow disabled</string>
-    <string name="menu_settings">Settings</string>
 
 </resources>

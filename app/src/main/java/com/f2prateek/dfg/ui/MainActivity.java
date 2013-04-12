@@ -21,10 +21,10 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import butterknife.InjectView;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
+import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
 import com.squareup.otto.Bus;
 import com.squareup.otto.Subscribe;
@@ -57,40 +57,23 @@ public class MainActivity extends BaseActivity {
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getSupportMenuInflater().inflate(R.menu.activity_main, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
         BUS.unregister(this);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        getSupportMenuInflater().inflate(R.menu.activity_main, menu);
-        MenuItem item = menu.add(Menu.NONE, R.id.menu_settings, Menu.FIRST, R.string.menu_settings);
-        item.setActionProvider(new CheckBoxActionProvider(this, BUS));
-        item.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM | MenuItem.SHOW_AS_ACTION_WITH_TEXT |
-                MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-        item.setIcon(R.drawable.ic_action_settings);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.save_default_device:
-                saveDeviceAsDefault();
-                return true;
-        }
-        return super.onOptionsItemSelected(item);
-    }
-
-    private void saveDeviceAsDefault() {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, pager.getCurrentItem());
-        editor.commit();
-        String text = getResources().getString(R.string.saved_as_default_message, DeviceProvider.getDevices().get(pager.getCurrentItem()).getName());
+    @Subscribe
+    public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
+        Device device = DeviceProvider.getDevices().get(event.newDevice);
         Crouton.cancelAllCroutons();
-        Crouton.makeText(this, text, Style.CONFIRM).show();
+        Crouton.makeText(this, getString(R.string.saved_as_default_message, device.getName()), Style.CONFIRM).show();
+        supportInvalidateOptionsMenu();
     }
 
     @Subscribe

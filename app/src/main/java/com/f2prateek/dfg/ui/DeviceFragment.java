@@ -18,6 +18,7 @@ package com.f2prateek.dfg.ui;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
@@ -35,13 +36,20 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.Views;
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 import com.f2prateek.dfg.AppConstants;
+import com.f2prateek.dfg.DFGApplication;
+import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.util.BitmapUtils;
+import com.squareup.otto.Bus;
 
+import javax.inject.Inject;
 import java.lang.ref.WeakReference;
 
 import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
@@ -50,7 +58,11 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
 
     private static final String LOGTAG = makeLogTag(DeviceFragment.class);
     private static final int RESULT_SELECT_PICTURE = 542;
-
+    private static LruCache<String, Bitmap> mMemoryCache;
+    @Inject
+    Bus BUS;
+    @Inject
+    SharedPreferences sharedPreferences;
     @InjectView(R.id.tv_device_resolution)
     TextView tv_device_resolution;
     @InjectView(R.id.tv_device_size)
@@ -59,14 +71,11 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
     TextView tv_device_name;
     @InjectView(R.id.ib_device_thumbnail)
     ImageButton ib_device_thumbnail;
-
     private Device mDevice;
-    private static LruCache<String, Bitmap> mMemoryCache;
     private int mNum;
 
     public static DeviceFragment newInstance(int num) {
         DeviceFragment f = new DeviceFragment();
-        buildImageCache();
         Bundle args = new Bundle();
         args.putInt("num", num);
         f.setArguments(args);
@@ -75,6 +84,9 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
     }
 
     private static void buildImageCache() {
+        if (mMemoryCache != null) {
+            return;
+        }
         // Get max available VM memory, exceeding this amount will throw an
         // OutOfMemory exception. Stored in kilobytes as LruCache takes an
         // int in its constructor.
@@ -93,16 +105,48 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
         };
     }
 
+    public static boolean cancelPotentialWork(int data, ImageView imageView) {
+        final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
+
+        if (bitmapWorkerTask != null) {
+            final int bitmapData = bitmapWorkerTask.data;
+            if (bitmapData != data) {
+                // Cancel previous task
+                bitmapWorkerTask.cancel(true);
+            } else {
+                // The same work is already in progress
+                return false;
+            }
+        }
+        // No task associated with the ImageView, or an existing task was cancelled
+        return true;
+    }
+
+    private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
+        if (imageView != null) {
+            final Drawable drawable = imageView.getDrawable();
+            if (drawable instanceof AsyncDrawable) {
+                final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
+                return asyncDrawable.getBitmapWorkerTask();
+            }
+        }
+        return null;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mNum = getArguments() != null ? getArguments().getInt("num", 0) : 0;
         mDevice = DeviceProvider.getDevices().get(mNum);
+        DFGApplication.getInstance().inject(this);
+        buildImageCache();
+        setHasOptionsMenu(true);
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        BUS.register(this);
     }
 
     @Override
@@ -133,6 +177,43 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
                 openDevicePage();
                 break;
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.fragment_device, menu);
+        if (isDefault()) {
+            MenuItem item = menu.findItem(R.id.menu_default_device);
+            item.setIcon(R.drawable.ic_action_star_selected);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.menu_default_device:
+                updateDefaultDevice();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private boolean isDefault() {
+        return mNum == sharedPreferences.getInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, 0);
+    }
+
+    public void updateDefaultDevice() {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, mNum);
+        editor.commit();
+        BUS.post(new Events.DefaultDeviceUpdated(mNum));
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        BUS.unregister(this);
     }
 
     private void getScreenshotImageFromUser() {
@@ -178,32 +259,14 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
         }
     }
 
-    public static boolean cancelPotentialWork(int data, ImageView imageView) {
-        final BitmapWorkerTask bitmapWorkerTask = getBitmapWorkerTask(imageView);
-
-        if (bitmapWorkerTask != null) {
-            final int bitmapData = bitmapWorkerTask.data;
-            if (bitmapData != data) {
-                // Cancel previous task
-                bitmapWorkerTask.cancel(true);
-            } else {
-                // The same work is already in progress
-                return false;
-            }
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            mMemoryCache.put(key, bitmap);
         }
-        // No task associated with the ImageView, or an existing task was cancelled
-        return true;
     }
 
-    private static BitmapWorkerTask getBitmapWorkerTask(ImageView imageView) {
-        if (imageView != null) {
-            final Drawable drawable = imageView.getDrawable();
-            if (drawable instanceof AsyncDrawable) {
-                final AsyncDrawable asyncDrawable = (AsyncDrawable) drawable;
-                return asyncDrawable.getBitmapWorkerTask();
-            }
-        }
-        return null;
+    public Bitmap getBitmapFromMemCache(String key) {
+        return mMemoryCache.get(key);
     }
 
     static class AsyncDrawable extends BitmapDrawable {
@@ -255,16 +318,6 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
                 }
             }
         }
-    }
-
-    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-        if (getBitmapFromMemCache(key) == null) {
-            mMemoryCache.put(key, bitmap);
-        }
-    }
-
-    public Bitmap getBitmapFromMemCache(String key) {
-        return mMemoryCache.get(key);
     }
 
 }

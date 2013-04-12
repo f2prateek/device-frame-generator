@@ -18,14 +18,9 @@
 
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@+id/menu_checkbox_glare"
-          android:title="@string/glare_preference"
-          android:showAsAction="never"
-          android:actionLayout="@layout/actionbar_checkbox_glare"/>
-
-    <item android:id="@+id/menu_checkbox_shadow"
-          android:title="@string/shadow_preference"
-          android:showAsAction="never"
-          android:actionLayout="@layout/actionbar_checkbox_shadow"/>
+    <item android:id="@+id/menu_default_device"
+          android:title="@string/menu_save_default"
+          android:showAsAction="ifRoom"
+          android:icon="@drawable/ic_action_star"/>
 
 </menu>

@@ -37,4 +37,12 @@ public class Events {
         }
     }
 
+    public static class DefaultDeviceUpdated {
+        public int newDevice;
+
+        public DefaultDeviceUpdated(int newDevice) {
+            this.newDevice = newDevice;
+        }
+    }
+
 }
