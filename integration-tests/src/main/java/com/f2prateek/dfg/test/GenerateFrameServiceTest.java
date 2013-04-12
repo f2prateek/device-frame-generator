@@ -86,7 +86,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
      * Delete a file.
      * If it is a folder, delete all files recursively.
      *
-     * @param file
+     * @param file File or folder to delete.
      */
     private void deleteFile(File file) {
         Log.d(LOGTAG, "Deleting : " + file.getAbsolutePath());
@@ -119,7 +119,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
      * Get the generated image path.
      * Looks through mAppDirectory and returns the an image that was created last.
      *
-     * @return
+     * @return The first image in the directory.
      */
     private String getGeneratedImagePath(File directory) {
         String files[] = directory.list();
