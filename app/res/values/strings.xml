@@ -27,9 +27,9 @@
     <string name="shadow_preference">Shadow</string>
     <string name="glare_preference">Glare</string>
     <string name="glare_enabled">Glare will be drawn on screenshots.</string>
-    <string name="glare_disabled">Glare will NOT be drawn on screenshots.</string>
+    <string name="glare_disabled">Glare will not be drawn on screenshots.</string>
     <string name="shadow_enabled">Shadow will be drawn on screenshots.</string>
-    <string name="shadow_disabled">Shadow will NOT be drawn on screenshots.</string>
+    <string name="shadow_disabled">Shadow will not be drawn on screenshots.</string>
 
     <!-- Notifications !-->
     <string name="screenshot_saving_ticker">@string/screenshot_saving_title</string>
