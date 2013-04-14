@@ -44,7 +44,7 @@
     <string name="failed_open_screenshot_title">Couldn\'t open screenshot.</string>
     <string name="failed_open_screenshot_text">Failed to retrieve the screenshot at %s.</string>
     <string name="failed_match_dimensions_title">Dimensions don\'t match.</string>
-    <string name="failed_match_dimensions_text">Device is %2$d by %3$d. Screenshot is %4$d by %5$d.</string>
+    <string name="failed_match_dimensions_text">Device is %1$d by %2$d. Screenshot is %3$d by %4$d.</string>
     <string name="unknown_error_title">Unknown Error.</string>
     <string name="unknown_error_text">An unknown error occurred.</string>
     <string name="select_picture">Select Picture</string>
