@@ -82,8 +82,8 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
         BUS.unregister(this);
+        super.onPause();
     }
 
     @Subscribe

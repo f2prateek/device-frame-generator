@@ -212,8 +212,8 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
 
     @Override
     public void onPause() {
-        super.onPause();
         BUS.unregister(this);
+        super.onPause();
     }
 
     private void getScreenshotImageFromUser() {
