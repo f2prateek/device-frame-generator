@@ -25,6 +25,7 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.util.LruCache;
 import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
@@ -42,12 +43,12 @@ import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 public class DeviceFrameGenerator {
 
     private static final String LOGTAG = makeLogTag(DeviceFrameGenerator.class);
-
-    boolean withShadow;
-    boolean withGlare;
+    private static LruCache<String, Bitmap> mMemoryCache;
     private final Context mContext;
     private final Callback mCallback;
     private final Device mDevice;
+    boolean withShadow;
+    boolean withGlare;
 
     public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow, boolean withGlare) {
         mContext = context;
@@ -90,6 +91,38 @@ public class DeviceFrameGenerator {
         return (orientation.compareTo("port") == 0);
     }
 
+    private static void buildImageCache() {
+        if (mMemoryCache != null) {
+            return;
+        }
+        // Get max available VM memory, exceeding this amount will throw an
+        // OutOfMemory exception. Stored in kilobytes as LruCache takes an
+        // int in its constructor.
+        final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
+
+        // Use 1/8th of the available memory for this memory cache.
+        final int cacheSize = maxMemory / 8;
+
+        mMemoryCache = new LruCache<String, Bitmap>(cacheSize) {
+            @Override
+            protected int sizeOf(String key, Bitmap bitmap) {
+                // The cache size will be measured in kilobytes rather than
+                // number of items.
+                return BitmapUtils.getByteCount(bitmap) / 1024;
+            }
+        };
+    }
+
+    public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
+        if (getBitmapFromMemCache(key) == null) {
+            mMemoryCache.put(key, bitmap);
+        }
+    }
+
+    public Bitmap getBitmapFromMemCache(String key) {
+        return mMemoryCache.get(key);
+    }
+
     /**
      * Generate the frame.
      *
@@ -101,12 +134,13 @@ public class DeviceFrameGenerator {
                 withShadow ? " with shadow " : " without shadow ",
                 screenshotPath));
 
-        Bitmap screenshot;
+        final Bitmap screenshot;
         try {
             screenshot = BitmapUtils.decodeFile(screenshotPath);
         } catch (IOException e) {
             Resources r = mContext.getResources();
             mCallback.failedImage(r.getString(R.string.failed_open_screenshot_title),
+                    r.getString(R.string.failed_open_screenshot_text),
                     r.getString(R.string.failed_open_screenshot_text, screenshotPath));
             return;
         }
@@ -120,6 +154,7 @@ public class DeviceFrameGenerator {
      */
     private void generateFrame(Bitmap screenshot) {
         mCallback.startingImage(screenshot);
+        buildImageCache();
         String orientation;
         try {
             orientation = checkDimensions(mDevice, screenshot);
@@ -128,23 +163,35 @@ public class DeviceFrameGenerator {
             Resources r = mContext.getResources();
             String failed_title = r.getString(R.string.failed_match_dimensions_title);
             String failed_text = r.getString(R.string.failed_match_dimensions_text,
-                    e.device.getName(), e.device.getPortSize()[0], e.device.getPortSize()[1],
+                    e.device.getPortSize()[0], e.device.getPortSize()[1],
                     e.screenshotHeight, e.screenshotWidth);
-            mCallback.failedImage(failed_title, failed_text);
+            String failed_small_text = r.getString(R.string.device_chosen, mDevice.getName());
+            mCallback.failedImage(failed_title, failed_small_text, failed_text);
             return;
         }
 
-        Bitmap background;
-        Bitmap glare;
-        Bitmap shadow;
+        Bitmap background = getBitmapFromMemCache(mDevice.getId() + "_" + orientation + "_background");
+        Bitmap glare = getBitmapFromMemCache(mDevice.getId() + "_" + orientation + "_glare");
+        Bitmap shadow = getBitmapFromMemCache(mDevice.getId() + "_" + orientation + "_shadow");
         try {
-            background = BitmapUtils.decodeResource(mContext, mDevice.getBackgroundString(orientation));
-            glare = BitmapUtils.decodeResource(mContext, mDevice.getGlareString(orientation));
-            shadow = BitmapUtils.decodeResource(mContext, mDevice.getShadowString(orientation));
+            if (background == null) {
+                background = BitmapUtils.decodeResource(mContext, mDevice.getBackgroundString(orientation));
+                addBitmapToMemoryCache(mDevice.getId() + "_" + orientation + "_background", background);
+            }
+            if (glare == null) {
+                glare = BitmapUtils.decodeResource(mContext, mDevice.getGlareString(orientation));
+                addBitmapToMemoryCache(mDevice.getId() + "_" + orientation + "_glare", glare);
+            }
+            if (shadow == null) {
+                shadow = BitmapUtils.decodeResource(mContext, mDevice.getShadowString(orientation));
+                addBitmapToMemoryCache(mDevice.getId() + "_" + orientation + "_shadow", shadow);
+            }
         } catch (IOException e) {
             Log.e(LOGTAG, e.toString());
             Resources r = mContext.getResources();
-            mCallback.failedImage(r.getString(R.string.unknown_error_title), r.getString(R.string.unknown_error_text));
+            mCallback.failedImage(r.getString(R.string.unknown_error_title),
+                    r.getString(R.string.unknown_error_text),
+                    r.getString(R.string.unknown_error_text));
             return;
         }
 
@@ -197,14 +244,13 @@ public class DeviceFrameGenerator {
         } catch (IOException e) {
             Log.e(LOGTAG, e.toString());
             Resources r = mContext.getResources();
-            mCallback.failedImage(r.getString(R.string.unknown_error_title), r.getString(R.string.unknown_error_text));
+            mCallback.failedImage(r.getString(R.string.unknown_error_title),
+                    r.getString(R.string.unknown_error_text),
+                    r.getString(R.string.unknown_error_text));
             return;
         }
 
-        background.recycle();
         screenshot.recycle();
-        glare.recycle();
-        shadow.recycle();
 
         // update file size in the database
         values.clear();
@@ -235,7 +281,7 @@ public class DeviceFrameGenerator {
     public interface Callback {
         public void startingImage(Bitmap screenshot);
 
-        public void failedImage(String title, String text);
+        public void failedImage(String title, String small_text, String text);
 
         public void doneImage(Uri imageUri);
     }

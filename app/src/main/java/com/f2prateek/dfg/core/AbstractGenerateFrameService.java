@@ -61,12 +61,12 @@ public abstract class AbstractGenerateFrameService extends IntentService impleme
      * @param failed_title Title for notification.
      */
     @Override
-    public void failedImage(String failed_title, String failed_text) {
+    public void failedImage(String failed_title, String failed_small_text, String failed_text) {
         Notification notification = new NotificationCompat.Builder(this)
                 .setTicker(failed_title)
                 .setContentTitle(failed_title)
-                .setStyle(new NotificationCompat.BigTextStyle().bigText(failed_text).setBigContentTitle(failed_title).setSummaryText(mDevice.getName()))
-                .setContentText(failed_text)
+                .setContentText(failed_small_text)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(failed_small_text).setBigContentTitle(failed_title).setSummaryText(failed_text))
                 .setSmallIcon(R.drawable.ic_action_error)
                 .setWhen(System.currentTimeMillis())
                 .setAutoCancel(true)

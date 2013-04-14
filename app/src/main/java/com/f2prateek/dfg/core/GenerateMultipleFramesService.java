@@ -103,11 +103,10 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     public void notifyFinished() {
         BUS.post(new Events.MultipleImagesProcessed(mDevice, imagesProcessed));
         Resources resources = getResources();
+        String error = resources.getString(R.string.multiple_screenshots_saved, imagesProcessed, mDevice.getName());
         mNotificationBuilder
                 .setContentTitle(resources.getString(R.string.screenshot_saved_title))
-                .setContentText(resources.getString(R.string.single_screenshot_saved, mDevice.getName()))
-                .setStyle(new NotificationCompat.BigTextStyle().setSummaryText(resources.getString(R.string.multiple_screenshots_saved, imagesProcessed, mDevice.getName())))
-                .setContentText("")
+                .setContentText(error)
                 .setProgress(0, 0, false);
         mNotificationManager.notify(DFG_NOTIFICATION_ID, mNotificationBuilder.build());
     }

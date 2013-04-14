@@ -220,6 +220,7 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
+        mMemoryCache.evictAll();
         startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)),
                 RESULT_SELECT_PICTURE);
     }
