@@ -6,6 +6,18 @@ Get the app from the [Google Play Store](2).
 
 ![Barcode][3]
 
+## Device Frames Available
+  * Nexus S : 480*800
+  * Galaxy Nexus : 720*1280
+  * Nexus 4 : 768*1280
+  * Nexus 7 : 800*1280
+  * Nexus 10 : 1600*2560
+  * HTC One X : 720*1280
+  * Samsung Galaxy Note : 800*1280
+  * Samsung Galaxy S III : 720*1280
+  * Samsung Galaxy Tab 2 : 600*1024
+  * Motorola Xoom : 800*1280
+
 ## Authors and Contributors
 Developed by [Prateek Srivastava](https://twitter.com/f2prateek) (@f2prateek) and open sourced on [Github](https://github.com/f2prateek/Device-Frame-Generator).
 Application icon and design by [Taylor Ling](http://androiduiux.com/).
