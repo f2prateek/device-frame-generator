@@ -44,6 +44,6 @@ A minimal form of attribution would be to mention in your application's source p
 ## Support or Contact
 For any bugs and issues, please post to the [bug tracker](https://github.com/f2prateek/Device-Frame-Generator/issues?state=open) or on [twitter](https://twitter.com/f2prateek).
 
-[1]: https://raw.github.com/f2prateek/progressbutton/master/art/feature-graphic.fw.png
+[1]: https://raw.github.com/f2prateek/Device-Frame-Generator/master/art/feature-graphic.fw.png
 [2]: https://play.google.com/store/apps/details?id=com.f2prateek.dfg
-[3]: https://raw.github.com/f2prateek/progressbutton/master/art/play_store_barcode.png
+[3]: https://raw.github.com/f2prateek/Device-Frame-Generator/master/art/play_store_barcode.png
