@@ -27,12 +27,10 @@ import android.graphics.*;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
-import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.ui.MainActivity;
-import com.f2prateek.dfg.util.StorageUtils;
 
 import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 
@@ -42,6 +40,10 @@ import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 public class GenerateFrameService extends AbstractGenerateFrameService {
 
     private static final String LOGTAG = makeLogTag(GenerateFrameService.class);
+    SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+    boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
+    boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
+    DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, mDevice, withShadow, withGlare);
 
     public GenerateFrameService() {
         super(LOGTAG);
@@ -52,25 +54,14 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
         super.onHandleIntent(intent);
         // Get all the intent data.
         Uri imageUri = (Uri) intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
-        String screenshotPath;
-        if (imageUri.toString().contains("content")) {
-            // Check if the image was from the contentProvider
-            Log.d(LOGTAG, "imageUri: " + imageUri.toString());
-            screenshotPath = StorageUtils.getPath(this, imageUri);
-        } else {
-            Log.d(LOGTAG, "imageUri non CP: " + imageUri.toString());
-            screenshotPath = imageUri.toString().substring(7);
+        String screenshotPath = imageUri.toString().substring(7);
+        if (screenshotPath == null) {
             failedImage(getString(R.string.failed_open_screenshot_title),
-                    getString(R.string.failed_open_screenshot_text, screenshotPath),
+                    getString(R.string.failed_open_screenshot_text, imageUri.toString()),
                     getString(R.string.copy_to_gallery));
             return;
         }
 
-        SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
-        boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
-
-        DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, mDevice, withShadow, withGlare);
         deviceFrameGenerator.generateFrame(screenshotPath);
     }
 

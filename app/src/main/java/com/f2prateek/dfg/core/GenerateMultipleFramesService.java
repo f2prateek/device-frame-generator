@@ -63,6 +63,12 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
         DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, mDevice, withShadow, withGlare);
         for (Uri uri : mImageUris) {
             String screenshotPath = StorageUtils.getPath(this, uri);
+            if (screenshotPath == null) {
+                failedImage(getString(R.string.failed_open_screenshot_title),
+                        getString(R.string.failed_open_screenshot_text, uri.toString()),
+                        getString(R.string.copy_to_gallery));
+                continue;
+            }
             deviceFrameGenerator.generateFrame(screenshotPath);
         }
         notifyFinished();

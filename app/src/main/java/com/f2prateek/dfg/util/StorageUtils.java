@@ -66,6 +66,10 @@ public class StorageUtils {
      * @return path of selected image
      */
     public static String getPath(Context context, Uri uri) {
+        if (!uri.toString().contains("content")) {
+            return null;
+        }
+
         String[] projection = {
                 MediaStore.Images.Media.DATA
         };
