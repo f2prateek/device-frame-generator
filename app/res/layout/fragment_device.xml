@@ -35,18 +35,18 @@
     <TextView
             android:id="@+id/tv_device_name"
             style="@style/DeviceText.Title"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/tv_device_size"
             android:layout_centerHorizontal="true"
             android:fontFamily="sans-serif-light"
             android:gravity="center_horizontal"
-            android:maxLines="2"/>
+            android:maxLines="3"/>
 
     <TextView
             android:id="@+id/tv_device_size"
             style="@style/DeviceText.Info"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_above="@+id/tv_device_resolution"
             android:layout_centerHorizontal="true"
@@ -63,4 +63,5 @@
             android:layout_gravity="center_horizontal"
             android:fontFamily="sans-serif-light"
             android:paddingBottom="16dp"/>
+
 </RelativeLayout>

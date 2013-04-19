@@ -25,27 +25,29 @@
     <ImageButton
             android:id="@+id/ib_device_thumbnail"
             android:layout_width="0dp"
-            android:layout_weight="2"
             android:layout_height="match_parent"
+            android:layout_weight="2"
             android:background="@drawable/thumbnail_button"
             android:contentDescription="@string/description_device_thumbnail"
             android:scaleType="fitCenter"/>
 
     <RelativeLayout android:layout_width="0dp"
+                    android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:layout_height="match_parent">
+                    android:padding="16dp">
+
         <TextView
                 android:id="@+id/tv_device_name"
                 style="@style/DeviceText.Title"
-                android:layout_width="wrap_content"
-                android:layout_centerInParent="true"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:maxLines="3"/>
 
         <TextView
                 android:id="@+id/tv_device_size"
                 style="@style/DeviceText.Info"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@+id/tv_device_name"/>
@@ -53,7 +55,7 @@
         <TextView
                 android:id="@+id/tv_device_resolution"
                 style="@style/DeviceText.Info"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/tv_device_size"
                 android:layout_centerHorizontal="true"
