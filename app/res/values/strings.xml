@@ -51,5 +51,6 @@
     <string name="storage_unavailable">Storage Unavailable</string>
     <string name="description_device_thumbnail">Device Thumbnail</string>
     <string name="device_chosen">%s chosen.</string>
+    <string name="copy_to_gallery">Please share the image from the Gallery.</string>
 
 </resources>

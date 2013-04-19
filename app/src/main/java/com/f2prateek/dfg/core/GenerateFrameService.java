@@ -27,6 +27,7 @@ import android.graphics.*;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
+import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
@@ -51,7 +52,19 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
         super.onHandleIntent(intent);
         // Get all the intent data.
         Uri imageUri = (Uri) intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
-        String screenshotPath = StorageUtils.getPath(this, imageUri);
+        String screenshotPath;
+        if (imageUri.toString().contains("content")) {
+            // Check if the image was from the contentProvider
+            Log.d(LOGTAG, "imageUri: " + imageUri.toString());
+            screenshotPath = StorageUtils.getPath(this, imageUri);
+        } else {
+            Log.d(LOGTAG, "imageUri non CP: " + imageUri.toString());
+            screenshotPath = imageUri.toString().substring(7);
+            failedImage(getString(R.string.failed_open_screenshot_title),
+                    getString(R.string.failed_open_screenshot_text, screenshotPath),
+                    getString(R.string.copy_to_gallery));
+            return;
+        }
 
         SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
         boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);

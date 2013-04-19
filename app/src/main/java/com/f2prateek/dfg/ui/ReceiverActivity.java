@@ -48,13 +48,11 @@ public class ReceiverActivity extends BaseActivity {
             if (Intent.ACTION_SEND.equals(action) && type != null) {
                 if (type.startsWith("image/")) {
                     // Got a single image
-                    Log.d("ReceiverActivity", "got single");
                     handleReceivedSingleImage(intent);
                 }
             } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
                 if (type.startsWith("image/")) {
                     // Got multiple images
-                    Log.d("ReceiverActivity", "got multiple");
                     handleReceivedMultipleImages(intent);
                 }
             }
