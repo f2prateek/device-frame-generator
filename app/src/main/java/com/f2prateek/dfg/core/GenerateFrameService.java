@@ -31,6 +31,7 @@ import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.ui.MainActivity;
+import com.f2prateek.dfg.util.StorageUtils;
 
 import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 
@@ -40,10 +41,6 @@ import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 public class GenerateFrameService extends AbstractGenerateFrameService {
 
     private static final String LOGTAG = makeLogTag(GenerateFrameService.class);
-    SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-    boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
-    boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
-    DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, mDevice, withShadow, withGlare);
 
     public GenerateFrameService() {
         super(LOGTAG);
@@ -52,9 +49,15 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
     @Override
     protected void onHandleIntent(Intent intent) {
         super.onHandleIntent(intent);
+
+        SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+        boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
+        boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
+        DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, mDevice, withShadow, withGlare);
+
         // Get all the intent data.
         Uri imageUri = (Uri) intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
-        String screenshotPath = imageUri.toString().substring(7);
+        String screenshotPath = StorageUtils.getPath(this, imageUri);
         if (screenshotPath == null) {
             failedImage(getString(R.string.failed_open_screenshot_title),
                     getString(R.string.failed_open_screenshot_text, imageUri.toString()),

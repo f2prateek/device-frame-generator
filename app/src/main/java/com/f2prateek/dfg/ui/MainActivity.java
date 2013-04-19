@@ -96,14 +96,14 @@ public class MainActivity extends BaseActivity {
 
     @Subscribe
     public void onSingleImageProcessed(Events.SingleImageProcessed event) {
-        Crouton.cancelAllCroutons();
-        Crouton.makeText(this, getString(R.string.single_screenshot_saved, event.device.getName()), Style.CONFIRM).show();
+        // Crouton.cancelAllCroutons();
+        // Crouton.makeText(this, getString(R.string.single_screenshot_saved, event.device.getName()), Style.CONFIRM).show();
     }
 
     @Subscribe
     public void onMultipleImagesProcessed(Events.MultipleImagesProcessed event) {
-        Crouton.cancelAllCroutons();
-        Crouton.makeText(this, getString(R.string.multiple_screenshots_saved, event.count, event.device.getName()), Style.CONFIRM).show();
+        // Crouton.cancelAllCroutons();
+        // Crouton.makeText(this, getString(R.string.multiple_screenshots_saved, event.count, event.device.getName()), Style.CONFIRM).show();
     }
 
     public void updateGlareSetting(boolean newSetting) {
