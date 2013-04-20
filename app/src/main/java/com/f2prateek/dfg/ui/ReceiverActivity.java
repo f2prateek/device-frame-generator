@@ -21,6 +21,7 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import com.bugsense.trace.BugSenseHandler;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
@@ -64,6 +65,7 @@ public class ReceiverActivity extends BaseActivity {
      * Handle an intent that provides a single image.
      */
     private void handleReceivedSingleImage(Intent i) {
+        BugSenseHandler.sendEvent("Generating Single Frame from share");
         Uri imageUri = (Uri) i.getParcelableExtra(Intent.EXTRA_STREAM);
         Device device = getDefaultDeviceFromPreferences();
         Intent intent = new Intent(this, GenerateFrameService.class);
@@ -76,6 +78,7 @@ public class ReceiverActivity extends BaseActivity {
      * Handle an intent that provides multiple images.
      */
     void handleReceivedMultipleImages(Intent i) {
+        BugSenseHandler.sendEvent("Generating Multiple Frames from share");
         ArrayList<Uri> imageUris = i.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
         Device device = getDefaultDeviceFromPreferences();
         Intent intent = new Intent(this, GenerateMultipleFramesService.class);

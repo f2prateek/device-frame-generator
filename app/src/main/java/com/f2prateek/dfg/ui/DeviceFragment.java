@@ -39,6 +39,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.bugsense.trace.BugSenseHandler;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.Events;
@@ -207,6 +208,8 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, mNum);
         editor.commit();
+        BugSenseHandler.sendEvent("Updating default device.");
+        BugSenseHandler.sendEvent("Default Device : " + DeviceProvider.getDevices().get(mNum).getName());
         BUS.post(new Events.DefaultDeviceUpdated(mNum));
     }
 
@@ -234,6 +237,7 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_SELECT_PICTURE && resultCode == Activity.RESULT_OK) {
+            BugSenseHandler.sendEvent("Generating frame from app.");
             Uri selectedImageUri = data.getData();
             Intent intent = new Intent(getSherlockActivity(), GenerateFrameService.class);
             intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, mDevice);

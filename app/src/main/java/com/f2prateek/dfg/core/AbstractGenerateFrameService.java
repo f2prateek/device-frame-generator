@@ -21,7 +21,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import com.bugsense.trace.BugSenseHandler;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
@@ -48,18 +47,11 @@ public abstract class AbstractGenerateFrameService extends IntentService impleme
     public void onCreate() {
         super.onCreate();
         DFGApplication.getInstance().inject(this);
-        BugSenseHandler.initAndStartSession(this, AppConstants.BUG_SENSE_API_KEY);
     }
 
     @Override
     protected void onHandleIntent(Intent intent) {
         mDevice = (Device) intent.getParcelableExtra(AppConstants.KEY_EXTRA_DEVICE);
-    }
-
-    @Override
-    public void onDestroy() {
-        BugSenseHandler.closeSession(AbstractGenerateFrameService.this);
-        super.onDestroy();
     }
 
     /**
