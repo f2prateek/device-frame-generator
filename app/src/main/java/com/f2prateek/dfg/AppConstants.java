@@ -38,4 +38,9 @@ public class AppConstants {
     public static final String DFG_FILE_NAME_TEMPLATE = "DFG_%s.png";
     public static final String DFG_FILE_PATH_TEMPLATE = "%s/%s/%s";
 
+    /*
+     * Bug Sense
+     */
+    public static final String BUG_SENSE_API_KEY = "7f2daa4b";
+
 }

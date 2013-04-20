@@ -32,6 +32,14 @@
         <artifactId>com-f2prateek-dfg-parent</artifactId>
     </parent>
 
+    <repositories>
+        <repository>
+            <id>bugsense repo</id>
+            <name>The BugSense Repository</name>
+            <url>http://mvn.bugsense.com/</url>
+        </repository>
+    </repositories>
+
     <properties>
         <abs.version>4.3.0</abs.version>
         <dagger.version>1.0-SNAPSHOT</dagger.version>
@@ -104,6 +112,11 @@
                     <artifactId>support-v4</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.bugsense.trace</groupId>
+            <artifactId>bugsense</artifactId>
+            <version>3.2</version>
         </dependency>
     </dependencies>
     <build>
