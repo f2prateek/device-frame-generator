@@ -18,8 +18,8 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="com.f2prateek.dfg"
-          android:versionCode="102"
-          android:versionName="1.0.2">
+          android:versionCode="103"
+          android:versionName="1.0.3">
 
     <uses-sdk
             android:minSdkVersion="8"
