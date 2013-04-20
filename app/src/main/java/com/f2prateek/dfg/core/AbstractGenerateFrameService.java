@@ -47,8 +47,8 @@ public abstract class AbstractGenerateFrameService extends IntentService impleme
     @Override
     public void onCreate() {
         super.onCreate();
-        BugSenseHandler.initAndStartSession(this, AppConstants.BUG_SENSE_API_KEY);
         DFGApplication.getInstance().inject(this);
+        BugSenseHandler.initAndStartSession(this, AppConstants.BUG_SENSE_API_KEY);
     }
 
     @Override

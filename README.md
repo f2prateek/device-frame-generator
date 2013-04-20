@@ -18,6 +18,12 @@ Get the app from the [Google Play Store](2).
   * Samsung Galaxy Tab 2 : 600*1024
   * Motorola Xoom : 800*1280
 
+## Permissions
+###### WRITE_EXTERNAL_STORAGE
+For saving images to your phone, as well as opening screenshots.
+###### INTERNET
+For reporting bugs with [BugSense][https://www.bugsense.com/].
+
 ## Authors and Contributors
 Developed by [Prateek Srivastava](https://twitter.com/f2prateek) (@f2prateek) and open sourced on [Github](https://github.com/f2prateek/Device-Frame-Generator).
 Application icon and design by [Taylor Ling](http://androiduiux.com/).

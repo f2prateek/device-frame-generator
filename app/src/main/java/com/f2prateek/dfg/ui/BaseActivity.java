@@ -21,6 +21,8 @@ import android.os.Bundle;
 import butterknife.Views;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.MenuItem;
+import com.bugsense.trace.BugSenseHandler;
+import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.DFGApplication;
 
 public class BaseActivity extends SherlockFragmentActivity {
@@ -29,12 +31,19 @@ public class BaseActivity extends SherlockFragmentActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         DFGApplication.getInstance().inject(this);
+        BugSenseHandler.initAndStartSession(this, AppConstants.BUG_SENSE_API_KEY);
     }
 
     @Override
     public void setContentView(int layoutResId) {
         super.setContentView(layoutResId);
         Views.inject(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        BugSenseHandler.closeSession(BaseActivity.this);
+        super.onDestroy();
     }
 
     @Override
