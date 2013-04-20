@@ -33,7 +33,7 @@
     </parent>
 
     <properties>
-        <abs.version>4.2.0</abs.version>
+        <abs.version>4.3.0</abs.version>
         <dagger.version>1.0-SNAPSHOT</dagger.version>
     </properties>
     <dependencies>
@@ -61,7 +61,7 @@
         </dependency>
         <dependency>
             <groupId>com.actionbarsherlock</groupId>
-            <artifactId>library</artifactId>
+            <artifactId>actionbarsherlock</artifactId>
             <version>${abs.version}</version>
             <type>apklib</type>
             <exclusions>
