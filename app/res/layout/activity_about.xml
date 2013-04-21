@@ -16,21 +16,9 @@
   ~ limitations under the License.
   -->
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:id="@+id/list"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent">
 
-    <item android:id="@+id/menu_checkbox_glare"
-          android:title="@string/glare_preference"
-          android:showAsAction="never"
-          android:checkable="true" />
-
-    <item android:id="@+id/menu_checkbox_shadow"
-          android:title="@string/shadow_preference"
-          android:showAsAction="never"
-          android:checkable="true" />
-
-    <item android:id="@+id/menu_about"
-          android:icon="@drawable/ic_action_info"
-          android:title="@string/about"
-          android:showAsAction="never" />
-
-</menu>
+</ListView>

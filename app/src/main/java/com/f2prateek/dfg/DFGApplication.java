@@ -56,7 +56,9 @@ public class DFGApplication extends Application {
         objectGraph.inject(this);
         objectGraph.injectStatics();
 
-        BugSenseHandler.initAndStartSession(this, AppConstants.BUG_SENSE_API_KEY);
+        if (!BuildConfig.DEBUG) {
+            BugSenseHandler.initAndStartSession(this, AppConstants.BUG_SENSE_API_KEY);
+        }
 
         if (!StorageUtils.isStorageAvailable()) {
             Toast.makeText(this, R.string.storage_unavailable, Toast.LENGTH_SHORT).show();
@@ -65,7 +67,9 @@ public class DFGApplication extends Application {
 
     @Override
     public void onTerminate() {
-        BugSenseHandler.closeSession(DFGApplication.this);
+        if (!BuildConfig.DEBUG) {
+            BugSenseHandler.closeSession(DFGApplication.this);
+        }
         super.onTerminate();
     }
 

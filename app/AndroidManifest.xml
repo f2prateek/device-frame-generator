@@ -33,8 +33,7 @@
             android:icon="@drawable/app_icon"
             android:label="@string/app_name"
             android:theme="@style/AppTheme"
-            android:largeHeap="true"
-            android:debuggable="true" >
+            android:largeHeap="true" >
 
         <activity
                 android:name=".ui.MainActivity"
@@ -62,6 +61,10 @@
                 <data android:mimeType="image/*"/>
             </intent-filter>
         </activity>
+
+        <activity
+                android:name=".ui.AboutActivity"
+                android:label="@string/app_name" />
 
         <service android:name=".core.GenerateFrameService">
         </service>
