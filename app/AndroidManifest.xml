@@ -61,11 +61,6 @@
             </intent-filter>
         </activity>
 
-        <activity
-                android:name=".ui.AboutActivity"
-                android:label="@string/app_name"
-                android:theme="@style/Theme.Sherlock" />
-
         <service android:name=".core.GenerateFrameService">
         </service>
         <service android:name=".core.GenerateMultipleFramesService">

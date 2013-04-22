@@ -20,6 +20,7 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -27,6 +28,9 @@ import android.widget.BaseAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.InjectView;
+import butterknife.Views;
+import com.actionbarsherlock.app.SherlockDialogFragment;
+import com.bugsense.trace.BugSenseHandler;
 import com.f2prateek.dfg.R;
 import com.inscription.ChangeLogDialog;
 import de.psdev.licensesdialog.LicensesDialogFragment;
@@ -34,7 +38,7 @@ import de.psdev.licensesdialog.LicensesDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AboutActivity extends BaseActivity implements AdapterView.OnItemClickListener {
+public class AboutFragment extends SherlockDialogFragment implements AdapterView.OnItemClickListener {
 
     @InjectView(R.id.list)
     ListView mListView;
@@ -42,35 +46,39 @@ public class AboutActivity extends BaseActivity implements AdapterView.OnItemCli
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        BugSenseHandler.sendEvent("About activity!");
+    }
 
-        setContentView(R.layout.activity_about);
-
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View v = inflater.inflate(R.layout.fragment_about, container, false);
+        Views.inject(this, v);
         Resources res = getResources();
         List<TwoLineListItem> list = new ArrayList<TwoLineListItem>();
         list.add(new TwoLineListItem(res.getString(R.string.developer), "Prateek Srivastava"));
         list.add(new TwoLineListItem(res.getString(R.string.designer), "Taylor Ling"));
         list.add(new TwoLineListItem(res.getString(R.string.attribution), res.getString(R.string.attribution_summary)));
         list.add(new TwoLineListItem(res.getString(R.string.changelog), res.getString(R.string.changelog_summary)));
-
         mListView.setAdapter(new TwoLineListAdapter(list));
         mListView.setOnItemClickListener(this);
+        return v;
     }
 
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         switch (position) {
             case 0:
-                openUrl("https://twitter.com/f2prateek");
+                openUrl("http://about.f2prateek.com");
                 break;
             case 1:
                 openUrl("http://androiduiux.com");
                 break;
             case 2:
                 final LicensesDialogFragment fragment = LicensesDialogFragment.newInstace(R.raw.attribution);
-                fragment.show(getSupportFragmentManager(), null);
+                fragment.show(getSherlockActivity().getSupportFragmentManager(), null);
                 break;
             case 3:
-                final ChangeLogDialog changeLogDialog = new ChangeLogDialog(this);
+                final ChangeLogDialog changeLogDialog = new ChangeLogDialog(getSherlockActivity());
                 changeLogDialog.show();
                 break;
         }
@@ -109,7 +117,7 @@ public class AboutActivity extends BaseActivity implements AdapterView.OnItemCli
             TwoLineListItem item = getItem(position);
 
             if (convertView == null) {
-                convertView = getLayoutInflater()
+                convertView = getSherlockActivity().getLayoutInflater()
                         .inflate(android.R.layout.two_line_list_item, parent, false);
             }
 

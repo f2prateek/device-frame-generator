@@ -40,8 +40,8 @@ import javax.inject.Singleton;
                         BaseActivity.class,
                         MainActivity.class,
                         ReceiverActivity.class,
-                        AboutActivity.class,
                         DeviceFragment.class,
+                        AboutFragment.class,
                         AbstractGenerateFrameService.class,
                         GenerateFrameService.class,
                         GenerateMultipleFramesService.class

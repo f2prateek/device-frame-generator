@@ -16,7 +16,6 @@
 
 package com.f2prateek.dfg.ui;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -78,10 +77,11 @@ public class MainActivity extends BaseActivity {
                 updateShadowSetting(!item.isChecked());
                 return true;
             case R.id.menu_about:
-                startActivity(new Intent(this, AboutActivity.class));
+                final AboutFragment fragment = new AboutFragment();
+                fragment.show(getSupportFragmentManager(), null);
                 return true;
         }
-        return super.onOptionsItemSelected(item);    //To change body of overridden methods use File | Settings | File Templates.
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
