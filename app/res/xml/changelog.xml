@@ -16,19 +16,19 @@
   -->
 
 <changelog>
-    <release version="1.0.0" versioncode="100" date="04/14/2013">
-        <change>Initial Release</change>
+    <release version="1.0.3" versioncode="102" date="04/30/2013">
+        <change>Add developer info</change>
+        <change>Support apps other than the Gallery (such as Dropbox)!</change>
+    </release>
+    <release version="1.0.2" versioncode="102" date="04/20/2013">
+        <change>Add BugSense and analytics</change>
+        <change>Update dependencies</change>
     </release>
     <release version="1.0.1" versioncode="101" date="04/19/2013">
         <change>Show an error message when apps that aren't supported share an image.</change>
         <change>Don't notify users inside the app.</change>
     </release>
-    <release version="1.0.2" versioncode="102" date="04/20/2013">
-        <change>Add BugSense</change>
-        <change>Add analytics</change>
-    </release>
-    <release version="1.0.3" versioncode="102" date="04/20/2013">
-        <change>Add an About Page</change>
-        <change>Add support for receiving data from more apps!</change>
+    <release version="1.0.0" versioncode="100" date="04/14/2013">
+        <change>Initial Release</change>
     </release>
 </changelog>
