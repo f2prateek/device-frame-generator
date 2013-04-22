@@ -30,7 +30,6 @@ import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
-import com.f2prateek.dfg.util.StorageUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -79,7 +78,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
 
         // Clean up
         deleteFile(generatedImage);
-        deleteFile(new File(StorageUtils.getPath(mContext, screenshotUri)));
+        deleteFile(mAppDirectory);
     }
 
     /**
@@ -117,7 +116,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
 
     /**
      * Get the generated image path.
-     * Looks through mAppDirectory and returns the an image that was created last.
+     * Looks through mAppDirectory and returns the first image.
      *
      * @return The first image in the directory.
      */

@@ -126,22 +126,22 @@ public class DeviceFrameGenerator {
     /**
      * Generate the frame.
      *
-     * @param screenshotPath path to the screenshot file.
+     * @param imageUri Uri to the screenshot file.
      */
-    public void generateFrame(String screenshotPath) {
+    public void generateFrame(Uri imageUri) {
         Log.i(LOGTAG, String.format("Generating for %s %s and %s from file %s.", mDevice.getName(),
                 withGlare ? " with glare " : " without glare ",
                 withShadow ? " with shadow " : " without shadow ",
-                screenshotPath));
+                imageUri.toString()));
 
         final Bitmap screenshot;
         try {
-            screenshot = BitmapUtils.decodeFile(screenshotPath);
+            screenshot = BitmapUtils.decodeUri(mContext.getContentResolver(), imageUri);
         } catch (IOException e) {
             Resources r = mContext.getResources();
             mCallback.failedImage(r.getString(R.string.failed_open_screenshot_title),
                     r.getString(R.string.failed_open_screenshot_text),
-                    r.getString(R.string.failed_open_screenshot_text, screenshotPath));
+                    r.getString(R.string.failed_open_screenshot_text, imageUri.toString()));
             return;
         }
         generateFrame(screenshot);

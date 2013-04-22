@@ -27,4 +27,8 @@
         <change>Add BugSense</change>
         <change>Add analytics</change>
     </release>
+    <release version="1.0.3" versioncode="102" date="04/20/2013">
+        <change>Add an About Page</change>
+        <change>Add support for receiving data from more apps!</change>
+    </release>
 </changelog>

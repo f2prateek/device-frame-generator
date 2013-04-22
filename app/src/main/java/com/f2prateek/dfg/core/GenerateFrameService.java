@@ -31,7 +31,6 @@ import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.ui.MainActivity;
-import com.f2prateek.dfg.util.StorageUtils;
 
 import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 
@@ -56,16 +55,8 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
         DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, mDevice, withShadow, withGlare);
 
         // Get all the intent data.
-        Uri imageUri = (Uri) intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
-        String screenshotPath = StorageUtils.getPath(this, imageUri);
-        if (screenshotPath == null) {
-            failedImage(getString(R.string.failed_open_screenshot_title),
-                    getString(R.string.failed_open_screenshot_text, imageUri.toString()),
-                    getString(R.string.copy_to_gallery));
-            return;
-        }
-
-        deviceFrameGenerator.generateFrame(screenshotPath);
+        Uri imageUri = intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
+        deviceFrameGenerator.generateFrame(imageUri);
     }
 
     @Override

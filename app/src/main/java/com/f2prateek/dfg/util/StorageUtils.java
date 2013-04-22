@@ -16,12 +16,7 @@
 
 package com.f2prateek.dfg.util;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.net.Uri;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.v4.content.CursorLoader;
 import android.util.Log;
 
 import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
@@ -57,29 +52,6 @@ public class StorageUtils {
         Log.i(LOGTAG, mExternalStorageWriteable ? "Storage writeable" : "Storage not writeable");
 
         return (mExternalStorageAvailable && mExternalStorageWriteable);
-    }
-
-    /**
-     * Gets path of selected image
-     *
-     * @param uri path of the image
-     * @return path of selected image
-     */
-    public static String getPath(Context context, Uri uri) {
-        if (!uri.toString().contains("content")) {
-            return null;
-        }
-
-        String[] projection = {
-                MediaStore.Images.Media.DATA
-        };
-
-        CursorLoader cursorLoader = new CursorLoader(context, uri, projection, null, null, null);
-        Cursor cursor = cursorLoader.loadInBackground();
-
-        int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-        cursor.moveToFirst();
-        return cursor.getString(column_index);
     }
 
 }

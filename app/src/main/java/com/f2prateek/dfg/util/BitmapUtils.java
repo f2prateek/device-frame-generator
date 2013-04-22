@@ -16,10 +16,12 @@
 
 package com.f2prateek.dfg.util;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 
@@ -43,18 +45,19 @@ public class BitmapUtils {
      * Compatibility version decodeFile, returns a mutable bitmap.
      * Uses {@link #convertToMutable} if less than API 11.
      *
-     * @param pathName path to the file
+     * @param uri Uri to the file
      * @return A mutable copy of the decoded {@link Bitmap}; null if failed.
      * @throws IOException if unable to make it mutable
      */
-    public static Bitmap decodeFile(String pathName) throws IOException {
+    public static Bitmap decodeUri(final ContentResolver resolver, final Uri uri) throws IOException {
         BitmapFactory.Options opt = new BitmapFactory.Options();
         opt.inJustDecodeBounds = false;
+
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            return convertToMutable(BitmapFactory.decodeFile(pathName, opt));
+            return convertToMutable(BitmapFactory.decodeStream(resolver.openInputStream(uri), null, opt));
         } else {
             opt.inMutable = true;
-            return BitmapFactory.decodeFile(pathName, opt);
+            return BitmapFactory.decodeStream(resolver.openInputStream(uri), null, opt);
         }
     }
 
@@ -66,7 +69,7 @@ public class BitmapUtils {
      * @return A mutable copy of the resource
      * @throws IOException if unable to make it mutable
      */
-    public static Bitmap decodeResource(Context context, String resourceName) throws IOException {
+    public static Bitmap decodeResource(final Context context, final String resourceName) throws IOException {
         Resources resources = context.getResources();
         String packageName = context.getPackageName();
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {

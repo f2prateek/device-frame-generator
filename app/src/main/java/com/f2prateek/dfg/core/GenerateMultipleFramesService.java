@@ -31,7 +31,6 @@ import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.ui.MainActivity;
-import com.f2prateek.dfg.util.StorageUtils;
 
 import java.util.ArrayList;
 
@@ -62,14 +61,7 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
         notifyStarting();
         DeviceFrameGenerator deviceFrameGenerator = new DeviceFrameGenerator(this, this, mDevice, withShadow, withGlare);
         for (Uri uri : mImageUris) {
-            String screenshotPath = StorageUtils.getPath(this, uri);
-            if (screenshotPath == null) {
-                failedImage(getString(R.string.failed_open_screenshot_title),
-                        getString(R.string.failed_open_screenshot_text, uri.toString()),
-                        getString(R.string.copy_to_gallery));
-                continue;
-            }
-            deviceFrameGenerator.generateFrame(screenshotPath);
+            deviceFrameGenerator.generateFrame(uri);
         }
         notifyFinished();
     }

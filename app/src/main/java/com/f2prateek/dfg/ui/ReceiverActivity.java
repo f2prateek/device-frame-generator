@@ -39,23 +39,14 @@ public class ReceiverActivity extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Get intent, action and MIME type
         Intent intent = getIntent();
-        if (intent != null) {
-            String action = intent.getAction();
-            String type = intent.getType();
-
-            if (Intent.ACTION_SEND.equals(action) && type != null) {
-                if (type.startsWith("image/")) {
-                    // Got a single image
-                    handleReceivedSingleImage(intent);
-                }
-            } else if (Intent.ACTION_SEND_MULTIPLE.equals(action) && type != null) {
-                if (type.startsWith("image/")) {
-                    // Got multiple images
-                    handleReceivedMultipleImages(intent);
-                }
-            }
+        String action = intent.getAction();
+        if (Intent.ACTION_SEND.equals(action)) {
+            // Got a single image
+            handleReceivedSingleImage(intent);
+        } else if (Intent.ACTION_SEND_MULTIPLE.equals(action)) {
+            // Got multiple images
+            handleReceivedMultipleImages(intent);
         }
 
         finish();
@@ -66,7 +57,7 @@ public class ReceiverActivity extends BaseActivity {
      */
     private void handleReceivedSingleImage(Intent i) {
         BugSenseHandler.sendEvent("Generating Single Frame from share");
-        Uri imageUri = (Uri) i.getParcelableExtra(Intent.EXTRA_STREAM);
+        Uri imageUri = i.getParcelableExtra(Intent.EXTRA_STREAM);
         Device device = getDefaultDeviceFromPreferences();
         Intent intent = new Intent(this, GenerateFrameService.class);
         intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
