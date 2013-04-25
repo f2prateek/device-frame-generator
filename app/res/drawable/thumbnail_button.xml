@@ -20,6 +20,5 @@
 
     <item android:drawable="@drawable/blue_border" android:state_pressed="true"/>
     <item android:drawable="@drawable/blue_border" android:state_focused="true"/>
-    <item android:drawable="@android:color/transparent"/>
 
 </selector>
