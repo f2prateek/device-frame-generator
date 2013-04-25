@@ -57,10 +57,12 @@
     <string name="about">About</string>
     <string name="developer">Developer</string>
     <string name="designer">Designer</string>
-    <string name="changelog">Changelog</string>
-    <string name="changelog_summary">see the changelog</string>
+    <string name="changelog">Change log</string>
+    <string name="changelog_summary">See the release history</string>
     <string name="website">Website</string>
     <string name="prateek_srivastava">Prateek Srivastava</string>
     <string name="taylor_ling">Taylor Ling</string>
+    <string name="version">Version</string>
+    <string name="current_version_number">1.0.3</string>
 
 </resources>

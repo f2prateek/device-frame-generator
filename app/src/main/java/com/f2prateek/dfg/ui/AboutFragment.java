@@ -56,6 +56,7 @@ public class AboutFragment extends DialogFragment implements AdapterView.OnItemC
         List<TwoLineListItem> list = new ArrayList<TwoLineListItem>();
         list.add(new TwoLineListItem(R.string.developer, R.string.prateek_srivastava));
         list.add(new TwoLineListItem(R.string.designer, R.string.taylor_ling));
+        list.add(new TwoLineListItem(R.string.version, R.string.current_version_number));
         list.add(new TwoLineListItem(R.string.changelog, R.string.changelog_summary));
         mListView.setAdapter(new TwoLineListAdapter(getActivity(), list));
         mListView.setOnItemClickListener(this);
