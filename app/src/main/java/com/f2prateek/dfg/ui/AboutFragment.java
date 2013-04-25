@@ -16,10 +16,11 @@
 
 package com.f2prateek.dfg.ui;
 
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -29,7 +30,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.Views;
-import com.actionbarsherlock.app.SherlockDialogFragment;
 import com.bugsense.trace.BugSenseHandler;
 import com.f2prateek.dfg.R;
 import com.inscription.ChangeLogDialog;
@@ -38,29 +38,30 @@ import de.psdev.licensesdialog.LicensesDialogFragment;
 import java.util.ArrayList;
 import java.util.List;
 
-public class AboutFragment extends SherlockDialogFragment implements AdapterView.OnItemClickListener {
+public class AboutFragment extends DialogFragment implements AdapterView.OnItemClickListener {
 
-    @InjectView(R.id.list)
+    @InjectView(R.id.about_list)
     ListView mListView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        BugSenseHandler.sendEvent("About activity!");
+        setStyle(STYLE_NO_TITLE, getTheme());
+        BugSenseHandler.sendEvent("About screen!");
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_about, container, false);
         Views.inject(this, v);
-        Resources res = getResources();
         List<TwoLineListItem> list = new ArrayList<TwoLineListItem>();
-        list.add(new TwoLineListItem(res.getString(R.string.developer), "Prateek Srivastava"));
-        list.add(new TwoLineListItem(res.getString(R.string.designer), "Taylor Ling"));
-        list.add(new TwoLineListItem(res.getString(R.string.attribution), res.getString(R.string.attribution_summary)));
-        list.add(new TwoLineListItem(res.getString(R.string.changelog), res.getString(R.string.changelog_summary)));
-        mListView.setAdapter(new TwoLineListAdapter(list));
+        list.add(new TwoLineListItem(R.string.developer, R.string.prateek_srivastava));
+        list.add(new TwoLineListItem(R.string.designer, R.string.taylor_ling));
+        list.add(new TwoLineListItem(R.string.attribution, R.string.attribution_summary));
+        list.add(new TwoLineListItem(R.string.changelog, R.string.changelog_summary));
+        mListView.setAdapter(new TwoLineListAdapter(getActivity(), list));
         mListView.setOnItemClickListener(this);
+        getDialog().setTitle(R.string.about);
         return v;
     }
 
@@ -75,10 +76,10 @@ public class AboutFragment extends SherlockDialogFragment implements AdapterView
                 break;
             case 2:
                 final LicensesDialogFragment fragment = LicensesDialogFragment.newInstace(R.raw.attribution);
-                fragment.show(getSherlockActivity().getSupportFragmentManager(), null);
+                fragment.show(getActivity().getSupportFragmentManager(), null);
                 break;
             case 3:
-                final ChangeLogDialog changeLogDialog = new ChangeLogDialog(getSherlockActivity());
+                final ChangeLogDialog changeLogDialog = new ChangeLogDialog(getActivity());
                 changeLogDialog.show();
                 break;
         }
@@ -89,22 +90,34 @@ public class AboutFragment extends SherlockDialogFragment implements AdapterView
         startActivity(intent);
     }
 
-    private class TwoLineListAdapter extends BaseAdapter {
+    class TwoLineListItem {
+        int title;
+        int summary;
 
-        final List<TwoLineListItem> mList;
+        TwoLineListItem(int title, int summary) {
+            this.title = title;
+            this.summary = summary;
+        }
+    }
 
-        private TwoLineListAdapter(List<TwoLineListItem> list) {
-            mList = list;
+    class TwoLineListAdapter extends BaseAdapter {
+
+        final List<TwoLineListItem> mItems;
+        final Context mContext;
+
+        TwoLineListAdapter(Context context, List<TwoLineListItem> items) {
+            mContext = context;
+            mItems = items;
         }
 
         @Override
         public int getCount() {
-            return mList.size();
+            return mItems.size();
         }
 
         @Override
         public TwoLineListItem getItem(int position) {
-            return mList.get(position);
+            return mItems.get(position);
         }
 
         @Override
@@ -114,27 +127,16 @@ public class AboutFragment extends SherlockDialogFragment implements AdapterView
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            TwoLineListItem item = getItem(position);
-
             if (convertView == null) {
-                convertView = getSherlockActivity().getLayoutInflater()
-                        .inflate(android.R.layout.two_line_list_item, parent, false);
+                convertView = LayoutInflater.from(mContext).inflate(android.R.layout.two_line_list_item, parent, false);
             }
 
-            ((TextView) convertView.findViewById(android.R.id.text1)).setText(item.title);
-            ((TextView) convertView.findViewById(android.R.id.text2)).setText(item.summary);
+            mContext.getResources();
+            TwoLineListItem item = getItem(position);
+            ((TextView) convertView.findViewById(android.R.id.text1)).setText(mContext.getResources().getString(item.title));
+            ((TextView) convertView.findViewById(android.R.id.text2)).setText(mContext.getResources().getString(item.summary));
+
             return convertView;
-        }
-
-    }
-
-    class TwoLineListItem {
-        String summary;
-        String title;
-
-        TwoLineListItem(String title, String summary) {
-            this.title = title;
-            this.summary = summary;
         }
     }
 

@@ -36,6 +36,12 @@
         <license>Apache Software License 2.0</license>
     </notice>
     <notice>
+        <name>Device Frame Generator</name>
+        <url>https://android-ui-utils.googlecode.com/hg/asset-studio/dist/device-frames.html</url>
+        <copyright>Copyright 2011 Google Inc.</copyright>
+        <license>Apache Software License 2.0</license>
+    </notice>
+    <notice>
         <name>Otto</name>
         <url>http://square.github.io/otto/</url>
         <copyright>Copyright 2012 Square, Inc.&lt;br/&gt;Copyright 2010 Google, Inc.</copyright>

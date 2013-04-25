@@ -61,5 +61,8 @@
     <string name="attribution_summary">Libraries and Other developers</string>
     <string name="changelog">Changelog</string>
     <string name="changelog_summary">see the changelog</string>
+    <string name="website">Website</string>
+    <string name="prateek_srivastava">Prateek Srivastava</string>
+    <string name="taylor_ling">Taylor Ling</string>
 
 </resources>
