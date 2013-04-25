@@ -57,8 +57,6 @@
     <string name="about">About</string>
     <string name="developer">Developer</string>
     <string name="designer">Designer</string>
-    <string name="attribution">Attribution</string>
-    <string name="attribution_summary">Libraries and Other developers</string>
     <string name="changelog">Changelog</string>
     <string name="changelog_summary">see the changelog</string>
     <string name="website">Website</string>

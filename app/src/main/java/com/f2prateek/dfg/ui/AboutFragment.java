@@ -33,7 +33,6 @@ import butterknife.Views;
 import com.bugsense.trace.BugSenseHandler;
 import com.f2prateek.dfg.R;
 import com.inscription.ChangeLogDialog;
-import de.psdev.licensesdialog.LicensesDialogFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -57,7 +56,6 @@ public class AboutFragment extends DialogFragment implements AdapterView.OnItemC
         List<TwoLineListItem> list = new ArrayList<TwoLineListItem>();
         list.add(new TwoLineListItem(R.string.developer, R.string.prateek_srivastava));
         list.add(new TwoLineListItem(R.string.designer, R.string.taylor_ling));
-        list.add(new TwoLineListItem(R.string.attribution, R.string.attribution_summary));
         list.add(new TwoLineListItem(R.string.changelog, R.string.changelog_summary));
         mListView.setAdapter(new TwoLineListAdapter(getActivity(), list));
         mListView.setOnItemClickListener(this);
@@ -75,8 +73,6 @@ public class AboutFragment extends DialogFragment implements AdapterView.OnItemC
                 openUrl("http://androiduiux.com");
                 break;
             case 2:
-                final LicensesDialogFragment fragment = LicensesDialogFragment.newInstace(R.raw.attribution);
-                fragment.show(getActivity().getSupportFragmentManager(), null);
                 break;
             case 3:
                 final ChangeLogDialog changeLogDialog = new ChangeLogDialog(getActivity());
