@@ -34,4 +34,18 @@
         <item name="android:textSize">16sp</item>
     </style>
 
+    <style name="AboutText" parent="android:TextAppearance.DeviceDefault.Small">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="AboutText.Header">
+        <item name="android:textStyle">bold</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:layout_marginTop">16dp</item>
+    </style>
+
+    <style name="AboutText.Clickable">
+        <item name="android:textColor">@color/holo_blue_dark</item>
+    </style>
+
 </resources>

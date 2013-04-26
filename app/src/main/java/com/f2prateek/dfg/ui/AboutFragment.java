@@ -16,7 +16,6 @@
 
 package com.f2prateek.dfg.ui;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -24,9 +23,7 @@ import android.support.v4.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.Views;
@@ -34,13 +31,18 @@ import com.bugsense.trace.BugSenseHandler;
 import com.f2prateek.dfg.R;
 import com.inscription.ChangeLogDialog;
 
-import java.util.ArrayList;
-import java.util.List;
+public class AboutFragment extends DialogFragment implements View.OnClickListener {
 
-public class AboutFragment extends DialogFragment implements AdapterView.OnItemClickListener {
-
-    @InjectView(R.id.about_list)
-    ListView mListView;
+    @InjectView(R.id.iv_app_logo)
+    ImageView mAppLogoImage;
+    @InjectView(R.id.tv_version_number)
+    TextView mVersionText;
+    @InjectView(R.id.tv_gplus)
+    TextView mGPlusText;
+    @InjectView(R.id.tv_twitter)
+    TextView mTwitterText;
+    @InjectView(R.id.tv_designer)
+    TextView mDesignerText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,31 +55,38 @@ public class AboutFragment extends DialogFragment implements AdapterView.OnItemC
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_about, container, false);
         Views.inject(this, v);
-        List<TwoLineListItem> list = new ArrayList<TwoLineListItem>();
-        list.add(new TwoLineListItem(R.string.developer, R.string.prateek_srivastava));
-        list.add(new TwoLineListItem(R.string.designer, R.string.taylor_ling));
-        list.add(new TwoLineListItem(R.string.version, R.string.current_version_number));
-        list.add(new TwoLineListItem(R.string.changelog, R.string.changelog_summary));
-        mListView.setAdapter(new TwoLineListAdapter(getActivity(), list));
-        mListView.setOnItemClickListener(this);
         getDialog().setTitle(R.string.about);
         return v;
     }
 
     @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        switch (position) {
-            case 0:
-                openUrl("http://about.f2prateek.com");
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        mAppLogoImage.setOnClickListener(this);
+        mVersionText.setOnClickListener(this);
+        mGPlusText.setOnClickListener(this);
+        mTwitterText.setOnClickListener(this);
+        mDesignerText.setOnClickListener(this);
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_app_logo:
+                openUrl("f2prateek.com/Device-Frame-Generator");
                 break;
-            case 1:
-                openUrl("http://androiduiux.com");
-                break;
-            case 2:
-                break;
-            case 3:
+            case R.id.tv_version_number:
                 final ChangeLogDialog changeLogDialog = new ChangeLogDialog(getActivity());
                 changeLogDialog.show();
+                break;
+            case R.id.tv_gplus:
+                openUrl("https://prof iles.google.com/f2prateek");
+                break;
+            case R.id.tv_twitter:
+                openUrl("https://twitter.com/f2prateek");
+                break;
+            case R.id.tv_designer:
+                openUrl("http://androiduiux.com/");
                 break;
         }
     }
@@ -85,56 +94,6 @@ public class AboutFragment extends DialogFragment implements AdapterView.OnItemC
     public void openUrl(String url) {
         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
         startActivity(intent);
-    }
-
-    class TwoLineListItem {
-        int title;
-        int summary;
-
-        TwoLineListItem(int title, int summary) {
-            this.title = title;
-            this.summary = summary;
-        }
-    }
-
-    class TwoLineListAdapter extends BaseAdapter {
-
-        final List<TwoLineListItem> mItems;
-        final Context mContext;
-
-        TwoLineListAdapter(Context context, List<TwoLineListItem> items) {
-            mContext = context;
-            mItems = items;
-        }
-
-        @Override
-        public int getCount() {
-            return mItems.size();
-        }
-
-        @Override
-        public TwoLineListItem getItem(int position) {
-            return mItems.get(position);
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            if (convertView == null) {
-                convertView = LayoutInflater.from(mContext).inflate(android.R.layout.two_line_list_item, parent, false);
-            }
-
-            mContext.getResources();
-            TwoLineListItem item = getItem(position);
-            ((TextView) convertView.findViewById(android.R.id.text1)).setText(mContext.getResources().getString(item.title));
-            ((TextView) convertView.findViewById(android.R.id.text2)).setText(mContext.getResources().getString(item.summary));
-
-            return convertView;
-        }
     }
 
 }
