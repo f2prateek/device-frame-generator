@@ -19,11 +19,13 @@ package com.f2prateek.dfg.test;
 import android.app.Activity;
 import android.app.Instrumentation;
 import android.test.ActivityInstrumentationTestCase2;
+import com.jayway.android.robotium.solo.Solo;
 
 public class ActivityTest<T extends Activity> extends ActivityInstrumentationTestCase2<T> {
 
     protected Instrumentation instrumentation;
     protected T activity;
+    protected Solo solo;
 
     public ActivityTest(Class<T> activityClass) {
         super(activityClass);
@@ -34,5 +36,6 @@ public class ActivityTest<T extends Activity> extends ActivityInstrumentationTes
         super.setUp();
         instrumentation = getInstrumentation();
         activity = getActivity();
+        solo = new Solo(instrumentation, activity);
     }
 }
