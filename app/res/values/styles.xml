@@ -45,7 +45,7 @@
     </style>
 
     <style name="AboutText.Clickable">
-        <item name="android:textColor">@color/holo_blue_dark</item>
+        <item name="android:textColor">@drawable/clickable_text</item>
     </style>
 
 </resources>

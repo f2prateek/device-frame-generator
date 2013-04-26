@@ -73,14 +73,14 @@ public class AboutFragment extends DialogFragment implements View.OnClickListene
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.iv_app_logo:
-                openUrl("f2prateek.com/Device-Frame-Generator");
+                openUrl("http://f2prateek.com/Device-Frame-Generator/");
                 break;
             case R.id.tv_version_number:
                 final ChangeLogDialog changeLogDialog = new ChangeLogDialog(getActivity());
                 changeLogDialog.show();
                 break;
             case R.id.tv_gplus:
-                openUrl("https://prof iles.google.com/f2prateek");
+                openUrl("https://profiles.google.com/f2prateek");
                 break;
             case R.id.tv_twitter:
                 openUrl("https://twitter.com/f2prateek");
