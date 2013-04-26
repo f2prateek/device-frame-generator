@@ -79,7 +79,8 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
     }
 
     public void testAboutDialogIsShown() throws Exception {
-        solo.clickOnMenuItem("About");
+        Spoon.screenshot(activity, "initial_state");
+        solo.clickOnActionBarItem(R.id.menu_about);
         Spoon.screenshot(activity, "about_dialog");
     }
 
