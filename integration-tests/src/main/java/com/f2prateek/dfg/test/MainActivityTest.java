@@ -22,6 +22,8 @@ import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.ui.MainActivity;
 import com.squareup.spoon.Spoon;
 
+import java.util.Random;
+
 import static org.fest.assertions.api.ANDROID.assertThat;
 
 /**
@@ -58,6 +60,27 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
             instrumentation.waitForIdleSync();
             Spoon.screenshot(activity, tag_prefix + count);
         }
+    }
+
+    public void testDeviceIsSaved() throws Exception {
+        Spoon.screenshot(activity, "original_default_device");
+        final int device = new Random().nextInt(pager.getAdapter().getCount());
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                pager.setCurrentItem(device);
+            }
+        });
+        solo.clickOnActionBarItem(R.id.menu_default_device);
+        activity.finish();
+        activity = getActivity();
+        assertThat(pager).hasCurrentItem(device);
+        Spoon.screenshot(activity, "updated_default_device");
+    }
+
+    public void testAboutDialogIsShown() throws Exception {
+        solo.clickOnMenuItem("About");
+        Spoon.screenshot(activity, "about_dialog");
     }
 
 }
