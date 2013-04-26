@@ -18,6 +18,11 @@
 
 <resources>
 
+    <style name="ThumbnailButton">
+        <item name="android:background">@drawable/thumbnail_button</item>
+        <item name="android:scaleType">fitCenter</item>
+    </style>
+
     <style name="DeviceText">
         <item name="android:textSize">32sp</item>
         <item name="android:fontFamily">sans-serif-light</item>

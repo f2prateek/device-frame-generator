@@ -22,15 +22,14 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-    <ImageButton
-            android:id="@+id/ib_device_thumbnail"
+    <ImageView
+            android:id="@+id/iv_device_thumbnail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/tv_device_name"
             android:layout_alignParentTop="true"
-            android:background="@drawable/thumbnail_button"
             android:contentDescription="@string/description_device_thumbnail"
-            android:scaleType="fitCenter"/>
+            style="@style/ThumbnailButton"/>
 
     <TextView
             android:id="@+id/tv_device_name"

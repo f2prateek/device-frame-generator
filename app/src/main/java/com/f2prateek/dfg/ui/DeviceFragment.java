@@ -30,7 +30,6 @@ import android.support.v4.util.LruCache;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
@@ -70,8 +69,8 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
     TextView tv_device_size;
     @InjectView(R.id.tv_device_name)
     TextView tv_device_name;
-    @InjectView(R.id.ib_device_thumbnail)
-    ImageButton ib_device_thumbnail;
+    @InjectView(R.id.iv_device_thumbnail)
+    ImageView iv_device_thumbnail;
     private Device mDevice;
     private int mNum;
 
@@ -160,18 +159,18 @@ public class DeviceFragment extends SherlockFragment implements View.OnClickList
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadBitmap(mDevice.getThumbnail(), ib_device_thumbnail);
+        loadBitmap(mDevice.getThumbnail(), iv_device_thumbnail);
         tv_device_size.setText(mDevice.getPhysicalSize() + "\" @ " + mDevice.getDensity() + "dpi");
         tv_device_name.setText(mDevice.getName());
         tv_device_name.setOnClickListener(this);
         tv_device_resolution.setText(mDevice.getRealSize()[0] + "x" + mDevice.getRealSize()[1]);
-        ib_device_thumbnail.setOnClickListener(this);
+        iv_device_thumbnail.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.ib_device_thumbnail:
+            case R.id.iv_device_thumbnail:
                 getScreenshotImageFromUser();
                 break;
             case R.id.tv_device_name:
