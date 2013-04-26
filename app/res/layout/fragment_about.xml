@@ -23,12 +23,11 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
 
-    <ImageView android:id="@+id/iv_app_logo"
+    <com.f2prateek.dfg.ui.ColoredSelectorImageView android:id="@+id/iv_app_logo"
                android:layout_width="fill_parent"
-               android:layout_height="wrap_content"
-               android:src="@drawable/app_icon"
-               android:background="@drawable/logo_button"
-               android:scaleType="center"/>
+               android:layout_height="128dp"
+               android:src="@drawable/app_icon_256"
+               android:scaleType="fitCenter"/>
 
     <TextView android:layout_width="fill_parent"
               android:layout_height="wrap_content"

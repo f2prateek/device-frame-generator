@@ -22,14 +22,13 @@
         android:layout_height="match_parent"
         android:orientation="horizontal">
 
-    <ImageView
+    <com.f2prateek.dfg.ui.ColoredSelectorImageView
             android:id="@+id/iv_device_thumbnail"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="2"
             android:contentDescription="@string/description_device_thumbnail"
-            style="@style/ThumbnailButton"
-            />
+            style="@style/DeviceThumbnail"/>
 
     <RelativeLayout android:layout_width="0dp"
                     android:layout_height="match_parent"

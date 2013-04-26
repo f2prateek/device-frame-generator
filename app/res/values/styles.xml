@@ -18,8 +18,7 @@
 
 <resources>
 
-    <style name="ThumbnailButton">
-        <item name="android:background">@drawable/thumbnail_button</item>
+    <style name="DeviceThumbnail">
         <item name="android:scaleType">fitCenter</item>
     </style>
 
