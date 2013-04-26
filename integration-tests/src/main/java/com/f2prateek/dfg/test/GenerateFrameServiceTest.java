@@ -16,9 +16,12 @@
 
 package com.f2prateek.dfg.test;
 
+import android.app.NotificationManager;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -27,6 +30,7 @@ import android.provider.MediaStore;
 import android.test.ServiceTestCase;
 import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
+import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
@@ -77,6 +81,8 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         assertThat(generatedImage).exists().isFile();
 
         // Clean up
+        ((NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE)).cancel(AbstractGenerateFrameService.DFG_NOTIFICATION_ID);
+        deleteFile(new File(getPath(screenshotUri)));
         deleteFile(generatedImage);
         deleteFile(mAppDirectory);
     }
@@ -136,6 +142,15 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
         int random = new Random().nextInt(DeviceProvider.getDevices().size());
         Device device = DeviceProvider.getDevices().get(random);
         return device;
+    }
+
+    public String getPath(Uri uri) {
+        Cursor cursor = getContext().getContentResolver().query(uri, null,
+                null, null, null);
+        cursor.moveToFirst();
+        String imageFilePath = cursor.getString(0);
+        cursor.close();
+        return imageFilePath;
     }
 
     /**

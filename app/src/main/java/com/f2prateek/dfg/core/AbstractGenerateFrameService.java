@@ -31,7 +31,7 @@ import javax.inject.Inject;
 
 public abstract class AbstractGenerateFrameService extends IntentService implements DeviceFrameGenerator.Callback {
 
-    protected static final int DFG_NOTIFICATION_ID = 789;
+    public static final int DFG_NOTIFICATION_ID = 789;
     protected NotificationCompat.Builder mNotificationBuilder;
     protected Device mDevice;
     @Inject
