@@ -17,8 +17,8 @@
 
 <changelog>
     <release version="1.0.3" versioncode="102" date="04/30/2013">
-        <change>Add developer info</change>
-        <change>Support apps other than the Gallery (such as Dropbox)!</change>
+        <change>Add an About dialog</change>
+        <change>Support apps other than the Gallery (such as Dropbox)</change>
     </release>
     <release version="1.0.2" versioncode="102" date="04/20/2013">
         <change>Add BugSense and analytics</change>
