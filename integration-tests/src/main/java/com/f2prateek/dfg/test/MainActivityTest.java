@@ -29,6 +29,8 @@ import static org.fest.assertions.api.ANDROID.assertThat;
  */
 public class MainActivityTest extends ActivityTest<MainActivity> {
 
+    private ViewPager pager;
+
     public MainActivityTest() {
         super(MainActivity.class);
     }
@@ -36,13 +38,12 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        pager = (ViewPager) activity.findViewById(R.id.pager);
     }
 
-    public void testDevicesShown() throws Exception {
-        String log = "pager_item_";
+    public void testAllDevicesShown() throws Exception {
+        final String tag_prefix = "pager_item_";
         assertThat(activity).isNotNull();
-
-        final ViewPager pager = (ViewPager) activity.findViewById(R.id.pager);
         assertThat(pager).isNotNull();
         assertThat(pager.getAdapter()).isNotNull().hasCount(DeviceProvider.getDevices().size());
 
@@ -55,7 +56,7 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
                 }
             });
             instrumentation.waitForIdleSync();
-            Spoon.screenshot(activity, log + count);
+            Spoon.screenshot(activity, tag_prefix + count);
         }
     }
 
