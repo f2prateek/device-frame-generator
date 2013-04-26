@@ -21,7 +21,6 @@ import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
 import com.f2prateek.dfg.ui.*;
 import com.squareup.otto.Bus;
-import com.squareup.otto.ThreadEnforcer;
 import dagger.Module;
 import dagger.Provides;
 
@@ -53,7 +52,7 @@ public class DFGModule {
     @Provides
     @Singleton
     Bus provideOttoBus() {
-        return new Bus(ThreadEnforcer.ANY);
+        return new Bus();
     }
 
 }

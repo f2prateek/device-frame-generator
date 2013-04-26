@@ -25,6 +25,8 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.*;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dfg.AppConstants;
@@ -102,7 +104,13 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
     @Override
     public void doneImage(Uri imageUri) {
-        BUS.post(new Events.SingleImageProcessed(mDevice));
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                BUS.post(new Events.SingleImageProcessed(mDevice));
+            }
+        });
         Resources resources = getResources();
         Intent sharingIntent = new Intent(Intent.ACTION_SEND);
         sharingIntent.setType("image/png");

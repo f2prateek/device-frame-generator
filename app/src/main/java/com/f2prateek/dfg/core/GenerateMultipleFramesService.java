@@ -25,6 +25,8 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dfg.AppConstants;
@@ -99,7 +101,13 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     }
 
     public void notifyFinished() {
-        BUS.post(new Events.MultipleImagesProcessed(mDevice, imagesProcessed));
+        Handler handler = new Handler(Looper.getMainLooper());
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                BUS.post(new Events.MultipleImagesProcessed(mDevice, imagesProcessed));
+            }
+        });
         Resources resources = getResources();
         String error = resources.getString(R.string.multiple_screenshots_saved, imagesProcessed, mDevice.getName());
         mNotificationBuilder
