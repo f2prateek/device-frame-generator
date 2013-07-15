@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright 2013 Prateek Srivastava (@f2prateek)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ 	http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <com.f2prateek.dfg.ui.ColoredSelectorImageView
+      android:id="@+id/iv_device_thumbnail"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_above="@+id/tv_device_name"
+      android:layout_alignParentTop="true"
+      android:contentDescription="@string/description_device_thumbnail"
+      style="@style/DeviceThumbnail"/>
+
+  <TextView
+      android:id="@+id/tv_device_name"
+      style="@style/DeviceText.Title"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_above="@+id/tv_device_size"
+      android:layout_centerHorizontal="true"
+      android:fontFamily="sans-serif-light"
+      android:gravity="center_horizontal"
+      android:maxLines="3"/>
+
+  <TextView
+      android:id="@+id/tv_device_size"
+      style="@style/DeviceText.Info"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_above="@+id/tv_device_resolution"
+      android:layout_centerHorizontal="true"
+      android:layout_gravity="center_horizontal"
+      android:fontFamily="sans-serif-light"/>
+
+  <TextView
+      android:id="@+id/tv_device_resolution"
+      style="@style/DeviceText.Info"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentBottom="true"
+      android:layout_centerHorizontal="true"
+      android:layout_gravity="center_horizontal"
+      android:fontFamily="sans-serif-light"
+      android:paddingBottom="16dp"/>
+
+</RelativeLayout>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.f2prateek.dfg"
+    android:versionCode="103"
+    android:versionName="@string/current_version_number">
+
+  <uses-sdk
+      android:minSdkVersion="14"
+      android:targetSdkVersion="16"/>
+
+  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+  <uses-permission android:name="android.permission.INTERNET"/>
+
+  <application
+      android:name=".DFGApplication"
+      android:icon="@drawable/app_icon"
+      android:label="@string/app_name"
+      android:theme="@style/AppTheme">
+
+    <activity
+        android:name=".ui.MainActivity"
+        android:label="@string/app_name">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+        <category android:name="android.intent.category.LAUNCHER"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+      </intent-filter>
+    </activity>
+
+    <activity
+        android:name=".ui.ReceiverActivity"
+        android:configChanges="orientation|keyboardHidden|screenSize"
+        android:theme="@android:style/Theme.Translucent.NoTitleBar"
+        android:label="@string/app_name">
+      <intent-filter>
+        <action android:name="android.intent.action.SEND"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:mimeType="image/*"/>
+      </intent-filter>
+      <intent-filter>
+        <action android:name="android.intent.action.SEND_MULTIPLE"/>
+        <category android:name="android.intent.category.DEFAULT"/>
+        <data android:mimeType="image/*"/>
+      </intent-filter>
+    </activity>
+
+    <service android:name=".core.GenerateFrameService">
+    </service>
+    <service android:name=".core.GenerateMultipleFramesService">
+    </service>
+
+  </application>
+
+</manifest>

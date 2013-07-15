@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright 2013 Prateek Srivastava (@f2prateek)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~ 	http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+  <string name="app_name">Device Frame Generator</string>
+
+  <!-- Device Fragment !-->
+  <string name="menu_save_default">Save as default</string>
+  <string name="saved_as_default_message">%s saved as default device.</string>
+
+  <string name="shadow_preference">Shadow</string>
+  <string name="glare_preference">Glare</string>
+  <string name="glare_enabled">Glare will be drawn on screenshots.</string>
+  <string name="glare_disabled">Glare will not be drawn on screenshots.</string>
+  <string name="shadow_enabled">Shadow will be drawn on screenshots.</string>
+  <string name="shadow_disabled">Shadow will not be drawn on screenshots.</string>
+
+  <!-- Notifications !-->
+  <string name="screenshot_saving_ticker">@string/screenshot_saving_title</string>
+  <string name="screenshot_saving_title">Saving....</string>
+  <string name="screenshot_saved_title">Saved Device Frame</string>
+  <string name="single_screenshot_saved">Saved frame for %s.</string>
+  <string name="multiple_screenshots_saved">Saved %1$d images for %2$s.</string>
+  <string name="processing_image">Processing image %1$d of %2$d.</string>
+  <string name="share">Share</string>
+
+  <!-- Notification Error Messages !-->
+  <string name="failed_open_screenshot_title">Couldn\'t open screenshot.</string>
+  <string name="failed_open_screenshot_text">Failed to retrieve the screenshot at %s.</string>
+  <string name="failed_match_dimensions_title">Dimensions don\'t match.</string>
+  <string name="failed_match_dimensions_text">Device is %1$d by %2$d. Screenshot is %3$d by %4$d.
+  </string>
+  <string name="unknown_error_title">Unknown Error.</string>
+  <string name="unknown_error_text">An unknown error occurred.</string>
+  <string name="select_picture">Select Picture</string>
+  <string name="storage_unavailable">Storage Unavailable</string>
+  <string name="description_device_thumbnail">Device Thumbnail</string>
+  <string name="device_chosen">%s chosen.</string>
+  <string name="copy_to_gallery">Please share the image from the Gallery.</string>
+
+  <!-- About screen !-->
+  <string name="about">About</string>
+  <string name="developer">Developer</string>
+  <string name="gplus_profile">+Prateek Srivastava</string>
+  <string name="twitter">\@f2prateek</string>
+  <string name="designer">Designer</string>
+  <string name="taylor_ling">Taylor Ling</string>
+  <string name="changelog">Change log</string>
+  <string name="changelog_summary">See the release history</string>
+  <string name="version">Version</string>
+  <string name="current_version_number">1.0.3</string>
+
+</resources>
