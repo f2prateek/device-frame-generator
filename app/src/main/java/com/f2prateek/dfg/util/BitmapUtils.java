@@ -26,10 +26,6 @@ import java.io.IOException;
 
 public class BitmapUtils {
 
-  private BitmapUtils() {
-    // no instances
-  }
-
   /**
    * Returns a mutable bitmap from a uri.
    *
