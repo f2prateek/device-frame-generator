@@ -30,11 +30,7 @@ import java.io.RandomAccessFile;
 import java.nio.MappedByteBuffer;
 import java.nio.channels.FileChannel;
 
-import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
-
 public class BitmapUtils {
-
-  private static final String LOGTAG = makeLogTag(BitmapUtils.class);
 
   private BitmapUtils() {
     // no instances

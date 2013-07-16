@@ -35,16 +35,13 @@ import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.ui.MainActivity;
 import java.util.ArrayList;
 
-import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
-
 public class GenerateMultipleFramesService extends AbstractGenerateFrameService {
 
-  private static final String LOGTAG = makeLogTag(GenerateMultipleFramesService.class);
   ArrayList<Uri> mImageUris;
   int imagesProcessed;
 
   public GenerateMultipleFramesService() {
-    super(LOGTAG);
+    super("GenerateMultipleFramesService");
   }
 
   @Override

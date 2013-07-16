@@ -26,22 +26,19 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.util.LruCache;
-import android.util.Log;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.util.BitmapUtils;
+import com.f2prateek.dfg.util.Ln;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
-
 public class DeviceFrameGenerator {
 
-  private static final String LOGTAG = makeLogTag(DeviceFrameGenerator.class);
   private static LruCache<String, Bitmap> memoryCache;
   private final Context context;
   private final Callback callback;
@@ -75,10 +72,9 @@ public class DeviceFrameGenerator {
       return "land";
     }
 
-    Log.e(LOGTAG, String.format(
-        "Screenshot height = %d, width = %d. Device height = %d, width = %d. Aspect1 = %f, Aspect 2 = %f",
+    Ln.e("Screenshot height=%d, width=%d. Device height=%d, width=%d. Aspect1=%f, Aspect2=%f",
         screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1],
-        device.getPortSize()[0], aspect1, aspect2));
+        device.getPortSize()[0], aspect1, aspect2);
     throw new UnmatchedDimensionsException(device, screenshot.getHeight(), screenshot.getWidth());
   }
 
@@ -130,9 +126,9 @@ public class DeviceFrameGenerator {
    * @param imageUri Uri to the screenshot file.
    */
   public void generateFrame(Uri imageUri) {
-    Log.i(LOGTAG, String.format("Generating for %s %s and %s from file %s.", device.getName(),
+    Ln.i("Generating for %s %s and %s from file %s.", device.getName(),
         withGlare ? " with glare " : " without glare ",
-        withShadow ? " with shadow " : " without shadow ", imageUri.toString()));
+        withShadow ? " with shadow " : " without shadow ", imageUri.toString());
 
     final Bitmap screenshot;
     try {
@@ -159,7 +155,7 @@ public class DeviceFrameGenerator {
     try {
       orientation = checkDimensions(device, screenshot);
     } catch (UnmatchedDimensionsException e) {
-      Log.e(LOGTAG, e.toString());
+      Ln.e(e);
       Resources r = context.getResources();
       String failed_title = r.getString(R.string.failed_match_dimensions_title);
       String failed_text =
@@ -187,7 +183,7 @@ public class DeviceFrameGenerator {
         addBitmapToMemoryCache(device.getId() + "_" + orientation + "_shadow", shadow);
       }
     } catch (IOException e) {
-      Log.e(LOGTAG, e.toString());
+      Ln.e(e);
       Resources r = context.getResources();
       callback.failedImage(r.getString(R.string.unknown_error_title),
           r.getString(R.string.unknown_error_text), r.getString(R.string.unknown_error_text));
@@ -243,7 +239,7 @@ public class DeviceFrameGenerator {
       out.flush();
       out.close();
     } catch (IOException e) {
-      Log.e(LOGTAG, e.toString());
+      Ln.e(e);
       Resources r = context.getResources();
       callback.failedImage(r.getString(R.string.unknown_error_title),
           r.getString(R.string.unknown_error_text), r.getString(R.string.unknown_error_text));

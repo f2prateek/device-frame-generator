@@ -21,11 +21,7 @@ import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import com.f2prateek.dfg.model.DeviceProvider;
 
-import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
-
 public class DeviceFragmentPagerAdapter extends FragmentStatePagerAdapter {
-
-  private static final String LOGTAG = makeLogTag(DeviceFragmentPagerAdapter.class);
 
   public DeviceFragmentPagerAdapter(FragmentManager fm) {
     super(fm);

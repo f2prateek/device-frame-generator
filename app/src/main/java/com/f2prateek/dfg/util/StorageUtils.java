@@ -17,13 +17,8 @@
 package com.f2prateek.dfg.util;
 
 import android.os.Environment;
-import android.util.Log;
-
-import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 
 public class StorageUtils {
-
-  private static final String LOGTAG = makeLogTag(StorageUtils.class);
 
   /**
    * Checks if storage is available for our use.
@@ -48,8 +43,8 @@ public class StorageUtils {
       mExternalStorageAvailable = mExternalStorageWriteable = false;
     }
 
-    Log.i(LOGTAG, mExternalStorageAvailable ? "Storage available" : "Storage Unavailable");
-    Log.i(LOGTAG, mExternalStorageWriteable ? "Storage writeable" : "Storage not writeable");
+    Ln.i(mExternalStorageAvailable ? "Storage available" : "Storage Unavailable");
+    Ln.i(mExternalStorageWriteable ? "Storage writeable" : "Storage not writeable");
 
     return (mExternalStorageAvailable && mExternalStorageWriteable);
   }

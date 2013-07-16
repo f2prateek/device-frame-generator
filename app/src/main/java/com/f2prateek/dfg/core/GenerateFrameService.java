@@ -39,15 +39,11 @@ import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.ui.MainActivity;
 
-import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
-
 /** A service that generates our frames. */
 public class GenerateFrameService extends AbstractGenerateFrameService {
 
-  private static final String LOGTAG = makeLogTag(GenerateFrameService.class);
-
   public GenerateFrameService() {
-    super(LOGTAG);
+    super("GenerateFrameService");
   }
 
   @Override

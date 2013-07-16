@@ -50,11 +50,8 @@ import com.squareup.otto.Bus;
 import java.lang.ref.WeakReference;
 import javax.inject.Inject;
 
-import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
-
 public class DeviceFragment extends Fragment implements View.OnClickListener {
 
-  private static final String LOGTAG = makeLogTag(DeviceFragment.class);
   private static final int RESULT_SELECT_PICTURE = 542;
   private static LruCache<String, Bitmap> mMemoryCache;
   @Inject Bus bus;
