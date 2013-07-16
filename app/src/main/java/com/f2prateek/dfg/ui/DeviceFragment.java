@@ -54,12 +54,14 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
 
   private static final int RESULT_SELECT_PICTURE = 542;
   private static LruCache<String, Bitmap> mMemoryCache;
+
   @Inject Bus bus;
   @Inject SharedPreferences sharedPreferences;
   @InjectView(R.id.tv_device_resolution) TextView tv_device_resolution;
   @InjectView(R.id.tv_device_size) TextView tv_device_size;
   @InjectView(R.id.tv_device_name) TextView tv_device_name;
   @InjectView(R.id.iv_device_thumbnail) ImageView iv_device_thumbnail;
+
   private Device device;
   private int deviceNum;
 

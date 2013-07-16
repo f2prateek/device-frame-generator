@@ -37,8 +37,8 @@ import java.util.ArrayList;
 
 public class GenerateMultipleFramesService extends AbstractGenerateFrameService {
 
-  ArrayList<Uri> imageUris;
-  int imagesProcessed;
+  private ArrayList<Uri> imageUris;
+  private int imagesProcessed;
 
   public GenerateMultipleFramesService() {
     super("GenerateMultipleFramesService");

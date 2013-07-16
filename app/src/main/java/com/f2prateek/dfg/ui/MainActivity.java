@@ -33,8 +33,8 @@ import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity {
 
-  @InjectView(R.id.pager) ViewPager pager;
   @Inject SharedPreferences sharedPreferences;
+  @InjectView(R.id.pager) ViewPager pager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
