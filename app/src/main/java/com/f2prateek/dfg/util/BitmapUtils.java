@@ -51,8 +51,7 @@ public class BitmapUtils {
    * @return A mutable copy of the resource
    * @throws java.io.IOException if unable to make it mutable
    */
-  public static Bitmap decodeResource(final Context context, final String resourceName)
-      throws IOException {
+  public static Bitmap decodeResource(final Context context, final String resourceName) {
     Resources resources = context.getResources();
     String packageName = context.getPackageName();
     BitmapFactory.Options opt = new BitmapFactory.Options();

@@ -25,7 +25,6 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.support.v4.util.LruCache;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
@@ -38,8 +37,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DeviceFrameGenerator {
-
-  private static LruCache<String, Bitmap> memoryCache;
 
   private final Context context;
   private final Callback callback;
@@ -91,38 +88,6 @@ public class DeviceFrameGenerator {
     return (orientation.compareTo("port") == 0);
   }
 
-  private static void buildImageCache() {
-    if (memoryCache != null) {
-      return;
-    }
-    // Get max available VM memory, exceeding this amount will throw an
-    // OutOfMemory exception. Stored in kilobytes as LruCache takes an
-    // int in its constructor.
-    final int maxMemory = (int) (Runtime.getRuntime().maxMemory() / 1024);
-
-    // Use 1/8th of the available memory for this memory cache.
-    final int cacheSize = maxMemory / 8;
-
-    memoryCache = new LruCache<String, Bitmap>(cacheSize) {
-      @Override
-      protected int sizeOf(String key, Bitmap bitmap) {
-        // The cache size will be measured in kilobytes rather than
-        // number of items.
-        return BitmapUtils.getByteCount(bitmap) / 1024;
-      }
-    };
-  }
-
-  public void addBitmapToMemoryCache(String key, Bitmap bitmap) {
-    if (getBitmapFromMemCache(key) == null) {
-      memoryCache.put(key, bitmap);
-    }
-  }
-
-  public Bitmap getBitmapFromMemCache(String key) {
-    return memoryCache.get(key);
-  }
-
   /**
    * Generate the frame.
    *
@@ -153,7 +118,6 @@ public class DeviceFrameGenerator {
    */
   private void generateFrame(Bitmap screenshot) {
     callback.startingImage(screenshot);
-    buildImageCache();
     String orientation;
     try {
       orientation = checkDimensions(device, screenshot);
@@ -169,29 +133,10 @@ public class DeviceFrameGenerator {
       return;
     }
 
-    Bitmap background = getBitmapFromMemCache(device.getId() + "_" + orientation + "_background");
-    Bitmap glare = getBitmapFromMemCache(device.getId() + "_" + orientation + "_glare");
-    Bitmap shadow = getBitmapFromMemCache(device.getId() + "_" + orientation + "_shadow");
-    try {
-      if (background == null) {
-        background = BitmapUtils.decodeResource(context, device.getBackgroundString(orientation));
-        addBitmapToMemoryCache(device.getId() + "_" + orientation + "_background", background);
-      }
-      if (glare == null) {
-        glare = BitmapUtils.decodeResource(context, device.getGlareString(orientation));
-        addBitmapToMemoryCache(device.getId() + "_" + orientation + "_glare", glare);
-      }
-      if (shadow == null) {
-        shadow = BitmapUtils.decodeResource(context, device.getShadowString(orientation));
-        addBitmapToMemoryCache(device.getId() + "_" + orientation + "_shadow", shadow);
-      }
-    } catch (IOException e) {
-      Ln.e(e);
-      Resources r = context.getResources();
-      callback.failedImage(r.getString(R.string.unknown_error_title),
-          r.getString(R.string.unknown_error_text), r.getString(R.string.unknown_error_text));
-      return;
-    }
+    final Bitmap background =
+        BitmapUtils.decodeResource(context, device.getBackgroundString(orientation));
+    final Bitmap glare = BitmapUtils.decodeResource(context, device.getGlareString(orientation));
+    final Bitmap shadow = BitmapUtils.decodeResource(context, device.getShadowString(orientation));
 
     Canvas frame;
     if (withShadow) {
