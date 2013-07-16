@@ -32,8 +32,10 @@ public abstract class AbstractGenerateFrameService extends IntentService
     implements DeviceFrameGenerator.Callback {
 
   public static final int DFG_NOTIFICATION_ID = 789;
+
   protected NotificationCompat.Builder notificationBuilder;
   protected Device device;
+
   @Inject NotificationManager notificationManager;
   @Inject Bus bus;
 

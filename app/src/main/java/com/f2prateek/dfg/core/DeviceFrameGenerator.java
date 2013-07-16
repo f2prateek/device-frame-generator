@@ -40,6 +40,7 @@ import java.util.Date;
 public class DeviceFrameGenerator {
 
   private static LruCache<String, Bitmap> memoryCache;
+
   private final Context context;
   private final Callback callback;
   private final Device device;

@@ -37,7 +37,7 @@ import java.util.ArrayList;
 
 public class GenerateMultipleFramesService extends AbstractGenerateFrameService {
 
-  ArrayList<Uri> mImageUris;
+  ArrayList<Uri> imageUris;
   int imagesProcessed;
 
   public GenerateMultipleFramesService() {
@@ -49,7 +49,7 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     super.onHandleIntent(intent);
 
     // Get all the intent data.
-    mImageUris = intent.getParcelableArrayListExtra(AppConstants.KEY_EXTRA_SCREENSHOTS);
+    imageUris = intent.getParcelableArrayListExtra(AppConstants.KEY_EXTRA_SCREENSHOTS);
 
     SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
@@ -59,7 +59,7 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     notifyStarting();
     DeviceFrameGenerator deviceFrameGenerator =
         new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
-    for (Uri uri : mImageUris) {
+    for (Uri uri : imageUris) {
       deviceFrameGenerator.generateFrame(uri);
     }
     notifyFinished();
@@ -92,8 +92,8 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
   public void doneImage(Uri imageUri) {
     imagesProcessed++;
     notificationBuilder.setContentText(
-        getResources().getString(R.string.processing_image, imagesProcessed, mImageUris.size()))
-        .setProgress(mImageUris.size(), imagesProcessed, false);
+        getResources().getString(R.string.processing_image, imagesProcessed, imageUris.size()))
+        .setProgress(imageUris.size(), imagesProcessed, false);
     notificationManager.notify(DFG_NOTIFICATION_ID, notificationBuilder.build());
   }
 
