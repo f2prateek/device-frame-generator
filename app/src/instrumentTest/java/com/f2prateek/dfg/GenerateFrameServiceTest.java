@@ -5,7 +5,7 @@
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * 	http://www.apache.org/licenses/LICENSE-2.0
+ *    http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -28,27 +28,23 @@ import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.test.ServiceTestCase;
-import android.util.Log;
-import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
-
+import com.f2prateek.dfg.util.Ln;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Random;
 
-import static com.f2prateek.dfg.util.LogUtils.makeLogTag;
 import static org.fest.assertions.api.ANDROID.assertThat;
 import static org.fest.assertions.api.Assertions.assertThat;
 
 public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameService> {
 
   private static final int WAIT_TIME = 10;
-  private static final String LOGTAG = makeLogTag(GenerateFrameServiceTest.class);
 
   public GenerateFrameServiceTest() {
     super(GenerateFrameService.class);
@@ -97,7 +93,7 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
    * @param file File or folder to delete.
    */
   private void deleteFile(File file) {
-    Log.d(LOGTAG, "Deleting : " + file.getAbsolutePath());
+    Ln.d("Deleting : " + file.getAbsolutePath());
     if (file.isDirectory()) {
       //directory is empty, then delete it
       if (file.list().length == 0) {
