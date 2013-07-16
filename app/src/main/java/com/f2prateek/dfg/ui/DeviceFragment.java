@@ -91,7 +91,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
       protected int sizeOf(String key, Bitmap bitmap) {
         // The cache size will be measured in kilobytes rather than
         // number of items.
-        return BitmapUtils.getByteCount(bitmap) / 1024;
+        return bitmap.getByteCount() / 1024;
       }
     };
   }

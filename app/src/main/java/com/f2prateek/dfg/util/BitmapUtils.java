@@ -56,16 +56,6 @@ public class BitmapUtils {
         resources.getIdentifier(resourceName, "drawable", packageName), opt);
   }
 
-  /**
-   * Returns the number of bytes used to store this bitmap's pixels.
-   *
-   * @param bitmap Whose byteCount is requested
-   * @return Bytes used to store this bitmap's pixels
-   */
-  public static int getByteCount(Bitmap bitmap) {
-    return bitmap.getByteCount();
-  }
-
   /** https://developer.android.com/training/displaying-bitmaps/load-bitmap.html */
   private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth,
       int reqHeight) {
