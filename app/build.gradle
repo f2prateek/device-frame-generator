@@ -22,7 +22,6 @@ dependencies {
   compile group: 'com.squareup.dagger', name: 'dagger', version: '1.0.+'
 
   compile group: 'com.google.guava', name: 'guava', version: '14.0.+'
-  compile group: 'com.google.code.gson', name: 'gson', version: '2.2.+'
 
   apk group: 'com.squareup.dagger', name: 'dagger-compiler', version: '1.0.+'
   instrumentTestCompile group: 'com.squareup', name: 'fest-android', version: '1.0.+'
