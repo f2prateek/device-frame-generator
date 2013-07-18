@@ -2,7 +2,7 @@
 
 ## Device Frame Generator
 The device frame generator allows you to quickly wrap your app screenshots in real device artwork. This provides better visual context for your app screenshots on your web site or in other promotional materials.
-Get the app from the [Google Play Store](2).
+Get the app from the [Google Play Store][2].
 
 ![Barcode][3]
 
