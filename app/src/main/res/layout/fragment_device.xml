@@ -22,13 +22,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-  <com.f2prateek.dfg.ui.ColoredSelectorImageView
+  <com.f2prateek.dfg.ui.ForegroundImageView
       android:id="@+id/iv_device_thumbnail"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_above="@+id/tv_device_name"
       android:layout_alignParentTop="true"
       android:contentDescription="@string/description_device_thumbnail"
+      android:foreground="?android:selectableItemBackground"
       style="@style/DeviceThumbnail"/>
 
   <TextView
