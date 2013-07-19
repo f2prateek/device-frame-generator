@@ -23,6 +23,7 @@ import com.f2prateek.dfg.ui.AboutFragment;
 import com.f2prateek.dfg.ui.BaseActivity;
 import com.f2prateek.dfg.ui.DeviceFragment;
 import com.f2prateek.dfg.ui.MainActivity;
+import com.f2prateek.dfg.ui.PictureViewerActivity;
 import com.f2prateek.dfg.ui.ReceiverActivity;
 import com.squareup.otto.Bus;
 import dagger.Module;
@@ -39,7 +40,7 @@ import javax.inject.Singleton;
     injects = {
         DFGApplication.class, BaseActivity.class, MainActivity.class, ReceiverActivity.class,
         DeviceFragment.class, AboutFragment.class, AbstractGenerateFrameService.class,
-        GenerateFrameService.class, GenerateMultipleFramesService.class
+        GenerateFrameService.class, GenerateMultipleFramesService.class, PictureViewerActivity.class
     }
 
 )
