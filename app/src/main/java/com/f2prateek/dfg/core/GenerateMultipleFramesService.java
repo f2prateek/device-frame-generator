@@ -33,12 +33,13 @@ import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.ui.MainActivity;
+import com.f2prateek.dfg.ui.PictureViewerActivity;
 import java.util.ArrayList;
 
 public class GenerateMultipleFramesService extends AbstractGenerateFrameService {
 
   private ArrayList<Uri> imageUris;
-  private int imagesProcessed;
+  private ArrayList<Uri> processedImageUris = new ArrayList<Uri>();
 
   public GenerateMultipleFramesService() {
     super("GenerateMultipleFramesService");
@@ -55,7 +56,6 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
     boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
 
-    imagesProcessed = 0;
     notifyStarting();
     DeviceFrameGenerator deviceFrameGenerator =
         new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
@@ -90,10 +90,10 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
 
   @Override
   public void doneImage(Uri imageUri) {
-    imagesProcessed++;
+    processedImageUris.add(imageUri);
     notificationBuilder.setContentText(
-        getResources().getString(R.string.processing_image, imagesProcessed, imageUris.size()))
-        .setProgress(imageUris.size(), imagesProcessed, false);
+        getResources().getString(R.string.processing_image, processedImageUris.size(),
+            imageUris.size())).setProgress(imageUris.size(), processedImageUris.size(), false);
     notificationManager.notify(DFG_NOTIFICATION_ID, notificationBuilder.build());
   }
 
@@ -102,14 +102,20 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     handler.post(new Runnable() {
       @Override
       public void run() {
-        bus.post(new Events.MultipleImagesProcessed(device, imagesProcessed));
+        bus.post(new Events.MultipleImagesProcessed(device, processedImageUris.size()));
       }
     });
     Resources resources = getResources();
-    String error =
-        resources.getString(R.string.multiple_screenshots_saved, imagesProcessed, device.getName());
+    String text =
+        resources.getString(R.string.multiple_screenshots_saved, processedImageUris.size(),
+            device.getName());
+
+    Intent viewImagesIntent = new Intent(this, PictureViewerActivity.class);
+    viewImagesIntent.putExtra(Intent.EXTRA_STREAM, processedImageUris);
+
     notificationBuilder.setContentTitle(resources.getString(R.string.screenshot_saved_title))
-        .setContentText(error)
+        .setContentText(text)
+        .setContentIntent(PendingIntent.getActivity(this, 0, viewImagesIntent, 0))
         .setProgress(0, 0, false);
     notificationManager.notify(DFG_NOTIFICATION_ID, notificationBuilder.build());
   }
