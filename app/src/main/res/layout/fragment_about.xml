@@ -30,41 +30,41 @@
       android:foreground="?android:selectableItemBackground"
       android:scaleType="fitCenter"/>
 
-  <TextView android:layout_width="fill_parent"
+  <TextView android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/app_name"
       style="@style/AboutText.Header"/>
 
   <TextView android:id="@+id/tv_version_number"
-      android:layout_width="fill_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/current_version_number"
       style="@style/AboutText.Clickable"/>
 
-  <TextView android:layout_width="fill_parent"
+  <TextView android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/developer"
       style="@style/AboutText.Header"/>
 
   <TextView android:id="@+id/tv_gplus"
-      android:layout_width="fill_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/gplus_profile"
       style="@style/AboutText.Clickable"/>
 
   <TextView android:id="@+id/tv_twitter"
-      android:layout_width="fill_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/twitter"
       style="@style/AboutText.Clickable"/>
 
-  <TextView android:layout_width="fill_parent"
+  <TextView android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/designer"
       style="@style/AboutText.Header"/>
 
   <TextView android:id="@+id/tv_designer"
-      android:layout_width="fill_parent"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/taylor_ling"
       style="@style/AboutText.Clickable"/>

@@ -16,9 +16,14 @@
   ~ limitations under the License.
   -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<resources>
 
-  <item android:state_pressed="true" android:color="@color/holo_blue_dark"/>
-  <item android:color="@color/holo_blue_light"/>
+  <style name="DeviceText">
+    <item name="android:textSize">32sp</item>
+    <item name="android:fontFamily">sans-serif-light</item>
+    <item name="android:gravity">center_horizontal</item>
+    <item name="android:layout_gravity">center_horizontal</item>
+    <item name="android:textStyle">normal</item>
+  </style>
 
-</selector>
+</resources>
