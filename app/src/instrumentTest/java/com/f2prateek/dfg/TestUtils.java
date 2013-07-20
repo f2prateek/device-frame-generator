@@ -16,16 +16,15 @@
 
 package com.f2prateek.dfg;
 
-import android.app.Service;
 import android.content.ContentResolver;
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import android.test.ServiceTestCase;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.util.Ln;
@@ -35,10 +34,61 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Random;
 
-public class AbstractGenerateFrameServiceTest<T extends Service> extends ServiceTestCase<T> {
+public class TestUtils {
 
-  public AbstractGenerateFrameServiceTest(Class<T> serviceClass) {
-    super(serviceClass);
+  static Random rnd = new Random();
+
+  public static String getPath(Context context, Uri uri) {
+    Cursor cursor = context.getContentResolver().query(uri, null, null, null, null);
+    cursor.moveToFirst();
+    String imageFilePath = cursor.getString(0);
+    cursor.close();
+    return imageFilePath;
+  }
+
+  /** Make a screenshot matching this device's dimension. */
+  public static Uri makeTestScreenShot(Context context, Device device) throws IOException {
+    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+    directory.mkdirs();
+    File screenshot =
+        new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+            "test.png");
+
+    ContentValues values = new ContentValues();
+    ContentResolver resolver = context.getContentResolver();
+    values.put(MediaStore.Images.ImageColumns.DATA, screenshot.getAbsolutePath());
+    values.put(MediaStore.Images.ImageColumns.TITLE, "test");
+    values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, "test");
+    Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+    Bitmap.Config conf = Bitmap.Config.ARGB_8888;
+    Bitmap bmp;
+    if (new Random().nextBoolean()) {
+      bmp = Bitmap.createBitmap(device.getPortSize()[1], device.getPortSize()[0], conf);
+    } else {
+      bmp = Bitmap.createBitmap(device.getPortSize()[0], device.getPortSize()[1], conf);
+    }
+    Canvas canvas = new Canvas(bmp);
+    canvas.drawARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
+    OutputStream os = new FileOutputStream(screenshot);
+    bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
+    os.flush();
+    os.close();
+    bmp.recycle();
+
+    // update file size in the database
+    values.clear();
+    values.put(MediaStore.Images.ImageColumns.SIZE, screenshot.length());
+    resolver.update(imageUri, values, null, null);
+
+    return imageUri;
+  }
+
+  /** Get a random device. */
+  public static Device getRandomDevice() {
+    int random = new Random().nextInt(DeviceProvider.getDevices().size());
+    Device device = DeviceProvider.getDevices().get(random);
+    return device;
   }
 
   /**
@@ -47,7 +97,7 @@ public class AbstractGenerateFrameServiceTest<T extends Service> extends Service
    *
    * @param file File or folder to delete.
    */
-  public void deleteFile(File file) {
+  public static void deleteFile(File file) {
     Ln.d("Deleting : " + file.getAbsolutePath());
     if (file.isDirectory()) {
       //directory is empty, then delete it
@@ -72,74 +122,5 @@ public class AbstractGenerateFrameServiceTest<T extends Service> extends Service
       //if file, then delete it
       file.delete();
     }
-  }
-
-  /**
-   * Get the generated image path.
-   * Looks through mAppDirectory and returns the first image.
-   *
-   * @return The first image in the directory.
-   */
-  public String getGeneratedImagePath(File directory) {
-    String files[] = directory.list();
-    if (files.length == 0) {
-      return null;
-    } else {
-      return files[0];
-    }
-  }
-
-  /** Get a random device. */
-  public Device getRandomDevice() {
-    int random = new Random().nextInt(DeviceProvider.getDevices().size());
-    Device device = DeviceProvider.getDevices().get(random);
-    return device;
-  }
-
-  public String getPath(Uri uri) {
-    Cursor cursor = getContext().getContentResolver().query(uri, null, null, null, null);
-    cursor.moveToFirst();
-    String imageFilePath = cursor.getString(0);
-    cursor.close();
-    return imageFilePath;
-  }
-
-  /** Make a screenshot matching this device's dimension. */
-  public Uri makeTestScreenShot(Device device) throws IOException {
-    File directory = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
-    directory.mkdirs();
-    File screenshot =
-        new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
-            "test.png");
-
-    ContentValues values = new ContentValues();
-    ContentResolver resolver = getSystemContext().getContentResolver();
-    values.put(MediaStore.Images.ImageColumns.DATA, screenshot.getAbsolutePath());
-    values.put(MediaStore.Images.ImageColumns.TITLE, "test");
-    values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, "test");
-    Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-    Bitmap.Config conf = Bitmap.Config.ARGB_8888;
-    Bitmap bmp;
-    if (new Random().nextBoolean()) {
-      bmp = Bitmap.createBitmap(device.getPortSize()[1], device.getPortSize()[0], conf);
-    } else {
-      bmp = Bitmap.createBitmap(device.getPortSize()[0], device.getPortSize()[1], conf);
-    }
-    Canvas canvas = new Canvas(bmp);
-    Random rnd = new Random();
-    canvas.drawARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
-    OutputStream os = new FileOutputStream(screenshot);
-    bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
-    os.flush();
-    os.close();
-    bmp.recycle();
-
-    // update file size in the database
-    values.clear();
-    values.put(MediaStore.Images.ImageColumns.SIZE, screenshot.length());
-    resolver.update(imageUri, values, null, null);
-
-    return imageUri;
   }
 }

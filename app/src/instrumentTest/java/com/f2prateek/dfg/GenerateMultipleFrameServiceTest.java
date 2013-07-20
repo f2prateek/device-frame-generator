@@ -24,19 +24,22 @@ import android.net.Uri;
 import android.os.Environment;
 import android.test.ServiceTestCase;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
-import com.f2prateek.dfg.core.GenerateFrameService;
+import com.f2prateek.dfg.core.GenerateMultipleFramesService;
 import com.f2prateek.dfg.model.Device;
 import java.io.File;
+import java.util.ArrayList;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
 import static org.fest.assertions.api.Assertions.assertThat;
 
-public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameService> {
+public class GenerateMultipleFrameServiceTest
+    extends ServiceTestCase<GenerateMultipleFramesService> {
 
-  private static final int WAIT_TIME = 10 * 1000; // 10 ms
+  private static final int WAIT_TIME = 30 * 1000; // 30 seconds
+  private static final int TEST_SIZE = 4; // no. of images to generate
 
-  public GenerateFrameServiceTest() {
-    super(GenerateFrameService.class);
+  public GenerateMultipleFrameServiceTest() {
+    super(GenerateMultipleFramesService.class);
   }
 
   public void testFrameGeneration() throws Exception {
@@ -49,24 +52,29 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
 
     // Pick a random device
     Device randomDevice = TestUtils.getRandomDevice();
-    // Make the test screenshot
-    Uri screenshotUri = TestUtils.makeTestScreenShot(getSystemContext(), randomDevice);
+    // Make test screenshots
+    ArrayList<Uri> imageUris = new ArrayList<Uri>();
+    for (int i = 0; i < TEST_SIZE; i++) {
+      imageUris.add(TestUtils.makeTestScreenShot(getSystemContext(), randomDevice));
+    }
 
-    Intent intent = new Intent(getSystemContext(), GenerateFrameService.class);
+    Intent intent = new Intent(getSystemContext(), GenerateMultipleFramesService.class);
     intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, randomDevice);
-    intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, screenshotUri);
+    intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOTS, imageUris);
     startService(intent);
     assertThat(getService()).isNotNull();
 
     Thread.sleep(WAIT_TIME);
 
     assertThat(appDirectory).exists().isDirectory();
-    assertThat(appDirectory.list()).hasSize(1);
+    assertThat(appDirectory.listFiles()).hasSize(TEST_SIZE);
 
     // Clean up
     ((NotificationManager) getContext().getSystemService(Context.NOTIFICATION_SERVICE)).cancel(
         AbstractGenerateFrameService.DFG_NOTIFICATION_ID);
-    TestUtils.deleteFile(new File(TestUtils.getPath(getSystemContext(), screenshotUri)));
+    for (Uri uri : imageUris) {
+      TestUtils.deleteFile(new File(TestUtils.getPath(getSystemContext(), uri)));
+    }
     TestUtils.deleteFile(appDirectory);
     MediaScannerConnection.scanFile(getSystemContext(), new String[] { appDirectory.toString() },
         null, null);

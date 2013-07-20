@@ -91,21 +91,21 @@ public class DeviceFrameGenerator {
   /**
    * Generate the frame.
    *
-   * @param imageUri Uri to the screenshot file.
+   * @param screenshotUri Uri to the screenshot file.
    */
-  public void generateFrame(Uri imageUri) {
+  public void generateFrame(Uri screenshotUri) {
     Ln.d("Generating for %s %s and %s from file %s.", device.getName(),
         withGlare ? " with glare " : " without glare ",
-        withShadow ? " with shadow " : " without shadow ", imageUri.toString());
+        withShadow ? " with shadow " : " without shadow ", screenshotUri);
 
     final Bitmap screenshot;
     try {
-      screenshot = BitmapUtils.decodeUri(context.getContentResolver(), imageUri);
+      screenshot = BitmapUtils.decodeUri(context.getContentResolver(), screenshotUri);
     } catch (IOException e) {
       Resources r = context.getResources();
       callback.failedImage(r.getString(R.string.failed_open_screenshot_title),
           r.getString(R.string.failed_open_screenshot_text),
-          r.getString(R.string.failed_open_screenshot_text, imageUri.toString()));
+          r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()));
       return;
     }
     generateFrame(screenshot);
@@ -175,10 +175,10 @@ public class DeviceFrameGenerator {
     values.put(MediaStore.Images.ImageColumns.DATE_ADDED, imageMetadata.imageTime);
     values.put(MediaStore.Images.ImageColumns.DATE_MODIFIED, imageMetadata.imageTime);
     values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/png");
-    Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    Uri frameUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
     try {
-      OutputStream out = resolver.openOutputStream(imageUri);
+      OutputStream out = resolver.openOutputStream(frameUri);
       if (withShadow) {
         shadow.compress(Bitmap.CompressFormat.PNG, 100, out);
       } else {
@@ -195,13 +195,19 @@ public class DeviceFrameGenerator {
     }
 
     screenshot.recycle();
+    background.recycle();
+    glare.recycle();
+    shadow.recycle();
 
     // update file size in the database
     values.clear();
     values.put(MediaStore.Images.ImageColumns.SIZE, new File(imageMetadata.imageFilePath).length());
-    resolver.update(imageUri, values, null, null);
+    resolver.update(frameUri, values, null, null);
 
-    callback.doneImage(imageUri);
+    Ln.d("Generated for %s at %s with uri %s", device.getName(), imageMetadata.imageFilePath,
+        frameUri);
+
+    callback.doneImage(frameUri);
   }
 
   /**

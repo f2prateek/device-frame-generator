@@ -30,16 +30,10 @@ public class AppConstants {
   public static final String KEY_EXTRA_DEVICE = "KEY_EXTRA_DEVICE";
   public static final String KEY_EXTRA_SCREENSHOT = "KEY_EXTRA_SCREENSHOT";
   public static final String KEY_EXTRA_SCREENSHOTS = "KEY_EXTRA_SCREENSHOTS";
-
   /*
    * Storage
    */
   public static final String DFG_DIR_NAME = "/Device-Frame-Generator/";
   public static final String DFG_FILE_NAME_TEMPLATE = "DFG_%s.png";
   public static final String DFG_FILE_PATH_TEMPLATE = "%s/%s/%s";
-
-  /*
-   * Bug Sense
-   */
-  public static final String BUG_SENSE_API_KEY = "7f2daa4b";
 }
