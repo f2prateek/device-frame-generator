@@ -42,8 +42,7 @@ public class GenerateFrameServiceTest
     deleteFile(
         new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
             AppConstants.DFG_DIR_NAME));
-    File mAppDirectory =
-        new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+    File appDirectory = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
             AppConstants.DFG_DIR_NAME);
 
     // Pick a random device
@@ -59,10 +58,10 @@ public class GenerateFrameServiceTest
 
     Thread.sleep(WAIT_TIME * 1000);
 
-    assertThat(mAppDirectory).exists().isDirectory();
-    String generatedImagePath = getGeneratedImagePath(mAppDirectory);
+    assertThat(appDirectory).exists().isDirectory();
+    String generatedImagePath = getGeneratedImagePath(appDirectory);
     // The file Path is relative to the app directory, make it absolute
-    generatedImagePath = mAppDirectory + File.separator + generatedImagePath;
+    generatedImagePath = appDirectory + File.separator + generatedImagePath;
     File generatedImage = new File(generatedImagePath);
     assertThat(generatedImage).exists().isFile();
 
@@ -71,6 +70,6 @@ public class GenerateFrameServiceTest
         AbstractGenerateFrameService.DFG_NOTIFICATION_ID);
     deleteFile(new File(getPath(screenshotUri)));
     deleteFile(generatedImage);
-    deleteFile(mAppDirectory);
+    deleteFile(appDirectory);
   }
 }
