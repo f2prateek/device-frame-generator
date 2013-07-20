@@ -94,7 +94,7 @@ public class DeviceFrameGenerator {
    * @param imageUri Uri to the screenshot file.
    */
   public void generateFrame(Uri imageUri) {
-    Ln.i("Generating for %s %s and %s from file %s.", device.getName(),
+    Ln.d("Generating for %s %s and %s from file %s.", device.getName(),
         withGlare ? " with glare " : " without glare ",
         withShadow ? " with shadow " : " without shadow ", imageUri.toString());
 
