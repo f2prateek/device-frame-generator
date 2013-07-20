@@ -59,12 +59,12 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
             AppConstants.DFG_DIR_NAME);
 
     // Pick a random device
-    Device mDevice = getRandomDevice();
+    Device randomDevice = getRandomDevice();
     // Make the test screenshot
-    Uri screenshotUri = makeTestScreenShot(mDevice);
+    Uri screenshotUri = makeTestScreenShot(randomDevice);
 
     Intent intent = new Intent(getSystemContext(), GenerateFrameService.class);
-    intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, mDevice);
+    intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, randomDevice);
     intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, screenshotUri);
     startService(intent);
     assertThat(getService()).isNotNull();
