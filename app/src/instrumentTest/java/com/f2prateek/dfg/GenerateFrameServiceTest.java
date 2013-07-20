@@ -72,10 +72,10 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
     Thread.sleep(WAIT_TIME * 1000);
 
     assertThat(mAppDirectory).exists().isDirectory();
-    String mGeneratedFilePath = getGeneratedImagePath(mAppDirectory);
+    String generatedImagePath = getGeneratedImagePath(mAppDirectory);
     // The file Path is relative to the app directory, make it absolute
-    mGeneratedFilePath = mAppDirectory + File.separator + mGeneratedFilePath;
-    File generatedImage = new File(mGeneratedFilePath);
+    generatedImagePath = mAppDirectory + File.separator + generatedImagePath;
+    File generatedImage = new File(generatedImagePath);
     assertThat(generatedImage).exists().isFile();
 
     // Clean up
