@@ -172,7 +172,8 @@ public class GenerateFrameServiceTest extends ServiceTestCase<GenerateFrameServi
       bmp = Bitmap.createBitmap(device.getPortSize()[0], device.getPortSize()[1], conf);
     }
     Canvas canvas = new Canvas(bmp);
-    canvas.drawARGB(255, 237, 28, 36);
+    Random rnd = new Random();
+    canvas.drawARGB(255, rnd.nextInt(256), rnd.nextInt(256), rnd.nextInt(256));
     OutputStream os = new FileOutputStream(screenshot);
     bmp.compress(Bitmap.CompressFormat.PNG, 100, os);
     os.flush();
