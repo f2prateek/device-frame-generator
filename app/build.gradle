@@ -3,7 +3,7 @@ buildscript {
     mavenCentral()
   }
   dependencies {
-    classpath group: 'com.android.tools.build', name: 'gradle', version: '0.4.+'
+    classpath group: 'com.android.tools.build', name: 'gradle', version: '0.5.+'
   }
 }
 
