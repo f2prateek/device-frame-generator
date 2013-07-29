@@ -192,12 +192,12 @@ public class DeviceFrameGenerator {
       callback.failedImage(r.getString(R.string.unknown_error_title),
           r.getString(R.string.unknown_error_text), r.getString(R.string.unknown_error_text));
       return;
+    } finally {
+      screenshot.recycle();
+      background.recycle();
+      glare.recycle();
+      shadow.recycle();
     }
-
-    screenshot.recycle();
-    background.recycle();
-    glare.recycle();
-    shadow.recycle();
 
     // update file size in the database
     values.clear();
