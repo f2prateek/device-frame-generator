@@ -214,8 +214,8 @@ public class DeviceFrameGenerator {
    * Prepare the metadata for our image.
    *
    * @return {@link com.f2prateek.dfg.core.DeviceFrameGenerator.ImageMetadata} that will be used
-   *         for
-   *         the image.
+   * for
+   * the image.
    */
   private ImageMetadata prepareMetadata() {
     ImageMetadata imageMetadata = new ImageMetadata();
