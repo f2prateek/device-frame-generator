@@ -29,21 +29,17 @@ import java.util.List;
 
 public class ImageListAdapter extends BindingListAdapter<Uri> {
 
-  private final Context context;
-
   public ImageListAdapter(Context context, List<Uri> list) {
-    super(list);
-    this.context = context;
+    super(context, list);
   }
 
   @Override public void bindView(Uri item, View v) {
-    Picasso.with(context).load(item).into((ImageView) v);
+    Picasso.with(getContext()).load(item).into((ImageView) v);
     v.setTag(item);
   }
 
-  @Override public View newView(int type, ViewGroup parent) {
-    ImageView imageView =
-        (ImageView) LayoutInflater.from(context).inflate(R.layout.grid_item_image, parent, false);
+  @Override public View newView(LayoutInflater inflater, int type, ViewGroup parent) {
+    ImageView imageView = (ImageView) inflater.inflate(R.layout.grid_item_image, parent, false);
     return imageView;
   }
 }

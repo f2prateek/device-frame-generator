@@ -16,6 +16,7 @@
 
 package com.f2prateek.dfg.util;
 
+import android.content.Context;
 import android.view.View;
 import java.util.List;
 
@@ -24,7 +25,8 @@ public abstract class BindingListAdapter<T> extends BindingAdapter {
 
   protected List<T> list;
 
-  public BindingListAdapter(List<T> list) {
+  public BindingListAdapter(Context context, List<T> list) {
+    super(context);
     this.list = list;
   }
 
