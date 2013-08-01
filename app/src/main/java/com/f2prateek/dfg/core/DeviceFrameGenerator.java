@@ -20,6 +20,7 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -175,7 +176,12 @@ public class DeviceFrameGenerator {
     values.put(MediaStore.Images.ImageColumns.DATE_ADDED, imageMetadata.imageTime);
     values.put(MediaStore.Images.ImageColumns.DATE_MODIFIED, imageMetadata.imageTime);
     values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/png");
+    values.put(MediaStore.Images.ImageColumns.WIDTH, background.getWidth());
+    values.put(MediaStore.Images.ImageColumns.HEIGHT, background.getHeight());
     Uri frameUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+
+    Ln.d(frameUri);
+    Ln.d(getRealPathFromURI(frameUri));
 
     try {
       OutputStream out = resolver.openOutputStream(frameUri);
@@ -210,12 +216,22 @@ public class DeviceFrameGenerator {
     callback.doneImage(frameUri);
   }
 
+  public String getRealPathFromURI(Uri contentUri) {
+    String res = null;
+    String[] proj = { MediaStore.Images.Media.DATA };
+    Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
+    if (cursor.moveToFirst()) {
+      int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+      res = cursor.getString(column_index);
+    }
+    cursor.close();
+    return res;
+  }
+
   /**
    * Prepare the metadata for our image.
    *
-   * @return {@link com.f2prateek.dfg.core.DeviceFrameGenerator.ImageMetadata} that will be used
-   * for
-   * the image.
+   * @return {@link ImageMetadata} that will be used for the image.
    */
   private ImageMetadata prepareMetadata() {
     ImageMetadata imageMetadata = new ImageMetadata();
@@ -224,10 +240,10 @@ public class DeviceFrameGenerator {
         new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date(imageMetadata.imageTime));
     String imageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         .getAbsolutePath();
+    File dfgDir = new File(imageDir, AppConstants.DFG_DIR_NAME);
+    dfgDir.mkdirs();
     imageMetadata.imageFileName = String.format(AppConstants.DFG_FILE_NAME_TEMPLATE, imageDate);
-    imageMetadata.imageFilePath =
-        String.format(AppConstants.DFG_FILE_PATH_TEMPLATE, imageDir, AppConstants.DFG_DIR_NAME,
-            imageMetadata.imageFileName);
+    imageMetadata.imageFilePath = new File(dfgDir, imageMetadata.imageFileName).getAbsolutePath();
     return imageMetadata;
   }
 

@@ -33,7 +33,6 @@ public class AppConstants {
   /*
    * Storage
    */
-  public static final String DFG_DIR_NAME = "/Device-Frame-Generator/";
+  public static final String DFG_DIR_NAME = "Device-Frame-Generator";
   public static final String DFG_FILE_NAME_TEMPLATE = "DFG_%s.png";
-  public static final String DFG_FILE_PATH_TEMPLATE = "%s/%s/%s";
 }
