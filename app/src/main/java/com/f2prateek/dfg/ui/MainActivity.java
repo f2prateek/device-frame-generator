@@ -16,12 +16,13 @@
 
 package com.f2prateek.dfg.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
+import android.view.View;
 import butterknife.InjectView;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
@@ -29,6 +30,8 @@ import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
 import com.squareup.otto.Subscribe;
+import de.keyboardsurfer.android.widget.crouton.Crouton;
+import de.keyboardsurfer.android.widget.crouton.Style;
 import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity {
@@ -74,44 +77,60 @@ public class MainActivity extends BaseActivity {
   @Subscribe
   public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
     Device device = DeviceProvider.getDevices().get(event.newDevice);
-    Toast.makeText(this, getString(R.string.saved_as_default_message, device.getName()),
-        Toast.LENGTH_LONG).show();
+    Crouton.makeText(this, getString(R.string.saved_as_default_message, device.getName()),
+        Style.CONFIRM).show();
     invalidateOptionsMenu();
   }
 
   @Subscribe
-  public void onSingleImageProcessed(Events.SingleImageProcessed event) {
-    Toast.makeText(this, getString(R.string.single_screenshot_saved, event.device.getName()),
-        Toast.LENGTH_LONG).show();
+  public void onSingleImageProcessed(final Events.SingleImageProcessed event) {
+    Crouton.makeText(this, getString(R.string.single_screenshot_saved, event.device.getName()),
+        Style.INFO).setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        Intent launchIntent = new Intent(Intent.ACTION_VIEW);
+        launchIntent.setDataAndType(event.uri, "image/png");
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(launchIntent);
+      }
+    }).show();
   }
 
   @Subscribe
-  public void onMultipleImagesProcessed(Events.MultipleImagesProcessed event) {
-    Toast.makeText(this,
-        getString(R.string.multiple_screenshots_saved, event.count, event.device.getName()),
-        Toast.LENGTH_LONG).show();
+  public void onMultipleImagesProcessed(final Events.MultipleImagesProcessed event) {
+    if (event.uriList.size() == 0) {
+      return;
+    }
+    Crouton.makeText(this, getString(R.string.multiple_screenshots_saved, event.uriList.size(),
+        event.device.getName()), Style.INFO).setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        Intent launchIntent = new Intent(Intent.ACTION_VIEW);
+        launchIntent.setDataAndType(event.uriList.get(0), "image/png");
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(launchIntent);
+      }
+    }).show();
   }
 
-  public void updateGlareSetting(boolean newSetting) {
+  public void updateGlareSetting(boolean newSettingEnabled) {
     SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putBoolean(AppConstants.KEY_PREF_OPTION_GLARE, newSetting);
+    editor.putBoolean(AppConstants.KEY_PREF_OPTION_GLARE, newSettingEnabled);
     editor.commit();
-    if (newSetting) {
-      Toast.makeText(this, R.string.glare_enabled, Toast.LENGTH_LONG).show();
+    if (newSettingEnabled) {
+      Crouton.makeText(this, R.string.glare_enabled, Style.CONFIRM).show();
     } else {
-      Toast.makeText(this, R.string.glare_disabled, Toast.LENGTH_LONG).show();
+      Crouton.makeText(this, R.string.glare_disabled, Style.ALERT).show();
     }
     invalidateOptionsMenu();
   }
 
-  public void updateShadowSetting(boolean newSetting) {
+  public void updateShadowSetting(boolean newSettingEnabled) {
     SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, newSetting);
+    editor.putBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, newSettingEnabled);
     editor.commit();
-    if (newSetting) {
-      Toast.makeText(this, getString(R.string.shadow_enabled), Toast.LENGTH_LONG).show();
+    if (newSettingEnabled) {
+      Crouton.makeText(this, getString(R.string.shadow_enabled), Style.CONFIRM).show();
     } else {
-      Toast.makeText(this, getString(R.string.shadow_disabled), Toast.LENGTH_LONG).show();
+      Crouton.makeText(this, getString(R.string.shadow_disabled), Style.ALERT).show();
     }
     invalidateOptionsMenu();
   }

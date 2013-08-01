@@ -33,7 +33,6 @@ import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.ui.MainActivity;
-import com.f2prateek.dfg.ui.PictureViewerActivity;
 import java.util.ArrayList;
 
 public class GenerateMultipleFramesService extends AbstractGenerateFrameService {
@@ -102,16 +101,22 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     handler.post(new Runnable() {
       @Override
       public void run() {
-        bus.post(new Events.MultipleImagesProcessed(device, processedImageUris.size()));
+        bus.post(new Events.MultipleImagesProcessed(device, processedImageUris));
       }
     });
+
+    if (processedImageUris.size() == 0) {
+      return;
+    }
+
     Resources resources = getResources();
     String text =
         resources.getString(R.string.multiple_screenshots_saved, processedImageUris.size(),
             device.getName());
 
-    Intent viewImagesIntent = new Intent(this, PictureViewerActivity.class);
-    viewImagesIntent.putExtra(Intent.EXTRA_STREAM, processedImageUris);
+    Intent viewImagesIntent = new Intent(Intent.ACTION_VIEW);
+    viewImagesIntent.setData(processedImageUris.get(0));
+    viewImagesIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
     notificationBuilder.setContentTitle(resources.getString(R.string.screenshot_saved_title))
         .setContentText(text)

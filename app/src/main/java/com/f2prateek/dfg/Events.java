@@ -16,7 +16,9 @@
 
 package com.f2prateek.dfg;
 
+import android.net.Uri;
 import com.f2prateek.dfg.model.Device;
+import java.util.List;
 
 public class Events {
 
@@ -25,7 +27,7 @@ public class Events {
   }
 
   public static class GlareSettingUpdated {
-    public boolean isEnabled;
+    public final boolean isEnabled;
 
     public GlareSettingUpdated(boolean isEnabled) {
       this.isEnabled = isEnabled;
@@ -33,7 +35,7 @@ public class Events {
   }
 
   public static class ShadowSettingUpdated {
-    public boolean isEnabled;
+    public final boolean isEnabled;
 
     public ShadowSettingUpdated(boolean isEnabled) {
       this.isEnabled = isEnabled;
@@ -41,7 +43,7 @@ public class Events {
   }
 
   public static class DefaultDeviceUpdated {
-    public int newDevice;
+    public final int newDevice;
 
     public DefaultDeviceUpdated(int newDevice) {
       this.newDevice = newDevice;
@@ -49,20 +51,22 @@ public class Events {
   }
 
   public static class SingleImageProcessed {
-    public Device device;
+    public final Device device;
+    public final Uri uri;
 
-    public SingleImageProcessed(Device device) {
+    public SingleImageProcessed(Device device, Uri uri) {
       this.device = device;
+      this.uri = uri;
     }
   }
 
   public static class MultipleImagesProcessed {
-    public Device device;
-    public int count;
+    public final Device device;
+    public final List<Uri> uriList;
 
-    public MultipleImagesProcessed(Device device, int count) {
+    public MultipleImagesProcessed(Device device, List<Uri> uriList) {
       this.device = device;
-      this.count = count;
+      this.uriList = uriList;
     }
   }
 }

@@ -19,12 +19,14 @@ package com.f2prateek.dfg.core;
 import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
+import com.f2prateek.dfg.ui.MainActivity;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
@@ -32,10 +34,8 @@ public abstract class AbstractGenerateFrameService extends IntentService
     implements DeviceFrameGenerator.Callback {
 
   public static final int DFG_NOTIFICATION_ID = 789;
-
   protected NotificationCompat.Builder notificationBuilder;
   protected Device device;
-
   @Inject NotificationManager notificationManager;
   @Inject Bus bus;
 
@@ -71,6 +71,8 @@ public abstract class AbstractGenerateFrameService extends IntentService
         .setSmallIcon(R.drawable.ic_action_error)
         .setWhen(System.currentTimeMillis())
         .setAutoCancel(true)
+        .setContentIntent(
+            PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0))
         .build();
     notificationManager.notify(DFG_NOTIFICATION_ID, notification);
   }
