@@ -20,7 +20,6 @@ import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
@@ -180,9 +179,6 @@ public class DeviceFrameGenerator {
     values.put(MediaStore.Images.ImageColumns.HEIGHT, background.getHeight());
     Uri frameUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
-    Ln.d(frameUri);
-    Ln.d(getRealPathFromURI(frameUri));
-
     try {
       OutputStream out = resolver.openOutputStream(frameUri);
       if (withShadow) {
@@ -214,18 +210,6 @@ public class DeviceFrameGenerator {
         frameUri);
 
     callback.doneImage(frameUri);
-  }
-
-  public String getRealPathFromURI(Uri contentUri) {
-    String res = null;
-    String[] proj = { MediaStore.Images.Media.DATA };
-    Cursor cursor = context.getContentResolver().query(contentUri, proj, null, null, null);
-    if (cursor.moveToFirst()) {
-      int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-      res = cursor.getString(column_index);
-    }
-    cursor.close();
-    return res;
   }
 
   /**
