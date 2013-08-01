@@ -97,6 +97,9 @@ public class MainActivity extends BaseActivity {
 
   @Subscribe
   public void onMultipleImagesProcessed(final Events.MultipleImagesProcessed event) {
+    if (event.uriList.size() == 0) {
+      return;
+    }
     Crouton.makeText(this, getString(R.string.multiple_screenshots_saved, event.uriList.size(),
         event.device.getName()), Style.INFO).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {

@@ -105,6 +105,10 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
       }
     });
 
+    if (processedImageUris.size() == 0) {
+      return;
+    }
+
     Resources resources = getResources();
     String text =
         resources.getString(R.string.multiple_screenshots_saved, processedImageUris.size(),
