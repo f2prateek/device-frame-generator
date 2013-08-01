@@ -23,19 +23,11 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.TextView;
-import butterknife.InjectView;
+import butterknife.OnClick;
 import butterknife.Views;
 import com.f2prateek.dfg.R;
 
-public class AboutFragment extends DialogFragment implements View.OnClickListener {
-
-  @InjectView(R.id.iv_app_logo) ImageView appLogoImage;
-  @InjectView(R.id.tv_version_number) TextView versionText;
-  @InjectView(R.id.tv_gplus) TextView gPlusText;
-  @InjectView(R.id.tv_twitter) TextView twitterText;
-  @InjectView(R.id.tv_designer) TextView designerText;
+public class AboutFragment extends DialogFragment {
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -55,20 +47,18 @@ public class AboutFragment extends DialogFragment implements View.OnClickListene
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    appLogoImage.setOnClickListener(this);
-    gPlusText.setOnClickListener(this);
-    twitterText.setOnClickListener(this);
-    designerText.setOnClickListener(this);
   }
 
-  @Override
-  public void onClick(View v) {
+  @OnClick({
+      R.id.iv_app_logo, R.id.tv_gplus, R.id.tv_twitter, R.id.tv_designer
+  })
+  public void openUrl(View v) {
     switch (v.getId()) {
       case R.id.iv_app_logo:
         openUrl("http://f2prateek.com/Device-Frame-Generator/");
         break;
       case R.id.tv_gplus:
-        openUrl("https://profiles.google.com/f2prateek");
+        openUrl("https://plus.google.com/115299591800802520330/about");
         break;
       case R.id.tv_twitter:
         openUrl("https://twitter.com/f2prateek");

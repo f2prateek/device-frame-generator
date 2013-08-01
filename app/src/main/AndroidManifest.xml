@@ -17,7 +17,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.f2prateek.dfg"
-    android:versionCode="103"
+    android:versionCode="104"
     android:versionName="@string/current_version_number">
 
   <uses-sdk
@@ -35,8 +35,9 @@
 
     <activity
         android:name=".ui.MainActivity"
-        android:label="@string/app_name">
-      <intent-filter>
+        android:label="@string/app_name"
+        android:launchMode="singleTop">
+    <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
         <category android:name="android.intent.category.DEFAULT"/>
@@ -59,11 +60,6 @@
         <data android:mimeType="image/*"/>
       </intent-filter>
     </activity>
-
-    <activity
-        android:name=".ui.PictureViewerActivity"
-        android:configChanges="orientation|keyboardHidden|screenSize"
-        android:label="@string/app_name"/>
 
     <service android:name=".core.GenerateFrameService">
     </service>

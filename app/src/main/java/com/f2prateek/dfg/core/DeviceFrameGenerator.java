@@ -91,21 +91,21 @@ public class DeviceFrameGenerator {
   /**
    * Generate the frame.
    *
-   * @param imageUri Uri to the screenshot file.
+   * @param screenshotUri Uri to the screenshot file.
    */
-  public void generateFrame(Uri imageUri) {
-    Ln.i("Generating for %s %s and %s from file %s.", device.getName(),
+  public void generateFrame(Uri screenshotUri) {
+    Ln.d("Generating for %s %s and %s from file %s.", device.getName(),
         withGlare ? " with glare " : " without glare ",
-        withShadow ? " with shadow " : " without shadow ", imageUri.toString());
+        withShadow ? " with shadow " : " without shadow ", screenshotUri);
 
     final Bitmap screenshot;
     try {
-      screenshot = BitmapUtils.decodeUri(context.getContentResolver(), imageUri);
+      screenshot = BitmapUtils.decodeUri(context.getContentResolver(), screenshotUri);
     } catch (IOException e) {
       Resources r = context.getResources();
       callback.failedImage(r.getString(R.string.failed_open_screenshot_title),
           r.getString(R.string.failed_open_screenshot_text),
-          r.getString(R.string.failed_open_screenshot_text, imageUri.toString()));
+          r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()));
       return;
     }
     generateFrame(screenshot);
@@ -175,10 +175,12 @@ public class DeviceFrameGenerator {
     values.put(MediaStore.Images.ImageColumns.DATE_ADDED, imageMetadata.imageTime);
     values.put(MediaStore.Images.ImageColumns.DATE_MODIFIED, imageMetadata.imageTime);
     values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/png");
-    Uri imageUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+    values.put(MediaStore.Images.ImageColumns.WIDTH, background.getWidth());
+    values.put(MediaStore.Images.ImageColumns.HEIGHT, background.getHeight());
+    Uri frameUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
     try {
-      OutputStream out = resolver.openOutputStream(imageUri);
+      OutputStream out = resolver.openOutputStream(frameUri);
       if (withShadow) {
         shadow.compress(Bitmap.CompressFormat.PNG, 100, out);
       } else {
@@ -192,24 +194,28 @@ public class DeviceFrameGenerator {
       callback.failedImage(r.getString(R.string.unknown_error_title),
           r.getString(R.string.unknown_error_text), r.getString(R.string.unknown_error_text));
       return;
+    } finally {
+      screenshot.recycle();
+      background.recycle();
+      glare.recycle();
+      shadow.recycle();
     }
-
-    screenshot.recycle();
 
     // update file size in the database
     values.clear();
     values.put(MediaStore.Images.ImageColumns.SIZE, new File(imageMetadata.imageFilePath).length());
-    resolver.update(imageUri, values, null, null);
+    resolver.update(frameUri, values, null, null);
 
-    callback.doneImage(imageUri);
+    Ln.d("Generated for %s at %s with uri %s", device.getName(), imageMetadata.imageFilePath,
+        frameUri);
+
+    callback.doneImage(frameUri);
   }
 
   /**
    * Prepare the metadata for our image.
    *
-   * @return {@link com.f2prateek.dfg.core.DeviceFrameGenerator.ImageMetadata} that will be used
-   *         for
-   *         the image.
+   * @return {@link ImageMetadata} that will be used for the image.
    */
   private ImageMetadata prepareMetadata() {
     ImageMetadata imageMetadata = new ImageMetadata();
@@ -218,10 +224,10 @@ public class DeviceFrameGenerator {
         new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date(imageMetadata.imageTime));
     String imageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         .getAbsolutePath();
+    File dfgDir = new File(imageDir, AppConstants.DFG_DIR_NAME);
+    dfgDir.mkdirs();
     imageMetadata.imageFileName = String.format(AppConstants.DFG_FILE_NAME_TEMPLATE, imageDate);
-    imageMetadata.imageFilePath =
-        String.format(AppConstants.DFG_FILE_PATH_TEMPLATE, imageDir, AppConstants.DFG_DIR_NAME,
-            imageMetadata.imageFileName);
+    imageMetadata.imageFilePath = new File(dfgDir, imageMetadata.imageFileName).getAbsolutePath();
     return imageMetadata;
   }
 

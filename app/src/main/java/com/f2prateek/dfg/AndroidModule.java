@@ -32,8 +32,7 @@ import javax.inject.Singleton;
 
 /** Module for all Android related provisions */
 @Module(
-    complete = false
-)
+    complete = false)
 public class AndroidModule {
 
   @Provides @Singleton Context provideAppContext() {

@@ -31,6 +31,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
+import butterknife.OnClick;
 import butterknife.Views;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.DFGApplication;
@@ -43,7 +44,7 @@ import com.squareup.otto.Bus;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 
-public class DeviceFragment extends Fragment implements View.OnClickListener {
+public class DeviceFragment extends Fragment {
 
   private static final int RESULT_SELECT_PICTURE = 542;
   @Inject Bus bus;
@@ -93,21 +94,7 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
     Picasso.with(getActivity()).load(device.getThumbnail()).into(iv_device_thumbnail);
     tv_device_size.setText(device.getPhysicalSize() + "\" @ " + device.getDensity() + "dpi");
     tv_device_name.setText(device.getName());
-    tv_device_name.setOnClickListener(this);
     tv_device_resolution.setText(device.getRealSize()[0] + "x" + device.getRealSize()[1]);
-    iv_device_thumbnail.setOnClickListener(this);
-  }
-
-  @Override
-  public void onClick(View v) {
-    switch (v.getId()) {
-      case R.id.iv_device_thumbnail:
-        getScreenshotImageFromUser();
-        break;
-      case R.id.tv_device_name:
-        openDevicePage();
-        break;
-    }
   }
 
   @Override
@@ -147,7 +134,8 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
     super.onPause();
   }
 
-  private void getScreenshotImageFromUser() {
+  @OnClick(R.id.iv_device_thumbnail)
+  public void getScreenshotImageFromUser() {
     Intent intent = new Intent();
     intent.setType("image/*");
     intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -155,7 +143,8 @@ public class DeviceFragment extends Fragment implements View.OnClickListener {
         RESULT_SELECT_PICTURE);
   }
 
-  private void openDevicePage() {
+  @OnClick(R.id.tv_device_name)
+  public void openDevicePage() {
     Intent i = new Intent(Intent.ACTION_VIEW);
     i.setData(Uri.parse(device.getUrl()));
     startActivity(i);
