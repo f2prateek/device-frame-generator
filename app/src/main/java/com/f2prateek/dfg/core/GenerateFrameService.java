@@ -51,8 +51,8 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
     super.onHandleIntent(intent);
 
     SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-    boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
-    boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
+    boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
+    boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
     DeviceFrameGenerator deviceFrameGenerator =
         new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
 
