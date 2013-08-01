@@ -102,12 +102,12 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
   }
 
   @Override
-  public void doneImage(Uri imageUri) {
+  public void doneImage(final Uri imageUri) {
     Handler handler = new Handler(Looper.getMainLooper());
     handler.post(new Runnable() {
       @Override
       public void run() {
-        bus.post(new Events.SingleImageProcessed(device));
+        bus.post(new Events.SingleImageProcessed(device, imageUri));
       }
     });
     Resources resources = getResources();

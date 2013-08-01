@@ -101,7 +101,7 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     handler.post(new Runnable() {
       @Override
       public void run() {
-        bus.post(new Events.MultipleImagesProcessed(device, processedImageUris.size()));
+        bus.post(new Events.MultipleImagesProcessed(device, processedImageUris));
       }
     });
 

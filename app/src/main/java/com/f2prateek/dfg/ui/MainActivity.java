@@ -16,11 +16,13 @@
 
 package com.f2prateek.dfg.ui;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import butterknife.InjectView;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
@@ -81,16 +83,29 @@ public class MainActivity extends BaseActivity {
   }
 
   @Subscribe
-  public void onSingleImageProcessed(Events.SingleImageProcessed event) {
+  public void onSingleImageProcessed(final Events.SingleImageProcessed event) {
     Crouton.makeText(this, getString(R.string.single_screenshot_saved, event.device.getName()),
-        Style.INFO).show();
+        Style.INFO).setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        Intent launchIntent = new Intent(Intent.ACTION_VIEW);
+        launchIntent.setDataAndType(event.uri, "image/png");
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(launchIntent);
+      }
+    }).show();
   }
 
   @Subscribe
-  public void onMultipleImagesProcessed(Events.MultipleImagesProcessed event) {
-    Crouton.makeText(this,
-        getString(R.string.multiple_screenshots_saved, event.count, event.device.getName()),
-        Style.INFO).show();
+  public void onMultipleImagesProcessed(final Events.MultipleImagesProcessed event) {
+    Crouton.makeText(this, getString(R.string.multiple_screenshots_saved, event.uriList.size(),
+        event.device.getName()), Style.INFO).setOnClickListener(new View.OnClickListener() {
+      @Override public void onClick(View v) {
+        Intent launchIntent = new Intent(Intent.ACTION_VIEW);
+        launchIntent.setDataAndType(event.uriList.get(0), "image/png");
+        launchIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(launchIntent);
+      }
+    }).show();
   }
 
   public void updateGlareSetting(boolean newSettingEnabled) {
