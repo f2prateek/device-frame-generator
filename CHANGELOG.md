@@ -14,3 +14,4 @@ Version 1.1.0 *(in progress)*
  * More consistent touch feedback for images and text
  * Use picasso for image loading
  * Fix Android 4.3 bug that wouldn't save images
+ * Drop Bugsense
