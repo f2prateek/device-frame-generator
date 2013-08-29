@@ -1,7 +1,17 @@
 #!/bin/bash
 
-# build app, run tests, place apk in website directory
+# MANUAL : Bump version numbers in manifest and website
 
-# deploy website
+# Run tests
+./test-cli.sh
 
-# MANUAL : upload apk to Google Play
+# Build a signed app
+
+APK=`\ls app/build/apk/*release*.apk`
+# Place apk in website directory
+cp $APK website/dfg.apk
+
+# Deploy website
+./deploy_website.sh
+
+# MANUAL : Upload apk to Google Play
