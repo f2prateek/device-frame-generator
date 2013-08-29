@@ -22,11 +22,12 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-  <com.f2prateek.dfg.ui.ColoredSelectorImageView
+  <com.f2prateek.dfg.ui.ForegroundImageView
       android:id="@+id/iv_device_thumbnail"
       android:layout_width="0dp"
       android:layout_height="match_parent"
       android:layout_weight="2"
+      android:foreground="?android:selectableItemBackground"
       android:contentDescription="@string/description_device_thumbnail"
       style="@style/DeviceThumbnail"/>
 
