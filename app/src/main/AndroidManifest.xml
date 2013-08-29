@@ -17,7 +17,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.f2prateek.dfg"
-    android:versionCode="104"
+    android:versionCode="105"
     android:versionName="@string/current_version_number">
 
   <uses-sdk
