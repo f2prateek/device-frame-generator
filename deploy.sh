@@ -5,7 +5,7 @@
 # Run tests
 ./test-cli.sh
 
-# Build a signed app
+# MANUAL : Build a signed app
 
 APK=`\ls app/build/apk/*release*.apk`
 # Place apk in website directory
