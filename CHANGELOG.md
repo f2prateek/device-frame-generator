@@ -3,7 +3,14 @@ Change Log
 
 This is a changelog of the app internals, not just user facing features.
 
-Version 1.1.0 *(in progress)*
+
+Version 1.0.5
+----------------------------
+ * Fix a bug that crashed the app in landscape
+ * Add a website
+
+
+Version 1.0.4
 ----------------------------
 
  * Switch to Gradle
