@@ -46,7 +46,7 @@ public abstract class AbstractGenerateFrameService extends IntentService
   @Override
   public void onCreate() {
     super.onCreate();
-    DFGApplication.getInstance().inject(this);
+    ((DFGApplication) getApplication()).inject(this);
   }
 
   @Override

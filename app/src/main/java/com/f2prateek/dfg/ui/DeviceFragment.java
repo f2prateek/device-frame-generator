@@ -70,7 +70,7 @@ public class DeviceFragment extends Fragment {
     super.onCreate(savedInstanceState);
     deviceNum = getArguments() != null ? getArguments().getInt("num", 0) : 0;
     device = DeviceProvider.getDevices().get(deviceNum);
-    DFGApplication.getInstance().inject(this);
+    ((DFGApplication) getActivity().getApplication()).inject(this);
     setHasOptionsMenu(true);
   }
 

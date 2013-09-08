@@ -32,7 +32,7 @@ public class BaseActivity extends Activity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    DFGApplication.getInstance().inject(this);
+    ((DFGApplication) getApplication()).inject(this);
   }
 
   @Override

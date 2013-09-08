@@ -36,8 +36,14 @@ import javax.inject.Singleton;
     complete = false)
 public class AndroidModule {
 
+  private final DFGApplication application;
+
+  public AndroidModule(DFGApplication application) {
+    this.application = application;
+  }
+
   @Provides @Singleton Context provideAppContext() {
-    return DFGApplication.getInstance().getApplicationContext();
+    return application;
   }
 
   @Provides SharedPreferences provideDefaultSharedPreferences(final Context context) {
