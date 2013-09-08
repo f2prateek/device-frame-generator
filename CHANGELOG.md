@@ -3,6 +3,10 @@ Change Log
 
 This is a changelog of the app internals, not just user facing features.
 
+Version 1.0.7
+----------------------------
+ * Actually update the dependencies
+
 Version 1.0.6
 ----------------------------
  * Update dagger
