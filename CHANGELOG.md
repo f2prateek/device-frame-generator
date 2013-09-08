@@ -3,6 +3,10 @@ Change Log
 
 This is a changelog of the app internals, not just user facing features.
 
+Version 1.0.6
+----------------------------
+ * Update dagger
+ * Dagger now uses code-gen again, faster loading!
 
 Version 1.0.5
 ----------------------------

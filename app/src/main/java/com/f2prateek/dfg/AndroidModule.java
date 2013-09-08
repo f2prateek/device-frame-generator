@@ -32,6 +32,7 @@ import javax.inject.Singleton;
 
 /** Module for all Android related provisions */
 @Module(
+    library = true,
     complete = false)
 public class AndroidModule {
 
