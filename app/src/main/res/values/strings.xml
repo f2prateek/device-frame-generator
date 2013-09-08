@@ -64,6 +64,6 @@
   <string name="changelog">Change log</string>
   <string name="changelog_summary">See the release history</string>
   <string name="version">Version</string>
-  <string name="current_version_number">1.0.5</string>
+  <string name="current_version_number">1.0.6</string>
 
 </resources>

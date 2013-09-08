@@ -17,7 +17,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.f2prateek.dfg"
-    android:versionCode="105"
+    android:versionCode="106"
     android:versionName="@string/current_version_number">
 
   <uses-sdk
@@ -37,7 +37,7 @@
         android:name=".ui.MainActivity"
         android:label="@string/app_name"
         android:launchMode="singleTop">
-    <intent-filter>
+      <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
         <category android:name="android.intent.category.DEFAULT"/>
