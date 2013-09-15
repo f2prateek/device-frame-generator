@@ -18,7 +18,9 @@ package com.f2prateek.dfg;
 
 import android.app.Application;
 import android.widget.Toast;
+import com.crashlytics.android.Crashlytics;
 import com.f2prateek.dfg.util.StorageUtils;
+import com.squareup.picasso.Picasso;
 import dagger.ObjectGraph;
 import java.util.Arrays;
 import java.util.List;
@@ -35,6 +37,11 @@ public class DFGApplication extends Application {
     // Perform Injection
     objectGraph = ObjectGraph.create(getModules().toArray());
     inject(this);
+
+    Picasso.with(this).setDebugging(BuildConfig.DEBUG);
+    if (!BuildConfig.DEBUG) {
+      Crashlytics.start(getApplicationContext());
+    }
 
     if (!StorageUtils.isStorageAvailable()) {
       Toast.makeText(this, R.string.storage_unavailable, Toast.LENGTH_SHORT).show();

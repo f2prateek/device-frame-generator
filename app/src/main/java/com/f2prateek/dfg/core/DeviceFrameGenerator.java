@@ -25,6 +25,7 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import com.crashlytics.android.Crashlytics;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
@@ -106,6 +107,7 @@ public class DeviceFrameGenerator {
       callback.failedImage(r.getString(R.string.failed_open_screenshot_title),
           r.getString(R.string.failed_open_screenshot_text),
           r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()));
+      Crashlytics.logException(e);
       return;
     }
     generateFrame(screenshot);
@@ -122,6 +124,7 @@ public class DeviceFrameGenerator {
     try {
       orientation = checkDimensions(device, screenshot);
     } catch (UnmatchedDimensionsException e) {
+      Crashlytics.logException(e);
       Ln.e(e);
       Resources r = context.getResources();
       String failed_title = r.getString(R.string.failed_match_dimensions_title);
@@ -189,6 +192,7 @@ public class DeviceFrameGenerator {
       out.flush();
       out.close();
     } catch (IOException e) {
+      Crashlytics.logException(e);
       Ln.e(e);
       Resources r = context.getResources();
       callback.failedImage(r.getString(R.string.unknown_error_title),

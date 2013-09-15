@@ -65,3 +65,6 @@ classes
 */seed.txt
 notes
 logs
+
+#Sensitive data
+sensitive.xml
