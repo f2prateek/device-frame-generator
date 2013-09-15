@@ -158,7 +158,8 @@ public class DeviceFragment extends Fragment {
       intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
       intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, selectedImageUri);
       getActivity().startService(intent);
+    } else {
+      super.onActivityResult(requestCode, resultCode, data);
     }
-    super.onActivityResult(requestCode, resultCode, data);
   }
 }
