@@ -45,7 +45,6 @@ public class BitmapUtils {
    *
    * @param context Everything needs a context =(
    * @return A mutable copy of the resource
-   * @throws java.io.IOException if unable to make it mutable
    */
   public static Bitmap decodeResource(final Context context, final String resourceName) {
     Resources resources = context.getResources();

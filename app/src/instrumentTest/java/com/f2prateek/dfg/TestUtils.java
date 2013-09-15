@@ -87,8 +87,7 @@ public class TestUtils {
   /** Get a random device. */
   public static Device getRandomDevice() {
     int random = new Random().nextInt(DeviceProvider.getDevices().size());
-    Device device = DeviceProvider.getDevices().get(random);
-    return device;
+    return DeviceProvider.getDevices().get(random);
   }
 
   /**

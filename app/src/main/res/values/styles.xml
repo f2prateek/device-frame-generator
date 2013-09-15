@@ -30,7 +30,7 @@
   </style>
 
   <style name="DeviceText.Title">
-    <item name="android:textColor">@color/holo_blue_dark</item>
+    <item name="android:textColor">@android:color/holo_blue_dark</item>
     <item name="android:background">?android:attr/selectableItemBackground</item>
   </style>
 
@@ -49,7 +49,7 @@
   </style>
 
   <style name="AboutText.Clickable">
-    <item name="android:textColor">@color/holo_blue_dark</item>
+    <item name="android:textColor">@android:color/holo_blue_dark</item>
     <item name="android:background">?android:attr/selectableItemBackground</item>
   </style>
 
