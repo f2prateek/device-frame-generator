@@ -1,6 +1,6 @@
 #!/bin/bash
 
-# MANUAL : Bump version numbers in manifest and website
+# MANUAL : Bump version numbers in manifest
 
 # Run tests
 ./test-cli.sh

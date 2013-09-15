@@ -17,7 +17,7 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.f2prateek.dfg"
-    android:versionCode="107"
+    android:versionCode="108"
     android:versionName="@string/current_version_number">
 
   <uses-sdk
@@ -35,7 +35,7 @@
       android:theme="@style/AppTheme">
 
     <meta-data android:name="com.crashlytics.ApiKey"
-        android:value="@string/crashlytics_api_key"/>
+        android:value="149aa6034d0aa2683ee06a826974c39c6031893f"/>
 
     <activity
         android:name=".ui.MainActivity"
