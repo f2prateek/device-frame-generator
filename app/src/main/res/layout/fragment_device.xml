@@ -22,12 +22,20 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+  <ImageView
+      android:id="@+id/iv_device_default"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignParentTop="true"
+      android:layout_alignParentRight="true"
+      android:padding="@dimen/small_padding"
+      style="@style/StarToggle"/>
+
   <com.f2prateek.dfg.ui.ForegroundImageView
       android:id="@+id/iv_device_thumbnail"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_above="@+id/tv_device_name"
-      android:layout_alignParentTop="true"
       android:contentDescription="@string/description_device_thumbnail"
       android:foreground="?android:selectableItemBackground"
       style="@style/DeviceThumbnail"/>

@@ -17,42 +17,36 @@
 package com.f2prateek.dfg.ui;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import butterknife.Views;
 import com.f2prateek.dfg.AppConstants;
-import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
-import com.squareup.otto.Bus;
+import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
 
-public class DeviceFragment extends Fragment {
+public class DeviceFragment extends BaseFragment {
 
   private static final int RESULT_SELECT_PICTURE = 542;
-  @Inject Bus bus;
   @Inject SharedPreferences sharedPreferences;
   @InjectView(R.id.tv_device_resolution) TextView tv_device_resolution;
   @InjectView(R.id.tv_device_size) TextView tv_device_size;
   @InjectView(R.id.tv_device_name) TextView tv_device_name;
   @InjectView(R.id.iv_device_thumbnail) ImageView iv_device_thumbnail;
+  @InjectView(R.id.iv_device_default) ImageView iv_device_default;
   private Device device;
   private int deviceNum;
 
@@ -70,68 +64,50 @@ public class DeviceFragment extends Fragment {
     super.onCreate(savedInstanceState);
     deviceNum = getArguments() != null ? getArguments().getInt("num", 0) : 0;
     device = DeviceProvider.getDevices().get(deviceNum);
-    ((DFGApplication) getActivity().getApplication()).inject(this);
     setHasOptionsMenu(true);
-  }
-
-  @Override
-  public void onResume() {
-    super.onResume();
-    bus.register(this);
   }
 
   @Override
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
-    View v = inflater.inflate(R.layout.fragment_device, container, false);
-    Views.inject(this, v);
-    return v;
+    return inflater.inflate(R.layout.fragment_device, container, false);
   }
 
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     Picasso.with(getActivity()).load(device.getThumbnail()).into(iv_device_thumbnail);
+    iv_device_default.bringToFront();
+    iv_device_default.setImageResource(
+        isDefault() ? R.drawable.ic_action_star_selected : R.drawable.ic_action_star);
     tv_device_size.setText(device.getPhysicalSize() + "\" @ " + device.getDensity() + "dpi");
     tv_device_name.setText(device.getName());
     tv_device_resolution.setText(device.getRealSize()[0] + "x" + device.getRealSize()[1]);
   }
 
-  @Override
-  public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-    super.onCreateOptionsMenu(menu, inflater);
-    inflater.inflate(R.menu.fragment_device, menu);
-    if (isDefault()) {
-      MenuItem item = menu.findItem(R.id.menu_default_device);
-      item.setIcon(R.drawable.ic_action_star_selected);
-    }
-  }
-
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
-    switch (item.getItemId()) {
-      case R.id.menu_default_device:
-        updateDefaultDevice();
-        return true;
-    }
-    return super.onOptionsItemSelected(item);
-  }
-
-  private boolean isDefault() {
-    return deviceNum == sharedPreferences.getInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, 0);
-  }
-
+  @OnClick(R.id.iv_device_default)
   public void updateDefaultDevice() {
+    if (isDefault()) {
+      return;
+    }
     SharedPreferences.Editor editor = sharedPreferences.edit();
     editor.putInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, deviceNum);
     editor.commit();
     bus.post(new Events.DefaultDeviceUpdated(deviceNum));
   }
 
-  @Override
-  public void onPause() {
-    bus.unregister(this);
-    super.onPause();
+  @Subscribe
+  public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
+    iv_device_default.post(new Runnable() {
+      @Override public void run() {
+        iv_device_default.setImageResource(
+            isDefault() ? R.drawable.ic_action_star_selected : R.drawable.ic_action_star);
+      }
+    });
+  }
+
+  private boolean isDefault() {
+    return deviceNum == sharedPreferences.getInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, 0);
   }
 
   @OnClick(R.id.iv_device_thumbnail)

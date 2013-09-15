@@ -38,6 +38,11 @@
     <item name="android:textSize">16sp</item>
   </style>
 
+  <style name="StarToggle">
+    <item name="android:background">?android:selectableItemBackground</item>
+    <item name="android:scaleType">fitXY</item>
+  </style>
+
   <style name="AboutText" parent="android:TextAppearance.DeviceDefault.Small">
     <item name="android:gravity">center</item>
   </style>
