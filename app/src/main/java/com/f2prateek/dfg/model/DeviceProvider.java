@@ -59,7 +59,17 @@ public class DeviceProvider {
         .setThumbnail(R.drawable.nexus_4_thumb)
         .build());
     devices.add(new Device.Builder().setId("nexus_7")
-        .setName("Nexus 7")
+        .setName("Nexus 7 (2013)")
+        .setUrl("http://www.google.com/nexus/7/")
+        .setPhysicalSize(8f)
+        .setDensity("XHDPI")
+        .setLandOffset(new int[] { 326, 245 })
+        .setPortOffset(new int[] { 224, 326 })
+        .setPortSize(new int[] { 800, 1280 })
+        .setRealSize(new int[] { 800, 1280 })
+        .setThumbnail(R.drawable.nexus_7_thumb) // TODO : update thumb
+        .build());
+    devices.add(new Device.Builder().setId("nexus_7").setName("Nexus 7")
         .setUrl("http://www.android.com/devices/detail/nexus-7")
         .setPhysicalSize(7f)
         .setDensity("213 dpi")
