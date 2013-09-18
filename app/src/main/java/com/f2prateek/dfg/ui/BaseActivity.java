@@ -16,6 +16,7 @@
 
 package com.f2prateek.dfg.ui;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -25,7 +26,7 @@ import com.f2prateek.dfg.DFGApplication;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
-public class BaseActivity extends Activity {
+@SuppressLint("Registered") public class BaseActivity extends Activity {
 
   @Inject Bus bus;
 

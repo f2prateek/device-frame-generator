@@ -21,7 +21,6 @@
   <string name="app_name">Device Frame Generator</string>
 
   <!-- Device Fragment !-->
-  <string name="menu_save_default">Save as default</string>
   <string name="saved_as_default_message">%s saved as default device.</string>
 
   <string name="shadow_preference">Shadow</string>

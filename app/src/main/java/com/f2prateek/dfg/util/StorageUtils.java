@@ -25,7 +25,7 @@ public class StorageUtils {
    *
    * @return true if storage is available and writeable
    */
-  public static boolean isStorageAvailable() {
+  @SuppressWarnings("BooleanMethodIsAlwaysInverted") public static boolean isStorageAvailable() {
     boolean mExternalStorageAvailable;
     boolean mExternalStorageWriteable;
     String state = Environment.getExternalStorageState();
