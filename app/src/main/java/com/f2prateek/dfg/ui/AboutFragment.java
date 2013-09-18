@@ -18,16 +18,23 @@ package com.f2prateek.dfg.ui;
 
 import android.app.DialogFragment;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.Views;
 import com.f2prateek.dfg.R;
+import javax.inject.Inject;
 
 public class AboutFragment extends DialogFragment {
+
+  @Inject PackageInfo packageInfo;
+  @InjectView(R.id.tv_version_number) TextView tv_version_number;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
@@ -40,6 +47,7 @@ public class AboutFragment extends DialogFragment {
       Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_about, container, false);
     Views.inject(this, v);
+    tv_version_number.setText(String.valueOf(packageInfo.versionName));
     getDialog().setTitle(R.string.about);
     return v;
   }

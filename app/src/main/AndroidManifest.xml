@@ -18,9 +18,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.f2prateek.dfg"
     android:versionCode="110"
-    android:versionName="@string/current_version_number">
+    android:versionName="1.1.0">
 
-  <uses-sdk
+<uses-sdk
       android:minSdkVersion="14"
       android:targetSdkVersion="18"/>
 

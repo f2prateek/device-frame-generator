@@ -38,7 +38,6 @@
   <TextView android:id="@+id/tv_version_number"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/current_version_number"
       style="@style/AboutText.Clickable"/>
 
   <TextView android:layout_width="wrap_content"
