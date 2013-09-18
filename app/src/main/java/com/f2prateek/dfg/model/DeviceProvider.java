@@ -66,10 +66,9 @@ public class DeviceProvider {
         .setLandOffset(new int[] { 326, 245 })
         .setPortOffset(new int[] { 224, 326 })
         .setPortSize(new int[] { 800, 1280 })
-        .setRealSize(new int[] { 800, 1280 })
-        .setThumbnail(R.drawable.nexus_7_thumb) // TODO : update thumb
-        .build());
-    devices.add(new Device.Builder().setId("nexus_7").setName("Nexus 7")
+        .setRealSize(new int[] { 800, 1280 }).setThumbnail(R.drawable.nexus_7_2013_thumb).build());
+    devices.add(new Device.Builder().setId("nexus_7")
+        .setName("Nexus 7")
         .setUrl("http://www.android.com/devices/detail/nexus-7")
         .setPhysicalSize(7f)
         .setDensity("213 dpi")
