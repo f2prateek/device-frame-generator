@@ -30,7 +30,7 @@ public class Device implements Parcelable {
   // Physical size of device, just for displaying to user
   private final float physicalSize;
   // DPI; just for displaying to user
-  private final int density;
+  private final String density;
   // offset of screenshot from edges when in landscape
   private final int[] landOffset;
   // offset of screenshot from edges when in portrait
@@ -42,7 +42,7 @@ public class Device implements Parcelable {
   // Handle to resource for thumbnail
   private final int thumbnail;
 
-  private Device(String id, String name, String url, float physicalSize, int density,
+  private Device(String id, String name, String url, float physicalSize, String density,
       int[] landOffset, int[] portOffset, int[] portSize, int[] realSize, int thumbnail) {
     this.id = id;
     this.name = name;
@@ -72,7 +72,7 @@ public class Device implements Parcelable {
     return physicalSize;
   }
 
-  public int getDensity() {
+  public String getDensity() {
     return density;
   }
 
@@ -124,7 +124,7 @@ public class Device implements Parcelable {
     name = in.readString();
     url = in.readString();
     physicalSize = in.readFloat();
-    density = in.readInt();
+    density = in.readString();
     landOffset = new int[2];
     in.readIntArray(landOffset);
     portOffset = new int[2];
@@ -147,7 +147,7 @@ public class Device implements Parcelable {
     dest.writeString(name);
     dest.writeString(url);
     dest.writeFloat(physicalSize);
-    dest.writeInt(density);
+    dest.writeString(density);
     dest.writeIntArray(landOffset);
     dest.writeIntArray(portOffset);
     dest.writeIntArray(portSize);
@@ -170,7 +170,7 @@ public class Device implements Parcelable {
     private String name;
     private String url;
     private float physicalSize;
-    private int density;
+    private String density;
     private int[] landOffset;
     private int[] portOffset;
     private int[] portSize;
@@ -197,7 +197,7 @@ public class Device implements Parcelable {
       return this;
     }
 
-    public Builder setDensity(int density) {
+    public Builder setDensity(String density) {
       this.density = density;
       return this;
     }

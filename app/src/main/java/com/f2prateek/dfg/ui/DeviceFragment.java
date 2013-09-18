@@ -80,7 +80,7 @@ public class DeviceFragment extends BaseFragment {
     iv_device_default.bringToFront();
     iv_device_default.setImageResource(
         isDefault() ? R.drawable.ic_action_star_selected : R.drawable.ic_action_star);
-    tv_device_size.setText(device.getPhysicalSize() + "\" @ " + device.getDensity() + "dpi");
+    tv_device_size.setText(device.getPhysicalSize() + "\" @ " + device.getDensity());
     tv_device_name.setText(device.getName());
     tv_device_resolution.setText(device.getRealSize()[0] + "x" + device.getRealSize()[1]);
   }
