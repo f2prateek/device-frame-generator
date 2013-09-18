@@ -66,7 +66,9 @@ public class DeviceProvider {
         .setLandOffset(new int[] { 326, 245 })
         .setPortOffset(new int[] { 224, 326 })
         .setPortSize(new int[] { 800, 1280 })
-        .setRealSize(new int[] { 800, 1280 }).setThumbnail(R.drawable.nexus_7_2013_thumb).build());
+        .setRealSize(new int[] { 800, 1280 })
+        .setThumbnail(R.drawable.nexus_7_2013_thumb)
+        .build());
     devices.add(new Device.Builder().setId("nexus_7")
         .setName("Nexus 7")
         .setUrl("http://www.android.com/devices/detail/nexus-7")
@@ -148,7 +150,7 @@ public class DeviceProvider {
         .setName("HTC One")
         .setUrl("http://www.htc.com/www/smartphones/htc-one/")
         .setPhysicalSize(4.7f)
-        .setDensity(468)
+        .setDensity("468 dpi")
         .setLandOffset(new int[] { 624, 324 })
         .setPortOffset(new int[] { 324, 624 })
         .setPortSize(new int[] { 1080, 1920 })
