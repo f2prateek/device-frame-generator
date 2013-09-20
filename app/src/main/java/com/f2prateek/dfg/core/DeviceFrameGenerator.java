@@ -124,7 +124,6 @@ public class DeviceFrameGenerator {
     try {
       orientation = checkDimensions(device, screenshot);
     } catch (UnmatchedDimensionsException e) {
-      Crashlytics.logException(e);
       Ln.e(e);
       Resources r = context.getResources();
       String failed_title = r.getString(R.string.failed_match_dimensions_title);
