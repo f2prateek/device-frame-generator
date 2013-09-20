@@ -99,18 +99,16 @@ public class DeviceFrameGenerator {
         withGlare ? " with glare " : " without glare ",
         withShadow ? " with shadow " : " without shadow ", screenshotUri);
 
-    final Bitmap screenshot;
     try {
-      screenshot = BitmapUtils.decodeUri(context.getContentResolver(), screenshotUri);
+      Bitmap screenshot = BitmapUtils.decodeUri(context.getContentResolver(), screenshotUri);
+      generateFrame(screenshot);
     } catch (IOException e) {
       Resources r = context.getResources();
       callback.failedImage(r.getString(R.string.failed_open_screenshot_title),
-          r.getString(R.string.failed_open_screenshot_text),
+          r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()),
           r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()));
       Crashlytics.logException(e);
-      return;
     }
-    generateFrame(screenshot);
   }
 
   /**
