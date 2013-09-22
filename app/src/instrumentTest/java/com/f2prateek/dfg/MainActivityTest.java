@@ -16,6 +16,7 @@
 
 package com.f2prateek.dfg;
 
+import android.content.res.Resources;
 import android.support.v4.view.ViewPager;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
@@ -44,12 +45,32 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
 
   // TODO : move to unit test
   public void testUniqueIds() throws Exception {
-    assertThat(DeviceProvider.getDevices()).hasSize(12); // TODO : required?
+    assertThat(DeviceProvider.getDevices()).hasSize(12);
     assertThat(DeviceProvider.getDevices()).usingElementComparator(new Comparator<Device>() {
       @Override public int compare(Device lhs, Device rhs) {
         return lhs.getId().compareToIgnoreCase(rhs.getId());
       }
     }).doesNotHaveDuplicates();
+  }
+
+  // TODO : move to unit test
+  public void testAllResourcesExist() throws Exception {
+    final Resources resources = activity.getResources();
+    final String packageName = activity.getPackageName();
+    for (final Device device : DeviceProvider.getDevices()) {
+      final String orientation = Device.ORIENTATION_LANDSCAPE;
+      resourcesForDeviceOrientation(resources, device, orientation, packageName);
+    }
+  }
+
+  private static void resourcesForDeviceOrientation(final Resources resources, final Device device,
+      final String orientation, final String packageName) {
+    assertThat(resources.getIdentifier(device.getBackgroundString(orientation), "drawable",
+        packageName)).isNotEqualTo(0);
+    assertThat(resources.getIdentifier(device.getGlareString(orientation), "drawable", packageName))
+        .isNotEqualTo(0);
+    assertThat(resources.getIdentifier(device.getShadowString(orientation), "drawable",
+        packageName)).isNotEqualTo(0);
   }
 
   public void testAllDevicesShown() throws Exception {
