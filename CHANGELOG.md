@@ -3,6 +3,11 @@ Change Log
 
 This is a changelog of the app internals, not just user facing features.
 
+Version 1.1.1
+----------------------------
+ * Add frames for HTC One
+ * Fix dimensions for Nexus 7 (2013) frames
+
 Version 1.0.9
 ----------------------------
  * Add frames for Nexus 7 (2013)
