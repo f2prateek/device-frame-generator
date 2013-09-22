@@ -1,115 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="utf-8">
-    <title>Device Frame Generator</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="Wrap your app screenshots in real device artwork">
-    <link href="static/bootstrap-combined.min.css" rel="stylesheet">
-    <link href="static/app.css" rel="stylesheet">
-    <link href="static/app-theme.css" rel="stylesheet">
-    <link href="http://fonts.googleapis.com/css?family=Roboto:400,300italic,100,100italic,300"
-          rel="stylesheet" type="text/css">
-    <!--[if lt IE 9]>
-    <script src="static/html5shiv.min.js"></script><![endif]-->
-</head>
-<body data-target=".content-nav">
-<header>
-    <div class="container">
-        <div class="row">
-            <div class="span5">
-                <h1>Device Art Generator</h1>
-            </div>
-            <div class="span7">
-                <menu>
-                    <ul>
-                        <li><a href="#download" class="menu download">Download</a></li>
-                        <li><a href="http://github.com/f2prateek/android-device-frame-generator"
-                               data-title="View GitHub Project" class="menu github"><img
-                                src="static/icon-github.png" alt="GitHub"/></a></li>
-                        <li>
-                            <a href="https://play.google.com/store/apps/details?id=com.f2prateek.dfg"
-                               data-title="Google Play" class="menu icon"><img src="static/icon.png"
-                                                                               alt="Google Play"/></a>
-                        </li>
-                    </ul>
-                </menu>
-            </div>
-        </div>
-</header>
-<section id="subtitle">
-    <div class="container">
-        <div class="row">
-            <div class="span12">
-                <h2>Wrap your app screenshots in <strong>real</strong> device artwork</h2>
-            </div>
-        </div>
-    </div>
-</section>
-<section id="body">
-    <div class="container">
-        <div class="row">
-            <div class="span9">
-                <h3 id="introduction">Introduction</h3>
-
-                <p>The device art generator allows you to quickly wrap your app screenshots in real
-                    device artwork. This provides better visual context for your app screenshots on
-                    your web site or in other promotional materials.</p>
-
-                <p>This is a port of the webapp <a
-                        href="http://android-ui-utils.googlecode.com/hg/asset-studio/dist/device-frames.html">Device
-                    Frame Generator</a> by <a href="https://plus.google.com/+RomanNurik">+Roman
-                    Nurik</a>, developed to run natively on Android.</p>
-
-                <p class="screenshot"><img src="static/screenshot.png"
-                                           alt="Application screenshot."></p>
-
-                <h3 id="download">Download</h3>
-
-                <p>
-                    <a href="https://github.com/f2prateek/android-device-frame-generator/releases"
-                       class="dl version-href">&darr; <span
-                            class="version-tag">Latest</span> Release</a></p>
-
-                <p>The source code to Device Frame Generator and this website is <a
-                        href="https://github.com/f2prateek/android-device-frame-generator">available
-                    on GitHub</a>.</p>
-
-                <h3 id="credits">Credits</h3>
-
-                <p>Application Icon and design by <a
-                        href="https://plus.google.com/110199935346260350060">+Taylor Ling</a>.</p>
-
-                <p>This app was built using a number of awesome open source libraries: </p>
-                <ul>
-                    <li><a href="http://square.github.io/picasso/">Picasso</a> for image loading.
-                    </li>
-                    <li><a href="http://square.github.io/otto/">Otto</a> for bussing events.</li>
-                    <li><a href="http://square.github.io/dagger/">Dagger</a> for dependency
-                        injection.
-                    </li>
-                    <li><a href="http://square.github.io/spoon/">Spoon</a> for aggregating instument
-                        tests.
-                    </li>
-                    <li><a href="https://github.com/keyboardsurfer/Crouton/">Crouton</a> for in-app
-                        notifications.
-                    </li>
-                    <li><a href="http://jakewharton.github.io/butterknife/">Butter Knife</a> for
-                        "view injection".
-                    </li>
-                    <li><a href="http://square.github.io/">Square</a> for the website template.</li>
-                </ul>
-
-                <h3 id="contributing">Contributing</h3>
-
-                <p>If you would like to contribute code you can do so through GitHub by forking the
-                    repository and sending a pull request.</p>
-
-                <p>When submitting code, please make every effort to follow existing conventions and
-                    style in order to keep the code as readable as possible. Please also make sure
-                    your code compiles by running <code>gradle assemble</code>.</p>
-
-                <h3 id="license">License</h3>
+    <head>
+        <meta charset="utf-8">
+        <title>Device Frame Generator</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Wrap your app screenshots in real device artwork">
+        <link href="static/bootstrap-combined.min.css" rel="stylesheet">
+        <link href="static/app.css" rel="stylesheet">
+        <link href="static/app-theme.css" rel="stylesheet">
+        <link href="http://fonts.googleapis.com/css?family=Roboto:400,300italic,100,100italic,300"
+              rel="stylesheet" type="text/css">
+        <!--[if lt IE 9]>
+<script src="static/html5shiv.min.js"></script><![endif]-->
+    </head>
+    <body data-target=".content-nav">
+        <header>
+            <div class="container">
+                <div class="row">
+                    <div class="span5">
+                        <h1>Device Art Generator</h1>
+                    </div>
+                    <div class="span7">
+                        <menu>
+                            <ul>
+                                <li><a href="#download" class="menu download">Download</a></li>
+                                <li><a href="http://github.com/f2prateek/android-device-frame-generator"
+                                       data-title="View GitHub Project" class="menu github"><img
+                                                                                                 src="static/icon-github.png" alt="GitHub"/></a></li>
+                                <li>
+                                    <a href="https://play.google.com/store/apps/details?id=com.f2prateek.dfg"
+                                       data-title="Google Play" class="menu icon"><img src="static/icon.png"
+                                                                                       alt="Google Play"/></a>
+                                </li>
+                            </ul>
+                        </menu>
+                    </div>
+                </div>
+            </header>
+            <section id="subtitle">
+                <div class="container">
+                    <div class="row">
+                        <div class="span12">
+                            <h2>Wrap your app screenshots in <strong>real</strong> device artwork</h2>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            <section id="body">
+                <div class="container">
+                    <div class="row">
+                        <div class="span9">
+                            <h3 id="introduction">Introduction</h3>
+                            
+                            <p>The device art generator allows you to quickly wrap your app screenshots in real
+                                device artwork. This provides better visual context for your app screenshots on
+                                your web site or in other promotional materials.</p>
+                            
+                            <p>This is a port of the webapp <a
+                                                               href="http://android-ui-utils.googlecode.com/hg/asset-studio/dist/device-frames.html">Device
+                                Frame Generator</a> by <a href="https://plus.google.com/+RomanNurik">+Roman
+                                Nurik</a>, developed to run natively on Android.</p>
+                            
+                            <p class="screenshot"><img src="static/screenshot.png"
+                                                       alt="Application screenshot."></p>
+                            
+                            <h3 id="download">Download</h3>
+                            
+                            <p>
+                            <a href="https://github.com/f2prateek/android-device-frame-generator/releases" class="dl version-href">&darr; <span class="version-tag">Latest</span> Release</a></p>
+                            
+                            <p>The source code to Device Frame Generator and this website is <a href="https://github.com/f2prateek/android-device-frame-generator">available on GitHub</a>.</p>
+                            
+                            <h3 id="credits">Credits</h3>
+                            
+                            <p>Application Icon and design by <a href="https://plus.google.com/110199935346260350060">+Taylor Ling</a>.</p>
+                            
+                            <p>HTC One frames by <a href="https://twitter.com/LOGIK4L">@Danish Prakash</a>.</p>
+                            
+                            <p>This app was built using a number of awesome open source libraries: </p>
+                            <ul>
+                                <li><a href="http://square.github.io/picasso/">Picasso</a> for image loading.
+                                </li>
+                                <li><a href="http://square.github.io/otto/">Otto</a> for bussing events.</li>
+                                <li><a href="http://square.github.io/dagger/">Dagger</a> for dependency
+                                    injection.
+                                </li>
+                                <li><a href="http://square.github.io/spoon/">Spoon</a> for aggregating instument
+                                    tests.
+                                </li>
+                                <li><a href="https://github.com/keyboardsurfer/Crouton/">Crouton</a> for in-app
+                                    notifications.
+                                </li>
+                                <li><a href="http://jakewharton.github.io/butterknife/">Butter Knife</a> for
+                                    "view injection".
+                                </li>
+                                <li><a href="http://square.github.io/">Square</a> for the website template.</li>
+                            </ul>
+                            
+                            <h3 id="contributing">Contributing</h3>
+                            
+                            <p>If you would like to contribute code you can do so through GitHub by forking the
+                                repository and sending a pull request.</p>
+                            
+                            <p>When submitting code, please make every effort to follow existing conventions and
+                                style in order to keep the code as readable as possible. Please also make sure
+                                your code compiles by running <code>gradle assemble</code>.</p>
+                            
+                            <h3 id="license">License</h3>
                             <pre>Copyright 2013 Prateek Srivastava (@f2prateek)
 
 Licensed under the Apache License, Version 2.0 (the "License");
@@ -123,37 +120,37 @@ distributed under the License is distributed on an "AS IS" BASIS,
 WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 See the License for the specific language governing permissions and
 limitations under the License.</pre>
-            </div>
-            <div class="span3">
-                <div class="content-nav" data-spy="affix" data-offset-top="80">
-                    <ul class="nav nav-tabs nav-stacked primary">
-                        <li><a href="#introduction">Introduction</a></li>
-                        <li><a href="#download">Download</a></li>
-                        <li><a href="#credits">Credits</a></li>
-                        <li><a href="#contributing">Contributing</a></li>
-                        <li><a href="#license">License</a></li>
-                    </ul>
-                    <ul class="nav nav-pills nav-stacked secondary">
-                        <li><a href="https://plus.google.com/communities/115184670818359523689">Google+
-                            Community</a></li>
-                        <li>
-                            <a href="http://android-ui-utils.googlecode.com/hg/asset-studio/dist/device-frames.html">Official
-                                webapp</a></li>
-                        <li>
-                            <a href="https://github.com/f2prateek/android-device-frame-generator/issues">Bug
-                                Tracker</a></li>
-                        <li><a href="CHANGELOG.md">Changelog</a></li>
-                    </ul>
+                        </div>
+                        <div class="span3">
+                            <div class="content-nav" data-spy="affix" data-offset-top="80">
+                                <ul class="nav nav-tabs nav-stacked primary">
+                                    <li><a href="#introduction">Introduction</a></li>
+                                    <li><a href="#download">Download</a></li>
+                                    <li><a href="#credits">Credits</a></li>
+                                    <li><a href="#contributing">Contributing</a></li>
+                                    <li><a href="#license">License</a></li>
+                                </ul>
+                                <ul class="nav nav-pills nav-stacked secondary">
+                                    <li><a href="https://plus.google.com/communities/115184670818359523689">Google+
+                                        Community</a></li>
+                                    <li>
+                                        <a href="http://android-ui-utils.googlecode.com/hg/asset-studio/dist/device-frames.html">Official
+                                            webapp</a></li>
+                                    <li>
+                                        <a href="https://github.com/f2prateek/android-device-frame-generator/issues">Bug
+                                            Tracker</a></li>
+                                    <li><a href="CHANGELOG.md">Changelog</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-        </div>
-    </div>
-</section>
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script src="static/bootstrap.min.js"></script>
-<script src="static/jquery.smooth-scroll.min.js"></script>
-<script src="static/prettify.js"></script>
-<script type="text/javascript">
+            </section>
+            <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+            <script src="static/bootstrap.min.js"></script>
+            <script src="static/jquery.smooth-scroll.min.js"></script>
+            <script src="static/prettify.js"></script>
+            <script type="text/javascript">
                 $(function() {
                     // Syntax highlight code blocks.
                     prettyPrint();
@@ -176,8 +173,9 @@ limitations under the License.</pre>
                     });
                 });
                 
-
-</script>
-</body>
-</html>
+                
+            </script>
+        </body>
+    </html>
+    
     
