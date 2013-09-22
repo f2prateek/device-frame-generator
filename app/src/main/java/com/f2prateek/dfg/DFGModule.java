@@ -39,7 +39,7 @@ import javax.inject.Singleton;
     injects = {
         DFGApplication.class, BaseActivity.class, MainActivity.class, ReceiverActivity.class,
         DeviceFragment.class, AboutFragment.class, AbstractGenerateFrameService.class,
-        GenerateFrameService.class, GenerateMultipleFramesService.class
+        GenerateFrameService.class, GenerateMultipleFramesService.class, AboutFragment.class
     }
 
 )

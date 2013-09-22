@@ -28,6 +28,7 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import butterknife.Views;
+import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import javax.inject.Inject;
 
@@ -40,6 +41,7 @@ public class AboutFragment extends DialogFragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setStyle(STYLE_NO_TITLE, getTheme());
+    ((DFGApplication) getActivity().getApplication()).inject(this);
   }
 
   @Override
@@ -50,11 +52,6 @@ public class AboutFragment extends DialogFragment {
     tv_version_number.setText(String.valueOf(packageInfo.versionName));
     getDialog().setTitle(R.string.about);
     return v;
-  }
-
-  @Override
-  public void onViewCreated(View view, Bundle savedInstanceState) {
-    super.onViewCreated(view, savedInstanceState);
   }
 
   @OnClick({
