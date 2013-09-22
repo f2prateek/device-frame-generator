@@ -21,6 +21,9 @@ import android.os.Parcelable;
 
 public class Device implements Parcelable {
 
+  public static final String ORIENTATION_PORTRAIT = "port";
+  public static final String ORIENTATION_LANDSCAPE = "land";
+
   // Unique identifier for each device, used to identify resources.
   private final String id;
   // Device name to display

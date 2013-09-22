@@ -59,7 +59,8 @@ public class DeviceFrameGenerator {
    *
    * @param device The Device to frame.
    * @param screenshot The screenshot to frame.
-   * @return "port" if matched to portrait and "land" if matched to landscape
+   * @return {@link Device#ORIENTATION_PORTRAIT} if matched to portrait and {@link
+   * Device#ORIENTATION_LANDSCAPE} if matched to landscape
    * @throws UnmatchedDimensionsException If it could not match any orientation to the device.
    */
   private static String checkDimensions(Device device, Bitmap screenshot)
@@ -68,9 +69,9 @@ public class DeviceFrameGenerator {
     float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
 
     if (aspect1 == aspect2) {
-      return "port";
+      return Device.ORIENTATION_PORTRAIT;
     } else if (aspect1 == 1 / aspect2) {
-      return "land";
+      return Device.ORIENTATION_LANDSCAPE;
     }
 
     Ln.e("Screenshot height=%d, width=%d. Device height=%d, width=%d. Aspect1=%f, Aspect2=%f",
