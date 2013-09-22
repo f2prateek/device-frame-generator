@@ -91,6 +91,17 @@ public class DeviceProvider {
         .setRealSize(new int[] { 1600, 2560 })
         .setThumbnail(R.drawable.nexus_10_thumb)
         .build());
+    devices.add(new Device.Builder().setId("htc_m7")
+        .setName("HTC One")
+        .setUrl("http://www.htc.com/www/smartphones/htc-one/")
+        .setPhysicalSize(4.7f)
+        .setDensity("468 dpi")
+        .setLandOffset(new int[] { 624, 324 })
+        .setPortOffset(new int[] { 324, 624 })
+        .setPortSize(new int[] { 1080, 1920 })
+        .setRealSize(new int[] { 1080, 1920 })
+        .setThumbnail(R.drawable.htc_m7_thumb)
+        .build());
     devices.add(new Device.Builder().setId("htc_one_x")
         .setName("HTC One X")
         .setUrl("http://www.htc.com/www/smartphones/htc-one-x/")
@@ -145,17 +156,6 @@ public class DeviceProvider {
         .setPortSize(new int[] { 800, 1280 })
         .setRealSize(new int[] { 800, 1280 })
         .setThumbnail(R.drawable.xoom_thumb)
-        .build());
-    devices.add(new Device.Builder().setId("htc_m7")
-        .setName("HTC One")
-        .setUrl("http://www.htc.com/www/smartphones/htc-one/")
-        .setPhysicalSize(4.7f)
-        .setDensity("468 dpi")
-        .setLandOffset(new int[] { 624, 324 })
-        .setPortOffset(new int[] { 324, 624 })
-        .setPortSize(new int[] { 1080, 1920 })
-        .setRealSize(new int[] { 1080, 1920 })
-        .setThumbnail(R.drawable.htc_m7_thumb)
         .build());
     return devices;
   }
