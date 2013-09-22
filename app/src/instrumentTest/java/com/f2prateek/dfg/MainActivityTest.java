@@ -17,12 +17,15 @@
 package com.f2prateek.dfg;
 
 import android.support.v4.view.ViewPager;
+import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.ui.MainActivity;
 import com.squareup.spoon.Spoon;
+import java.util.Comparator;
 import java.util.Random;
 
 import static org.fest.assertions.api.ANDROID.assertThat;
+import static org.fest.assertions.api.Assertions.assertThat;
 
 /** Tests for displaying a specific {@link MainActivity} item */
 public class MainActivityTest extends ActivityTest<MainActivity> {
@@ -37,6 +40,16 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
   protected void setUp() throws Exception {
     super.setUp();
     pager = (ViewPager) activity.findViewById(R.id.pager);
+  }
+
+  // TODO : move to unit test
+  public void testUniqueIds() throws Exception {
+    assertThat(DeviceProvider.getDevices()).hasSize(12); // TODO : required?
+    assertThat(DeviceProvider.getDevices()).usingElementComparator(new Comparator<Device>() {
+      @Override public int compare(Device lhs, Device rhs) {
+        return lhs.getId().compareToIgnoreCase(rhs.getId());
+      }
+    }).doesNotHaveDuplicates();
   }
 
   public void testAllDevicesShown() throws Exception {
