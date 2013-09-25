@@ -66,7 +66,7 @@ public class DeviceProvider {
         .setLandOffset(new int[] { 326, 245 })
         .setPortOffset(new int[] { 244, 326 })
         .setPortSize(new int[] { 800, 1280 })
-        .setRealSize(new int[] { 800, 1280 })
+        .setRealSize(new int[] { 1200, 1920 })
         .setThumbnail(R.drawable.nexus_7_2013_thumb)
         .build());
     devices.add(new Device.Builder().setId("nexus_7")
