@@ -41,7 +41,7 @@ public class DFGApplication extends Application {
     Picasso.with(this).setDebugging(BuildConfig.DEBUG);
     //noinspection PointlessBooleanExpression
     if (!BuildConfig.DEBUG) {
-      Crashlytics.start(getApplicationContext());
+      Crashlytics.start(this);
     }
 
     if (!StorageUtils.isStorageAvailable()) {
