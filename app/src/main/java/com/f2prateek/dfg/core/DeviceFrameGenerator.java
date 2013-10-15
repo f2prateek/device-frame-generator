@@ -21,7 +21,10 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.NinePatch;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -148,18 +151,32 @@ public class DeviceFrameGenerator {
     }
 
     final int[] offset;
+    final int status_bar_width;
     if (isPortrait(orientation)) {
       screenshot =
-          Bitmap.createScaledBitmap(screenshot, device.getPortSize()[0], device.getPortSize()[1],
+          Bitmap.createScaledBitmap(screenshot, device.getPortSize()[0], screenshot.getHeight(),
               false);
+      status_bar_width = device.getPortSize()[0];
       offset = device.getPortOffset();
     } else {
       screenshot =
           Bitmap.createScaledBitmap(screenshot, device.getPortSize()[1], device.getPortSize()[0],
               false);
+      status_bar_width = device.getPortSize()[1];
       offset = device.getLandOffset();
     }
+
     frame.drawBitmap(screenshot, offset[0], offset[1], null);
+    BitmapFactory.Options opt = new BitmapFactory.Options();
+    opt.inMutable = true;
+    opt.inScaled = false;
+    Bitmap statusBar =
+        BitmapFactory.decodeResource(context.getResources(), R.drawable.status_bar, opt);
+    NinePatch statusBarPatch =
+        new NinePatch(statusBar, statusBar.getNinePatchChunk(), "status_bar");
+    Rect statusBarBounds = new Rect(offset[0], offset[1], offset[0] + status_bar_width,
+        offset[1] + statusBar.getHeight());
+    statusBarPatch.draw(frame, statusBarBounds);
 
     if (withGlare) {
       frame.drawBitmap(glare, 0f, 0f, null);
@@ -201,6 +218,7 @@ public class DeviceFrameGenerator {
       background.recycle();
       glare.recycle();
       shadow.recycle();
+      statusBar.recycle();
     }
 
     // update file size in the database
