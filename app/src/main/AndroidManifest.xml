@@ -20,7 +20,7 @@
     android:versionCode="113"
     android:versionName="1.1.3">
 
-<uses-sdk
+  <uses-sdk
       android:minSdkVersion="14"
       android:targetSdkVersion="18"/>
 
@@ -34,9 +34,6 @@
       android:allowBackup="true"
       android:largeHeap="true"
       android:theme="@style/AppTheme">
-
-    <meta-data android:name="com.crashlytics.ApiKey"
-        android:value="149aa6034d0aa2683ee06a826974c39c6031893f"/>
 
     <activity
         android:name=".ui.MainActivity"

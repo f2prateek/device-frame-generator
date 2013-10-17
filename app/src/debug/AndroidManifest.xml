@@ -16,23 +16,11 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.f2prateek.dfg.tests"
-    android:versionCode="100"
-    android:versionName="1.0.0">
+    package="com.f2prateek.dfg">
 
-  <uses-sdk android:minSdkVersion="14"/>
-
-  <application android:debuggable="true">
-    <uses-library android:name="android.test.runner"/>
+  <application>
+    <meta-data android:name="com.crashlytics.ApiKey"
+        android:value="0000000000000000000000000000000000000000"/>
   </application>
-
-  <!--
-  This declares that this app uses the instrumentation test runner targeting
-  the package of com.android.tests.testprojecttest.app.  To run the tests use the command:
-  "adb shell am instrument -w com.android.tests.testprojecttest.test/android.test.InstrumentationTestRunner"
-  -->
-  <instrumentation
-      android:name="android.test.InstrumentationTestRunner"
-      android:targetPackage="com.f2prateek.dfg"/>
 
 </manifest>

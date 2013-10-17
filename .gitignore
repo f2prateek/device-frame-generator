@@ -67,4 +67,4 @@ notes
 logs
 
 #Sensitive data
-sensitive.xml
+app/src/release/AndroidManifest.xml
