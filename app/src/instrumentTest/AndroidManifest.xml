@@ -20,7 +20,7 @@
     android:versionCode="100"
     android:versionName="1.0.0">
 
-<uses-sdk android:minSdkVersion="14"/>
+  <uses-sdk android:minSdkVersion="14"/>
 
   <application android:debuggable="true">
     <uses-library android:name="android.test.runner"/>
