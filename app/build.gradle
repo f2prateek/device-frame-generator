@@ -6,8 +6,8 @@ buildscript {
     }
   }
   dependencies {
-    classpath group: 'com.android.tools.build', name: 'gradle', version: '0.5.+'
-    classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+    classpath group: 'com.android.tools.build', name: 'gradle', version: '0.6.+'
+    classpath group: 'com.crashlytics.tools.gradle', name: 'crashlytics-gradle', version: '1.+'
   }
 }
 
@@ -41,7 +41,7 @@ dependencies {
 
 android {
   compileSdkVersion 18
-  buildToolsVersion "18.0.1"
+  buildToolsVersion "18.1"
 
   testBuildType "debug"
 
