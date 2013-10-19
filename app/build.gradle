@@ -51,6 +51,12 @@ android {
   }
 
   defaultConfig {
+    buildConfig """\
+          public static final boolean RELEASE = !DEBUG;
+        """
+  }
+
+  defaultConfig {
     minSdkVersion 14
     targetSdkVersion 18
   }

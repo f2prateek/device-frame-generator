@@ -39,8 +39,7 @@ public class DFGApplication extends Application {
     inject(this);
 
     Picasso.with(this).setDebugging(BuildConfig.DEBUG);
-    //noinspection PointlessBooleanExpression
-    if (!BuildConfig.DEBUG) {
+    if (BuildConfig.RELEASE) {
       Crashlytics.start(this);
     }
 
