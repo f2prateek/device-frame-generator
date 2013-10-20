@@ -68,3 +68,4 @@ logs
 
 #Sensitive data
 app/src/release
+app/keystore

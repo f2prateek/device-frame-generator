@@ -45,29 +45,29 @@ android {
 
   testBuildType "debug"
 
-  buildTypes {
-    debug {
-      packageNameSuffix ".debug"
-    }
-  }
-
   signingConfigs {
     release {
-      storeFile file(System.console().readLine("\n\$ Enter keystore path: "))
+      storeFile file("keystore")
       storePassword System.console().readLine("\n\$ Enter keystore password: ")
       keyAlias System.console().readLine("\n\$ Enter key alias: ")
       keyPassword System.console().readLine("\n\$ Enter key password: ")
     }
   }
 
-  defaultConfig {
-    buildConfig """\
-          public static final boolean RELEASE = !DEBUG;
-        """
+  buildTypes {
+    debug {
+      packageNameSuffix ".debug"
+    }
+    release {
+      signingConfig signingConfigs.release
+    }
   }
 
   defaultConfig {
     minSdkVersion 14
     targetSdkVersion 18
+    buildConfig """\
+          public static final boolean RELEASE = !DEBUG;
+        """
   }
 }
