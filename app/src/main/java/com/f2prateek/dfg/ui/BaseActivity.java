@@ -22,7 +22,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import butterknife.Views;
+import com.f2prateek.dfg.BuildConfig;
 import com.f2prateek.dfg.DFGApplication;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
@@ -34,6 +36,13 @@ import javax.inject.Inject;
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     ((DFGApplication) getApplication()).inject(this);
+  }
+
+  @Override protected void onStart() {
+    super.onStart();
+    if (BuildConfig.RELEASE) {
+      EasyTracker.getInstance().activityStart(this);
+    }
   }
 
   @Override
@@ -66,5 +75,13 @@ import javax.inject.Inject;
   protected void onPause() {
     bus.unregister(this);
     super.onPause();
+  }
+
+  @Override
+  public void onStop() {
+    if (BuildConfig.RELEASE) {
+      EasyTracker.getInstance().activityStop(this);
+    }
+    super.onStop();
   }
 }

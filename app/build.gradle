@@ -23,6 +23,7 @@ dependencies {
   }
   compile group: 'com.android.support', name: 'support-v13', version: '13.0.+'
   compile group: 'com.crashlytics.android', name: 'crashlytics', version: '1.+'
+  compile fileTree(dir: 'libs', include: '*.jar')
 
   compile group: 'com.jakewharton', name: 'butterknife', version: '3.0.+'
   compile group: 'com.squareup', name: 'otto', version: '1.3.+'
