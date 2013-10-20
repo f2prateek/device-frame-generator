@@ -41,7 +41,7 @@ dependencies {
 
 android {
   compileSdkVersion 18
-  buildToolsVersion "18.1"
+  buildToolsVersion '18.1.1'
 
   testBuildType "debug"
 
