@@ -22,7 +22,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 import butterknife.Views;
-import com.f2prateek.dfg.BuildConfig;
 import com.f2prateek.dfg.DFGApplication;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.squareup.otto.Bus;
@@ -40,9 +39,7 @@ import javax.inject.Inject;
 
   @Override protected void onStart() {
     super.onStart();
-    if (BuildConfig.RELEASE) {
-      EasyTracker.getInstance(this).activityStart(this);
-    }
+    EasyTracker.getInstance(this).activityStart(this);
   }
 
   @Override
@@ -79,9 +76,7 @@ import javax.inject.Inject;
 
   @Override
   public void onStop() {
-    if (BuildConfig.RELEASE) {
-      EasyTracker.getInstance(this).activityStop(this);
-    }
+    EasyTracker.getInstance(this).activityStop(this);
     super.onStop();
   }
 }
