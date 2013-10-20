@@ -41,7 +41,7 @@ import javax.inject.Inject;
   @Override protected void onStart() {
     super.onStart();
     if (BuildConfig.RELEASE) {
-      EasyTracker.getInstance().activityStart(this);
+      EasyTracker.getInstance(this).activityStart(this);
     }
   }
 
@@ -80,7 +80,7 @@ import javax.inject.Inject;
   @Override
   public void onStop() {
     if (BuildConfig.RELEASE) {
-      EasyTracker.getInstance().activityStop(this);
+      EasyTracker.getInstance(this).activityStop(this);
     }
     super.onStop();
   }
