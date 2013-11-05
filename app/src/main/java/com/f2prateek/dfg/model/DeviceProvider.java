@@ -58,6 +58,17 @@ public class DeviceProvider {
         .setRealSize(new int[] { 768, 1280 })
         .setThumbnail(R.drawable.nexus_4_thumb)
         .build());
+    devices.add(new Device.Builder().setId("nexus_5")
+        .setName("Nexus 5")
+        .setUrl("http://www.google.com/nexus/5/")
+        .setPhysicalSize(5.43f)
+        .setDensity("XXHDPI")
+        .setLandOffset(new int[] { 436, 306 })
+        .setPortOffset(new int[] { 306, 436 })
+        .setPortSize(new int[] { 1080, 1920 })
+        .setRealSize(new int[] { 1080, 1920 })
+        .setThumbnail(R.drawable.nexus_4_thumb)
+        .build());
     devices.add(new Device.Builder().setId("nexus_7_2013")
         .setName("Nexus 7 (2013)")
         .setUrl("http://www.google.com/nexus/7/")
