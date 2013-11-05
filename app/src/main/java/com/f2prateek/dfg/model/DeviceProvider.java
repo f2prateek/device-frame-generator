@@ -16,7 +16,6 @@
 
 package com.f2prateek.dfg.model;
 
-import com.f2prateek.dfg.R;
 import java.util.ArrayList;
 
 public class DeviceProvider {
@@ -34,7 +33,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {134, 247})
         .setPortSize(new int[] {480, 800})
         .setRealSize(new int[] {480, 800})
-        .setThumbnail(R.drawable.nexus_s_thumb)
         .build());
     devices.add(new Device.Builder().setId("galaxy_nexus")
         .setName("Galaxy Nexus")
@@ -45,7 +43,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {216, 353})
         .setPortSize(new int[] {720, 1280})
         .setRealSize(new int[] {720, 1280})
-        .setThumbnail(R.drawable.galaxy_nexus_thumb)
         .build());
     devices.add(new Device.Builder().setId("nexus_4")
         .setName("Nexus 4")
@@ -56,7 +53,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {213, 350})
         .setPortSize(new int[] {768, 1280})
         .setRealSize(new int[] {768, 1280})
-        .setThumbnail(R.drawable.nexus_4_thumb)
         .build());
     devices.add(new Device.Builder().setId("nexus_5")
         .setName("Nexus 5")
@@ -67,7 +63,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {306, 436})
         .setPortSize(new int[] {1080, 1920})
         .setRealSize(new int[] {1080, 1920})
-        .setThumbnail(R.drawable.nexus_4_thumb)
         .build());
     devices.add(new Device.Builder().setId("nexus_7_2013")
         .setName("Nexus 7 (2013)")
@@ -78,7 +73,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {244, 326})
         .setPortSize(new int[] {800, 1280})
         .setRealSize(new int[] {1200, 1920})
-        .setThumbnail(R.drawable.nexus_7_2013_thumb)
         .build());
     devices.add(new Device.Builder().setId("nexus_7")
         .setName("Nexus 7")
@@ -89,7 +83,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {264, 311})
         .setPortSize(new int[] {800, 1280})
         .setRealSize(new int[] {800, 1280})
-        .setThumbnail(R.drawable.nexus_7_thumb)
         .build());
     devices.add(new Device.Builder().setId("nexus_10")
         .setName("Nexus 10")
@@ -100,7 +93,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {217, 223})
         .setPortSize(new int[] {800, 1280})
         .setRealSize(new int[] {1600, 2560})
-        .setThumbnail(R.drawable.nexus_10_thumb)
         .build());
     devices.add(new Device.Builder().setId("htc_m7")
         .setName("HTC One")
@@ -111,7 +103,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {324, 624})
         .setPortSize(new int[] {1080, 1920})
         .setRealSize(new int[] {1080, 1920})
-        .setThumbnail(R.drawable.htc_m7_thumb)
         .build());
     devices.add(new Device.Builder().setId("htc_one_x")
         .setName("HTC One X")
@@ -122,7 +113,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {302, 306})
         .setPortSize(new int[] {720, 1280})
         .setRealSize(new int[] {720, 1280})
-        .setThumbnail(R.drawable.htc_one_x_thumb)
         .build());
     devices.add(new Device.Builder().setId("samsung_galaxy_note")
         .setName("Samsung Galaxy Note")
@@ -133,7 +123,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {289, 312})
         .setPortSize(new int[] {800, 1280})
         .setRealSize(new int[] {800, 1280})
-        .setThumbnail(R.drawable.samsung_galaxy_note_thumb)
         .build());
     devices.add(new Device.Builder().setId("samsung_galaxy_s3")
         .setName("Samsung Galaxy S III")
@@ -144,7 +133,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {302, 307})
         .setPortSize(new int[] {720, 1280})
         .setRealSize(new int[] {720, 1280})
-        .setThumbnail(R.drawable.samsung_galaxy_s3_thumb)
         .build());
     devices.add(new Device.Builder().setId("samsung_galaxy_tab_2_7inch")
         .setName("Samsung Galaxy Tab 2")
@@ -155,7 +143,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {274, 222})
         .setPortSize(new int[] {600, 1024})
         .setRealSize(new int[] {600, 1024})
-        .setThumbnail(R.drawable.samsung_galaxy_tab_2_7inch_thumb)
         .build());
     devices.add(new Device.Builder().setId("xoom")
         .setName("Motorola XOOM")
@@ -166,7 +153,6 @@ public class DeviceProvider {
         .setPortOffset(new int[] {199, 200})
         .setPortSize(new int[] {800, 1280})
         .setRealSize(new int[] {800, 1280})
-        .setThumbnail(R.drawable.xoom_thumb)
         .build());
     return devices;
   }

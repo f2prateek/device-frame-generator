@@ -34,6 +34,7 @@ import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
+import com.f2prateek.dfg.util.BitmapUtils;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 import javax.inject.Inject;
@@ -76,7 +77,10 @@ public class DeviceFragment extends BaseFragment {
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    Picasso.with(getActivity()).load(device.getThumbnail()).into(deviceThumbnailText);
+    Picasso.with(getActivity())
+        .load(BitmapUtils.getResourceIdentifierForDrawable(getActivity(),
+            device.getThumbnailResourceName()))
+        .into(deviceThumbnailText);
     deviceDefaultText.bringToFront();
     deviceDefaultText.setImageResource(
         isDefault() ? R.drawable.ic_action_star_selected : R.drawable.ic_action_star);

@@ -136,9 +136,11 @@ public class DeviceFrameGenerator {
     }
 
     final Bitmap background =
-        BitmapUtils.decodeResource(context, device.getBackgroundString(orientation));
-    final Bitmap glare = BitmapUtils.decodeResource(context, device.getGlareString(orientation));
-    final Bitmap shadow = BitmapUtils.decodeResource(context, device.getShadowString(orientation));
+        BitmapUtils.decodeResource(context, device.getBackgroundStringResourceName(orientation));
+    final Bitmap glare =
+        BitmapUtils.decodeResource(context, device.getGlareStringResourceName(orientation));
+    final Bitmap shadow =
+        BitmapUtils.decodeResource(context, device.getShadowStringResourceName(orientation));
 
     Canvas frame;
     if (withShadow) {

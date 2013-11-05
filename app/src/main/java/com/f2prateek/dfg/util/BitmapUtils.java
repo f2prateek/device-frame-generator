@@ -48,11 +48,23 @@ public class BitmapUtils {
    */
   public static Bitmap decodeResource(final Context context, final String resourceName) {
     Resources resources = context.getResources();
-    String packageName = context.getPackageName();
     BitmapFactory.Options opt = new BitmapFactory.Options();
     opt.inMutable = true;
     return BitmapFactory.decodeResource(resources,
-        resources.getIdentifier(resourceName, "drawable", packageName), opt);
+        getResourceIdentifierForDrawable(context, resourceName), opt);
+  }
+
+  /**
+   * Get the identifier for a drawable resource with the given name
+   *
+   * @param context Everything needs a context =(
+   * @param resourceName Name of the resource
+   */
+  public static int getResourceIdentifierForDrawable(final Context context,
+      final String resourceName) {
+    Resources resources = context.getResources();
+    String packageName = context.getPackageName();
+    return resources.getIdentifier(resourceName, "drawable", packageName);
   }
 
   /** https://developer.android.com/training/displaying-bitmaps/load-bitmap.html */
