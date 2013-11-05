@@ -42,11 +42,11 @@ public class DeviceFragment extends BaseFragment {
 
   private static final int RESULT_SELECT_PICTURE = 542;
   @Inject SharedPreferences sharedPreferences;
-  @InjectView(R.id.tv_device_resolution) TextView tv_device_resolution;
-  @InjectView(R.id.tv_device_size) TextView tv_device_size;
-  @InjectView(R.id.tv_device_name) TextView tv_device_name;
-  @InjectView(R.id.iv_device_thumbnail) ImageView iv_device_thumbnail;
-  @InjectView(R.id.iv_device_default) ImageView iv_device_default;
+  @InjectView(R.id.tv_device_resolution) TextView deviceResolutionText;
+  @InjectView(R.id.tv_device_size) TextView deviceSizeText;
+  @InjectView(R.id.tv_device_name) TextView deviceNameText;
+  @InjectView(R.id.iv_device_thumbnail) ImageView deviceThumbnailText;
+  @InjectView(R.id.iv_device_default) ImageView deviceDefaultText;
   private Device device;
   private int deviceNum;
 
@@ -76,13 +76,13 @@ public class DeviceFragment extends BaseFragment {
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    Picasso.with(getActivity()).load(device.getThumbnail()).into(iv_device_thumbnail);
-    iv_device_default.bringToFront();
-    iv_device_default.setImageResource(
+    Picasso.with(getActivity()).load(device.getThumbnail()).into(deviceThumbnailText);
+    deviceDefaultText.bringToFront();
+    deviceDefaultText.setImageResource(
         isDefault() ? R.drawable.ic_action_star_selected : R.drawable.ic_action_star);
-    tv_device_size.setText(device.getPhysicalSize() + "\" @ " + device.getDensity());
-    tv_device_name.setText(device.getName());
-    tv_device_resolution.setText(device.getRealSize()[0] + "x" + device.getRealSize()[1]);
+    deviceSizeText.setText(device.getPhysicalSize() + "\" @ " + device.getDensity());
+    deviceNameText.setText(device.getName());
+    deviceResolutionText.setText(device.getRealSize()[0] + "x" + device.getRealSize()[1]);
   }
 
   @OnClick(R.id.iv_device_default)
@@ -98,9 +98,9 @@ public class DeviceFragment extends BaseFragment {
 
   @Subscribe
   public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
-    iv_device_default.post(new Runnable() {
+    deviceDefaultText.post(new Runnable() {
       @Override public void run() {
-        iv_device_default.setImageResource(
+        deviceDefaultText.setImageResource(
             isDefault() ? R.drawable.ic_action_star_selected : R.drawable.ic_action_star);
       }
     });

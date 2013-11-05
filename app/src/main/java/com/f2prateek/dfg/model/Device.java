@@ -40,7 +40,8 @@ public class Device implements Parcelable {
   private final int[] portOffset;
   // Screen resolution in portrait
   private final int[] portSize;
-  // Screen resolution in portrait, will be displayed to the user. This may or may not be same as portSize
+  // Screen resolution in portrait, that will be displayed to the user.
+  // This may or may not be same as portSize
   private final int[] realSize;
   // Handle to resource for thumbnail
   private final int thumbnail;
@@ -116,10 +117,7 @@ public class Device implements Parcelable {
 
   @Override
   public String toString() {
-    return "Device{" +
-        "id='" + id + '\'' +
-        ", name='" + name + '\'' +
-        '}';
+    return "Device{" + "id='" + id + '\'' + ", name='" + name + '\'' + '}';
   }
 
   protected Device(Parcel in) {

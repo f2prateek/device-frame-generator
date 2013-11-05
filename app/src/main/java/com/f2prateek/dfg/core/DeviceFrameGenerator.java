@@ -31,11 +31,13 @@ import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.util.BitmapUtils;
 import com.f2prateek.dfg.util.Ln;
+import com.google.analytics.tracking.android.EasyTracker;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 
 public class DeviceFrameGenerator {
 
@@ -60,11 +62,9 @@ public class DeviceFrameGenerator {
    * @param device The Device to frame.
    * @param screenshot The screenshot to frame.
    * @return {@link Device#ORIENTATION_PORTRAIT} if matched to portrait and {@link
-   * Device#ORIENTATION_LANDSCAPE} if matched to landscape
-   * @throws UnmatchedDimensionsException If it could not match any orientation to the device.
+   * Device#ORIENTATION_LANDSCAPE} if matched to landscape, null if no match
    */
-  private static String checkDimensions(Device device, Bitmap screenshot)
-      throws UnmatchedDimensionsException {
+  private static String checkDimensions(Device device, Bitmap screenshot) {
     float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
     float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
 
@@ -77,7 +77,7 @@ public class DeviceFrameGenerator {
     Ln.e("Screenshot height=%d, width=%d. Device height=%d, width=%d. Aspect1=%f, Aspect2=%f",
         screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1],
         device.getPortSize()[0], aspect1, aspect2);
-    throw new UnmatchedDimensionsException(device, screenshot.getHeight(), screenshot.getWidth());
+    return null;
   }
 
   /**
@@ -120,17 +120,18 @@ public class DeviceFrameGenerator {
   private void generateFrame(Bitmap screenshot) {
     callback.startingImage(screenshot);
     String orientation;
-    try {
-      orientation = checkDimensions(device, screenshot);
-    } catch (UnmatchedDimensionsException e) {
-      Ln.e(e);
+    orientation = checkDimensions(device, screenshot);
+    if (orientation == null) {
       Resources r = context.getResources();
-      String failed_title = r.getString(R.string.failed_match_dimensions_title);
-      String failed_text =
-          r.getString(R.string.failed_match_dimensions_text, e.device.getPortSize()[0],
-              e.device.getPortSize()[1], e.screenshotHeight, e.screenshotWidth);
-      String failed_small_text = r.getString(R.string.device_chosen, device.getName());
-      callback.failedImage(failed_title, failed_small_text, failed_text);
+      String failedTitle = r.getString(R.string.failed_match_dimensions_title);
+      String failedText =
+          r.getString(R.string.failed_match_dimensions_text, device.getPortSize()[0],
+              device.getPortSize()[1], screenshot.getHeight(), screenshot.getWidth());
+      String failedSmallText = r.getString(R.string.device_chosen, device.getName());
+      callback.failedImage(failedTitle, failedSmallText, failedText);
+      HashMap<String, String> params = new HashMap<String, String>();
+      params.put("incorrect_dimensions", device.getId());
+      EasyTracker.getInstance(context).send(params);
       return;
     }
 
@@ -235,11 +236,11 @@ public class DeviceFrameGenerator {
 
   // Views should have these methods to notify the user.
   public interface Callback {
-    public void startingImage(Bitmap screenshot);
+    void startingImage(Bitmap screenshot);
 
-    public void failedImage(String title, String small_text, String text);
+    void failedImage(String title, String smallText, String text);
 
-    public void doneImage(Uri imageUri);
+    void doneImage(Uri imageUri);
   }
 
   public class ImageMetadata {
