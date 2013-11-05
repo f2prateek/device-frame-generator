@@ -6,7 +6,7 @@
 # Run tests
 ./test-cli.sh
 
-# MANUAL : Build a signed app
+# MANUAL : pass in keystore credentials
 ./gradlew clean assembleRelease
 
 # Deploy website
