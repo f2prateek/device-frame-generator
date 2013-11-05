@@ -70,8 +70,9 @@ public class MainActivity extends BaseActivity {
         final AboutFragment fragment = new AboutFragment();
         fragment.show(getFragmentManager(), "about");
         return true;
+      default:
+        return super.onOptionsItemSelected(item);
     }
-    return super.onOptionsItemSelected(item);
   }
 
   @Subscribe

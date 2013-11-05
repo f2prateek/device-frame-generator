@@ -20,6 +20,7 @@ import android.app.Application;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.f2prateek.dfg.util.StorageUtils;
+import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.squareup.picasso.Picasso;
 import dagger.ObjectGraph;
 import java.util.Arrays;
@@ -39,8 +40,9 @@ public class DFGApplication extends Application {
     inject(this);
 
     Picasso.with(this).setDebugging(BuildConfig.DEBUG);
-    //noinspection PointlessBooleanExpression
-    if (!BuildConfig.DEBUG) {
+    GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
+
+    if (BuildConfig.RELEASE) {
       Crashlytics.start(this);
     }
 

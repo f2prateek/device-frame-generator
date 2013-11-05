@@ -3,13 +3,14 @@
 # Simple script to test Java-based execution of Spoon. You must have assembled
 # the jar prior to running this script (i.e., mvn clean verify).
 
+# Clean everything!
 adb uninstall com.f2prateek.dfg.debug
 adb uninstall com.f2prateek.dfg.debug.tests
 adb uninstall com.f2prateek.dfg
-gradle clean
+./gradlew clean
 
-gradle assemble
-gradle assembleTest
+./gradlew assemble
+./gradlew assembleTest
 
 set -e
 

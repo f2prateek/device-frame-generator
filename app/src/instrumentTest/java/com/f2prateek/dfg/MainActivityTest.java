@@ -45,7 +45,7 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
 
   // TODO : move to unit test
   public void testUniqueIds() throws Exception {
-    assertThat(DeviceProvider.getDevices()).hasSize(12);
+    assertThat(DeviceProvider.getDevices()).hasSize(13);
     assertThat(DeviceProvider.getDevices()).usingElementComparator(new Comparator<Device>() {
       @Override public int compare(Device lhs, Device rhs) {
         return lhs.getId().compareToIgnoreCase(rhs.getId());
@@ -65,11 +65,12 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
 
   private static void resourcesForDeviceOrientation(final Resources resources, final Device device,
       final String orientation, final String packageName) {
-    assertThat(resources.getIdentifier(device.getBackgroundString(orientation), "drawable",
+    assertThat(
+        resources.getIdentifier(device.getBackgroundStringResourceName(orientation), "drawable",
+            packageName)).isNotEqualTo(0);
+    assertThat(resources.getIdentifier(device.getGlareStringResourceName(orientation), "drawable",
         packageName)).isNotEqualTo(0);
-    assertThat(resources.getIdentifier(device.getGlareString(orientation), "drawable", packageName))
-        .isNotEqualTo(0);
-    assertThat(resources.getIdentifier(device.getShadowString(orientation), "drawable",
+    assertThat(resources.getIdentifier(device.getShadowStringResourceName(orientation), "drawable",
         packageName)).isNotEqualTo(0);
   }
 

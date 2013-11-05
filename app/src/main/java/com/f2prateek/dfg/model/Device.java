@@ -40,13 +40,12 @@ public class Device implements Parcelable {
   private final int[] portOffset;
   // Screen resolution in portrait
   private final int[] portSize;
-  // Screen resolution in portrait, will be displayed to the user. This may or may not be same as portSize
+  // Screen resolution in portrait, that will be displayed to the user.
+  // This may or may not be same as portSize
   private final int[] realSize;
-  // Handle to resource for thumbnail
-  private final int thumbnail;
 
   private Device(String id, String name, String url, float physicalSize, String density,
-      int[] landOffset, int[] portOffset, int[] portSize, int[] realSize, int thumbnail) {
+      int[] landOffset, int[] portOffset, int[] portSize, int[] realSize) {
     this.id = id;
     this.name = name;
     this.url = url;
@@ -56,7 +55,6 @@ public class Device implements Parcelable {
     this.portOffset = portOffset;
     this.portSize = portSize;
     this.realSize = realSize;
-    this.thumbnail = thumbnail;
   }
 
   public String getId() {
@@ -95,31 +93,29 @@ public class Device implements Parcelable {
     return realSize;
   }
 
-  public int getThumbnail() {
-    return thumbnail;
-  }
-
   // Get the name of the shadow resource
-  public String getShadowString(String orientation) {
+  public String getShadowStringResourceName(String orientation) {
     return id + "_" + orientation + "_shadow";
   }
 
   // Get the name of the glare resource
-  public String getGlareString(String orientation) {
+  public String getGlareStringResourceName(String orientation) {
     return id + "_" + orientation + "_glare";
   }
 
   // Get the name of the background resource
-  public String getBackgroundString(String orientation) {
+  public String getBackgroundStringResourceName(String orientation) {
     return id + "_" + orientation + "_back";
+  }
+
+  // Get the name of the background resource
+  public String getThumbnailResourceName() {
+    return id + "_thumb";
   }
 
   @Override
   public String toString() {
-    return "Device{" +
-        "id='" + id + '\'' +
-        ", name='" + name + '\'' +
-        '}';
+    return "Device{" + "id='" + id + '\'' + ", name='" + name + '\'' + '}';
   }
 
   protected Device(Parcel in) {
@@ -136,7 +132,6 @@ public class Device implements Parcelable {
     in.readIntArray(portSize);
     realSize = new int[2];
     in.readIntArray(realSize);
-    thumbnail = in.readInt();
   }
 
   @Override
@@ -155,7 +150,6 @@ public class Device implements Parcelable {
     dest.writeIntArray(portOffset);
     dest.writeIntArray(portSize);
     dest.writeIntArray(realSize);
-    dest.writeInt(thumbnail);
   }
 
   public static final Creator<Device> CREATOR = new Creator<Device>() {
@@ -178,7 +172,6 @@ public class Device implements Parcelable {
     private int[] portOffset;
     private int[] portSize;
     private int[] realSize;
-    private int thumbnail;
 
     public Builder setId(String id) {
       this.id = id;
@@ -225,14 +218,9 @@ public class Device implements Parcelable {
       return this;
     }
 
-    public Builder setThumbnail(int thumbnail) {
-      this.thumbnail = thumbnail;
-      return this;
-    }
-
     public Device build() {
       return new Device(id, name, url, physicalSize, density, landOffset, portOffset, portSize,
-          realSize, thumbnail);
+          realSize);
     }
   }
 }

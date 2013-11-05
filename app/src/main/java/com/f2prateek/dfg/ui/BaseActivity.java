@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.view.MenuItem;
 import butterknife.Views;
 import com.f2prateek.dfg.DFGApplication;
+import com.google.analytics.tracking.android.EasyTracker;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
@@ -36,6 +37,11 @@ import javax.inject.Inject;
     ((DFGApplication) getApplication()).inject(this);
   }
 
+  @Override protected void onStart() {
+    super.onStart();
+    EasyTracker.getInstance(this).activityStart(this);
+  }
+
   @Override
   public void setContentView(int layoutResId) {
     super.setContentView(layoutResId);
@@ -46,7 +52,8 @@ import javax.inject.Inject;
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:  // This is the home button in the top left corner of the screen.
-        // Dont call finish! Because activity could have been started by an outside activity and the home button would not operated as expected!
+        // Dont call finish! Because activity could have been started by an outside activity
+        // and the home button would not operated as expected!
         Intent homeIntent = new Intent(this, MainActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
         startActivity(homeIntent);
@@ -66,5 +73,11 @@ import javax.inject.Inject;
   protected void onPause() {
     bus.unregister(this);
     super.onPause();
+  }
+
+  @Override
+  public void onStop() {
+    EasyTracker.getInstance(this).activityStop(this);
+    super.onStop();
   }
 }

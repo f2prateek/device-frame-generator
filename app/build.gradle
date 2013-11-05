@@ -13,6 +13,7 @@ buildscript {
 
 apply plugin: 'android'
 apply plugin: 'crashlytics'
+apply plugin: 'checkstyle'
 
 dependencies {
   repositories {
@@ -23,6 +24,7 @@ dependencies {
   }
   compile group: 'com.android.support', name: 'support-v13', version: '13.0.+'
   compile group: 'com.crashlytics.android', name: 'crashlytics', version: '1.+'
+  compile fileTree(dir: 'libs', include: '*.jar')
 
   compile group: 'com.jakewharton', name: 'butterknife', version: '3.0.+'
   compile group: 'com.squareup', name: 'otto', version: '1.3.+'
@@ -39,19 +41,72 @@ dependencies {
 }
 
 android {
-  compileSdkVersion 18
-  buildToolsVersion "18.1"
+  compileSdkVersion 19
+  buildToolsVersion '19'
 
   testBuildType "debug"
+
+  signingConfigs {
+    release {
+      storeFile file("keystore")
+      storePassword "notYourRealPassword"
+      keyAlias "notYourRealAlias"
+      keyPassword "notYourRealPassword"
+    }
+  }
 
   buildTypes {
     debug {
       packageNameSuffix ".debug"
+      versionNameSuffix "-debug"
+    }
+    release {
+      signingConfig signingConfigs.release
     }
   }
 
   defaultConfig {
     minSdkVersion 14
-    targetSdkVersion 18
+    targetSdkVersion 19
+    buildConfig """\
+          public static final boolean RELEASE = !DEBUG;
+        """
   }
+}
+
+task askForPasswords << {
+  def storePassword = new String(System.console().readLine("\n\$ Enter keystore password: "))
+  def keyAlias = new String(System.console().readLine("\n\$ Enter key alias: "))
+  def keyPassword = new String(System.console().readLine("\n\$ Enter key alias: "))
+
+  android.signingConfigs.release.storePassword = storePassword
+  android.signingConfigs.release.keyAlias = keyAlias
+  android.signingConfigs.release.keyPassword = keyPassword
+}
+
+tasks.whenTaskAdded { theTask ->
+  if (theTask.name.equals("packageRelease")) {
+    theTask.dependsOn "askForPasswords"
+  }
+}
+
+checkstyle {
+  configFile project.file('../checkstyle.xml')
+  showViolations true
+}
+
+android.applicationVariants.all { variant ->
+  def name = variant.buildType.name
+
+  def checkstyle = project.tasks.create "checkstyle${name.capitalize()}", Checkstyle
+  checkstyle.dependsOn variant.javaCompile
+  checkstyle.source variant.javaCompile.source
+  checkstyle.classpath = project.fileTree(variant.javaCompile.destinationDir)
+  checkstyle.exclude('**/BuildConfig.java')
+  checkstyle.exclude('**/R.java')
+  checkstyle.exclude('**/Ln.java')
+  checkstyle.exclude('**/ForegroundImageView.java')
+  checkstyle.exclude('**/SafeAsyncTask.java')
+  checkstyle.exclude('**/Strings.java')
+  project.tasks.getByName("check").dependsOn checkstyle
 }
