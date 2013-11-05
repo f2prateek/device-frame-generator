@@ -41,8 +41,8 @@ dependencies {
 }
 
 android {
-  compileSdkVersion 18
-  buildToolsVersion '18.1.1'
+  compileSdkVersion 19
+  buildToolsVersion '19'
 
   testBuildType "debug"
 
@@ -58,6 +58,7 @@ android {
   buildTypes {
     debug {
       packageNameSuffix ".debug"
+      versionNameSuffix "-debug"
     }
     release {
       signingConfig signingConfigs.release
@@ -66,7 +67,7 @@ android {
 
   defaultConfig {
     minSdkVersion 14
-    targetSdkVersion 18
+    targetSdkVersion 19
     buildConfig """\
           public static final boolean RELEASE = !DEBUG;
         """
