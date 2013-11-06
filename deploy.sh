@@ -7,7 +7,7 @@
 ./test-cli.sh
 
 # MANUAL : pass in keystore credentials
-./gradlew clean assembleRelease
+./gradlew clean build
 
 # Deploy website
 ./deploy_website.sh

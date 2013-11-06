@@ -85,7 +85,7 @@ task askForPasswords << {
 }
 
 tasks.whenTaskAdded { theTask ->
-  if (theTask.name.equals("packageRelease")) {
+  if (theTask.name.equals("validateReleaseSigning")) {
     theTask.dependsOn "askForPasswords"
   }
 }
