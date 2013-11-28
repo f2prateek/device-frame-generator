@@ -63,11 +63,30 @@ android {
     release {
       signingConfig signingConfigs.release
     }
+
+    applicationVariants.all { variant ->
+      apk = variant.packageApplication.outputFile;
+
+      if (variant.buildType.name == "release") {
+        newName = apk.name.replace(".apk", "-v" + defaultConfig.versionName + "-RELEASE.apk");
+      } else {
+        newName = apk.name.replace(".apk", "-v" + defaultConfig.versionName + "-SNAPSHOT.apk");
+      }
+
+      newName = newName.replace("-" + variant.buildType.name, "");
+
+      variant.packageApplication.outputFile = new File(apk.parentFile, newName);
+      if (variant.zipAlign) {
+        variant.zipAlign.outputFile = new File(apk.parentFile, newName.replace("-unaligned", ""));
+      }
+    }
   }
 
   defaultConfig {
     minSdkVersion 14
     targetSdkVersion 19
+    versionCode 116
+    versionName '1.1.6'
     buildConfig """\
           public static final boolean RELEASE = !DEBUG;
         """
