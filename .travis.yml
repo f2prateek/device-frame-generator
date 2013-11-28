@@ -40,7 +40,7 @@ before_install:
   - emulator -avd test -no-skin -no-audio -no-window &
 
 before_script:
-  - adb devices | tail -n +2 | head -n -1 | cut -f 1 | xargs -I X adb -s X wait-for-device
+  # - adb devices | tail -n +2 | head -n -1 | cut -f 1 | xargs -I X adb -s X wait-for-device
 
 install:
   # Travis runs ./gradlew assemble by default; but we don't want to run release stuff
@@ -48,4 +48,4 @@ install:
   - ./gradlew tasks --all
 
 script:
-  - ./gradlew clean checkDebug assembleDebug connectedCheck
+  - ./gradlew clean checkDebug assembleDebug
