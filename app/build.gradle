@@ -68,7 +68,7 @@ android {
       apk = variant.packageApplication.outputFile;
 
       if (variant.buildType.name == "release") {
-        newName = apk.name.replace(".apk", "-v" + defaultConfig.versionName + "-RELEASE.apk");
+        newName = apk.name.replace(".apk", "-v" + defaultConfig.versionName + "-DEBUG.apk");
       } else {
         newName = apk.name.replace(".apk", "-v" + defaultConfig.versionName + "-SNAPSHOT.apk");
       }
@@ -85,8 +85,8 @@ android {
   defaultConfig {
     minSdkVersion 14
     targetSdkVersion 19
-    versionCode 116
-    versionName '1.1.6'
+    versionCode 117
+    versionName '1.1.7'
     buildConfig """\
           public static final boolean RELEASE = !DEBUG;
         """
@@ -96,7 +96,7 @@ android {
 task askForPasswords << {
   def storePassword = new String(System.console().readLine("\n\$ Enter keystore password: "))
   def keyAlias = new String(System.console().readLine("\n\$ Enter key alias: "))
-  def keyPassword = new String(System.console().readLine("\n\$ Enter key alias: "))
+  def keyPassword = new String(System.console().readLine("\n\$ Enter key alias password: "))
 
   android.signingConfigs.release.storePassword = storePassword
   android.signingConfigs.release.keyAlias = keyAlias
