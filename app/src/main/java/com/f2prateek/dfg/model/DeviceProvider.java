@@ -144,6 +144,16 @@ public class DeviceProvider {
         .setPortSize(new int[] {600, 1024})
         .setRealSize(new int[] {600, 1024})
         .build());
+    devices.add(new Device.Builder().setId("xperia_z1")
+        .setName("Xperia Z1")
+        .setUrl("http://www.sonymobile.com/us/products/phones/xperia-z1/")
+        .setPhysicalSize(5.0f)
+        .setDensity("XHDPI")
+        .setLandOffset(new int[] {340, 208})
+        .setPortOffset(new int[] {221, 340})
+        .setPortSize(new int[] {720, 1280})
+        .setRealSize(new int[] {1080, 1920})
+        .build());
     devices.add(new Device.Builder().setId("xoom")
         .setName("Motorola XOOM")
         .setUrl("http://www.google.com/phone/detail/motorola-xoom")
