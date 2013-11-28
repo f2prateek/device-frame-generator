@@ -37,13 +37,15 @@ import javax.inject.Inject;
 public class MainActivity extends BaseActivity {
 
   @Inject SharedPreferences sharedPreferences;
+  @Inject DeviceProvider deviceProvider;
   @InjectView(R.id.pager) ViewPager pager;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    pager.setAdapter(new DeviceFragmentPagerAdapter(getFragmentManager()));
+    pager.setAdapter(
+        new DeviceFragmentPagerAdapter(getFragmentManager(), deviceProvider.getDevices().size()));
     pager.setCurrentItem(sharedPreferences.getInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, 0));
   }
 
@@ -77,7 +79,7 @@ public class MainActivity extends BaseActivity {
 
   @Subscribe
   public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
-    Device device = DeviceProvider.getDevices().get(event.newDevice);
+    Device device = deviceProvider.getDevices().get(event.newDevice);
     Crouton.makeText(this, getString(R.string.saved_as_default_message, device.getName()),
         Style.CONFIRM).show();
     invalidateOptionsMenu();

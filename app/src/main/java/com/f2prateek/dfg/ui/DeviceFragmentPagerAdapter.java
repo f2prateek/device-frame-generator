@@ -19,12 +19,14 @@ package com.f2prateek.dfg.ui;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
-import com.f2prateek.dfg.model.DeviceProvider;
 
 public class DeviceFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
-  public DeviceFragmentPagerAdapter(FragmentManager fm) {
+  private final int count;
+
+  public DeviceFragmentPagerAdapter(FragmentManager fm, int count) {
     super(fm);
+    this.count = count;
   }
 
   @Override
@@ -34,6 +36,6 @@ public class DeviceFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
   @Override
   public int getCount() {
-    return DeviceProvider.getDevices().size();
+    return count;
   }
 }

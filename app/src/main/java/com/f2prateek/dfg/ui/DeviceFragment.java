@@ -43,6 +43,7 @@ public class DeviceFragment extends BaseFragment {
 
   private static final int RESULT_SELECT_PICTURE = 542;
   @Inject SharedPreferences sharedPreferences;
+  @Inject DeviceProvider deviceProvider;
   @InjectView(R.id.tv_device_resolution) TextView deviceResolutionText;
   @InjectView(R.id.tv_device_size) TextView deviceSizeText;
   @InjectView(R.id.tv_device_name) TextView deviceNameText;
@@ -64,7 +65,7 @@ public class DeviceFragment extends BaseFragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     deviceNum = getArguments() != null ? getArguments().getInt("num", 0) : 0;
-    device = DeviceProvider.getDevices().get(deviceNum);
+    device = deviceProvider.getDevices().get(deviceNum);
     setHasOptionsMenu(true);
   }
 

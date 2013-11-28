@@ -27,9 +27,11 @@ import com.f2prateek.dfg.core.GenerateMultipleFramesService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
 import java.util.ArrayList;
+import javax.inject.Inject;
 
 /** A receiver activity, that is registered to receive images. */
 public class ReceiverActivity extends BaseActivity {
+  @Inject DeviceProvider deviceProvider;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +73,6 @@ public class ReceiverActivity extends BaseActivity {
   private Device getDefaultDeviceFromPreferences() {
     SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     int deviceNum = sPrefs.getInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, 0);
-    return DeviceProvider.getDevices().get(deviceNum);
+    return deviceProvider.getDevices().get(deviceNum);
   }
 }

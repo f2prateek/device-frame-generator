@@ -19,6 +19,7 @@ package com.f2prateek.dfg;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
+import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.ui.AboutFragment;
 import com.f2prateek.dfg.ui.BaseActivity;
 import com.f2prateek.dfg.ui.DeviceFragment;
@@ -47,5 +48,9 @@ public class DFGModule {
 
   @Provides @Singleton Bus provideOttoBus() {
     return new Bus();
+  }
+
+  @Provides @Singleton DeviceProvider provideDeviceProvider() {
+    return new DeviceProvider();
   }
 }

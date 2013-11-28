@@ -126,7 +126,7 @@ public abstract class SafeAsyncTask<ResultT> implements Callable<ResultT> {
    * @param t the result of {@link #call()}
    * @throws Exception, captured on passed to onException() if present.
    */
-  @SuppressWarnings({ "UnusedDeclaration" })
+  @SuppressWarnings({"UnusedDeclaration"})
   protected void onSuccess(ResultT t) throws Exception {
   }
 

@@ -66,7 +66,7 @@ import javax.inject.Inject;
  * Ln.e( exception, "Error during some operation");
  * Ln.w( exception, "Error during %s operation", "some other");
  */
-@SuppressWarnings({ "ImplicitArrayToString" })
+@SuppressWarnings({"ImplicitArrayToString"})
 public class Ln {
   /**
    * config is initially set to BaseConfig() with sensible defaults, then replaced

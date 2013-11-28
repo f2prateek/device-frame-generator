@@ -20,9 +20,17 @@ import java.util.ArrayList;
 
 public class DeviceProvider {
 
-  private static ArrayList<Device> devices;
+  private final ArrayList<Device> devices;
 
-  private static ArrayList<Device> generateDevices() {
+  public DeviceProvider() {
+    devices = generateDevices();
+  }
+
+  public ArrayList<Device> getDevices() {
+    return devices;
+  }
+
+  private ArrayList<Device> generateDevices() {
     ArrayList<Device> devices = new ArrayList<Device>();
     devices.add(new Device.Builder().setId("nexus_s")
         .setName("Nexus S")
@@ -164,13 +172,6 @@ public class DeviceProvider {
         .setPortSize(new int[] {800, 1280})
         .setRealSize(new int[] {800, 1280})
         .build());
-    return devices;
-  }
-
-  public static ArrayList<Device> getDevices() {
-    if (devices == null) {
-      devices = generateDevices();
-    }
     return devices;
   }
 }
