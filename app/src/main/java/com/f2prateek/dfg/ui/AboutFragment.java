@@ -60,10 +60,10 @@ public class AboutFragment extends DialogFragment {
   public void openUrl(View v) {
     switch (v.getId()) {
       case R.id.iv_app_logo:
-        openUrl("http://f2prateek.com/Device-Frame-Generator/");
+        openUrl("http://f2prateek.com/android-device-frame-generator/");
         break;
       case R.id.tv_gplus:
-        openUrl("https://plus.google.com/115299591800802520330/about");
+        openUrl("https://plus.google.com/+PrateekSrivastava/posts");
         break;
       case R.id.tv_twitter:
         openUrl("https://twitter.com/f2prateek");
