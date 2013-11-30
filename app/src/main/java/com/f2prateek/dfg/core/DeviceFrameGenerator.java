@@ -193,7 +193,6 @@ public class DeviceFrameGenerator {
       out.flush();
       out.close();
     } catch (IOException e) {
-      Crashlytics.logException(e);
       Ln.e(e);
       Resources r = context.getResources();
       callback.failedImage(r.getString(R.string.unknown_error_title),
