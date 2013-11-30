@@ -45,6 +45,8 @@
   <string name="failed_match_dimensions_title">Dimensions don\'t match.</string>
   <string name="failed_match_dimensions_text">Device is %1$d by %2$d. Screenshot is %3$d by %4$d.
   </string>
+  <string name="no_image_received">Didn't get any path to an image!</string>
+
   <string name="unknown_error_title">Unknown Error.</string>
   <string name="unknown_error_text">An unknown error occurred.</string>
   <string name="select_picture">Select Picture</string>

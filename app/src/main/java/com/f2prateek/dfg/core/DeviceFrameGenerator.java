@@ -107,6 +107,13 @@ public class DeviceFrameGenerator {
         withGlare ? " with glare " : " without glare ",
         withShadow ? " with shadow " : " without shadow ", screenshotUri);
 
+    if (screenshotUri == null) {
+      Resources r = context.getResources();
+      callback.failedImage(r.getString(R.string.failed_open_screenshot_title),
+          r.getString(R.string.no_image_received), r.getString(R.string.no_image_received));
+      return;
+    }
+
     try {
       Bitmap screenshot = BitmapUtils.decodeUri(context.getContentResolver(), screenshotUri);
       if (screenshot != null) {
