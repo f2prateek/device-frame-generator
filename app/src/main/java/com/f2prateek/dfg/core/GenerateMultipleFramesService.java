@@ -56,10 +56,8 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
 
     notifyStarting();
-    DeviceFrameGenerator deviceFrameGenerator =
-        new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
     for (Uri uri : imageUris) {
-      deviceFrameGenerator.generateFrame(uri);
+      DeviceFrameGenerator.generate(this, this, device, withShadow, withGlare, uri);
     }
     notifyFinished();
   }
