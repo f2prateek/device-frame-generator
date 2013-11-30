@@ -25,7 +25,6 @@ import android.graphics.Canvas;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
-import com.crashlytics.android.Crashlytics;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
@@ -123,7 +122,6 @@ public class DeviceFrameGenerator {
       }
     } catch (IOException e) {
       failedToOpenScreenshot(screenshotUri);
-      Crashlytics.logException(e);
     }
   }
 
