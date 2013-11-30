@@ -40,6 +40,11 @@ dependencies {
   instrumentTestCompile group: 'com.squareup.spoon', name: 'spoon-client', version: '1.0.+'
 }
 
+def versionMajor = 2
+def versionMinor = 0
+def versionPatch = 0
+def versionBuild = 0
+
 android {
   compileSdkVersion 19
   buildToolsVersion '19'
@@ -85,8 +90,8 @@ android {
   defaultConfig {
     minSdkVersion 14
     targetSdkVersion 19
-    versionCode 117
-    versionName '1.1.7'
+    versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+    versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     buildConfig """\
           public static final boolean RELEASE = !DEBUG;
         """
