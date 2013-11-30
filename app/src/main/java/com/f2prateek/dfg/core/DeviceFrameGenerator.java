@@ -102,14 +102,22 @@ public class DeviceFrameGenerator {
 
     try {
       Bitmap screenshot = BitmapUtils.decodeUri(context.getContentResolver(), screenshotUri);
-      generateFrame(screenshot);
+      if (screenshot != null) {
+        generateFrame(screenshot);
+      } else {
+        failedToOpenScreenshot(screenshotUri);
+      }
     } catch (IOException e) {
-      Resources r = context.getResources();
-      callback.failedImage(r.getString(R.string.failed_open_screenshot_title),
-          r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()),
-          r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()));
+      failedToOpenScreenshot(screenshotUri);
       Crashlytics.logException(e);
     }
+  }
+
+  private void failedToOpenScreenshot(Uri screenshotUri) {
+    Resources r = context.getResources();
+    callback.failedImage(r.getString(R.string.failed_open_screenshot_title),
+        r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()),
+        r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()));
   }
 
   /**
