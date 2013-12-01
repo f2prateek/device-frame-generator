@@ -59,7 +59,7 @@ android {
     release {
       storeFile file("keystore")
       storePassword "notYourRealPassword"
-      keyAlias "notYourRealAlias"
+      keyAlias "keystore"
       keyPassword "notYourRealPassword"
     }
   }
@@ -98,11 +98,9 @@ android {
 
 task askForPasswords << {
   def storePassword = new String(System.console().readLine("\n\$ Enter keystore password: "))
-  def keyAlias = new String(System.console().readLine("\n\$ Enter key alias: "))
   def keyPassword = new String(System.console().readLine("\n\$ Enter key alias password: "))
 
   android.signingConfigs.release.storePassword = storePassword
-  android.signingConfigs.release.keyAlias = keyAlias
   android.signingConfigs.release.keyPassword = keyPassword
 }
 
