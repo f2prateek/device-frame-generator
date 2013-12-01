@@ -37,7 +37,7 @@ dependencies {
   }
 
   instrumentTestCompile group: 'com.squareup', name: 'fest-android', version: '1.0.+'
-  instrumentTestCompile group: 'com.squareup.spoon', name: 'spoon-client', version: '1.0.+'
+  instrumentTestCompile group: 'com.squareup.spoon', name: 'spoon-client', version: '1.1.+'
 }
 
 def versionMajor = 2
@@ -68,22 +68,16 @@ android {
     release {
       signingConfig signingConfigs.release
     }
+    beta.initWith(buildTypes.release)
+    beta {
+      versionNameSuffix "-beta"
+    }
+    sourceSets.beta.setRoot('src/release')
 
     applicationVariants.all { variant ->
       apk = variant.packageApplication.outputFile;
-
-      if (variant.buildType.name == "release") {
-        newName = apk.name.replace(".apk", "-v" + defaultConfig.versionName + "-DEBUG.apk");
-      } else {
-        newName = apk.name.replace(".apk", "-v" + defaultConfig.versionName + "-SNAPSHOT.apk");
-      }
-
-      newName = newName.replace("-" + variant.buildType.name, "");
-
+      newName = apk.name.replace(".apk", "-v" + defaultConfig.versionCode + ".apk");
       variant.packageApplication.outputFile = new File(apk.parentFile, newName);
-      if (variant.zipAlign) {
-        variant.zipAlign.outputFile = new File(apk.parentFile, newName.replace("-unaligned", ""));
-      }
     }
   }
 

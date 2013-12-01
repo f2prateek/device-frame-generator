@@ -40,7 +40,6 @@ adt-bundle-windows-x86_64/
 *.class
 
 # Package Files #
-*.jar
 *.war
 *.ear
 
