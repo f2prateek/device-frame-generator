@@ -80,7 +80,8 @@ android {
 
     applicationVariants.all { variant ->
       apk = variant.packageApplication.outputFile;
-      newName = apk.name.replace(".apk", "-v" + defaultConfig.versionCode + ".apk");
+      newName = apk.name.replace(".apk", "-v${defaultConfig.versionName}-${versionBuild}.apk");
+      newName = newName.replace("app", "${defaultConfig.packageName}");
       variant.packageApplication.outputFile = new File(apk.parentFile, newName);
     }
   }
@@ -88,6 +89,7 @@ android {
   defaultConfig {
     minSdkVersion 14
     targetSdkVersion 19
+    packageName "com.f2prateek.dfg"
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     buildConfig """\
