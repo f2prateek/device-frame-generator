@@ -22,6 +22,8 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.NinePatch;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -45,20 +47,22 @@ public class DeviceFrameGenerator {
   private final Device device;
   private final boolean withShadow;
   private final boolean withGlare;
+  private final boolean cleanStatusBar;
 
   private DeviceFrameGenerator(Context context, Callback callback, Device device,
-      boolean withShadow, boolean withGlare) {
+      boolean withShadow, boolean withGlare, boolean cleanStatusBar) {
     this.context = context;
     this.callback = callback;
     this.device = device;
     this.withShadow = withShadow;
     this.withGlare = withGlare;
+    this.cleanStatusBar = cleanStatusBar;
   }
 
   public static void generate(Context context, Callback callback, Device device, boolean withShadow,
-      boolean withGlare, Uri screenshotUri) {
+      boolean withGlare, boolean cleanStatusBar, Uri screenshotUri) {
     DeviceFrameGenerator generator =
-        new DeviceFrameGenerator(context, callback, device, withShadow, withGlare);
+        new DeviceFrameGenerator(context, callback, device, withShadow, withGlare, cleanStatusBar);
     generator.generateFrame(screenshotUri);
   }
 
@@ -93,7 +97,7 @@ public class DeviceFrameGenerator {
    * @return true if orientation is portrait
    */
   private static boolean isPortrait(String orientation) {
-    return (orientation.compareTo("port") == 0);
+    return (orientation.compareTo(Device.ORIENTATION_PORTRAIT) == 0);
   }
 
   /**
@@ -171,18 +175,33 @@ public class DeviceFrameGenerator {
     }
 
     final int[] offset;
+    final int statusBarWidth;
+
     if (isPortrait(orientation)) {
       screenshot =
           Bitmap.createScaledBitmap(screenshot, device.getPortSize()[0], device.getPortSize()[1],
               false);
       offset = device.getPortOffset();
+      statusBarWidth = device.getPortSize()[0];
     } else {
       screenshot =
           Bitmap.createScaledBitmap(screenshot, device.getPortSize()[1], device.getPortSize()[0],
               false);
       offset = device.getLandOffset();
+      statusBarWidth = device.getPortSize()[1]; // subtract width of the navigation bar
     }
     frame.drawBitmap(screenshot, offset[0], offset[1], null);
+
+    Bitmap statusBar = BitmapUtils.getStatusBarBitmap(context.getResources());
+    // Only draw if portrait to avoid : http://cl.ly/image/1T2n193b2T2P
+    // although we can query the width of the navigation bar, user may not have the screenshot
+    // supplied form the same device
+    if (cleanStatusBar) {
+      NinePatch statusBarPatch = new NinePatch(statusBar, statusBar.getNinePatchChunk(), "status");
+      Rect statusBarBounds = new Rect(offset[0], offset[1], offset[0] + statusBarWidth,
+          offset[1] + statusBar.getHeight());
+      statusBarPatch.draw(frame, statusBarBounds);
+    }
 
     if (withGlare) {
       frame.drawBitmap(glare, 0f, 0f, null);
@@ -223,6 +242,7 @@ public class DeviceFrameGenerator {
       background.recycle();
       glare.recycle();
       shadow.recycle();
+      statusBar.recycle();
     }
 
     // update file size in the database

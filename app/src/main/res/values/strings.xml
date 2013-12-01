@@ -25,10 +25,13 @@
 
   <string name="shadow_preference">Shadow</string>
   <string name="glare_preference">Glare</string>
+  <string name="clean_status_bar_preference">Clean status bar</string>
   <string name="glare_enabled">Glare will be drawn on screenshots.</string>
   <string name="glare_disabled">Glare will not be drawn on screenshots.</string>
   <string name="shadow_enabled">Shadow will be drawn on screenshots.</string>
   <string name="shadow_disabled">Shadow will not be drawn on screenshots.</string>
+  <string name="clean_status_bar_enabled">Status bar will be cleaned.</string>
+  <string name="clean_status_bar_disabled">Status bar will not be cleaned.</string>
 
   <!-- Notifications !-->
   <string name="screenshot_saving_ticker">@string/screenshot_saving_title</string>
@@ -45,7 +48,7 @@
   <string name="failed_match_dimensions_title">Dimensions don\'t match.</string>
   <string name="failed_match_dimensions_text">Device is %1$d by %2$d. Screenshot is %3$d by %4$d.
   </string>
-  <string name="no_image_received">Didn't get any path to an image!</string>
+  <string name="no_image_received">Didn\'t get any path to an image!</string>
 
   <string name="unknown_error_title">Unknown Error.</string>
   <string name="unknown_error_text">An unknown error occurred.</string>

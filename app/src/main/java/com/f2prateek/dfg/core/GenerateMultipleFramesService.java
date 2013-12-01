@@ -54,10 +54,12 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
     boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
+    boolean cleanStatusBar =
+        sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_CLEAN_STATUS_BAR, false);
 
     notifyStarting();
     for (Uri uri : imageUris) {
-      DeviceFrameGenerator.generate(this, this, device, withShadow, withGlare, uri);
+      DeviceFrameGenerator.generate(this, this, device, withShadow, withGlare, cleanStatusBar, uri);
     }
     notifyFinished();
   }

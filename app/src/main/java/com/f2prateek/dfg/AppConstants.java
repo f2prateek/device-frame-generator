@@ -24,6 +24,7 @@ public class AppConstants {
   public static final String KEY_PREF_DEFAULT_DEVICE = "KEY_PREF_DEFAULT_DEVICE";
   public static final String KEY_PREF_OPTION_GLARE = "KEY_PREF_OPTION_GLARE";
   public static final String KEY_PREF_OPTION_SHADOW = "KEY_PREF_OPTION_SHADOW";
+  public static final String KEY_PREF_OPTION_CLEAN_STATUS_BAR = "KEY_PREF_OPTION_CLEAN_STATUS_BAR";
   /*
    * Key for Intent extras;
    */

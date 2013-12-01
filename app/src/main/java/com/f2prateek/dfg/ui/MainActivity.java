@@ -56,6 +56,9 @@ public class MainActivity extends BaseActivity {
     glare.setChecked(sharedPreferences.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true));
     MenuItem shadow = menu.findItem(R.id.menu_checkbox_shadow);
     shadow.setChecked(sharedPreferences.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true));
+    MenuItem cleanStatusBar = menu.findItem(R.id.menu_checkbox_clean_status_bar);
+    cleanStatusBar.setChecked(
+        sharedPreferences.getBoolean(AppConstants.KEY_PREF_OPTION_CLEAN_STATUS_BAR, false));
     return super.onCreateOptionsMenu(menu);
   }
 
@@ -67,6 +70,9 @@ public class MainActivity extends BaseActivity {
         return true;
       case R.id.menu_checkbox_shadow:
         updateShadowSetting(!item.isChecked());
+        return true;
+      case R.id.menu_checkbox_clean_status_bar:
+        updateStatusBarSetting(!item.isChecked());
         return true;
       case R.id.menu_about:
         final AboutFragment fragment = new AboutFragment();
@@ -134,6 +140,18 @@ public class MainActivity extends BaseActivity {
       Crouton.makeText(this, getString(R.string.shadow_enabled), Style.CONFIRM).show();
     } else {
       Crouton.makeText(this, getString(R.string.shadow_disabled), Style.ALERT).show();
+    }
+    invalidateOptionsMenu();
+  }
+
+  public void updateStatusBarSetting(boolean newSettingEnabled) {
+    SharedPreferences.Editor editor = sharedPreferences.edit();
+    editor.putBoolean(AppConstants.KEY_PREF_OPTION_CLEAN_STATUS_BAR, newSettingEnabled);
+    editor.commit();
+    if (newSettingEnabled) {
+      Crouton.makeText(this, getString(R.string.clean_status_bar_enabled), Style.CONFIRM).show();
+    } else {
+      Crouton.makeText(this, getString(R.string.clean_status_bar_disabled), Style.ALERT).show();
     }
     invalidateOptionsMenu();
   }

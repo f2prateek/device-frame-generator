@@ -53,10 +53,13 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
     SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
     boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
+    boolean cleanStatusBar =
+        sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_CLEAN_STATUS_BAR, false);
 
     // Get all the intent data.
     Uri imageUri = intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
-    DeviceFrameGenerator.generate(this, this, device, withShadow, withGlare, imageUri);
+    DeviceFrameGenerator.generate(this, this, device, withShadow, withGlare, cleanStatusBar,
+        imageUri);
   }
 
   @Override

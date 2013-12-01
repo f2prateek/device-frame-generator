@@ -22,6 +22,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import com.f2prateek.dfg.R;
 import java.io.IOException;
 
 public class BitmapUtils {
@@ -104,5 +105,16 @@ public class BitmapUtils {
     // Decode bitmap with inSampleSize set
     options.inJustDecodeBounds = false;
     return BitmapFactory.decodeResource(res, resId, options);
+  }
+
+  /**
+   * Get the status bar drawable.
+   * TODO: a different one for different versions of Android.
+   */
+  public static Bitmap getStatusBarBitmap(Resources resources) {
+    BitmapFactory.Options opt = new BitmapFactory.Options();
+    opt.inMutable = true;
+    opt.inScaled = false;
+    return BitmapFactory.decodeResource(resources, R.drawable.status_bar, opt);
   }
 }

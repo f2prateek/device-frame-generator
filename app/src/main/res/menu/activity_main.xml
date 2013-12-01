@@ -28,6 +28,11 @@
       android:showAsAction="never"
       android:checkable="true"/>
 
+  <item android:id="@+id/menu_checkbox_clean_status_bar"
+      android:title="@string/clean_status_bar_preference"
+      android:showAsAction="never"
+      android:checkable="true"/>
+
   <item android:id="@+id/menu_about"
       android:icon="@drawable/ic_action_info"
       android:title="@string/about"
