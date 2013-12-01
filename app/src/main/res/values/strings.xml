@@ -25,7 +25,7 @@
 
   <string name="shadow_preference">Shadow</string>
   <string name="glare_preference">Glare</string>
-  <string name="clean_status_bar_preference">Clean status bar</string>
+  <string name="clean_status_bar_preference">Status bar</string>
   <string name="glare_enabled">Glare will be drawn on screenshots.</string>
   <string name="glare_disabled">Glare will not be drawn on screenshots.</string>
   <string name="shadow_enabled">Shadow will be drawn on screenshots.</string>

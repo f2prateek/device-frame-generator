@@ -106,9 +106,10 @@ public class DeviceFrameGenerator {
    * @param screenshotUri Uri to the screenshot file.
    */
   private void generateFrame(Uri screenshotUri) {
-    Ln.d("Generating for %s %s and %s from file %s.", device.getName(),
+    Ln.d("Generating for %s %s, %s and %s from file %s.", device.getName(),
         withGlare ? " with glare " : " without glare ",
-        withShadow ? " with shadow " : " without shadow ", screenshotUri);
+        withShadow ? " with shadow " : " without shadow ",
+        cleanStatusBar ? " clean status bar " : " original status bar ", screenshotUri);
 
     if (screenshotUri == null) {
       Resources r = context.getResources();
@@ -196,7 +197,7 @@ public class DeviceFrameGenerator {
     // Only draw if portrait to avoid : http://cl.ly/image/1T2n193b2T2P
     // although we can query the width of the navigation bar, user may not have the screenshot
     // supplied form the same device
-    if (cleanStatusBar) {
+    if (cleanStatusBar && isPortrait(orientation)) {
       NinePatch statusBarPatch = new NinePatch(statusBar, statusBar.getNinePatchChunk(), "status");
       Rect statusBarBounds = new Rect(offset[0], offset[1], offset[0] + statusBarWidth,
           offset[1] + statusBar.getHeight());
