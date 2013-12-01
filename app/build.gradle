@@ -41,9 +41,13 @@ dependencies {
 }
 
 def versionMajor = 2
+// major revisions
 def versionMinor = 0
+// . releases
 def versionPatch = 0
+// patch
 def versionBuild = 0
+// bump for dogfood builds, public betas, etc.
 
 android {
   compileSdkVersion 19
