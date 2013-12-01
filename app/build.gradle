@@ -41,13 +41,10 @@ dependencies {
 }
 
 def versionMajor = 2
-// major revisions
 def versionMinor = 0
-// . releases
 def versionPatch = 0
-// patch
-def versionBuild = 0
 // bump for dogfood builds, public betas, etc.
+def versionBuild = 0
 
 android {
   compileSdkVersion 19
@@ -83,6 +80,9 @@ android {
       newName = apk.name.replace(".apk", "-v${defaultConfig.versionName}-${versionBuild}.apk");
       newName = newName.replace("app", "${defaultConfig.packageName}");
       variant.packageApplication.outputFile = new File(apk.parentFile, newName);
+      if (variant.zipAlign) {
+        variant.zipAlign.outputFile = new File(apk.parentFile, newName.replace("-unaligned", ""));
+      }
     }
   }
 
@@ -101,7 +101,6 @@ android {
 task askForPasswords << {
   def storePassword = new String(System.console().readLine("\n\$ Enter keystore password: "))
   def keyPassword = new String(System.console().readLine("\n\$ Enter key alias password: "))
-
   android.signingConfigs.release.storePassword = storePassword
   android.signingConfigs.release.keyPassword = keyPassword
 }
