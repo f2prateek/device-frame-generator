@@ -11,6 +11,7 @@ Version 2.0.0
  * build.gradle updates
  * Update Spoon dependency
  * Update test scripts
+ * New naming scheme
 
 Version 1.1.6
 ----------------------------
