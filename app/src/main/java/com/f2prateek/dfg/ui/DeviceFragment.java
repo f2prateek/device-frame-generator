@@ -134,6 +134,9 @@ public class DeviceFragment extends BaseFragment {
   @Override
   public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == RESULT_SELECT_PICTURE && resultCode == Activity.RESULT_OK) {
+      if (data == null) {
+        return;
+      }
       Uri selectedImageUri = data.getData();
       Intent intent = new Intent(getActivity(), GenerateFrameService.class);
       intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
