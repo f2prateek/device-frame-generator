@@ -8,12 +8,14 @@ buildscript {
   dependencies {
     classpath group: 'com.android.tools.build', name: 'gradle', version: '0.6.+'
     classpath group: 'com.crashlytics.tools.gradle', name: 'crashlytics-gradle', version: '1.+'
+    classpath 'com.stanfy.spoon:spoon-gradle-plugin:0.9.+'
   }
 }
 
 apply plugin: 'android'
 apply plugin: 'crashlytics'
 apply plugin: 'checkstyle'
+apply plugin: 'spoon'
 
 dependencies {
   repositories {
