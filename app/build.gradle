@@ -77,6 +77,7 @@ android {
     }
     beta.initWith(buildTypes.release)
     beta {
+      debuggable true
       versionNameSuffix "-beta"
     }
     sourceSets.beta.setRoot('src/release')
