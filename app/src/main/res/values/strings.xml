@@ -3,17 +3,17 @@
 <!--
   ~ Copyright 2013 Prateek Srivastava (@f2prateek)
   ~
-  ~ Licensed under the Apache License, Version 2.0 (the "License");
-  ~ you may not use this file except in compliance with the License.
-  ~ You may obtain a copy of the License at
+  ~    Licensed under the Apache License, Version 2.0 (the "License");
+  ~    you may not use this file except in compliance with the License.
+  ~    You may obtain a copy of the License at
   ~
-  ~    http://www.apache.org/licenses/LICENSE-2.0
+  ~      http://www.apache.org/licenses/LICENSE-2.0
   ~
-  ~ Unless required by applicable law or agreed to in writing, software
-  ~ distributed under the License is distributed on an "AS IS" BASIS,
-  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  ~ See the License for the specific language governing permissions and
-  ~ limitations under the License.
+  ~    Unless required by applicable law or agreed to in writing, software
+  ~    distributed under the License is distributed on an "AS IS" BASIS,
+  ~    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~    See the License for the specific language governing permissions and
+  ~    limitations under the License.
   -->
 
 <resources>
@@ -22,7 +22,6 @@
 
   <!-- Device Fragment !-->
   <string name="saved_as_default_message">%s saved as default device.</string>
-
   <string name="shadow_preference">Shadow</string>
   <string name="glare_preference">Glare</string>
   <string name="clean_status_bar_preference">Status bar</string>
@@ -32,6 +31,7 @@
   <string name="shadow_disabled">Shadow will not be drawn on screenshots.</string>
   <string name="clean_status_bar_enabled">Status bar will be cleaned.</string>
   <string name="clean_status_bar_disabled">Status bar will not be cleaned.</string>
+  <string name="no_apps_available">No apps available to pick image.</string>
 
   <!-- Notifications !-->
   <string name="screenshot_saving_ticker">@string/screenshot_saving_title</string>
