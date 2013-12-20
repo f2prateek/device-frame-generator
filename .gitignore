@@ -114,3 +114,5 @@ local.properties
 #Sensitive data
 app/src/release
 app/keystore
+
+com_crashlytics_export_strings.xml

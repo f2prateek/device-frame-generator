@@ -6,7 +6,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath group: 'com.android.tools.build', name: 'gradle', version: '0.7.+'
+    classpath group: 'com.android.tools.build', name: 'gradle', version: '0.7.1'
     classpath group: 'com.crashlytics.tools.gradle', name: 'crashlytics-gradle', version: '1.+'
     classpath 'com.stanfy.spoon:spoon-gradle-plugin:0.9.+'
   }
@@ -50,7 +50,11 @@ def versionBuild = 1
 
 android {
   compileSdkVersion 19
-  buildToolsVersion '19'
+  buildToolsVersion '19.0.1'
+
+  packagingOptions {
+    exclude 'META-INF/services/javax.annotation.processing.Processor'
+  }
 
   testBuildType "debug"
 
