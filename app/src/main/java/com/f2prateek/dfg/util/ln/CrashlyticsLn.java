@@ -14,15 +14,19 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg;
+package com.f2prateek.dfg.util.ln;
 
-import com.f2prateek.dfg.util.ln.DebugLnModule;
+import android.content.Context;
+import com.crashlytics.android.Crashlytics;
+import com.f2prateek.ln.DebugLn;
 
-public class Modules {
+public class CrashlyticsLn extends DebugLn {
 
-  static Object[] list(final DFGApplication application) {
-    return new Object[] {
-        new AndroidModule(application), new DFGModule(), new DebugLnModule()
-    };
+  public CrashlyticsLn(Context context) {
+    super(context);
+  }
+
+  @Override protected void println(int priority, String msg) {
+    Crashlytics.log(msg);
   }
 }

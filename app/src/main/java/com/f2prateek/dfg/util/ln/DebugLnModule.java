@@ -14,15 +14,20 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg;
+package com.f2prateek.dfg.util.ln;
 
-import com.f2prateek.dfg.util.ln.DebugLnModule;
+import android.content.Context;
+import com.f2prateek.dfg.DFGApplication;
+import com.f2prateek.ln.DebugLn;
+import com.f2prateek.ln.LnInterface;
+import dagger.Module;
+import dagger.Provides;
+import javax.inject.Singleton;
 
-public class Modules {
+@Module(injects = DFGApplication.class, overrides = true, complete = false)
+public class DebugLnModule {
 
-  static Object[] list(final DFGApplication application) {
-    return new Object[] {
-        new AndroidModule(application), new DFGModule(), new DebugLnModule()
-    };
+  @Provides @Singleton LnInterface provideLnInterface(Context context) {
+    return new DebugLn(context);
   }
 }
