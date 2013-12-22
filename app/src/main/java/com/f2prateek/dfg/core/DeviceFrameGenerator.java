@@ -106,7 +106,7 @@ public class DeviceFrameGenerator {
    * @param screenshotUri Uri to the screenshot file.
    */
   private void generateFrame(Uri screenshotUri) {
-    Ln.d("Generating for %s %s, %s and %s from file %s.", device.getName(),
+    Ln.d("Generating for %s %s, %s and %s from uri %s.", device.getName(),
         withGlare ? " with glare " : " without glare ",
         withShadow ? " with shadow " : " without shadow ",
         cleanStatusBar ? " clean status bar " : " original status bar ", screenshotUri);
@@ -123,9 +123,11 @@ public class DeviceFrameGenerator {
       if (screenshot != null) {
         generateFrame(screenshot);
       } else {
+        Ln.e("failed to open the screenshot.");
         failedToOpenScreenshot(screenshotUri);
       }
     } catch (IOException e) {
+      Ln.e(e, "failed to open the screenshot.");
       failedToOpenScreenshot(screenshotUri);
     }
   }
@@ -233,7 +235,7 @@ public class DeviceFrameGenerator {
       out.flush();
       out.close();
     } catch (IOException e) {
-      Ln.e(e);
+      Ln.e(e, "IOException when saving image.");
       Resources r = context.getResources();
       callback.failedImage(r.getString(R.string.unknown_error_title),
           r.getString(R.string.unknown_error_text), r.getString(R.string.unknown_error_text));

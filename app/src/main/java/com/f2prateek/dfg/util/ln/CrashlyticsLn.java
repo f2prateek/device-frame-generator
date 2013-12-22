@@ -17,6 +17,7 @@
 package com.f2prateek.dfg.util.ln;
 
 import android.content.Context;
+import android.util.Log;
 import com.crashlytics.android.Crashlytics;
 import com.f2prateek.ln.DebugLn;
 
@@ -24,6 +25,7 @@ public class CrashlyticsLn extends DebugLn {
 
   public CrashlyticsLn(Context context) {
     super(context);
+    setLoggingLevel(Log.VERBOSE);
   }
 
   @Override protected void println(int priority, String msg) {
