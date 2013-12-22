@@ -20,15 +20,17 @@ import android.app.Application;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.f2prateek.dfg.util.StorageUtils;
+import com.f2prateek.ln.Ln;
+import com.f2prateek.ln.LnInterface;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.squareup.picasso.Picasso;
 import dagger.ObjectGraph;
-import java.util.Arrays;
-import java.util.List;
+import javax.inject.Inject;
 
 /** Android Bootstrap application */
 public class DFGApplication extends Application {
 
+  @Inject LnInterface ln;
   private ObjectGraph objectGraph;
 
   @Override
@@ -36,23 +38,21 @@ public class DFGApplication extends Application {
     super.onCreate();
 
     // Perform Injection
-    objectGraph = ObjectGraph.create(getModules().toArray());
-    inject(this);
+    objectGraph = ObjectGraph.create(Modules.list(this));
+    objectGraph.inject(this);
 
-    Picasso.with(this).setDebugging(BuildConfig.DEBUG);
-    GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
+    Ln.set(ln);
 
-    if (!BuildConfig.DEBUG) {
+    if (BuildConfig.DEBUG) {
+      Picasso.with(this).setDebugging(BuildConfig.DEBUG);
+      GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
+    } else {
       Crashlytics.start(this);
     }
 
     if (!StorageUtils.isStorageAvailable()) {
       Toast.makeText(this, R.string.storage_unavailable, Toast.LENGTH_SHORT).show();
     }
-  }
-
-  protected List<Object> getModules() {
-    return Arrays.asList(new AndroidModule(this), new DFGModule());
   }
 
   public void inject(Object object) {
