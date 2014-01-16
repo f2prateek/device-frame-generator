@@ -50,7 +50,7 @@ def versionMajor = 2
 def versionMinor = 0
 def versionPatch = 0
 // bump for dogfood builds, public betas, etc.
-def versionBuild = 1
+def versionBuild = 2
 
 android {
   compileSdkVersion 19
@@ -70,9 +70,9 @@ android {
   signingConfigs {
     release {
       storeFile file("keystore")
-      storePassword "notYourRealPassword"
+      storePassword "notARealPassword"
       keyAlias "keystore"
-      keyPassword "notYourRealPassword"
+      keyPassword "notARealPassword"
     }
   }
 
