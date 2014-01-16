@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Prateek Srivastava (@f2prateek)
+ * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -21,6 +21,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
 import butterknife.ButterKnife;
+import com.f2prateek.dart.Dart;
 import com.f2prateek.dfg.DFGApplication;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
@@ -33,6 +34,7 @@ public class BaseFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     ((DFGApplication) getActivity().getApplication()).inject(this);
+    Dart.inject(this);
     activityContext = getActivity();
   }
 

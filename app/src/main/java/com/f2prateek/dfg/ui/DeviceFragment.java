@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Prateek Srivastava (@f2prateek)
+ * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -31,6 +31,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
@@ -56,7 +57,7 @@ public class DeviceFragment extends BaseFragment {
   @InjectView(R.id.iv_device_thumbnail) ImageView deviceThumbnailText;
   @InjectView(R.id.iv_device_default) ImageView deviceDefaultText;
   private Device device;
-  private int deviceNum;
+  @InjectExtra("num") int deviceNum;
 
   public static DeviceFragment newInstance(int num) {
     DeviceFragment f = new DeviceFragment();
@@ -70,7 +71,6 @@ public class DeviceFragment extends BaseFragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    deviceNum = getArguments() != null ? getArguments().getInt("num", 0) : 0;
     device = deviceProvider.getDevices().get(deviceNum);
     setHasOptionsMenu(true);
   }
