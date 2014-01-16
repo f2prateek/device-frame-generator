@@ -32,7 +32,8 @@ dependencies {
   }
 
   compile fileTree(dir: 'libs', include: '*.jar')
-  compile 'com.android.support:support-v13:13.0.0'
+  compile 'com.android.support:support-v13:19.0.1'
+  compile 'com.android.support:support-v4:19.0.1'
   compile 'com.crashlytics.android:crashlytics:1.+'
   compile 'com.jakewharton:butterknife:4.0.1'
   compile 'com.squareup:otto:1.3.4'
