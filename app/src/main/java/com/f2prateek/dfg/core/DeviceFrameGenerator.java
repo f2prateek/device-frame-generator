@@ -46,20 +46,12 @@ public class DeviceFrameGenerator {
   private final boolean withShadow;
   private final boolean withGlare;
 
-  private DeviceFrameGenerator(Context context, Callback callback, Device device,
-      boolean withShadow, boolean withGlare) {
+  public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow, boolean withGlare) {
     this.context = context;
     this.callback = callback;
     this.device = device;
     this.withShadow = withShadow;
     this.withGlare = withGlare;
-  }
-
-  public static void generate(Context context, Callback callback, Device device, boolean withShadow,
-      boolean withGlare, Uri screenshotUri) {
-    DeviceFrameGenerator generator =
-        new DeviceFrameGenerator(context, callback, device, withShadow, withGlare);
-    generator.generateFrame(screenshotUri);
   }
 
   /**
@@ -101,7 +93,7 @@ public class DeviceFrameGenerator {
    *
    * @param screenshotUri Uri to the screenshot file.
    */
-  private void generateFrame(Uri screenshotUri) {
+  public void generateFrame(Uri screenshotUri) {
     Ln.d("Generating for %s %s and %s from uri %s.", device.getName(),
         withGlare ? " with glare " : " without glare ",
         withShadow ? " with shadow " : " without shadow ", screenshotUri);

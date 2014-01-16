@@ -42,6 +42,8 @@ import com.f2prateek.dfg.ui.MainActivity;
 /** A service that generates our frames. */
 public class GenerateFrameService extends AbstractGenerateFrameService {
 
+  DeviceFrameGenerator generator;
+
   public GenerateFrameService() {
     super("GenerateFrameService");
   }
@@ -53,10 +55,11 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
     SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
     boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
+    generator = new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
 
     // Get all the intent data.
     Uri imageUri = intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
-    DeviceFrameGenerator.generate(this, this, device, withShadow, withGlare, imageUri);
+    generator.generateFrame(imageUri);
   }
 
   @Override

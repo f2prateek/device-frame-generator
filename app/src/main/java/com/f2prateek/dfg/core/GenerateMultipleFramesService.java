@@ -39,6 +39,7 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
 
   private ArrayList<Uri> imageUris;
   private ArrayList<Uri> processedImageUris = new ArrayList<Uri>();
+  DeviceFrameGenerator generator;
 
   public GenerateMultipleFramesService() {
     super("GenerateMultipleFramesService");
@@ -54,10 +55,11 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
     boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
     boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
+    generator = new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
 
     notifyStarting();
     for (Uri uri : imageUris) {
-      DeviceFrameGenerator.generate(this, this, device, withShadow, withGlare, uri);
+      generator.generateFrame(uri);
     }
     notifyFinished();
   }
