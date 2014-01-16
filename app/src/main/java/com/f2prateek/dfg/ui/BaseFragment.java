@@ -20,7 +20,7 @@ import android.app.Fragment;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.View;
-import butterknife.Views;
+import butterknife.ButterKnife;
 import com.f2prateek.dfg.DFGApplication;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
@@ -51,6 +51,6 @@ public class BaseFragment extends Fragment {
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    Views.inject(this, view);
+    ButterKnife.inject(this, view);
   }
 }

@@ -27,7 +27,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
-import butterknife.Views;
+import butterknife.ButterKnife;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import javax.inject.Inject;
@@ -48,7 +48,7 @@ public class AboutFragment extends DialogFragment {
   public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     View v = inflater.inflate(R.layout.fragment_about, container, false);
-    Views.inject(this, v);
+    ButterKnife.inject(this, v);
     versionNumberText.setText(String.valueOf(packageInfo.versionName));
     getDialog().setTitle(R.string.about);
     return v;

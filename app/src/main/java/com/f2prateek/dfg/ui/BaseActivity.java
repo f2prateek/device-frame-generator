@@ -21,7 +21,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import butterknife.Views;
+import butterknife.ButterKnife;
 import com.f2prateek.dfg.DFGApplication;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.squareup.otto.Bus;
@@ -45,7 +45,7 @@ import javax.inject.Inject;
   @Override
   public void setContentView(int layoutResId) {
     super.setContentView(layoutResId);
-    Views.inject(this);
+    ButterKnife.inject(this);
   }
 
   @Override

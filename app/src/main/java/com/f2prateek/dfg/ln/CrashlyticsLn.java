@@ -14,22 +14,19 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg.util.ln;
+package com.f2prateek.dfg.ln;
 
-import android.content.Context;
 import android.util.Log;
 import com.crashlytics.android.Crashlytics;
-import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.ln.DebugLn;
-import com.f2prateek.ln.LnInterface;
-import dagger.Module;
-import dagger.Provides;
-import javax.inject.Singleton;
 
-@Module(injects = DFGApplication.class, overrides = true, complete = false)
-public class ReleaseLnModule {
+public class CrashlyticsLn extends DebugLn {
 
-  @Provides @Singleton LnInterface provideLnInterface(Context context) {
-    return new CrashlyticsLn(context);
+  public CrashlyticsLn(String packageName) {
+    super(packageName, Log.VERBOSE);
+  }
+
+  @Override protected void println(int priority, String msg) {
+    Crashlytics.log(msg);
   }
 }

@@ -2,61 +2,31 @@ language: java
 
 jdk: oraclejdk7
 
-env:
-  matrix:
-    - ANDROID_SDKS=android-19,sysimg-19  ANDROID_TARGET=android-19  ANDROID_ABI=armeabi-v7a
-
 branches:
   except:
     - gh-pages
 
+notifications:
+  email: false
+
 before_install:
-  - chmod +x gradlew
+    # Install base Android SDK and components
+    - sudo apt-get install -qq libstdc++6:i386 lib32z1
+    - export COMPONENTS=build-tools-19.0.1,android-17,sysimg-17,extra-android-support,extra-google-m2repository,extra-android-m2repository
+    - curl -L https://raw.github.com/embarkmobile/android-sdk-installer/version-1/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS
+    - source ~/.android-sdk-installer/env
 
-  # Install base Android SDK
-  - sudo apt-get update -qq
-  - if [ `uname -m` = x86_64 ]; then sudo apt-get install -qq --force-yes libgd2-xpm ia32-libs ia32-libs-multiarch > /dev/null; fi
-  - wget http://dl.google.com/android/android-sdk_r22.3-linux.tgz
-  - tar xzf android-sdk_r22.3-linux.tgz
-  - export ANDROID_HOME=$PWD/android-sdk-linux
-  - export PATH=${PATH}:${ANDROID_HOME}/tools:${ANDROID_HOME}/platform-tools
-
-  # Gradle
-  - wget http://services.gradle.org/distributions/gradle-1.8-bin.zip
-  - unzip gradle-1.8-bin.zip
-  - export GRADLE_HOME=$PWD/gradle-1.8
-  - export PATH=$GRADLE_HOME/bin:$PATH
-
-  # install android build tools
-  - wget https://dl-ssl.google.com/android/repository/build-tools_r19-linux.zip
-  - unzip build-tools_r19-linux.zip -d $ANDROID_HOME
-  - mkdir -p $ANDROID_HOME/build-tools/
-  - mv $ANDROID_HOME/android-4.4 $ANDROID_HOME/build-tools/19
-
-  # Install required components.
-  # For a full list, run `android list sdk -a --extended`
-  # Note that sysimg-18 downloads the ARM, x86 and MIPS images (we should optimize this).
-  # Other relevant API's
-  - echo yes | android update sdk --filter platform-tools --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter android-18 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter android-19 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter sysimg-19 --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
-
-  # Create and start emulator
-  - echo no | android create avd --force -n test -t $ANDROID_TARGET --abi $ANDROID_ABI
-  - emulator -avd test -no-skin -no-audio -no-window &
-
-before_script:
-  - ./gradlew clean > /dev/null
-  - chmod +x wait_for_emulator.sh
-  - ./wait_for_emulator.sh
-  - adb shell input keyevent 82 &
+    # Create and start emulator
+    - echo no | android create avd --force -n test -t android-17 --abi armeabi-v7a
+    - emulator -avd test -no-skin -no-audio -no-window &
 
 install:
-  # Travis runs ./gradlew assemble by default; but we don't want to run release stuff
-  - ./gradlew assembleDebug
+    # Without TERM=dumb, we get mangled output in the Travis console
+    - TERM=dumb ./gradlew assemble
+
+before_script:
+    # Make sure the emulator has started before running tests
+    - wait_for_emulator
 
 script:
-  - ./gradlew checkDebug connectedCheck
+    - TERM=dumb ./gradlew test connectedCheck

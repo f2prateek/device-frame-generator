@@ -25,8 +25,6 @@ import com.f2prateek.dfg.ui.BaseActivity;
 import com.f2prateek.dfg.ui.DeviceFragment;
 import com.f2prateek.dfg.ui.MainActivity;
 import com.f2prateek.dfg.ui.ReceiverActivity;
-import com.f2prateek.ln.EmptyLn;
-import com.f2prateek.ln.LnInterface;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
@@ -46,7 +44,7 @@ import javax.inject.Singleton;
     }
 
 )
-public class DFGModule {
+public class DFGApplicationModule {
 
   @Provides @Singleton Bus provideOttoBus() {
     return new Bus();
@@ -54,9 +52,5 @@ public class DFGModule {
 
   @Provides @Singleton DeviceProvider provideDeviceProvider() {
     return new DeviceProvider();
-  }
-
-  @Provides @Singleton LnInterface provideLnInterface() {
-    return new EmptyLn();
   }
 }

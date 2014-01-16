@@ -6,11 +6,9 @@ This is a changelog of the app internals, not just user facing features.
 Version 2.0.0
 ----------------------------
  * Internal re-writes
- * Option to clean status bar
  * Bug fixes, check that received screenshots actually exist
  * build.gradle updates
- * Update Spoon dependency
- * Update test scripts
+ * Update dependencies
  * New naming scheme
 
 Version 1.1.6

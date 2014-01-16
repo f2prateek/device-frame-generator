@@ -16,13 +16,12 @@
 
 package com.f2prateek.dfg;
 
-import com.f2prateek.dfg.util.ln.DebugLnModule;
-
 public class Modules {
 
   static Object[] list(final DFGApplication application) {
     return new Object[] {
-        new AndroidModule(application), new DFGModule(), new DebugLnModule()
+        new AndroidModule(application), new DFGApplicationModule()
     };
   }
+
 }

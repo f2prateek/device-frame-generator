@@ -30,7 +30,7 @@ public class DeviceProvider {
     return devices;
   }
 
-  private ArrayList<Device> generateDevices() {
+  private static ArrayList<Device> generateDevices() {
     ArrayList<Device> devices = new ArrayList<Device>();
     devices.add(new Device.Builder().setId("nexus_s")
         .setName("Nexus S")

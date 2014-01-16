@@ -1,10 +1,7 @@
 #!/bin/bash
 
 # MANUAL : Bump version numbers in manifest, update build tools in build.gradle
-./gradlew clean check
-
-# Run tests
-./test-cli.sh
+./gradlew clean check spoon
 
 # MANUAL : pass in keystore credentials
 ./gradlew clean build

@@ -19,18 +19,16 @@ package com.f2prateek.dfg;
 import android.app.Application;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
+import com.f2prateek.dfg.ln.CrashlyticsLn;
 import com.f2prateek.dfg.util.StorageUtils;
+import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
-import com.f2prateek.ln.LnInterface;
 import com.google.analytics.tracking.android.GoogleAnalytics;
 import com.squareup.picasso.Picasso;
 import dagger.ObjectGraph;
-import javax.inject.Inject;
 
-/** Android Bootstrap application */
 public class DFGApplication extends Application {
 
-  @Inject LnInterface ln;
   private ObjectGraph objectGraph;
 
   @Override
@@ -41,13 +39,14 @@ public class DFGApplication extends Application {
     objectGraph = ObjectGraph.create(Modules.list(this));
     objectGraph.inject(this);
 
-    Ln.set(ln);
+    Picasso.with(this).setDebugging(BuildConfig.DEBUG);
+    GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
 
     if (BuildConfig.DEBUG) {
-      Picasso.with(this).setDebugging(BuildConfig.DEBUG);
-      GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
+      Ln.set(DebugLn.from(this));
     } else {
       Crashlytics.start(this);
+      Ln.set(new CrashlyticsLn(getPackageName()));
     }
 
     if (!StorageUtils.isStorageAvailable()) {
