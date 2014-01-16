@@ -29,6 +29,7 @@ import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
+import com.f2prateek.ln.Ln;
 import com.squareup.otto.Subscribe;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -80,6 +81,7 @@ public class MainActivity extends BuildTypeBaseActivity {
   @Subscribe
   public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
     Device device = deviceProvider.getDevices().get(event.newDevice);
+    Ln.d("Device updated to %s", device.getName());
     Crouton.makeText(this, getString(R.string.saved_as_default_message, device.getName()),
         Style.CONFIRM).show();
     invalidateOptionsMenu();
@@ -123,6 +125,7 @@ public class MainActivity extends BuildTypeBaseActivity {
     } else {
       Crouton.makeText(this, R.string.glare_disabled, Style.ALERT).show();
     }
+    Ln.d("Glare setting updated to %s", newSettingEnabled);
     invalidateOptionsMenu();
   }
 
@@ -135,6 +138,7 @@ public class MainActivity extends BuildTypeBaseActivity {
     } else {
       Crouton.makeText(this, getString(R.string.shadow_disabled), Style.ALERT).show();
     }
+    Ln.d("Shadow setting updated to %s", newSettingEnabled);
     invalidateOptionsMenu();
   }
 }

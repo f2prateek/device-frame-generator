@@ -51,6 +51,7 @@ public class DFGApplication extends Application {
 
     if (!StorageUtils.isStorageAvailable()) {
       Toast.makeText(this, R.string.storage_unavailable, Toast.LENGTH_SHORT).show();
+      Ln.w("storage unavailable");
     }
   }
 

@@ -67,15 +67,18 @@ public class DeviceFrameGenerator {
     float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
     float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
 
+    Ln.d("Screenshot height=%d, width=%d. Device height=%d, width=%d. Aspect1=%f, Aspect2=%f",
+        screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1],
+        device.getPortSize()[0], aspect1, aspect2);
+
     if (aspect1 == aspect2) {
       return Device.ORIENTATION_PORTRAIT;
     } else if (aspect1 == 1 / aspect2) {
       return Device.ORIENTATION_LANDSCAPE;
     }
 
-    Ln.e("Screenshot height=%d, width=%d. Device height=%d, width=%d. Aspect1=%f, Aspect2=%f",
-        screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1],
-        device.getPortSize()[0], aspect1, aspect2);
+    Ln.e("Could not match dimensions the device.");
+
     return null;
   }
 
@@ -166,20 +169,17 @@ public class DeviceFrameGenerator {
     }
 
     final int[] offset;
-    final int statusBarWidth;
 
     if (isPortrait(orientation)) {
       screenshot =
           Bitmap.createScaledBitmap(screenshot, device.getPortSize()[0], device.getPortSize()[1],
               false);
       offset = device.getPortOffset();
-      statusBarWidth = device.getPortSize()[0];
     } else {
       screenshot =
           Bitmap.createScaledBitmap(screenshot, device.getPortSize()[1], device.getPortSize()[0],
               false);
       offset = device.getLandOffset();
-      statusBarWidth = device.getPortSize()[1]; // subtract width of the navigation bar
     }
     frame.drawBitmap(screenshot, offset[0], offset[1], null);
 
