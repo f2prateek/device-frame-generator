@@ -26,6 +26,7 @@ import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.DeviceProvider;
+import com.f2prateek.ln.Ln;
 import java.util.ArrayList;
 import javax.inject.Inject;
 
@@ -53,6 +54,7 @@ public class ReceiverActivity extends BuildTypeBaseActivity {
   /** Handle an intent that provides a single image. */
   private void handleReceivedSingleImage(Intent i) {
     Uri imageUri = i.getParcelableExtra(Intent.EXTRA_STREAM);
+    Ln.d("Generating for single screenshot %s", imageUri);
     Device device = getDefaultDeviceFromPreferences();
     Intent intent = new Intent(this, GenerateFrameService.class);
     intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
@@ -67,6 +69,7 @@ public class ReceiverActivity extends BuildTypeBaseActivity {
     Intent intent = new Intent(this, GenerateMultipleFramesService.class);
     intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
     intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOTS, imageUris);
+    Ln.d("Generating for multiple screenshots %s", imageUris);
     startService(intent);
   }
 

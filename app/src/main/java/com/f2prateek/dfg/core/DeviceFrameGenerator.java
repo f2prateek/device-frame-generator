@@ -35,7 +35,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -246,7 +246,8 @@ public class DeviceFrameGenerator {
   private ImageMetadata prepareMetadata() {
     ImageMetadata imageMetadata = new ImageMetadata();
     imageMetadata.imageTime = System.currentTimeMillis();
-    String imageDate = DateFormat.getDateInstance().format(new Date(imageMetadata.imageTime));
+    String imageDate =
+        new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date(imageMetadata.imageTime));
     String imageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         .getAbsolutePath();
     File dfgDir = new File(imageDir, AppConstants.DFG_DIR_NAME);
