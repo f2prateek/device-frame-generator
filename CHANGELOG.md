@@ -10,6 +10,9 @@ Version 2.0.0
  * build.gradle updates
  * Update dependencies
  * New naming scheme
+ * Check that content provider field is only used for API 16+
+ * Respect locale date format for image names
+ * Remove attributes from AndroidManifest.xml that are overridden by build.gradle
 
 Version 1.1.6
 ----------------------------

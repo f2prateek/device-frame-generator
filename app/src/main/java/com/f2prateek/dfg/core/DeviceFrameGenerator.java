@@ -23,6 +23,7 @@ import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import com.f2prateek.dfg.AppConstants;
@@ -34,7 +35,7 @@ import com.google.analytics.tracking.android.EasyTracker;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.text.SimpleDateFormat;
+import java.text.DateFormat;
 import java.util.Date;
 import java.util.HashMap;
 
@@ -198,8 +199,10 @@ public class DeviceFrameGenerator {
     values.put(MediaStore.Images.ImageColumns.DATE_ADDED, imageMetadata.imageTime);
     values.put(MediaStore.Images.ImageColumns.DATE_MODIFIED, imageMetadata.imageTime);
     values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/png");
-    values.put(MediaStore.Images.ImageColumns.WIDTH, background.getWidth());
-    values.put(MediaStore.Images.ImageColumns.HEIGHT, background.getHeight());
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+      values.put(MediaStore.Images.ImageColumns.WIDTH, background.getWidth());
+      values.put(MediaStore.Images.ImageColumns.HEIGHT, background.getHeight());
+    }
     Uri frameUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
     try {
@@ -243,8 +246,7 @@ public class DeviceFrameGenerator {
   private ImageMetadata prepareMetadata() {
     ImageMetadata imageMetadata = new ImageMetadata();
     imageMetadata.imageTime = System.currentTimeMillis();
-    String imageDate =
-        new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date(imageMetadata.imageTime));
+    String imageDate = DateFormat.getDateInstance().format(new Date(imageMetadata.imageTime));
     String imageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
         .getAbsolutePath();
     File dfgDir = new File(imageDir, AppConstants.DFG_DIR_NAME);
