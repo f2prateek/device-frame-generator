@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Prateek Srivastava (@f2prateek)
+ * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -29,15 +29,15 @@ import dagger.ObjectGraph;
 
 public class DFGApplication extends Application {
 
-  private ObjectGraph objectGraph;
+  private ObjectGraph applicationGraph;
 
   @Override
   public void onCreate() {
     super.onCreate();
 
     // Perform Injection
-    objectGraph = ObjectGraph.create(Modules.list(this));
-    objectGraph.inject(this);
+    applicationGraph = ObjectGraph.create(Modules.list(this));
+    applicationGraph.inject(this);
 
     Picasso.with(this).setDebugging(BuildConfig.DEBUG);
     GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
@@ -55,6 +55,6 @@ public class DFGApplication extends Application {
   }
 
   public void inject(Object object) {
-    objectGraph.inject(object);
+    applicationGraph.inject(object);
   }
 }
