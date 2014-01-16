@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  ~ Copyright 2013 Prateek Srivastava (@f2prateek)
+  ~ Copyright 2014 Prateek Srivastava (@f2prateek)
   ~
   ~    Licensed under the Apache License, Version 2.0 (the "License");
   ~    you may not use this file except in compliance with the License.
@@ -24,13 +24,10 @@
   <string name="saved_as_default_message">%s saved as default device.</string>
   <string name="shadow_preference">Shadow</string>
   <string name="glare_preference">Glare</string>
-  <string name="clean_status_bar_preference">Status bar</string>
   <string name="glare_enabled">Glare will be drawn on screenshots.</string>
   <string name="glare_disabled">Glare will not be drawn on screenshots.</string>
   <string name="shadow_enabled">Shadow will be drawn on screenshots.</string>
   <string name="shadow_disabled">Shadow will not be drawn on screenshots.</string>
-  <string name="clean_status_bar_enabled">Status bar will be cleaned.</string>
-  <string name="clean_status_bar_disabled">Status bar will not be cleaned.</string>
   <string name="no_apps_available">No apps available to pick image.</string>
 
   <!-- Notifications !-->

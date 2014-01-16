@@ -1,17 +1,17 @@
 /*
- * Copyright 2013 Prateek Srivastava (@f2prateek)
+ * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *    http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 
 package com.f2prateek.dfg.ui;
@@ -56,9 +56,6 @@ public class MainActivity extends BaseActivity {
     glare.setChecked(sharedPreferences.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true));
     MenuItem shadow = menu.findItem(R.id.menu_checkbox_shadow);
     shadow.setChecked(sharedPreferences.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true));
-    MenuItem cleanStatusBar = menu.findItem(R.id.menu_checkbox_clean_status_bar);
-    cleanStatusBar.setChecked(
-        sharedPreferences.getBoolean(AppConstants.KEY_PREF_OPTION_CLEAN_STATUS_BAR, false));
     return super.onCreateOptionsMenu(menu);
   }
 
@@ -70,9 +67,6 @@ public class MainActivity extends BaseActivity {
         return true;
       case R.id.menu_checkbox_shadow:
         updateShadowSetting(!item.isChecked());
-        return true;
-      case R.id.menu_checkbox_clean_status_bar:
-        updateStatusBarSetting(!item.isChecked());
         return true;
       case R.id.menu_about:
         final AboutFragment fragment = new AboutFragment();
@@ -140,18 +134,6 @@ public class MainActivity extends BaseActivity {
       Crouton.makeText(this, getString(R.string.shadow_enabled), Style.CONFIRM).show();
     } else {
       Crouton.makeText(this, getString(R.string.shadow_disabled), Style.ALERT).show();
-    }
-    invalidateOptionsMenu();
-  }
-
-  public void updateStatusBarSetting(boolean newSettingEnabled) {
-    SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putBoolean(AppConstants.KEY_PREF_OPTION_CLEAN_STATUS_BAR, newSettingEnabled);
-    editor.commit();
-    if (newSettingEnabled) {
-      Crouton.makeText(this, getString(R.string.clean_status_bar_enabled), Style.CONFIRM).show();
-    } else {
-      Crouton.makeText(this, getString(R.string.clean_status_bar_disabled), Style.ALERT).show();
     }
     invalidateOptionsMenu();
   }

@@ -86,7 +86,6 @@ android {
     }
     beta.initWith(buildTypes.release)
     beta {
-      debuggable true
       versionNameSuffix "-beta"
     }
     sourceSets.beta.setRoot('src/release')
@@ -135,7 +134,8 @@ android.applicationVariants.all { variant ->
   project.tasks.getByName("check").dependsOn checkstyle
 
   def apk = variant.packageApplication.outputFile;
-  def newName = apk.name.replace(".apk", "-v${android.defaultConfig.versionName}-${versionBuild}.apk");
+  def newName = apk.name.replace(".apk",
+      "-v${android.defaultConfig.versionName}-${versionBuild}.apk");
   newName = newName.replace("app", "${android.defaultConfig.packageName}");
   variant.packageApplication.outputFile = new File(apk.parentFile, newName);
   if (variant.zipAlign) {

@@ -1,5 +1,5 @@
 /*
- * Copyright 2013 Prateek Srivastava (@f2prateek)
+ * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
  *    Licensed under the Apache License, Version 2.0 (the "License");
  *    you may not use this file except in compliance with the License.
@@ -22,8 +22,6 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
-import android.graphics.NinePatch;
-import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -47,22 +45,20 @@ public class DeviceFrameGenerator {
   private final Device device;
   private final boolean withShadow;
   private final boolean withGlare;
-  private final boolean cleanStatusBar;
 
   private DeviceFrameGenerator(Context context, Callback callback, Device device,
-      boolean withShadow, boolean withGlare, boolean cleanStatusBar) {
+      boolean withShadow, boolean withGlare) {
     this.context = context;
     this.callback = callback;
     this.device = device;
     this.withShadow = withShadow;
     this.withGlare = withGlare;
-    this.cleanStatusBar = cleanStatusBar;
   }
 
   public static void generate(Context context, Callback callback, Device device, boolean withShadow,
-      boolean withGlare, boolean cleanStatusBar, Uri screenshotUri) {
+      boolean withGlare, Uri screenshotUri) {
     DeviceFrameGenerator generator =
-        new DeviceFrameGenerator(context, callback, device, withShadow, withGlare, cleanStatusBar);
+        new DeviceFrameGenerator(context, callback, device, withShadow, withGlare);
     generator.generateFrame(screenshotUri);
   }
 
@@ -106,10 +102,9 @@ public class DeviceFrameGenerator {
    * @param screenshotUri Uri to the screenshot file.
    */
   private void generateFrame(Uri screenshotUri) {
-    Ln.d("Generating for %s %s, %s and %s from uri %s.", device.getName(),
+    Ln.d("Generating for %s %s and %s from uri %s.", device.getName(),
         withGlare ? " with glare " : " without glare ",
-        withShadow ? " with shadow " : " without shadow ",
-        cleanStatusBar ? " clean status bar " : " original status bar ", screenshotUri);
+        withShadow ? " with shadow " : " without shadow ", screenshotUri);
 
     if (screenshotUri == null) {
       Resources r = context.getResources();
@@ -195,17 +190,6 @@ public class DeviceFrameGenerator {
     }
     frame.drawBitmap(screenshot, offset[0], offset[1], null);
 
-    Bitmap statusBar = BitmapUtils.getStatusBarBitmap(context.getResources());
-    // Only draw if portrait to avoid : http://cl.ly/image/1T2n193b2T2P
-    // although we can query the width of the navigation bar, user may not have the screenshot
-    // supplied form the same device
-    if (cleanStatusBar && isPortrait(orientation)) {
-      NinePatch statusBarPatch = new NinePatch(statusBar, statusBar.getNinePatchChunk(), "status");
-      Rect statusBarBounds = new Rect(offset[0], offset[1], offset[0] + statusBarWidth,
-          offset[1] + statusBar.getHeight());
-      statusBarPatch.draw(frame, statusBarBounds);
-    }
-
     if (withGlare) {
       frame.drawBitmap(glare, 0f, 0f, null);
     }
@@ -245,7 +229,6 @@ public class DeviceFrameGenerator {
       background.recycle();
       glare.recycle();
       shadow.recycle();
-      statusBar.recycle();
     }
 
     // update file size in the database
