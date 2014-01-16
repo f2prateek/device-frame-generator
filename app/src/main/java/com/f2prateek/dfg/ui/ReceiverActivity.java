@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import javax.inject.Inject;
 
 /** A receiver activity, that is registered to receive images. */
-public class ReceiverActivity extends BaseActivity {
+public class ReceiverActivity extends BuildTypeBaseActivity {
   @Inject DeviceProvider deviceProvider;
 
   @Override

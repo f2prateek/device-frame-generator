@@ -42,6 +42,7 @@ dependencies {
   compile 'com.squareup.picasso:picasso:2.1.1'
   compile 'com.f2prateek.ln:ln:1.1.1'
   compile 'de.keyboardsurfer.android.widget:crouton:1.8.2@aar'
+  debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
   instrumentTestCompile 'com.squareup:fest-android:1.0.+'
   instrumentTestCompile 'com.squareup.spoon:spoon-client:1.1.0'
 }

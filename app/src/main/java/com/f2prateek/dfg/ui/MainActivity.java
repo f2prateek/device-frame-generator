@@ -34,7 +34,7 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import javax.inject.Inject;
 
-public class MainActivity extends BaseActivity {
+public class MainActivity extends BuildTypeBaseActivity {
 
   @Inject SharedPreferences sharedPreferences;
   @Inject DeviceProvider deviceProvider;

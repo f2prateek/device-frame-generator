@@ -46,7 +46,8 @@ public class DeviceFrameGenerator {
   private final boolean withShadow;
   private final boolean withGlare;
 
-  public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow, boolean withGlare) {
+  public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow,
+      boolean withGlare) {
     this.context = context;
     this.callback = callback;
     this.device = device;

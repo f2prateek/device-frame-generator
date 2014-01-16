@@ -21,6 +21,8 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.f2prateek.dfg.DFGApplication;
 import com.google.analytics.tracking.android.EasyTracker;
@@ -42,9 +44,22 @@ import javax.inject.Inject;
     EasyTracker.getInstance(this).activityStart(this);
   }
 
-  @Override
-  public void setContentView(int layoutResId) {
-    super.setContentView(layoutResId);
+  @Override public void setContentView(int layoutResID) {
+    super.setContentView(layoutResID);
+    injectViews();
+  }
+
+  @Override public void setContentView(View view) {
+    super.setContentView(view);
+    injectViews();
+  }
+
+  @Override public void setContentView(View view, ViewGroup.LayoutParams params) {
+    super.setContentView(view, params);
+    injectViews();
+  }
+
+  private void injectViews() {
     ButterKnife.inject(this);
   }
 
@@ -52,7 +67,7 @@ import javax.inject.Inject;
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case android.R.id.home:  // This is the home button in the top left corner of the screen.
-        // Dont call finish! Because activity could have been started by an outside activity
+        // Don't call finish! Because activity could have been started by an outside activity
         // and the home button would not operated as expected!
         Intent homeIntent = new Intent(this, MainActivity.class);
         homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_SINGLE_TOP);
