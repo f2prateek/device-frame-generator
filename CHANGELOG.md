@@ -3,6 +3,10 @@ Change Log
 
 This is a changelog of the app internals, not just user facing features.
 
+Version 2.0.1
+----------------------------
+ * Revert 'Respect locale date format for image names'
+
 Version 2.0.0
 ----------------------------
  * Internal re-writes
