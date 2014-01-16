@@ -52,7 +52,7 @@ def versionMajor = 2
 def versionMinor = 0
 def versionPatch = 1
 // bump for dogfood builds, public betas, etc.
-def versionBuild = 0
+def versionBuild = 1
 
 android {
   compileSdkVersion 19
