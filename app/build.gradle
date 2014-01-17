@@ -70,12 +70,7 @@ android {
   testBuildType "debug"
 
   signingConfigs {
-    release {
-      storeFile file("keystore")
-      storePassword "notARealPassword"
-      keyAlias "keystore"
-      keyPassword "notARealPassword"
-    }
+    release
   }
 
   buildTypes {
@@ -104,19 +99,6 @@ android {
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
     buildConfigField "String", "GIT_SHA", "\"${gitSha()}\""
     buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
-  }
-}
-
-task askForPasswords << {
-  def storePassword = new String(System.console().readLine("\n\$ Enter keystore password: "))
-  def keyPassword = new String(System.console().readLine("\n\$ Enter key alias password: "))
-  android.signingConfigs.release.storePassword = storePassword
-  android.signingConfigs.release.keyPassword = keyPassword
-}
-
-tasks.whenTaskAdded { theTask ->
-  if (theTask.name.equals("validateReleaseSigning")) {
-    theTask.dependsOn "askForPasswords"
   }
 }
 
@@ -156,4 +138,27 @@ def buildTime() {
   def df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'")
   df.setTimeZone(TimeZone.getTimeZone("UTC"))
   return df.format(new Date())
+}
+
+def propFile = new File('signing.properties')
+if (propFile.canRead()) {
+  def Properties signingProps = new Properties()
+  signingProps.load(new FileInputStream(propFile))
+
+  if (signingProps != null &&
+      signingProps.containsKey('STORE_FILE') &&
+      signingProps.containsKey('STORE_PASSWORD') &&
+      signingProps.containsKey('KEY_ALIAS') &&
+      signingProps.containsKey('KEY_PASSWORD')) {
+    android.signingConfigs.release.storeFile = file(signingProps['STORE_FILE'])
+    android.signingConfigs.release.storePassword = signingProps['STORE_PASSWORD']
+    android.signingConfigs.release.keyAlias = signingProps['KEY_ALIAS']
+    android.signingConfigs.release.keyPassword = signingProps['KEY_PASSWORD']
+  } else {
+    println 'signing.properties found but some entries are missing'
+    android.buildTypes.release.signingConfig = null
+  }
+} else {
+  println 'signing.properties not found'
+  android.buildTypes.release.signingConfig = null
 }
