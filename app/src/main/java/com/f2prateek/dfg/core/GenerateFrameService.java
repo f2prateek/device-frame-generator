@@ -90,7 +90,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
     notificationBuilder = new NotificationCompat.Builder(this).setTicker(
         r.getString(R.string.screenshot_saving_ticker))
         .setContentTitle(r.getString(R.string.screenshot_saving_title))
-        .setSmallIcon(R.drawable.app_icon)
+        .setSmallIcon(R.drawable.ic_stat_app_notification)
         .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(preview))
         .setContentIntent(PendingIntent.getActivity(this, 0, nullIntent, 0))
         .setWhen(System.currentTimeMillis())
