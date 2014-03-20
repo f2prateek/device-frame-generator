@@ -172,6 +172,16 @@ public class DeviceProvider {
         .setPortSize(new int[] {800, 1280})
         .setRealSize(new int[] {800, 1280})
         .build());
+    devices.add(new Device.Builder().setId("xiaomi_mi3")
+        .setName("Xiaomi Mi3")
+        .setUrl("http://www.xiaomi.com/en/mi3")
+        .setPhysicalSize(5.0f)
+        .setDensity("XXHDPI")
+        .setLandOffset(new int[] {436, 306})
+        .setPortOffset(new int[] {306, 436})
+        .setPortSize(new int[] {1080, 1920})
+        .setRealSize(new int[] {1080, 1920})
+        .build());
     return devices;
   }
 }
