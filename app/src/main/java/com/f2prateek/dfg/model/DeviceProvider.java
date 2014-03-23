@@ -182,7 +182,7 @@ public class DeviceProvider {
         .setPortSize(new int[] {1080, 1920})
         .setRealSize(new int[] {1080, 1920})
         .build());
-    devices.add(new Device.Builder().setId("ziaomi_mi2s")
+    devices.add(new Device.Builder().setId("xiaomi_mi2s")
         .setName("Xiaomi Mi2S")
         .setUrl("http://www.xiaomi.com/mi2s")
         .setPhysicalSize(4.3f)
