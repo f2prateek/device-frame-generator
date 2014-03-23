@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+  <string name="app_name">Generátor rámů</string>
+ 
+  <!-- Device Fragment !-->
+  <string name="saved_as_default_message">%s nastaveno jako výchozí zařízení.</string>
+  <string name="shadow_preference">Stín</string>
+  <string name="glare_preference">Odlesk</string>
+  <string name="glare_enabled">Odlesk bude zobrazen na screenshotu.</string>
+  <string name="glare_disabled">Odlesk nebude zobrazen na screenshotu.</string>
+  <string name="shadow_enabled">Stín bude zobrazen na screenshotu.</string>
+  <string name="shadow_disabled">Stín nebude zobrazený na screenshotu.</string>
+  <string name="no_apps_available">Není dostupná aplikace pro vybrání obrázku.</string>
+ 
+  <!-- Notifications !-->
+  <string name="screenshot_saving_title">Ukládání...</string>
+  <string name="screenshot_saved_title">Rám uložen</string>
+  <string name="single_screenshot_saved">Rám pro %s uložen.</string>
+  <string name="multiple_screenshots_saved">Uloženy %1$d obrázky pro %2$s.</string>
+  <string name="processing_image">Zpracovávání obrázků: %1$d / %2$d.</string>
+  <string name="share">Sdílet</string>
+ 
+  <!-- Notification Error Messages !-->
+  <string name="failed_open_screenshot_title">Nelze otevřít screenshot.</string>
+  <string name="failed_open_screenshot_text">Získání screenshotu %s selhalo.</string>
+  <string name="failed_match_dimensions_title">Rozměry nesouhlasí.</string>
+  <string name="failed_match_dimensions_text">Zařízení má %1$d x %2$d. Screenshot má %3$d x %4$d.
+  </string>
+  <string name="no_image_received">Žádná cesta k obrázku!</string>
+ 
+  <string name="unknown_error_title">Neznámá chyba.</string>
+  <string name="unknown_error_text">Nastala neznámá chyba.</string>
+  <string name="select_picture">Vyberte obrázek</string>
+  <string name="storage_unavailable">Úložiště je nedostupné</string>
+  <string name="description_device_thumbnail">Náhled zařízení</string>
+  <string name="device_chosen">Vybrané: %s.</string>
+ 
+  <!-- About screen !-->
+  <string name="about">O aplikaci</string>
+  <string name="developer">Autor</string>
+  <string name="gplus_profile">+Prateek Srivastava</string>
+  <string name="twitter">\@f2prateek</string>
+  <string name="designer">Designér</string>
+  <string name="taylor_ling">Taylor Ling</string>
+</resources>
