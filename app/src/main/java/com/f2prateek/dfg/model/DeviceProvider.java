@@ -182,6 +182,16 @@ public class DeviceProvider {
         .setPortSize(new int[] {1080, 1920})
         .setRealSize(new int[] {1080, 1920})
         .build());
+    devices.add(new Device.Builder().setId("ziaomi_mi2s")
+        .setName("Xiaomi Mi2S")
+        .setUrl("http://www.xiaomi.com/mi2s")
+        .setPhysicalSize(4.3f)
+        .setDensity("XHDPI")
+        .setLandOffset(new int[] {236, 358})
+        .setPortOffset(new int[] {358, 236})
+        .setPortSize(new int[] {720, 1280})
+        .setRealSize(new int[] {720, 1280})
+        .build());
     return devices;
   }
 }
