@@ -192,6 +192,16 @@ public class DeviceProvider {
         .setPortSize(new int[] {720, 1280})
         .setRealSize(new int[] {720, 1280})
         .build());
+	devices.add(new Device.Builder().setId("redmi")
+        .setName("Xiaomi Redmi")
+        .setUrl("http://www.xiaomi.com/hongmi1s")
+        .setPhysicalSize(4.7f)
+        .setDensity("XHDPI")
+        .setLandOffset(new int[] {354, 214})
+        .setPortOffset(new int[] {214, 354})
+        .setPortSize(new int[] {720, 1280})
+        .setRealSize(new int[] {720, 1280})
+        .build());
     return devices;
   }
 }
