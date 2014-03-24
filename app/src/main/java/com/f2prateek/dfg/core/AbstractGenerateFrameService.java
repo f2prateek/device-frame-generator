@@ -27,7 +27,7 @@ import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
-import com.f2prateek.dfg.ui.MainActivity;
+import com.f2prateek.dfg.ui.activities.MainActivity;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 

@@ -17,29 +17,32 @@
 package com.f2prateek.dfg;
 
 import android.app.Application;
+import android.content.Context;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
-import com.f2prateek.dfg.ln.CrashlyticsLn;
+import com.f2prateek.dfg.ui.ActivityHierarchyServer;
 import com.f2prateek.dfg.util.StorageUtils;
 import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
 import com.google.analytics.tracking.android.GoogleAnalytics;
-import com.squareup.picasso.Picasso;
 import dagger.ObjectGraph;
+import hugo.weaving.DebugLog;
+import javax.inject.Inject;
 
 public class DFGApplication extends Application {
 
   private ObjectGraph applicationGraph;
+  @Inject ActivityHierarchyServer activityHierarchyServer;
 
   @Override
   public void onCreate() {
     super.onCreate();
 
     // Perform Injection
-    applicationGraph = ObjectGraph.create(Modules.list(this));
-    applicationGraph.inject(this);
+    buildObjectGraphAndInject();
 
-    Picasso.with(this).setDebugging(BuildConfig.DEBUG);
+    registerActivityLifecycleCallbacks(activityHierarchyServer);
+
     GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
 
     if (BuildConfig.DEBUG) {
@@ -53,6 +56,16 @@ public class DFGApplication extends Application {
       Toast.makeText(this, R.string.storage_unavailable, Toast.LENGTH_SHORT).show();
       Ln.w("storage unavailable");
     }
+  }
+
+  @DebugLog
+  public void buildObjectGraphAndInject() {
+    applicationGraph = ObjectGraph.create(Modules.list(this));
+    applicationGraph.inject(this);
+  }
+
+  public static DFGApplication get(Context context) {
+    return (DFGApplication) context.getApplicationContext();
   }
 
   public void inject(Object object) {

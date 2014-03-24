@@ -39,10 +39,11 @@ dependencies {
   compile 'com.squareup.picasso:picasso:2.2.0'
   compile 'com.f2prateek.ln:ln:1.1.1'
   compile 'com.f2prateek.dart:dart:1.1.0'
-  compile 'com.github.frankiesardo:android-auto-value:+'
-  provided 'com.github.frankiesardo:android-auto-value-processor:+'
+  compile 'com.github.frankiesardo:android-auto-value:0.1'
+  provided 'com.github.frankiesardo:android-auto-value-processor:0.1'
   compile 'de.keyboardsurfer.android.widget:crouton:1.8.4@aar'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
+  debugCompile 'com.jakewharton.madge:madge:1.1.1'
   androidTestCompile 'com.squareup:fest-android:1.0.7'
   androidTestCompile 'com.squareup.spoon:spoon-client:1.1.1'
 }

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.dfg.ui;
+package com.f2prateek.dfg.ui.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
@@ -33,9 +33,12 @@ public class BaseFragment extends Fragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    ((DFGApplication) getActivity().getApplication()).inject(this);
-    Dart.inject(this);
     activityContext = getActivity();
+
+    DFGApplication app = DFGApplication.get(activityContext);
+    app.inject(this);
+
+    Dart.inject(this);
   }
 
   @Override

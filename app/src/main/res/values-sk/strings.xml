@@ -16,7 +16,6 @@
   -->
 
 <resources>
-  <string name="app_name">Generátor rámov</string>
 
   <!-- Device Fragment !-->
   <string name="saved_as_default_message">%s nastavené ako predvolené zariadenie.</string>

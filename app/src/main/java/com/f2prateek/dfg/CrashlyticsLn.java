@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package com.f2prateek.dfg.ui;
+package com.f2prateek.dfg;
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import com.f2prateek.dfg.dev.DevDrawer;
+import android.util.Log;
+import com.crashlytics.android.Crashlytics;
+import com.f2prateek.ln.DebugLn;
 
-/**
- * For debug builds.
- */
-@SuppressLint("Registered") public class BuildTypeBaseActivity extends BaseActivity {
+public class CrashlyticsLn extends DebugLn {
 
-  @Override
-  protected void onPostCreate(Bundle savedInstanceState) {
-    super.onPostCreate(savedInstanceState);
-    DevDrawer devDrawer = new DevDrawer(this);
-    devDrawer.wrapInside(this);
+  public CrashlyticsLn(String packageName) {
+    super(packageName, Log.VERBOSE);
+  }
+
+  @Override protected void println(int priority, String msg) {
+    Crashlytics.log(msg);
   }
 }

@@ -16,10 +16,11 @@
 
 package com.f2prateek.dfg;
 
-public class Modules {
-  static Object[] list(final DFGApplication application) {
-    return new Object[] {
-        new DFGApplicationModule(application), new DebugDFGApplicationModule()
-    };
-  }
+import java.lang.annotation.Retention;
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Qualifier @Retention(RUNTIME)
+public @interface ForApplication {
 }

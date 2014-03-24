@@ -17,10 +17,11 @@
 package com.f2prateek.dfg;
 
 import android.support.v4.view.ViewPager;
-import com.f2prateek.dfg.ui.MainActivity;
+import com.f2prateek.dfg.ui.activities.MainActivity;
 import com.squareup.spoon.Spoon;
 import java.util.Random;
 
+import static butterknife.ButterKnife.findById;
 import static org.fest.assertions.api.ANDROID.assertThat;
 
 /** Tests for displaying a specific {@link MainActivity} item */
@@ -35,7 +36,7 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
   @Override
   protected void setUp() throws Exception {
     super.setUp();
-    pager = (ViewPager) activity.findViewById(R.id.pager);
+    pager = findById(activity, R.id.pager);
   }
 
   public void testAllDevicesShown() throws Exception {

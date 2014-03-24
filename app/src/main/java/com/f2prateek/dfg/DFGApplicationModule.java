@@ -25,11 +25,8 @@ import android.preference.PreferenceManager;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
-import com.f2prateek.dfg.ui.AboutFragment;
-import com.f2prateek.dfg.ui.BaseActivity;
-import com.f2prateek.dfg.ui.DeviceFragment;
-import com.f2prateek.dfg.ui.MainActivity;
-import com.f2prateek.dfg.ui.ReceiverActivity;
+import com.f2prateek.dfg.prefs.PreferencesModule;
+import com.f2prateek.dfg.ui.UiModule;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
@@ -37,14 +34,12 @@ import javax.inject.Singleton;
 
 @Module(
     includes = {
-        DeviceModule.class, PreferencesModule.class, DeviceModule.class
+        DeviceModule.class, PreferencesModule.class, UiModule.class
     },
     injects = {
-        DFGApplication.class, BaseActivity.class, MainActivity.class, ReceiverActivity.class,
-        DeviceFragment.class, AboutFragment.class, AbstractGenerateFrameService.class,
-        GenerateFrameService.class, GenerateMultipleFramesService.class, AboutFragment.class
-    }
-)
+        DFGApplication.class, AbstractGenerateFrameService.class, GenerateFrameService.class,
+        GenerateMultipleFramesService.class
+    })
 public class DFGApplicationModule {
 
   private final DFGApplication application;
@@ -53,15 +48,16 @@ public class DFGApplicationModule {
     this.application = application;
   }
 
-  @Provides @Singleton Context provideAppContext() {
+  @Provides @Singleton @ForApplication Context provideAppContext() {
     return application;
   }
 
-  @Provides @Singleton SharedPreferences provideDefaultSharedPreferences(final Context context) {
+  @Provides @Singleton SharedPreferences provideDefaultSharedPreferences(
+      @ForApplication Context context) {
     return PreferenceManager.getDefaultSharedPreferences(context);
   }
 
-  @Provides @Singleton PackageInfo providePackageInfo(final Context context) {
+  @Provides @Singleton PackageInfo providePackageInfo(@ForApplication Context context) {
     try {
       return context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
     } catch (PackageManager.NameNotFoundException e) {
@@ -69,13 +65,14 @@ public class DFGApplicationModule {
     }
   }
 
-  @SuppressWarnings("unchecked")
-  <T> T getSystemService(final Context context, final String serviceConstant) {
+  @SuppressWarnings("unchecked") <T> T getSystemService(final Context context,
+      final String serviceConstant) {
     return (T) context.getSystemService(serviceConstant);
   }
 
-  @Provides @Singleton NotificationManager provideNotificationManager(final Context context) {
-    return (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+  @Provides @Singleton NotificationManager provideNotificationManager(
+      @ForApplication Context context) {
+    return getSystemService(context, Context.NOTIFICATION_SERVICE);
   }
 
   @Provides @Singleton Bus provideOttoBus() {

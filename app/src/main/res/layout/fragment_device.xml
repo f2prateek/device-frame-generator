@@ -31,7 +31,7 @@
       android:padding="@dimen/small_padding"
       style="@style/StarToggle"/>
 
-  <com.f2prateek.dfg.ui.ForegroundImageView
+  <com.f2prateek.dfg.ui.widgets.ForegroundImageView
       android:id="@+id/iv_device_thumbnail"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

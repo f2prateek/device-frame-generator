@@ -33,7 +33,7 @@ import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.prefs.BooleanPreference;
 import com.f2prateek.dfg.prefs.GlareEnabled;
 import com.f2prateek.dfg.prefs.ShadowEnabled;
-import com.f2prateek.dfg.ui.MainActivity;
+import com.f2prateek.dfg.ui.activities.MainActivity;
 import java.util.ArrayList;
 import javax.inject.Inject;
 

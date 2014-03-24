@@ -14,16 +14,16 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg.ui;
+package com.f2prateek.dfg.ui.activities;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dfg.DFGApplication;
+import com.f2prateek.dfg.ui.AppContainer;
 import com.google.analytics.tracking.android.EasyTracker;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
@@ -31,12 +31,20 @@ import javax.inject.Inject;
 @SuppressLint("Registered") public class BaseActivity extends Activity {
 
   @Inject Bus bus;
+  @Inject AppContainer appContainer;
+
+  private ViewGroup container;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    ((DFGApplication) getApplication()).inject(this);
+
+    DFGApplication app = DFGApplication.get(this);
+    app.inject(this);
+
     Dart.inject(this);
+
+    container = appContainer.get(this, app);
   }
 
   @Override protected void onStart() {
@@ -44,18 +52,8 @@ import javax.inject.Inject;
     EasyTracker.getInstance(this).activityStart(this);
   }
 
-  @Override public void setContentView(int layoutResID) {
-    super.setContentView(layoutResID);
-    injectViews();
-  }
-
-  @Override public void setContentView(View view) {
-    super.setContentView(view);
-    injectViews();
-  }
-
-  @Override public void setContentView(View view, ViewGroup.LayoutParams params) {
-    super.setContentView(view, params);
+  void inflateView(int layoutId) {
+    getLayoutInflater().inflate(layoutId, container);
     injectViews();
   }
 

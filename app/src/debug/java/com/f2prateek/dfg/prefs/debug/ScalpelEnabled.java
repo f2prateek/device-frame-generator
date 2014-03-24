@@ -14,12 +14,13 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg;
+package com.f2prateek.dfg.prefs.debug;
 
-public class Modules {
-  static Object[] list(final DFGApplication application) {
-    return new Object[] {
-        new DFGApplicationModule(application), new DebugDFGApplicationModule()
-    };
-  }
+import java.lang.annotation.Retention;
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Qualifier @Retention(RUNTIME)
+public @interface ScalpelEnabled {
 }

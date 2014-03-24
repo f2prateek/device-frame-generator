@@ -20,6 +20,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.support.v13.app.FragmentStatePagerAdapter;
 import com.f2prateek.dfg.model.Device;
+import com.f2prateek.dfg.ui.fragments.DeviceFragment;
 import java.util.List;
 
 public class DeviceFragmentPagerAdapter extends FragmentStatePagerAdapter {

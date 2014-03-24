@@ -14,36 +14,35 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg;
+package com.f2prateek.dfg.prefs;
 
 import android.content.SharedPreferences;
-import com.f2prateek.dfg.prefs.BooleanPreference;
-import com.f2prateek.dfg.prefs.DefaultDevice;
-import com.f2prateek.dfg.prefs.GlareEnabled;
-import com.f2prateek.dfg.prefs.ShadowEnabled;
-import com.f2prateek.dfg.prefs.StringPreference;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(library = true, complete = false)
 public class PreferencesModule {
+  private static final String DEFAULT_DEVICE = "nexus_5"; // Nexus 5
+  private static final boolean DEFAULT_GLARE_ENABLED = true; // Glare drawn
+  private static final boolean DEFAULT_SHADOW_ENABLED = true; // Shadow drawn
+
   private static final String KEY_PREF_DEFAULT_DEVICE_ID = "KEY_PREF_DEFAULT_DEVICE_ID";
   private static final String KEY_PREF_OPTION_GLARE = "KEY_PREF_OPTION_GLARE";
   private static final String KEY_PREF_OPTION_SHADOW = "KEY_PREF_OPTION_SHADOW";
 
-  @Provides @Singleton @DefaultDevice
-  StringPreference provideDefaultDevice(SharedPreferences sharedPreferences) {
-    return new StringPreference(sharedPreferences, KEY_PREF_DEFAULT_DEVICE_ID, "nexus_5");
+  @Provides @Singleton @DefaultDevice StringPreference provideDefaultDevice(
+      SharedPreferences sharedPreferences) {
+    return new StringPreference(sharedPreferences, KEY_PREF_DEFAULT_DEVICE_ID, DEFAULT_DEVICE);
   }
 
-  @Provides @Singleton @GlareEnabled
-  BooleanPreference provideGlareEnabled(SharedPreferences sharedPreferences) {
-    return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_GLARE, true);
+  @Provides @Singleton @GlareEnabled BooleanPreference provideGlareEnabled(
+      SharedPreferences sharedPreferences) {
+    return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_GLARE, DEFAULT_GLARE_ENABLED);
   }
 
-  @Provides @Singleton @ShadowEnabled
-  BooleanPreference provideShadowEnabled(SharedPreferences sharedPreferences) {
-    return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_SHADOW, true);
+  @Provides @Singleton @ShadowEnabled BooleanPreference provideShadowEnabled(
+      SharedPreferences sharedPreferences) {
+    return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_SHADOW, DEFAULT_SHADOW_ENABLED);
   }
 }

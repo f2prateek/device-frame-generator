@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg.ui;
+package com.f2prateek.dfg.ui.activities;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -31,7 +31,7 @@ import java.util.Map;
 import javax.inject.Inject;
 
 /** A receiver activity, that is registered to receive images. */
-public class ReceiverActivity extends BuildTypeBaseActivity {
+public class ReceiverActivity extends BaseActivity {
   @Inject Map<String, Device> devices;
   @Inject @DefaultDevice StringPreference defaultDevice;
 

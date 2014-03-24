@@ -22,7 +22,7 @@
     android:layout_height="match_parent"
     android:orientation="horizontal">
 
-  <com.f2prateek.dfg.ui.ForegroundImageView
+  <com.f2prateek.dfg.ui.widgets.ForegroundImageView
       android:id="@+id/iv_device_thumbnail"
       android:layout_width="0dp"
       android:layout_height="match_parent"

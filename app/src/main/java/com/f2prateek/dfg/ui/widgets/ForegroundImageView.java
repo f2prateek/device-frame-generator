@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg.ui;
+package com.f2prateek.dfg.ui.widgets;
 
 import android.content.Context;
 import android.content.res.TypedArray;

@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg.ui;
+package com.f2prateek.dfg.ui.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -31,6 +31,8 @@ import com.f2prateek.dfg.prefs.DefaultDevice;
 import com.f2prateek.dfg.prefs.GlareEnabled;
 import com.f2prateek.dfg.prefs.ShadowEnabled;
 import com.f2prateek.dfg.prefs.StringPreference;
+import com.f2prateek.dfg.ui.DeviceFragmentPagerAdapter;
+import com.f2prateek.dfg.ui.fragments.AboutFragment;
 import com.f2prateek.ln.Ln;
 import com.squareup.otto.Subscribe;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -39,7 +41,7 @@ import java.util.ArrayList;
 import java.util.Map;
 import javax.inject.Inject;
 
-public class MainActivity extends BuildTypeBaseActivity {
+public class MainActivity extends BaseActivity {
 
   @Inject @GlareEnabled BooleanPreference glareEnabled;
   @Inject @ShadowEnabled BooleanPreference shadowEnabled;
@@ -53,7 +55,10 @@ public class MainActivity extends BuildTypeBaseActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
+
+    inflateView(R.layout.activity_main);
+
+    getActionBar().setTitle(R.string.application_name); // use the condensed one for launchers
 
     pagerAdapter =
         new DeviceFragmentPagerAdapter(getFragmentManager(), new ArrayList<>(devices.values()));

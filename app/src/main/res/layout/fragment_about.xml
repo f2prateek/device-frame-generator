@@ -23,7 +23,7 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent">
 
-  <com.f2prateek.dfg.ui.ForegroundImageView android:id="@+id/iv_app_logo"
+  <com.f2prateek.dfg.ui.widgets.ForegroundImageView android:id="@+id/iv_app_logo"
       android:layout_width="fill_parent"
       android:layout_height="128dp"
       android:src="@drawable/app_icon_256"
@@ -32,7 +32,7 @@
 
   <TextView android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/app_name"
+      android:text="@string/application_name"
       style="@style/AboutText.Header"/>
 
   <TextView android:id="@+id/tv_version_number"

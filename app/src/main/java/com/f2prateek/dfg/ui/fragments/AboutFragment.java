@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.f2prateek.dfg.ui;
+package com.f2prateek.dfg.ui.fragments;
 
 import android.app.DialogFragment;
 import android.content.Intent;
@@ -35,6 +35,7 @@ import javax.inject.Inject;
 public class AboutFragment extends DialogFragment {
 
   @Inject PackageInfo packageInfo;
+
   @InjectView(R.id.tv_version_number) TextView versionNumberText;
 
   @Override

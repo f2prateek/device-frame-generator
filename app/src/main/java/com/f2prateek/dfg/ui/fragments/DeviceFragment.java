@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg.ui;
+package com.f2prateek.dfg.ui.fragments;
 
 import android.app.Activity;
 import android.content.Context;
@@ -52,6 +52,7 @@ public class DeviceFragment extends BaseFragment {
   private static final int RESULT_SELECT_PICTURE = 542;
 
   @Inject @DefaultDevice StringPreference defaultDevice;
+  @Inject Picasso picasso;
 
   @InjectView(R.id.tv_device_resolution) TextView deviceResolutionText;
   @InjectView(R.id.tv_device_size) TextView deviceSizeText;
@@ -85,10 +86,8 @@ public class DeviceFragment extends BaseFragment {
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    Picasso.with(getActivity())
-        .load(BitmapUtils.getResourceIdentifierForDrawable(getActivity(),
-            device.getThumbnailResourceName()))
-        .into(deviceThumbnailText);
+    picasso.load(BitmapUtils.getResourceIdentifierForDrawable(getActivity(),
+        device.getThumbnailResourceName())).into(deviceThumbnailText);
     deviceDefaultText.bringToFront();
     deviceDefaultText.setImageResource(
         isDefault() ? R.drawable.ic_action_star_selected : R.drawable.ic_action_star);

@@ -16,10 +16,15 @@
 
 package com.f2prateek.dfg;
 
-public class Modules {
-  static Object[] list(final DFGApplication application) {
-    return new Object[] {
-        new DFGApplicationModule(application), new DebugDFGApplicationModule()
-    };
-  }
+import com.f2prateek.dfg.prefs.DebugPreferencesModule;
+import com.f2prateek.dfg.ui.DebugUiModule;
+import dagger.Module;
+
+@Module(
+    addsTo = DFGApplicationModule.class,
+    includes = {
+        DebugUiModule.class, DebugPreferencesModule.class
+    },
+    overrides = true)
+public final class DebugDFGApplicationModule {
 }

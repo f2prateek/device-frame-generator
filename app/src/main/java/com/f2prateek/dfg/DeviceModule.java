@@ -20,14 +20,21 @@ import com.f2prateek.dfg.model.Device;
 import dagger.Module;
 import dagger.Provides;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 import static dagger.Provides.Type.SET;
+import static dagger.Provides.Type.SET_VALUES;
 
 @Module(library = true)
 public class DeviceModule {
+
+  @Provides(type = SET_VALUES) Set<Device> provideEmptyDevices() {
+    return new HashSet<Device>(); // Empty set to ensure the Set is initialized.
+  }
+
   @Provides(type = SET) Device provideNexusS() {
     return new Device.Builder().setId("nexus_s")
         .setName("Nexus S")
