@@ -38,8 +38,4 @@
   <!-- About screen !-->
   <string name="about">O aplikácií</string>
   <string name="developer">Autor</string>
-  <string name="gplus_profile">+Prateek Srivastava</string>
-  <string name="twitter">\@f2prateek</string>
-  <string name="designer">Designer</string>
-  <string name="taylor_ling">Taylor Ling</string>
 </resources>
