@@ -36,7 +36,9 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(
-    includes = {DeviceModule.class, PreferencesModule.class, DeviceModule.class},
+    includes = {
+        DeviceModule.class, PreferencesModule.class, DeviceModule.class
+    },
     injects = {
         DFGApplication.class, BaseActivity.class, MainActivity.class, ReceiverActivity.class,
         DeviceFragment.class, AboutFragment.class, AbstractGenerateFrameService.class,

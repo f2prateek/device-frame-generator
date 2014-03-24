@@ -28,7 +28,7 @@ import static dagger.Provides.Type.SET;
 
 @Module(library = true)
 public class DeviceModule {
-  @Provides(type = SET) Device nexus_s() {
+  @Provides(type = SET) Device provideNexusS() {
     return new Device.Builder().setId("nexus_s")
         .setName("Nexus S")
         .setUrl("http://www.google.com/phone/detail/nexus-s")
@@ -41,7 +41,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device galaxy_nexus() {
+  @Provides(type = SET) Device provideGalaxyNexus() {
     return new Device.Builder().setId("galaxy_nexus")
         .setName("Galaxy Nexus")
         .setUrl("http://www.android.com/devices/detail/galaxy-nexus")
@@ -54,7 +54,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device nexus_4() {
+  @Provides(type = SET) Device provideNexus4() {
     return new Device.Builder().setId("nexus_4")
         .setName("Nexus 4")
         .setUrl("http://www.google.com/nexus/4/")
@@ -67,7 +67,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device nexus_5() {
+  @Provides(type = SET) Device provideNexus5() {
     return new Device.Builder().setId("nexus_5")
         .setName("Nexus 5")
         .setUrl("http://www.google.com/nexus/5/")
@@ -80,7 +80,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device nexus_7_2013() {
+  @Provides(type = SET) Device provideNexus72013() {
     return new Device.Builder().setId("nexus_7_2013")
         .setName("Nexus 7 (2013)")
         .setUrl("http://www.google.com/nexus/7/")
@@ -93,7 +93,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device nexus_7() {
+  @Provides(type = SET) Device provideNexus7() {
     return new Device.Builder().setId("nexus_7")
         .setName("Nexus 7")
         .setUrl("http://www.android.com/devices/detail/nexus-7")
@@ -106,7 +106,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device nexus_10() {
+  @Provides(type = SET) Device provideNexus10() {
     return new Device.Builder().setId("nexus_10")
         .setName("Nexus 10")
         .setUrl("http://www.google.com/nexus/10/")
@@ -119,7 +119,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device htc_one_x() {
+  @Provides(type = SET) Device provideHtcOneX() {
     return new Device.Builder().setId("htc_one_x")
         .setName("HTC One X")
         .setUrl("http://www.htc.com/www/smartphones/htc-one-x/")
@@ -132,7 +132,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device samsung_galaxy_note() {
+  @Provides(type = SET) Device provideSamsungGalaxyNote() {
     return new Device.Builder().setId("samsung_galaxy_note")
         .setName("Samsung Galaxy Note")
         .setUrl("http://www.samsung.com/global/microsite/galaxynote/note/index.html")
@@ -145,7 +145,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device htc_m7() {
+  @Provides(type = SET) Device provideHtcM7() {
     return new Device.Builder().setId("htc_m7")
         .setName("HTC One")
         .setUrl("http://www.htc.com/www/smartphones/htc-one/")
@@ -158,7 +158,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device samsung_galaxy_s3() {
+  @Provides(type = SET) Device provideSamsungGalaxyS3() {
     return new Device.Builder().setId("samsung_galaxy_s3")
         .setName("Samsung Galaxy S III")
         .setUrl("http://www.samsung.com/global/galaxys3/")
@@ -171,7 +171,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device samsung_galaxy_tab_2_7inch() {
+  @Provides(type = SET) Device provideSamsungGalaxyTab27Inch() {
     return new Device.Builder().setId("samsung_galaxy_tab_2_7inch")
         .setName("Samsung Galaxy Tab 2")
         .setUrl("http://www.samsung.com/global/microsite/galaxytab2/7.0/index.html")
@@ -184,7 +184,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device xperia_z1() {
+  @Provides(type = SET) Device provideXperiaZ1() {
     return new Device.Builder().setId("xperia_z1")
         .setName("Xperia Z1")
         .setUrl("http://www.sonymobile.com/us/products/phones/xperia-z1/")
@@ -197,7 +197,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device xoom() {
+  @Provides(type = SET) Device provideXoom() {
     return new Device.Builder().setId("xoom")
         .setName("Motorola XOOM")
         .setUrl("http://www.google.com/phone/detail/motorola-xoom")
@@ -210,7 +210,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device xiaomi_mi3() {
+  @Provides(type = SET) Device provideXiaomiMI3() {
     return new Device.Builder().setId("xiaomi_mi3")
         .setName("Xiaomi Mi3")
         .setUrl("http://www.xiaomi.com/en/mi3")
@@ -223,7 +223,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device xiaomi_mi2s() {
+  @Provides(type = SET) Device provideXiaomiMI2s() {
     return new Device.Builder().setId("xiaomi_mi2s")
         .setName("Xiaomi Mi2S")
         .setUrl("http://www.xiaomi.com/mi2s")
@@ -236,7 +236,7 @@ public class DeviceModule {
         .build();
   }
 
-  @Provides(type = SET) Device redmi() {
+  @Provides(type = SET) Device provideRedmi() {
     return new Device.Builder().setId("redmi")
         .setName("Xiaomi Redmi")
         .setUrl("http://www.xiaomi.com/hongmi1s")
