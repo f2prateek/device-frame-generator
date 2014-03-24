@@ -21,7 +21,6 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -32,16 +31,21 @@ import android.graphics.Paint;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
+import com.f2prateek.dfg.prefs.BooleanPreference;
+import com.f2prateek.dfg.prefs.GlareEnabled;
+import com.f2prateek.dfg.prefs.ShadowEnabled;
 import com.f2prateek.dfg.ui.MainActivity;
+import javax.inject.Inject;
 
 /** A service that generates our frames. */
 public class GenerateFrameService extends AbstractGenerateFrameService {
 
+  @Inject @ShadowEnabled BooleanPreference shadowEnabled;
+  @Inject @GlareEnabled BooleanPreference glareEnabled;
   DeviceFrameGenerator generator;
 
   public GenerateFrameService() {
@@ -52,10 +56,8 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
   protected void onHandleIntent(Intent intent) {
     super.onHandleIntent(intent);
 
-    SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-    boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
-    boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
-    generator = new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
+    generator =
+        new DeviceFrameGenerator(this, this, device, shadowEnabled.get(), glareEnabled.get());
 
     // Get all the intent data.
     Uri imageUri = intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);

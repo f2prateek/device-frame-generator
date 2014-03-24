@@ -14,18 +14,13 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg;
+package com.f2prateek.dfg.prefs;
 
-public class AppConstants {
-  /*
-   * Key for Intent extras;
-   */
-  public static final String KEY_EXTRA_DEVICE = "KEY_EXTRA_DEVICE";
-  public static final String KEY_EXTRA_SCREENSHOT = "KEY_EXTRA_SCREENSHOT";
-  public static final String KEY_EXTRA_SCREENSHOTS = "KEY_EXTRA_SCREENSHOTS";
-  /*
-   * Storage
-   */
-  public static final String DFG_DIR_NAME = "Device-Frame-Generator";
-  public static final String DFG_FILE_NAME_TEMPLATE = "DFG_%s.png";
+import java.lang.annotation.Retention;
+import javax.inject.Qualifier;
+
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Qualifier @Retention(RUNTIME)
+public @interface ShadowEnabled {
 }

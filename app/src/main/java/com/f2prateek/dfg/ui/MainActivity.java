@@ -17,46 +17,57 @@
 package com.f2prateek.dfg.ui;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import butterknife.InjectView;
-import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
-import com.f2prateek.dfg.model.DeviceProvider;
+import com.f2prateek.dfg.prefs.BooleanPreference;
+import com.f2prateek.dfg.prefs.DefaultDevice;
+import com.f2prateek.dfg.prefs.GlareEnabled;
+import com.f2prateek.dfg.prefs.ShadowEnabled;
+import com.f2prateek.dfg.prefs.StringPreference;
 import com.f2prateek.ln.Ln;
 import com.squareup.otto.Subscribe;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import java.util.ArrayList;
+import java.util.Map;
 import javax.inject.Inject;
 
 public class MainActivity extends BuildTypeBaseActivity {
 
-  @Inject SharedPreferences sharedPreferences;
-  @Inject DeviceProvider deviceProvider;
+  @Inject @GlareEnabled BooleanPreference glareEnabled;
+  @Inject @ShadowEnabled BooleanPreference shadowEnabled;
+  @Inject @DefaultDevice StringPreference defaultDevice;
+
+  @Inject Map<String, Device> devices;
   @InjectView(R.id.pager) ViewPager pager;
+
+  private DeviceFragmentPagerAdapter pagerAdapter;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    pager.setAdapter(
-        new DeviceFragmentPagerAdapter(getFragmentManager(), deviceProvider.getDevices().size()));
-    pager.setCurrentItem(sharedPreferences.getInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, 0));
+
+    pagerAdapter =
+        new DeviceFragmentPagerAdapter(getFragmentManager(), new ArrayList<>(devices.values()));
+    pager.setAdapter(pagerAdapter);
+    pager.setCurrentItem(pagerAdapter.getDeviceIndex(defaultDevice.get()));
   }
 
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.activity_main, menu);
     MenuItem glare = menu.findItem(R.id.menu_checkbox_glare);
-    glare.setChecked(sharedPreferences.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true));
+    glare.setChecked(glareEnabled.get());
     MenuItem shadow = menu.findItem(R.id.menu_checkbox_shadow);
-    shadow.setChecked(sharedPreferences.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true));
+    shadow.setChecked(glareEnabled.get());
     return super.onCreateOptionsMenu(menu);
   }
 
@@ -80,9 +91,8 @@ public class MainActivity extends BuildTypeBaseActivity {
 
   @Subscribe
   public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
-    Device device = deviceProvider.getDevices().get(event.newDevice);
-    Ln.d("Device updated to %s", device.name());
-    Crouton.makeText(this, getString(R.string.saved_as_default_message, device.name()),
+    Ln.d("Device updated to %s", event.newDevice.name());
+    Crouton.makeText(this, getString(R.string.saved_as_default_message, event.newDevice.name()),
         Style.CONFIRM).show();
     invalidateOptionsMenu();
   }
@@ -105,8 +115,9 @@ public class MainActivity extends BuildTypeBaseActivity {
     if (event.uriList.size() == 0) {
       return;
     }
-    Crouton.makeText(this, getString(R.string.multiple_screenshots_saved, event.uriList.size(),
-        event.device.name()), Style.INFO).setOnClickListener(new View.OnClickListener() {
+    Crouton.makeText(this,
+        getString(R.string.multiple_screenshots_saved, event.uriList.size(), event.device.name()),
+        Style.INFO).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         Intent launchIntent = new Intent(Intent.ACTION_VIEW);
         launchIntent.setDataAndType(event.uriList.get(0), "image/png");
@@ -117,9 +128,7 @@ public class MainActivity extends BuildTypeBaseActivity {
   }
 
   public void updateGlareSetting(boolean newSettingEnabled) {
-    SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putBoolean(AppConstants.KEY_PREF_OPTION_GLARE, newSettingEnabled);
-    editor.commit();
+    glareEnabled.set(newSettingEnabled);
     if (newSettingEnabled) {
       Crouton.makeText(this, R.string.glare_enabled, Style.CONFIRM).show();
     } else {
@@ -130,9 +139,7 @@ public class MainActivity extends BuildTypeBaseActivity {
   }
 
   public void updateShadowSetting(boolean newSettingEnabled) {
-    SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, newSettingEnabled);
-    editor.commit();
+    shadowEnabled.set(newSettingEnabled);
     if (newSettingEnabled) {
       Crouton.makeText(this, getString(R.string.shadow_enabled), Style.CONFIRM).show();
     } else {

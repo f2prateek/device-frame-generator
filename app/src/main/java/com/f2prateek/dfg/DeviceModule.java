@@ -14,25 +14,22 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg.model;
+package com.f2prateek.dfg;
 
-import java.util.ArrayList;
+import com.f2prateek.dfg.model.Device;
+import dagger.Module;
+import dagger.Provides;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
-public class DeviceProvider {
+import static dagger.Provides.Type.SET;
 
-  private final ArrayList<Device> devices;
-
-  public DeviceProvider() {
-    devices = generateDevices();
-  }
-
-  public ArrayList<Device> getDevices() {
-    return devices;
-  }
-
-  private static ArrayList<Device> generateDevices() {
-    ArrayList<Device> devices = new ArrayList<Device>();
-    devices.add(new Device.Builder().setId("nexus_s")
+@Module(library = true)
+public class DeviceModule {
+  @Provides(type = SET) Device nexus_s() {
+    return new Device.Builder().setId("nexus_s")
         .setName("Nexus S")
         .setUrl("http://www.google.com/phone/detail/nexus-s")
         .setPhysicalSize(4.0f)
@@ -41,8 +38,11 @@ public class DeviceProvider {
         .setPortOffset(134, 247)
         .setPortSize(480, 800)
         .setRealSize(480, 800)
-        .build());
-    devices.add(new Device.Builder().setId("galaxy_nexus")
+        .build();
+  }
+
+  @Provides(type = SET) Device galaxy_nexus() {
+    return new Device.Builder().setId("galaxy_nexus")
         .setName("Galaxy Nexus")
         .setUrl("http://www.android.com/devices/detail/galaxy-nexus")
         .setPhysicalSize(4.65f)
@@ -51,8 +51,11 @@ public class DeviceProvider {
         .setPortOffset(216, 353)
         .setPortSize(720, 1280)
         .setRealSize(720, 1280)
-        .build());
-    devices.add(new Device.Builder().setId("nexus_4")
+        .build();
+  }
+
+  @Provides(type = SET) Device nexus_4() {
+    return new Device.Builder().setId("nexus_4")
         .setName("Nexus 4")
         .setUrl("http://www.google.com/nexus/4/")
         .setPhysicalSize(4.7f)
@@ -61,8 +64,11 @@ public class DeviceProvider {
         .setPortOffset(213, 350)
         .setPortSize(768, 1280)
         .setRealSize(768, 1280)
-        .build());
-    devices.add(new Device.Builder().setId("nexus_5")
+        .build();
+  }
+
+  @Provides(type = SET) Device nexus_5() {
+    return new Device.Builder().setId("nexus_5")
         .setName("Nexus 5")
         .setUrl("http://www.google.com/nexus/5/")
         .setPhysicalSize(5.43f)
@@ -71,8 +77,11 @@ public class DeviceProvider {
         .setPortOffset(306, 436)
         .setPortSize(1080, 1920)
         .setRealSize(1080, 1920)
-        .build());
-    devices.add(new Device.Builder().setId("nexus_7_2013")
+        .build();
+  }
+
+  @Provides(type = SET) Device nexus_7_2013() {
+    return new Device.Builder().setId("nexus_7_2013")
         .setName("Nexus 7 (2013)")
         .setUrl("http://www.google.com/nexus/7/")
         .setPhysicalSize(8f)
@@ -81,8 +90,11 @@ public class DeviceProvider {
         .setPortOffset(244, 326)
         .setPortSize(800, 1280)
         .setRealSize(1200, 1920)
-        .build());
-    devices.add(new Device.Builder().setId("nexus_7")
+        .build();
+  }
+
+  @Provides(type = SET) Device nexus_7() {
+    return new Device.Builder().setId("nexus_7")
         .setName("Nexus 7")
         .setUrl("http://www.android.com/devices/detail/nexus-7")
         .setPhysicalSize(7f)
@@ -91,8 +103,11 @@ public class DeviceProvider {
         .setPortOffset(264, 311)
         .setPortSize(800, 1280)
         .setRealSize(800, 1280)
-        .build());
-    devices.add(new Device.Builder().setId("nexus_10")
+        .build();
+  }
+
+  @Provides(type = SET) Device nexus_10() {
+    return new Device.Builder().setId("nexus_10")
         .setName("Nexus 10")
         .setUrl("http://www.google.com/nexus/10/")
         .setPhysicalSize(10f)
@@ -101,18 +116,11 @@ public class DeviceProvider {
         .setPortOffset(217, 223)
         .setPortSize(800, 1280)
         .setRealSize(1600, 2560)
-        .build());
-    devices.add(new Device.Builder().setId("htc_m7")
-        .setName("HTC One")
-        .setUrl("http://www.htc.com/www/smartphones/htc-one/")
-        .setPhysicalSize(4.7f)
-        .setDensity("468 dpi")
-        .setLandOffset(624, 324)
-        .setPortOffset(324, 624)
-        .setPortSize(1080, 1920)
-        .setRealSize(1080, 1920)
-        .build());
-    devices.add(new Device.Builder().setId("htc_one_x")
+        .build();
+  }
+
+  @Provides(type = SET) Device htc_one_x() {
+    return new Device.Builder().setId("htc_one_x")
         .setName("HTC One X")
         .setUrl("http://www.htc.com/www/smartphones/htc-one-x/")
         .setPhysicalSize(4.7f)
@@ -121,8 +129,11 @@ public class DeviceProvider {
         .setPortOffset(302, 306)
         .setPortSize(720, 1280)
         .setRealSize(720, 1280)
-        .build());
-    devices.add(new Device.Builder().setId("samsung_galaxy_note")
+        .build();
+  }
+
+  @Provides(type = SET) Device samsung_galaxy_note() {
+    return new Device.Builder().setId("samsung_galaxy_note")
         .setName("Samsung Galaxy Note")
         .setUrl("http://www.samsung.com/global/microsite/galaxynote/note/index.html")
         .setPhysicalSize(5.3f)
@@ -131,8 +142,24 @@ public class DeviceProvider {
         .setPortOffset(289, 312)
         .setPortSize(800, 1280)
         .setRealSize(800, 1280)
-        .build());
-    devices.add(new Device.Builder().setId("samsung_galaxy_s3")
+        .build();
+  }
+
+  @Provides(type = SET) Device htc_m7() {
+    return new Device.Builder().setId("htc_m7")
+        .setName("HTC One")
+        .setUrl("http://www.htc.com/www/smartphones/htc-one/")
+        .setPhysicalSize(4.7f)
+        .setDensity("468 dpi")
+        .setLandOffset(624, 324)
+        .setPortOffset(324, 624)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
+  @Provides(type = SET) Device samsung_galaxy_s3() {
+    return new Device.Builder().setId("samsung_galaxy_s3")
         .setName("Samsung Galaxy S III")
         .setUrl("http://www.samsung.com/global/galaxys3/")
         .setPhysicalSize(4.8f)
@@ -141,8 +168,11 @@ public class DeviceProvider {
         .setPortOffset(302, 307)
         .setPortSize(720, 1280)
         .setRealSize(720, 1280)
-        .build());
-    devices.add(new Device.Builder().setId("samsung_galaxy_tab_2_7inch")
+        .build();
+  }
+
+  @Provides(type = SET) Device samsung_galaxy_tab_2_7inch() {
+    return new Device.Builder().setId("samsung_galaxy_tab_2_7inch")
         .setName("Samsung Galaxy Tab 2")
         .setUrl("http://www.samsung.com/global/microsite/galaxytab2/7.0/index.html")
         .setPhysicalSize(7f)
@@ -151,8 +181,11 @@ public class DeviceProvider {
         .setPortOffset(274, 222)
         .setPortSize(600, 1024)
         .setRealSize(600, 1024)
-        .build());
-    devices.add(new Device.Builder().setId("xperia_z1")
+        .build();
+  }
+
+  @Provides(type = SET) Device xperia_z1() {
+    return new Device.Builder().setId("xperia_z1")
         .setName("Xperia Z1")
         .setUrl("http://www.sonymobile.com/us/products/phones/xperia-z1/")
         .setPhysicalSize(5.0f)
@@ -161,8 +194,11 @@ public class DeviceProvider {
         .setPortOffset(221, 340)
         .setPortSize(720, 1280)
         .setRealSize(1080, 1920)
-        .build());
-    devices.add(new Device.Builder().setId("xoom")
+        .build();
+  }
+
+  @Provides(type = SET) Device xoom() {
+    return new Device.Builder().setId("xoom")
         .setName("Motorola XOOM")
         .setUrl("http://www.google.com/phone/detail/motorola-xoom")
         .setPhysicalSize(10f)
@@ -171,8 +207,11 @@ public class DeviceProvider {
         .setPortOffset(199, 200)
         .setPortSize(800, 1280)
         .setRealSize(800, 1280)
-        .build());
-    devices.add(new Device.Builder().setId("xiaomi_mi3")
+        .build();
+  }
+
+  @Provides(type = SET) Device xiaomi_mi3() {
+    return new Device.Builder().setId("xiaomi_mi3")
         .setName("Xiaomi Mi3")
         .setUrl("http://www.xiaomi.com/en/mi3")
         .setPhysicalSize(5.0f)
@@ -181,8 +220,11 @@ public class DeviceProvider {
         .setPortOffset(306, 436)
         .setPortSize(1080, 1920)
         .setRealSize(1080, 1920)
-        .build());
-    devices.add(new Device.Builder().setId("xiaomi_mi2s")
+        .build();
+  }
+
+  @Provides(type = SET) Device xiaomi_mi2s() {
+    return new Device.Builder().setId("xiaomi_mi2s")
         .setName("Xiaomi Mi2S")
         .setUrl("http://www.xiaomi.com/mi2s")
         .setPhysicalSize(4.3f)
@@ -191,8 +233,11 @@ public class DeviceProvider {
         .setPortOffset(358, 236)
         .setPortSize(720, 1280)
         .setRealSize(720, 1280)
-        .build());
-    devices.add(new Device.Builder().setId("redmi")
+        .build();
+  }
+
+  @Provides(type = SET) Device redmi() {
+    return new Device.Builder().setId("redmi")
         .setName("Xiaomi Redmi")
         .setUrl("http://www.xiaomi.com/hongmi1s")
         .setPhysicalSize(4.7f)
@@ -201,7 +246,14 @@ public class DeviceProvider {
         .setPortOffset(214, 354)
         .setPortSize(720, 1280)
         .setRealSize(720, 1280)
-        .build());
-    return devices;
+        .build();
+  }
+
+  @Provides Map<String, Device> devices(Set<Device> deviceSet) {
+    HashMap<String, Device> deviceMap = new LinkedHashMap<>(deviceSet.size());
+    for (Device device : deviceSet) {
+      deviceMap.put(device.id(), device);
+    }
+    return deviceMap;
   }
 }

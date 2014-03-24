@@ -19,7 +19,6 @@ package com.f2prateek.dfg.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
@@ -37,7 +36,8 @@ import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
-import com.f2prateek.dfg.model.DeviceProvider;
+import com.f2prateek.dfg.prefs.DefaultDevice;
+import com.f2prateek.dfg.prefs.StringPreference;
 import com.f2prateek.dfg.util.BitmapUtils;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
@@ -48,21 +48,23 @@ import javax.inject.Inject;
 
 public class DeviceFragment extends BaseFragment {
 
+  private static final String EXTRA_DEVICE = "device";
   private static final int RESULT_SELECT_PICTURE = 542;
-  @Inject SharedPreferences sharedPreferences;
-  @Inject DeviceProvider deviceProvider;
+
+  @Inject @DefaultDevice StringPreference defaultDevice;
+
   @InjectView(R.id.tv_device_resolution) TextView deviceResolutionText;
   @InjectView(R.id.tv_device_size) TextView deviceSizeText;
   @InjectView(R.id.tv_device_name) TextView deviceNameText;
   @InjectView(R.id.iv_device_thumbnail) ImageView deviceThumbnailText;
   @InjectView(R.id.iv_device_default) ImageView deviceDefaultText;
-  private Device device;
-  @InjectExtra("num") int deviceNum;
 
-  public static DeviceFragment newInstance(int num) {
+  @InjectExtra(EXTRA_DEVICE) Device device;
+
+  public static DeviceFragment newInstance(Device device) {
     DeviceFragment f = new DeviceFragment();
     Bundle args = new Bundle();
-    args.putInt("num", num);
+    args.putParcelable(EXTRA_DEVICE, device);
     f.setArguments(args);
     f.setRetainInstance(true);
     return f;
@@ -71,7 +73,6 @@ public class DeviceFragment extends BaseFragment {
   @Override
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    device = deviceProvider.getDevices().get(deviceNum);
     setHasOptionsMenu(true);
   }
 
@@ -101,10 +102,8 @@ public class DeviceFragment extends BaseFragment {
     if (isDefault()) {
       return;
     }
-    SharedPreferences.Editor editor = sharedPreferences.edit();
-    editor.putInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, deviceNum);
-    editor.commit();
-    bus.post(new Events.DefaultDeviceUpdated(deviceNum));
+    defaultDevice.set(device.id());
+    bus.post(new Events.DefaultDeviceUpdated(device));
   }
 
   @Subscribe
@@ -118,7 +117,7 @@ public class DeviceFragment extends BaseFragment {
   }
 
   private boolean isDefault() {
-    return deviceNum == sharedPreferences.getInt(AppConstants.KEY_PREF_DEFAULT_DEVICE, 0);
+    return device.id().compareTo(defaultDevice.get()) == 0;
   }
 
   @OnClick(R.id.iv_device_thumbnail)

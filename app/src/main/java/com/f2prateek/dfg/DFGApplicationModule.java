@@ -25,7 +25,6 @@ import android.preference.PreferenceManager;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
-import com.f2prateek.dfg.model.DeviceProvider;
 import com.f2prateek.dfg.ui.AboutFragment;
 import com.f2prateek.dfg.ui.BaseActivity;
 import com.f2prateek.dfg.ui.DeviceFragment;
@@ -37,6 +36,7 @@ import dagger.Provides;
 import javax.inject.Singleton;
 
 @Module(
+    includes = {DeviceModule.class, PreferencesModule.class, DeviceModule.class},
     injects = {
         DFGApplication.class, BaseActivity.class, MainActivity.class, ReceiverActivity.class,
         DeviceFragment.class, AboutFragment.class, AbstractGenerateFrameService.class,
@@ -78,9 +78,5 @@ public class DFGApplicationModule {
 
   @Provides @Singleton Bus provideOttoBus() {
     return new Bus();
-  }
-
-  @Provides @Singleton DeviceProvider provideDeviceProvider() {
-    return new DeviceProvider();
   }
 }

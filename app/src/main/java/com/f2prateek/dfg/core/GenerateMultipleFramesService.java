@@ -21,21 +21,26 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
-import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
+import com.f2prateek.dfg.prefs.BooleanPreference;
+import com.f2prateek.dfg.prefs.GlareEnabled;
+import com.f2prateek.dfg.prefs.ShadowEnabled;
 import com.f2prateek.dfg.ui.MainActivity;
 import java.util.ArrayList;
+import javax.inject.Inject;
 
 public class GenerateMultipleFramesService extends AbstractGenerateFrameService {
+
+  @Inject @ShadowEnabled BooleanPreference shadowEnabled;
+  @Inject @GlareEnabled BooleanPreference glareEnabled;
 
   private ArrayList<Uri> imageUris;
   private ArrayList<Uri> processedImageUris = new ArrayList<Uri>();
@@ -52,10 +57,8 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     // Get all the intent data.
     imageUris = intent.getParcelableArrayListExtra(AppConstants.KEY_EXTRA_SCREENSHOTS);
 
-    SharedPreferences sPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-    boolean withShadow = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_GLARE, true);
-    boolean withGlare = sPrefs.getBoolean(AppConstants.KEY_PREF_OPTION_SHADOW, true);
-    generator = new DeviceFrameGenerator(this, this, device, withShadow, withGlare);
+    generator =
+        new DeviceFrameGenerator(this, this, device, shadowEnabled.get(), glareEnabled.get());
 
     notifyStarting();
     for (Uri uri : imageUris) {
@@ -92,7 +95,8 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     processedImageUris.add(imageUri);
     notificationBuilder.setContentText(
         getResources().getString(R.string.processing_image, processedImageUris.size(),
-            imageUris.size())).setProgress(imageUris.size(), processedImageUris.size(), false);
+            imageUris.size())
+    ).setProgress(imageUris.size(), processedImageUris.size(), false);
     notificationManager.notify(DFG_NOTIFICATION_ID, notificationBuilder.build());
   }
 
