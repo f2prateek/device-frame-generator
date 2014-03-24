@@ -1,17 +1,17 @@
 /*
  * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 
 package com.f2prateek.dfg.ui;
@@ -81,15 +81,15 @@ public class MainActivity extends BuildTypeBaseActivity {
   @Subscribe
   public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
     Device device = deviceProvider.getDevices().get(event.newDevice);
-    Ln.d("Device updated to %s", device.getName());
-    Crouton.makeText(this, getString(R.string.saved_as_default_message, device.getName()),
+    Ln.d("Device updated to %s", device.name());
+    Crouton.makeText(this, getString(R.string.saved_as_default_message, device.name()),
         Style.CONFIRM).show();
     invalidateOptionsMenu();
   }
 
   @Subscribe
   public void onSingleImageProcessed(final Events.SingleImageProcessed event) {
-    Crouton.makeText(this, getString(R.string.single_screenshot_saved, event.device.getName()),
+    Crouton.makeText(this, getString(R.string.single_screenshot_saved, event.device.name()),
         Style.INFO).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         Intent launchIntent = new Intent(Intent.ACTION_VIEW);
@@ -106,7 +106,7 @@ public class MainActivity extends BuildTypeBaseActivity {
       return;
     }
     Crouton.makeText(this, getString(R.string.multiple_screenshots_saved, event.uriList.size(),
-        event.device.getName()), Style.INFO).setOnClickListener(new View.OnClickListener() {
+        event.device.name()), Style.INFO).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
         Intent launchIntent = new Intent(Intent.ACTION_VIEW);
         launchIntent.setDataAndType(event.uriList.get(0), "image/png");

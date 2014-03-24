@@ -1,17 +1,17 @@
 /*
  * Copyright 2014 Prateek Srivastava (@f2prateek)
  *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
+ *    Licensed under the Apache License, Version 2.0 (the "License");
+ *    you may not use this file except in compliance with the License.
+ *    You may obtain a copy of the License at
  *
- *   http://www.apache.org/licenses/LICENSE-2.0
+ *      http://www.apache.org/licenses/LICENSE-2.0
  *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
+ *    Unless required by applicable law or agreed to in writing, software
+ *    distributed under the License is distributed on an "AS IS" BASIS,
+ *    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ *    See the License for the specific language governing permissions and
+ *    limitations under the License.
  */
 
 package com.f2prateek.dfg.core;
@@ -66,11 +66,11 @@ public class DeviceFrameGenerator {
    */
   private static String checkDimensions(Device device, Bitmap screenshot) {
     float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
-    float aspect2 = (float) device.getPortSize()[1] / (float) device.getPortSize()[0];
+    float aspect2 = (float) device.portSize()[1] / (float) device.portSize()[0];
 
     Ln.d("Screenshot height=%d, width=%d. Device height=%d, width=%d. Aspect1=%f, Aspect2=%f",
-        screenshot.getHeight(), screenshot.getWidth(), device.getPortSize()[1],
-        device.getPortSize()[0], aspect1, aspect2);
+        screenshot.getHeight(), screenshot.getWidth(), device.portSize()[1], device.portSize()[0],
+        aspect1, aspect2);
 
     if (aspect1 == aspect2) {
       return Device.ORIENTATION_PORTRAIT;
@@ -99,7 +99,7 @@ public class DeviceFrameGenerator {
    * @param screenshotUri Uri to the screenshot file.
    */
   public void generateFrame(Uri screenshotUri) {
-    Ln.d("Generating for %s %s and %s from uri %s.", device.getName(),
+    Ln.d("Generating for %s %s and %s from uri %s.", device.name(),
         withGlare ? " with glare " : " without glare ",
         withShadow ? " with shadow " : " without shadow ", screenshotUri);
 
@@ -143,13 +143,12 @@ public class DeviceFrameGenerator {
     if (orientation == null) {
       Resources r = context.getResources();
       String failedTitle = r.getString(R.string.failed_match_dimensions_title);
-      String failedText =
-          r.getString(R.string.failed_match_dimensions_text, device.getPortSize()[0],
-              device.getPortSize()[1], screenshot.getHeight(), screenshot.getWidth());
-      String failedSmallText = r.getString(R.string.device_chosen, device.getName());
+      String failedText = r.getString(R.string.failed_match_dimensions_text, device.portSize()[0],
+          device.portSize()[1], screenshot.getHeight(), screenshot.getWidth());
+      String failedSmallText = r.getString(R.string.device_chosen, device.name());
       callback.failedImage(failedTitle, failedSmallText, failedText);
       HashMap<String, String> params = new HashMap<String, String>();
-      params.put("incorrect_dimensions", device.getId());
+      params.put("incorrect_dimensions", device.id());
       EasyTracker.getInstance(context).send(params);
       return;
     }
@@ -173,14 +172,12 @@ public class DeviceFrameGenerator {
 
     if (isPortrait(orientation)) {
       screenshot =
-          Bitmap.createScaledBitmap(screenshot, device.getPortSize()[0], device.getPortSize()[1],
-              false);
-      offset = device.getPortOffset();
+          Bitmap.createScaledBitmap(screenshot, device.portSize()[0], device.portSize()[1], false);
+      offset = device.portOffset();
     } else {
       screenshot =
-          Bitmap.createScaledBitmap(screenshot, device.getPortSize()[1], device.getPortSize()[0],
-              false);
-      offset = device.getLandOffset();
+          Bitmap.createScaledBitmap(screenshot, device.portSize()[1], device.portSize()[0], false);
+      offset = device.landOffset();
     }
     frame.drawBitmap(screenshot, offset[0], offset[1], null);
 
@@ -232,7 +229,7 @@ public class DeviceFrameGenerator {
     values.put(MediaStore.Images.ImageColumns.SIZE, new File(imageMetadata.imageFilePath).length());
     resolver.update(frameUri, values, null, null);
 
-    Ln.d("Generated for %s at %s with uri %s", device.getName(), imageMetadata.imageFilePath,
+    Ln.d("Generated for %s at %s with uri %s", device.name(), imageMetadata.imageFilePath,
         frameUri);
 
     callback.doneImage(frameUri);
