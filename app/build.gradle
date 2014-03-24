@@ -1,17 +1,15 @@
-import java.text.SimpleDateFormat
-
 buildscript {
   repositories {
     mavenCentral()
-    maven {
-      url 'http://download.crashlytics.com/maven'
-    }
+    maven { url 'http://download.crashlytics.com/maven' }
+    maven { url "https://github.com/ben-manes/gradle-versions-plugin/raw/mvnrepo" }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.9.+'
-    classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
+    classpath 'com.android.tools.build:gradle:0.9.1'
+    classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.6.1'
     classpath 'com.stanfy.spoon:spoon-gradle-plugin:0.9.5'
     classpath 'com.jakewharton.hugo:hugo-plugin:1.0.1'
+    classpath 'com.github.ben-manes:gradle-versions-plugin:0.5-beta-1'
   }
 }
 
@@ -20,6 +18,7 @@ apply plugin: 'crashlytics'
 apply plugin: 'checkstyle'
 apply plugin: 'spoon'
 apply plugin: 'hugo'
+apply plugin: 'versions'
 
 dependencies {
   repositories {
@@ -30,9 +29,9 @@ dependencies {
   }
 
   compile fileTree(dir: 'libs', include: '*.jar')
-  compile 'com.android.support:support-v13:19.0.0'
-  compile 'com.android.support:support-v4:19.0.0'
-  compile 'com.crashlytics.android:crashlytics:1.+'
+  compile 'com.android.support:support-v13:19.0.1'
+  compile 'com.android.support:support-v4:19.0.1'
+  compile 'com.crashlytics.android:crashlytics:1.1.10'
   compile 'com.jakewharton:butterknife:4.0.1'
   compile 'com.squareup:otto:1.3.4'
   compile 'com.squareup.dagger:dagger:1.2.1'
@@ -40,7 +39,7 @@ dependencies {
   compile 'com.squareup.picasso:picasso:2.2.0'
   compile 'com.f2prateek.ln:ln:1.1.1'
   compile 'com.f2prateek.dart:dart:1.1.0'
-  compile 'de.keyboardsurfer.android.widget:crouton:1.8.3@aar'
+  compile 'de.keyboardsurfer.android.widget:crouton:1.8.4@aar'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
   androidTestCompile 'com.squareup:fest-android:1.0.7'
   androidTestCompile 'com.squareup.spoon:spoon-client:1.1.1'
@@ -51,6 +50,9 @@ def versionMinor = 0
 def versionPatch = 1
 // bump for dogfood builds, public betas, etc.
 def versionBuild = 1
+
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
 
 android {
   compileSdkVersion 19
@@ -92,11 +94,13 @@ android {
   defaultConfig {
     minSdkVersion 14
     targetSdkVersion 19
+
     packageName "com.f2prateek.dfg"
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
     versionName "${versionMajor}.${versionMinor}.${versionPatch}"
-    buildConfigField "String", "GIT_SHA", "\"${gitSha()}\""
-    buildConfigField "String", "BUILD_TIME", "\"${buildTime()}\""
+
+    buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
+    buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
   }
 }
 
@@ -126,16 +130,6 @@ android.applicationVariants.all { variant ->
   if (variant.zipAlign) {
     variant.zipAlign.outputFile = new File(apk.parentFile, newName.replace("-unaligned", ""));
   }
-}
-
-def gitSha() {
-  return 'git rev-parse --short HEAD'.execute().text.trim()
-}
-
-def buildTime() {
-  def df = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm'Z'")
-  df.setTimeZone(TimeZone.getTimeZone("UTC"))
-  return df.format(new Date())
 }
 
 def propFile = new File('signing.properties')
