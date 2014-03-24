@@ -56,11 +56,11 @@ public class AboutFragment extends DialogFragment {
   }
 
   @OnClick({
-      R.id.iv_app_logo, R.id.tv_gplus, R.id.tv_twitter, R.id.tv_designer
+      R.id.tv_version_number, R.id.tv_gplus, R.id.tv_twitter, R.id.tv_designer
   })
   public void openUrl(View v) {
     switch (v.getId()) {
-      case R.id.iv_app_logo:
+      case R.id.tv_version_number:
         openUrl("http://f2prateek.com/android-device-frame-generator/");
         break;
       case R.id.tv_gplus:
