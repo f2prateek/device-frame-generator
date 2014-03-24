@@ -31,9 +31,9 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.f2prateek.dart.InjectExtra;
-import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
+import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.DefaultDevice;
@@ -154,8 +154,8 @@ public class DeviceFragment extends BaseFragment {
       }
       Uri selectedImageUri = data.getData();
       Intent intent = new Intent(getActivity(), GenerateFrameService.class);
-      intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
-      intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, selectedImageUri);
+      intent.putExtra(AbstractGenerateFrameService.KEY_EXTRA_DEVICE, device);
+      intent.putExtra(GenerateFrameService.KEY_EXTRA_SCREENSHOT, selectedImageUri);
       getActivity().startService(intent);
     } else {
       super.onActivityResult(requestCode, resultCode, data);

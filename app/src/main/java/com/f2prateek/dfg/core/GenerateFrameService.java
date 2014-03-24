@@ -32,7 +32,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
-import com.f2prateek.dfg.AppConstants;
+import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.prefs.BooleanPreference;
@@ -44,8 +44,12 @@ import javax.inject.Inject;
 /** A service that generates our frames. */
 public class GenerateFrameService extends AbstractGenerateFrameService {
 
+  public static final String KEY_EXTRA_SCREENSHOT = "KEY_EXTRA_SCREENSHOT";
+
   @Inject @ShadowEnabled BooleanPreference shadowEnabled;
   @Inject @GlareEnabled BooleanPreference glareEnabled;
+
+  @InjectExtra(KEY_EXTRA_SCREENSHOT) Uri screenshotUri;
   DeviceFrameGenerator generator;
 
   public GenerateFrameService() {
@@ -58,10 +62,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
     generator =
         new DeviceFrameGenerator(this, this, device, shadowEnabled.get(), glareEnabled.get());
-
-    // Get all the intent data.
-    Uri imageUri = intent.getParcelableExtra(AppConstants.KEY_EXTRA_SCREENSHOT);
-    generator.generateFrame(imageUri);
+    generator.generateFrame(screenshotUri);
   }
 
   @Override

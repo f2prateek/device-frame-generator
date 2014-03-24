@@ -20,9 +20,6 @@ public class AppConstants {
   /*
    * Key for Intent extras;
    */
-  public static final String KEY_EXTRA_DEVICE = "KEY_EXTRA_DEVICE";
-  public static final String KEY_EXTRA_SCREENSHOT = "KEY_EXTRA_SCREENSHOT";
-  public static final String KEY_EXTRA_SCREENSHOTS = "KEY_EXTRA_SCREENSHOTS";
   /*
    * Storage
    */

@@ -27,7 +27,7 @@ import android.net.Uri;
 import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
-import com.f2prateek.dfg.AppConstants;
+import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.prefs.BooleanPreference;
@@ -39,11 +39,13 @@ import javax.inject.Inject;
 
 public class GenerateMultipleFramesService extends AbstractGenerateFrameService {
 
+  public static final String KEY_EXTRA_SCREENSHOTS = "KEY_EXTRA_SCREENSHOTS";
+
   @Inject @ShadowEnabled BooleanPreference shadowEnabled;
   @Inject @GlareEnabled BooleanPreference glareEnabled;
 
-  private ArrayList<Uri> imageUris;
-  private ArrayList<Uri> processedImageUris = new ArrayList<Uri>();
+  @InjectExtra(KEY_EXTRA_SCREENSHOTS) ArrayList<Uri> imageUris;
+  ArrayList<Uri> processedImageUris = new ArrayList<Uri>();
   DeviceFrameGenerator generator;
 
   public GenerateMultipleFramesService() {
@@ -53,9 +55,6 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
   @Override
   protected void onHandleIntent(Intent intent) {
     super.onHandleIntent(intent);
-
-    // Get all the intent data.
-    imageUris = intent.getParcelableArrayListExtra(AppConstants.KEY_EXTRA_SCREENSHOTS);
 
     generator =
         new DeviceFrameGenerator(this, this, device, shadowEnabled.get(), glareEnabled.get());

@@ -19,7 +19,7 @@ package com.f2prateek.dfg.ui;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import com.f2prateek.dfg.AppConstants;
+import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
 import com.f2prateek.dfg.model.Device;
@@ -58,8 +58,8 @@ public class ReceiverActivity extends BuildTypeBaseActivity {
     Ln.d("Generating for single screenshot %s", imageUri);
     Device device = getDefaultDeviceFromPreferences();
     Intent intent = new Intent(this, GenerateFrameService.class);
-    intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
-    intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOT, imageUri);
+    intent.putExtra(AbstractGenerateFrameService.KEY_EXTRA_DEVICE, device);
+    intent.putExtra(GenerateFrameService.KEY_EXTRA_SCREENSHOT, imageUri);
     startService(intent);
   }
 
@@ -68,8 +68,8 @@ public class ReceiverActivity extends BuildTypeBaseActivity {
     ArrayList<Uri> imageUris = i.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
     Device device = getDefaultDeviceFromPreferences();
     Intent intent = new Intent(this, GenerateMultipleFramesService.class);
-    intent.putExtra(AppConstants.KEY_EXTRA_DEVICE, device);
-    intent.putExtra(AppConstants.KEY_EXTRA_SCREENSHOTS, imageUris);
+    intent.putExtra(AbstractGenerateFrameService.KEY_EXTRA_DEVICE, device);
+    intent.putExtra(GenerateMultipleFramesService.KEY_EXTRA_SCREENSHOTS, imageUris);
     Ln.d("Generating for multiple screenshots %s", imageUris);
     startService(intent);
   }
