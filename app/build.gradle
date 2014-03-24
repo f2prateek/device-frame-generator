@@ -8,7 +8,7 @@ buildscript {
     }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.8.+'
+    classpath 'com.android.tools.build:gradle:0.9.+'
     classpath 'com.crashlytics.tools.gradle:crashlytics-gradle:1.+'
     classpath 'com.stanfy.spoon:spoon-gradle-plugin:0.9.5'
     classpath 'com.jakewharton.hugo:hugo-plugin:1.0.1'
@@ -42,8 +42,8 @@ dependencies {
   compile 'com.f2prateek.dart:dart:1.1.0'
   compile 'de.keyboardsurfer.android.widget:crouton:1.8.3@aar'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
-  instrumentTestCompile 'com.squareup:fest-android:1.0.7'
-  instrumentTestCompile 'com.squareup.spoon:spoon-client:1.1.1'
+  androidTestCompile 'com.squareup:fest-android:1.0.7'
+  androidTestCompile 'com.squareup.spoon:spoon-client:1.1.1'
 }
 
 def versionMajor = 2
@@ -54,7 +54,7 @@ def versionBuild = 1
 
 android {
   compileSdkVersion 19
-  buildToolsVersion '19.0.1'
+  buildToolsVersion '19.0.3'
 
   packagingOptions {
     exclude 'META-INF/services/javax.annotation.processing.Processor'
