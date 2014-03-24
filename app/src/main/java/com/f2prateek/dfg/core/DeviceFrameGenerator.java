@@ -28,6 +28,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
+import com.f2prateek.dfg.model.Bounds;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.util.BitmapUtils;
 import com.f2prateek.ln.Ln;
@@ -66,10 +67,10 @@ public class DeviceFrameGenerator {
    */
   private static String checkDimensions(Device device, Bitmap screenshot) {
     float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
-    float aspect2 = (float) device.portSize()[1] / (float) device.portSize()[0];
+    float aspect2 = (float) device.portSize().y() / (float) device.portSize().x();
 
     Ln.d("Screenshot height=%d, width=%d. Device height=%d, width=%d. Aspect1=%f, Aspect2=%f",
-        screenshot.getHeight(), screenshot.getWidth(), device.portSize()[1], device.portSize()[0],
+        screenshot.getHeight(), screenshot.getWidth(), device.portSize().y(), device.portSize().x(),
         aspect1, aspect2);
 
     if (aspect1 == aspect2) {
@@ -143,8 +144,8 @@ public class DeviceFrameGenerator {
     if (orientation == null) {
       Resources r = context.getResources();
       String failedTitle = r.getString(R.string.failed_match_dimensions_title);
-      String failedText = r.getString(R.string.failed_match_dimensions_text, device.portSize()[0],
-          device.portSize()[1], screenshot.getHeight(), screenshot.getWidth());
+      String failedText = r.getString(R.string.failed_match_dimensions_text, device.portSize().x(),
+          device.portSize().y(), screenshot.getHeight(), screenshot.getWidth());
       String failedSmallText = r.getString(R.string.device_chosen, device.name());
       callback.failedImage(failedTitle, failedSmallText, failedText);
       HashMap<String, String> params = new HashMap<String, String>();
@@ -168,18 +169,20 @@ public class DeviceFrameGenerator {
       frame = new Canvas(background);
     }
 
-    final int[] offset;
+    final Bounds offset;
 
     if (isPortrait(orientation)) {
       screenshot =
-          Bitmap.createScaledBitmap(screenshot, device.portSize()[0], device.portSize()[1], false);
+          Bitmap.createScaledBitmap(screenshot, device.portSize().x(), device.portSize().y(),
+              false);
       offset = device.portOffset();
     } else {
       screenshot =
-          Bitmap.createScaledBitmap(screenshot, device.portSize()[1], device.portSize()[0], false);
+          Bitmap.createScaledBitmap(screenshot, device.portSize().y(), device.portSize().x(),
+              false);
       offset = device.landOffset();
     }
-    frame.drawBitmap(screenshot, offset[0], offset[1], null);
+    frame.drawBitmap(screenshot, offset.x(), offset.y(), null);
 
     if (withGlare) {
       frame.drawBitmap(glare, 0f, 0f, null);

@@ -41,20 +41,20 @@ public abstract class Device implements Parcelable {
   public abstract String density();
 
   // offset of screenshot from edges when in landscape
-  public abstract int[] landOffset();
+  public abstract Bounds landOffset();
 
   // offset of screenshot from edges when in portrait
-  public abstract int[] portOffset();
+  public abstract Bounds portOffset();
 
   // Screen resolution in portrait
-  public abstract int[] portSize();
+  public abstract Bounds portSize();
 
   // Screen resolution in portrait, that will be displayed to the user.
   // This may or may not be same as portSize
-  public abstract int[] realSize();
+  public abstract Bounds realSize();
 
   static Device create(String id, String name, String url, float physicalSize, String density,
-      int[] landOffset, int[] portOffset, int[] portSize, int[] realSize) {
+      Bounds landOffset, Bounds portOffset, Bounds portSize, Bounds realSize) {
     return new AutoValue_Device(id, name, url, physicalSize, density, landOffset, portOffset,
         portSize, realSize);
   }
@@ -85,10 +85,10 @@ public abstract class Device implements Parcelable {
     private String url;
     private float physicalSize;
     private String density;
-    private int[] landOffset;
-    private int[] portOffset;
-    private int[] portSize;
-    private int[] realSize;
+    private Bounds landOffset;
+    private Bounds portOffset;
+    private Bounds portSize;
+    private Bounds realSize;
 
     public Builder setId(String id) {
       this.id = id;
@@ -115,23 +115,23 @@ public abstract class Device implements Parcelable {
       return this;
     }
 
-    public Builder setLandOffset(int[] landOffset) {
-      this.landOffset = landOffset;
+    public Builder setLandOffset(int landOffsetX, int landOffsetY) {
+      this.landOffset = Bounds.create(landOffsetX, landOffsetY);
       return this;
     }
 
-    public Builder setPortOffset(int[] portOffset) {
-      this.portOffset = portOffset;
+    public Builder setPortOffset(int portOffsetX, int portOffsetY) {
+      this.portOffset = Bounds.create(portOffsetX, portOffsetY);
       return this;
     }
 
-    public Builder setPortSize(int[] portSize) {
-      this.portSize = portSize;
+    public Builder setPortSize(int portSizeX, int portSizeY) {
+      this.portSize = Bounds.create(portSizeX, portSizeY);
       return this;
     }
 
-    public Builder setRealSize(int[] realSize) {
-      this.realSize = realSize;
+    public Builder setRealSize(int realSizeX, int realSizeY) {
+      this.realSize = Bounds.create(realSizeX, realSizeY);
       return this;
     }
 

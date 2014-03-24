@@ -93,7 +93,7 @@ public class DeviceFragment extends BaseFragment {
         isDefault() ? R.drawable.ic_action_star_selected : R.drawable.ic_action_star);
     deviceSizeText.setText(device.physicalSize() + "\" @ " + device.density());
     deviceNameText.setText(device.name());
-    deviceResolutionText.setText(device.realSize()[0] + "x" + device.realSize()[1]);
+    deviceResolutionText.setText(device.realSize().x() + "x" + device.realSize().y());
   }
 
   @OnClick(R.id.iv_device_default)
