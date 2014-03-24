@@ -18,9 +18,6 @@ package com.f2prateek.dfg;
 
 public class AppConstants {
   /*
-   * Key for Intent extras;
-   */
-  /*
    * Storage
    */
   public static final String DFG_DIR_NAME = "Device-Frame-Generator";
