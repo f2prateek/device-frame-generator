@@ -18,6 +18,7 @@
 
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal">
@@ -29,6 +30,7 @@
       android:layout_weight="2"
       android:foreground="?android:selectableItemBackground"
       android:contentDescription="@string/description_device_thumbnail"
+      tools:src="@drawable/nexus_5_thumb"
       style="@style/DeviceThumbnail"/>
 
   <RelativeLayout android:layout_width="0dp"
@@ -42,6 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
+        tools:src="@drawable/ic_action_star"
         style="@style/StarToggle"/>
 
     <TextView
@@ -50,6 +53,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
+        tools:text="Nexus 5"
         android:maxLines="3"/>
 
     <TextView
@@ -58,6 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        tools:text="5.43' @ XXHDPI"
         android:layout_below="@+id/tv_device_name"/>
 
     <TextView
@@ -67,6 +72,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/tv_device_size"
         android:layout_centerHorizontal="true"
+        tools:text="1080x1920"
         android:paddingBottom="16dp"/>
 
   </RelativeLayout>
