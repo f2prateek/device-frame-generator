@@ -16,6 +16,7 @@
 
 package com.f2prateek.dfg.ui.activities;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -56,9 +57,10 @@ public class MainActivity extends BaseActivity {
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    inflateView(R.layout.activity_main);
+    getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+    getActionBar().setCustomView(R.layout.action_bar_custom);
 
-    getActionBar().setTitle(R.string.application_name); // use the condensed one for launchers
+    inflateView(R.layout.activity_main);
 
     DeviceFragmentPagerAdapter pagerAdapter =
         new DeviceFragmentPagerAdapter(getFragmentManager(), new ArrayList<>(devices.values()));
@@ -67,20 +69,19 @@ public class MainActivity extends BaseActivity {
     tabStrip.setViewPager(pager);
   }
 
-  @Override
-  public boolean onCreateOptionsMenu(Menu menu) {
+  @Override public boolean onCreateOptionsMenu(Menu menu) {
+    super.onCreateOptionsMenu(menu);
     getMenuInflater().inflate(R.menu.activity_main, menu);
     initMenuItem(menu.findItem(R.id.menu_checkbox_glare), glareEnabled);
     initMenuItem(menu.findItem(R.id.menu_checkbox_shadow), shadowEnabled);
-    return super.onCreateOptionsMenu(menu);
+    return true;
   }
 
   void initMenuItem(MenuItem menuItem, BooleanPreference preference) {
     menuItem.setChecked(preference.get());
   }
 
-  @Override
-  public boolean onOptionsItemSelected(MenuItem item) {
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       // items aren't toggled automatically, so we
       // just use the opposite of the state we're in
@@ -97,6 +98,32 @@ public class MainActivity extends BaseActivity {
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  public void updateGlareSetting(boolean newSettingEnabled) {
+    updateBooleanPreference(newSettingEnabled, glareEnabled, getString(R.string.glare_enabled),
+        getString(R.string.glare_disabled));
+  }
+
+  public void updateShadowSetting(boolean newSettingEnabled) {
+    updateBooleanPreference(newSettingEnabled, shadowEnabled, getString(R.string.shadow_enabled),
+        getString(R.string.shadow_disabled));
+  }
+
+  /**
+   * Update a boolean preference with the new value.
+   * Displays some text to the user dependending on the preference.
+   */
+  void updateBooleanPreference(boolean newSettingEnabled, BooleanPreference booleanPreference,
+      String enabledText, String disabledText) {
+    booleanPreference.set(newSettingEnabled);
+    if (newSettingEnabled) {
+      Crouton.makeText(this, enabledText, Style.CONFIRM).show();
+    } else {
+      Crouton.makeText(this, disabledText, Style.ALERT).show();
+    }
+    Ln.d("Setting updated to %s", newSettingEnabled);
+    invalidateOptionsMenu();
   }
 
   @Subscribe
@@ -135,31 +162,5 @@ public class MainActivity extends BaseActivity {
         startActivity(launchIntent);
       }
     }).show();
-  }
-
-  public void updateGlareSetting(boolean newSettingEnabled) {
-    updateBooleanPreference(newSettingEnabled, glareEnabled, getString(R.string.glare_enabled),
-        getString(R.string.glare_disabled));
-  }
-
-  public void updateShadowSetting(boolean newSettingEnabled) {
-    updateBooleanPreference(newSettingEnabled, shadowEnabled, getString(R.string.shadow_enabled),
-        getString(R.string.shadow_disabled));
-  }
-
-  /**
-   * Update a boolean preference with the new value.
-   * Displays some text to the user dependending on the preference.
-   */
-  void updateBooleanPreference(boolean newSettingEnabled, BooleanPreference booleanPreference,
-      String enabledText, String disabledText) {
-    booleanPreference.set(newSettingEnabled);
-    if (newSettingEnabled) {
-      Crouton.makeText(this, enabledText, Style.CONFIRM).show();
-    } else {
-      Crouton.makeText(this, disabledText, Style.ALERT).show();
-    }
-    Ln.d("Setting updated to %s", newSettingEnabled);
-    invalidateOptionsMenu();
   }
 }
