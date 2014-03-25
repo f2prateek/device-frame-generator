@@ -58,33 +58,6 @@ public class DeviceFrameGenerator {
   }
 
   /**
-   * Checks if screenshot matches the aspect ratio of the device.
-   *
-   * @param device The Device to frame.
-   * @param screenshot The screenshot to frame.
-   * @return {@link Device#ORIENTATION_PORTRAIT} if matched to portrait and {@link
-   * Device#ORIENTATION_LANDSCAPE} if matched to landscape, null if no match
-   */
-  private static String checkDimensions(Device device, Bitmap screenshot) {
-    float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
-    float aspect2 = (float) device.portSize().y() / (float) device.portSize().x();
-
-    Ln.d("Screenshot height=%d, width=%d. Device height=%d, width=%d. Aspect1=%f, Aspect2=%f",
-        screenshot.getHeight(), screenshot.getWidth(), device.portSize().y(), device.portSize().x(),
-        aspect1, aspect2);
-
-    if (aspect1 == aspect2) {
-      return Device.ORIENTATION_PORTRAIT;
-    } else if (aspect1 == 1 / aspect2) {
-      return Device.ORIENTATION_LANDSCAPE;
-    }
-
-    Ln.e("Could not match dimensions the device.");
-
-    return null;
-  }
-
-  /**
    * Check if the orientation is portrait
    *
    * @param orientation Orientation to check.
@@ -135,12 +108,12 @@ public class DeviceFrameGenerator {
   /**
    * Generate the frame.
    *
-   * @param screenshot Screenshot to use.
+   * @param screenshot non-null screenshot to use.
    */
-  private void generateFrame(Bitmap screenshot) {
+  void generateFrame(Bitmap screenshot) {
     callback.startingImage(screenshot);
     String orientation;
-    orientation = checkDimensions(device, screenshot);
+    orientation = checkDimensions(screenshot);
     if (orientation == null) {
       Resources r = context.getResources();
       String failedTitle = r.getString(R.string.failed_match_dimensions_title);
@@ -239,11 +212,37 @@ public class DeviceFrameGenerator {
   }
 
   /**
+   * Checks if screenshot matches the aspect ratio of the device.
+   *
+   * @param screenshot The screenshot to frame.
+   * @return {@link Device#ORIENTATION_PORTRAIT} if matched to portrait and {@link
+   * Device#ORIENTATION_LANDSCAPE} if matched to landscape, null if no match
+   */
+  String checkDimensions(Bitmap screenshot) {
+    float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
+    float aspect2 = (float) device.portSize().y() / (float) device.portSize().x();
+
+    Ln.d("Screenshot height=%d, width=%d. Device height=%d, width=%d. Aspect1=%f, Aspect2=%f",
+        screenshot.getHeight(), screenshot.getWidth(), device.portSize().y(), device.portSize().x(),
+        aspect1, aspect2);
+
+    if (aspect1 == aspect2) {
+      return Device.ORIENTATION_PORTRAIT;
+    } else if (aspect1 == 1 / aspect2) {
+      return Device.ORIENTATION_LANDSCAPE;
+    }
+
+    Ln.e("Could not match dimensions the device.");
+
+    return null;
+  }
+
+  /**
    * Prepare the metadata for our image.
    *
    * @return {@link ImageMetadata} that will be used for the image.
    */
-  private ImageMetadata prepareMetadata() {
+  ImageMetadata prepareMetadata() {
     ImageMetadata imageMetadata = new ImageMetadata();
     imageMetadata.imageTime = System.currentTimeMillis();
     String imageDate =
