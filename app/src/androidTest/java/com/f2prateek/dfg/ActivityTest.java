@@ -22,8 +22,8 @@ import android.test.ActivityInstrumentationTestCase2;
 
 public class ActivityTest<T extends Activity> extends ActivityInstrumentationTestCase2<T> {
 
-  protected Instrumentation instrumentation;
-  protected T activity;
+  Instrumentation instrumentation;
+  T activity;
 
   public ActivityTest(Class<T> activityClass) {
     super(activityClass);

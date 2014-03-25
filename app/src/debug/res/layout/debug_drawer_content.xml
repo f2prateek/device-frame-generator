@@ -7,7 +7,7 @@
     android:layout_height="wrap_content"
     android:padding="12dp"
     android:columnCount="2"
-    tools:ignore="UselessParent">
+    tools:ignore="UselessParent|HardcodedText">
   <LinearLayout
       android:layout_columnSpan="2"
       android:layout_gravity="start|end"
@@ -49,8 +49,7 @@
       android:layout_gravity="start|end"
       android:text="Contextual Actions"
       android:visibility="gone"
-      style="@style/Widget.DFG.DebugDrawer.Header"
-      />
+      style="@style/Widget.DFG.DebugDrawer.Header"/>
 
   <LinearLayout
       android:id="@+id/debug_contextual_list"

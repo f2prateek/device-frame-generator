@@ -31,7 +31,7 @@ import javax.inject.Inject;
 
 public class DFGApplication extends Application {
 
-  private ObjectGraph applicationGraph;
+  ObjectGraph applicationGraph;
   @Inject ActivityHierarchyServer activityHierarchyServer;
 
   @Override
@@ -39,7 +39,7 @@ public class DFGApplication extends Application {
     super.onCreate();
 
     // Perform Injection
-    buildObjectGraphAndInject();
+    buildApplicationGraphAndInject();
 
     registerActivityLifecycleCallbacks(activityHierarchyServer);
 
@@ -59,7 +59,7 @@ public class DFGApplication extends Application {
   }
 
   @DebugLog
-  public void buildObjectGraphAndInject() {
+  public void buildApplicationGraphAndInject() {
     applicationGraph = ObjectGraph.create(Modules.list(this));
     applicationGraph.inject(this);
   }

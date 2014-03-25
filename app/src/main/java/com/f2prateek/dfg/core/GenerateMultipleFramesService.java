@@ -45,7 +45,7 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
   @Inject @GlareEnabled BooleanPreference glareEnabled;
 
   @InjectExtra(KEY_EXTRA_SCREENSHOTS) ArrayList<Uri> imageUris;
-  ArrayList<Uri> processedImageUris = new ArrayList<Uri>();
+  ArrayList<Uri> processedImageUris;
   DeviceFrameGenerator generator;
 
   public GenerateMultipleFramesService() {
@@ -60,6 +60,7 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
         new DeviceFrameGenerator(this, this, device, shadowEnabled.get(), glareEnabled.get());
 
     notifyStarting();
+    processedImageUris = new ArrayList<>();
     for (Uri uri : imageUris) {
       generator.generateFrame(uri);
     }

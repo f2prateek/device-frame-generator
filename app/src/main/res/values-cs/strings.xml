@@ -28,7 +28,7 @@
   <string name="no_apps_available">Není dostupná aplikace pro vybrání obrázku.</string>
 
   <!-- Notifications !-->
-  <string name="screenshot_saving_title">Ukládání...</string>
+  <string name="screenshot_saving_title">Ukládání…</string>
   <string name="screenshot_saved_title">Rám uložen</string>
   <string name="single_screenshot_saved">Rám pro %s uložen.</string>
   <string name="multiple_screenshots_saved">Uloženy %1$d obrázky pro %2$s.</string>

@@ -50,8 +50,6 @@ public class MainActivity extends BaseActivity {
   @Inject Map<String, Device> devices;
   @InjectView(R.id.pager) ViewPager pager;
 
-  private DeviceFragmentPagerAdapter pagerAdapter;
-
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -60,7 +58,7 @@ public class MainActivity extends BaseActivity {
 
     getActionBar().setTitle(R.string.application_name); // use the condensed one for launchers
 
-    pagerAdapter =
+    DeviceFragmentPagerAdapter pagerAdapter =
         new DeviceFragmentPagerAdapter(getFragmentManager(), new ArrayList<>(devices.values()));
     pager.setAdapter(pagerAdapter);
     pager.setCurrentItem(pagerAdapter.getDeviceIndex(defaultDevice.get()));

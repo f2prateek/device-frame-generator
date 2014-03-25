@@ -32,7 +32,7 @@ import static dagger.Provides.Type.SET_VALUES;
 public class DeviceModule {
 
   @Provides(type = SET_VALUES) Set<Device> provideEmptyDevices() {
-    return new HashSet<Device>(); // Empty set to ensure the Set is initialized.
+    return new HashSet<>(); // Empty set to ensure the Set is initialized.
   }
 
   @Provides(type = SET) Device provideNexusS() {

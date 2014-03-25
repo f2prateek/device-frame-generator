@@ -77,7 +77,7 @@ public class AboutFragment extends DialogFragment {
     }
   }
 
-  public void openUrl(String url) {
+  void openUrl(String url) {
     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
     startActivity(intent);
   }

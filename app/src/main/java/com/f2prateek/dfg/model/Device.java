@@ -53,8 +53,8 @@ public abstract class Device implements Parcelable {
   // This may or may not be same as portSize
   public abstract Bounds realSize();
 
-  static Device create(String id, String name, String url, float physicalSize, String density,
-      Bounds landOffset, Bounds portOffset, Bounds portSize, Bounds realSize) {
+  private static Device create(String id, String name, String url, float physicalSize,
+      String density, Bounds landOffset, Bounds portOffset, Bounds portSize, Bounds realSize) {
     return new AutoValue_Device(id, name, url, physicalSize, density, landOffset, portOffset,
         portSize, realSize);
   }

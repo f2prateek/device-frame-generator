@@ -28,7 +28,7 @@ import javax.inject.Inject;
 
 public class BaseFragment extends Fragment {
   @Inject Bus bus;
-  protected Context activityContext;
+  Context activityContext;
 
   @Override
   public void onCreate(Bundle savedInstanceState) {
