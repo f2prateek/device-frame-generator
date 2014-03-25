@@ -70,16 +70,20 @@ public class MainActivity extends BaseActivity {
   @Override
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.activity_main, menu);
-    MenuItem glare = menu.findItem(R.id.menu_checkbox_glare);
-    glare.setChecked(glareEnabled.get());
-    MenuItem shadow = menu.findItem(R.id.menu_checkbox_shadow);
-    shadow.setChecked(glareEnabled.get());
+    initMenuItem(menu.findItem(R.id.menu_checkbox_glare), glareEnabled);
+    initMenuItem(menu.findItem(R.id.menu_checkbox_shadow), shadowEnabled);
     return super.onCreateOptionsMenu(menu);
+  }
+
+  void initMenuItem(MenuItem menuItem, BooleanPreference preference) {
+    menuItem.setChecked(preference.get());
   }
 
   @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
+      // items aren't toggled automatically, so we
+      // just use the opposite of the state we're in
       case R.id.menu_checkbox_glare:
         updateGlareSetting(!item.isChecked());
         return true;
@@ -134,24 +138,28 @@ public class MainActivity extends BaseActivity {
   }
 
   public void updateGlareSetting(boolean newSettingEnabled) {
-    glareEnabled.set(newSettingEnabled);
-    if (newSettingEnabled) {
-      Crouton.makeText(this, R.string.glare_enabled, Style.CONFIRM).show();
-    } else {
-      Crouton.makeText(this, R.string.glare_disabled, Style.ALERT).show();
-    }
-    Ln.d("Glare setting updated to %s", newSettingEnabled);
-    invalidateOptionsMenu();
+    updateBooleanPreference(newSettingEnabled, glareEnabled, getString(R.string.glare_enabled),
+        getString(R.string.glare_disabled));
   }
 
   public void updateShadowSetting(boolean newSettingEnabled) {
-    shadowEnabled.set(newSettingEnabled);
+    updateBooleanPreference(newSettingEnabled, shadowEnabled, getString(R.string.shadow_enabled),
+        getString(R.string.shadow_disabled));
+  }
+
+  /**
+   * Update a boolean preference with the new value.
+   * Displays some text to the user dependending on the preference.
+   */
+  void updateBooleanPreference(boolean newSettingEnabled, BooleanPreference booleanPreference,
+      String enabledText, String disabledText) {
+    booleanPreference.set(newSettingEnabled);
     if (newSettingEnabled) {
-      Crouton.makeText(this, getString(R.string.shadow_enabled), Style.CONFIRM).show();
+      Crouton.makeText(this, enabledText, Style.CONFIRM).show();
     } else {
-      Crouton.makeText(this, getString(R.string.shadow_disabled), Style.ALERT).show();
+      Crouton.makeText(this, disabledText, Style.ALERT).show();
     }
-    Ln.d("Shadow setting updated to %s", newSettingEnabled);
+    Ln.d("Setting updated to %s", newSettingEnabled);
     invalidateOptionsMenu();
   }
 }
