@@ -132,6 +132,9 @@ public class DeviceFragment extends BaseFragment {
     }
   }
 
+  /**
+   * Check if any apps are installed on the app to receive this intent.
+   */
   public static boolean isAvailable(Context ctx, Intent intent) {
     final PackageManager mgr = ctx.getPackageManager();
     List<ResolveInfo> list = mgr.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
