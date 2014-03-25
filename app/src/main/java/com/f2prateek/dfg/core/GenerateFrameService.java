@@ -35,9 +35,9 @@ import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
-import com.f2prateek.dfg.prefs.BooleanPreference;
 import com.f2prateek.dfg.prefs.GlareEnabled;
 import com.f2prateek.dfg.prefs.ShadowEnabled;
+import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.ui.activities.MainActivity;
 import javax.inject.Inject;
 

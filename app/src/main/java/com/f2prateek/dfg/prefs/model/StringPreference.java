@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg.prefs;
+package com.f2prateek.dfg.prefs.model;
 
 import android.content.SharedPreferences;
 

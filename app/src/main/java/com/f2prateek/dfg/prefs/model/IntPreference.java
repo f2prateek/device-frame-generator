@@ -14,35 +14,35 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg.prefs;
+package com.f2prateek.dfg.prefs.model;
 
 import android.content.SharedPreferences;
 
-public class BooleanPreference {
+public class IntPreference {
   private final SharedPreferences preferences;
   private final String key;
-  private final boolean defaultValue;
+  private final int defaultValue;
 
-  public BooleanPreference(SharedPreferences preferences, String key) {
-    this(preferences, key, false);
+  public IntPreference(SharedPreferences preferences, String key) {
+    this(preferences, key, 0);
   }
 
-  public BooleanPreference(SharedPreferences preferences, String key, boolean defaultValue) {
+  public IntPreference(SharedPreferences preferences, String key, int defaultValue) {
     this.preferences = preferences;
     this.key = key;
     this.defaultValue = defaultValue;
   }
 
-  public boolean get() {
-    return preferences.getBoolean(key, defaultValue);
+  public int get() {
+    return preferences.getInt(key, defaultValue);
   }
 
   public boolean isSet() {
     return preferences.contains(key);
   }
 
-  public void set(boolean value) {
-    preferences.edit().putBoolean(key, value).apply();
+  public void set(int value) {
+    preferences.edit().putInt(key, value).apply();
   }
 
   public void delete() {

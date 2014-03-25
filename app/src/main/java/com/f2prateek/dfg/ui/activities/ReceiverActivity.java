@@ -24,7 +24,7 @@ import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.DefaultDevice;
-import com.f2prateek.dfg.prefs.StringPreference;
+import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.ln.Ln;
 import java.util.ArrayList;
 import java.util.Map;

@@ -37,7 +37,7 @@ import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.DefaultDevice;
-import com.f2prateek.dfg.prefs.StringPreference;
+import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.dfg.util.BitmapUtils;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;

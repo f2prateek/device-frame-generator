@@ -17,6 +17,8 @@
 package com.f2prateek.dfg.prefs;
 
 import android.content.SharedPreferences;
+import com.f2prateek.dfg.prefs.model.BooleanPreference;
+import com.f2prateek.dfg.prefs.model.StringPreference;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
