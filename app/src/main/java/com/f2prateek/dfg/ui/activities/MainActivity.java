@@ -23,6 +23,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import butterknife.InjectView;
+import com.astuetz.PagerSlidingTabStrip;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
@@ -49,6 +50,7 @@ public class MainActivity extends BaseActivity {
 
   @Inject Map<String, Device> devices;
   @InjectView(R.id.pager) ViewPager pager;
+  @InjectView(R.id.tabs) PagerSlidingTabStrip tabStrip;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -62,6 +64,7 @@ public class MainActivity extends BaseActivity {
         new DeviceFragmentPagerAdapter(getFragmentManager(), new ArrayList<>(devices.values()));
     pager.setAdapter(pagerAdapter);
     pager.setCurrentItem(pagerAdapter.getDeviceIndex(defaultDevice.get()));
+    tabStrip.setViewPager(pager);
   }
 
   @Override

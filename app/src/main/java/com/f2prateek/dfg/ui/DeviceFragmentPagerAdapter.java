@@ -51,4 +51,8 @@ public class DeviceFragmentPagerAdapter extends FragmentStatePagerAdapter {
     }
     return 0;
   }
+
+  @Override public CharSequence getPageTitle(int position) {
+    return devices.get(position).name();
+  }
 }
