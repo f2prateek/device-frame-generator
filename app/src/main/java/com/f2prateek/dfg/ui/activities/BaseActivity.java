@@ -24,7 +24,6 @@ import butterknife.ButterKnife;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.ui.AppContainer;
-import com.google.analytics.tracking.android.EasyTracker;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
@@ -47,11 +46,6 @@ import javax.inject.Inject;
     container = appContainer.get(this, app);
   }
 
-  @Override protected void onStart() {
-    super.onStart();
-    EasyTracker.getInstance(this).activityStart(this);
-  }
-
   void inflateView(int layoutId) {
     getLayoutInflater().inflate(layoutId, container);
     injectViews();
@@ -71,11 +65,5 @@ import javax.inject.Inject;
   protected void onPause() {
     bus.unregister(this);
     super.onPause();
-  }
-
-  @Override
-  public void onStop() {
-    EasyTracker.getInstance(this).activityStop(this);
-    super.onStop();
   }
 }

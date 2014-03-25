@@ -24,7 +24,6 @@ import com.f2prateek.dfg.ui.ActivityHierarchyServer;
 import com.f2prateek.dfg.util.StorageUtils;
 import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
-import com.google.analytics.tracking.android.GoogleAnalytics;
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
 import javax.inject.Inject;
@@ -42,8 +41,6 @@ public class DFGApplication extends Application {
     buildApplicationGraphAndInject();
 
     registerActivityLifecycleCallbacks(activityHierarchyServer);
-
-    GoogleAnalytics.getInstance(this).setDryRun(BuildConfig.DEBUG);
 
     if (BuildConfig.DEBUG) {
       Ln.set(DebugLn.from(this));

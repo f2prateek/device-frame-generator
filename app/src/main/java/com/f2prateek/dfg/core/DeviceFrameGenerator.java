@@ -32,13 +32,11 @@ import com.f2prateek.dfg.model.Bounds;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.util.BitmapUtils;
 import com.f2prateek.ln.Ln;
-import com.google.analytics.tracking.android.EasyTracker;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
 
 public class DeviceFrameGenerator {
 
@@ -121,9 +119,6 @@ public class DeviceFrameGenerator {
           device.portSize().y(), screenshot.getHeight(), screenshot.getWidth());
       String failedSmallText = r.getString(R.string.device_chosen, device.name());
       callback.failedImage(failedTitle, failedSmallText, failedText);
-      HashMap<String, String> params = new HashMap<String, String>();
-      params.put("incorrect_dimensions", device.id());
-      EasyTracker.getInstance(context).send(params);
       return;
     }
 
