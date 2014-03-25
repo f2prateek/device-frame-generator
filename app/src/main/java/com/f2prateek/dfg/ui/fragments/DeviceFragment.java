@@ -87,7 +87,7 @@ public class DeviceFragment extends BaseFragment {
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     picasso.load(BitmapUtils.getResourceIdentifierForDrawable(getActivity(),
-        device.getThumbnailResourceName())).into(deviceThumbnailText);
+        device.getThumbnailResourceName())).fit().centerInside().into(deviceThumbnailText);
     deviceDefaultText.bringToFront();
     deviceDefaultText.setImageResource(
         isDefault() ? R.drawable.ic_action_star_selected : R.drawable.ic_action_star);
