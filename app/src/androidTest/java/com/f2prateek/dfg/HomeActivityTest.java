@@ -25,11 +25,11 @@ import static butterknife.ButterKnife.findById;
 import static org.fest.assertions.api.ANDROID.assertThat;
 
 /** Tests for displaying a specific {@link MainActivity} item */
-public class MainActivityTest extends ActivityTest<MainActivity> {
+public class HomeActivityTest extends ActivityTest<MainActivity> {
 
   private ViewPager pager;
 
-  public MainActivityTest() {
+  public HomeActivityTest() {
     super(MainActivity.class);
   }
 
@@ -68,10 +68,10 @@ public class MainActivityTest extends ActivityTest<MainActivity> {
       }
     });
     //solo.clickOnActionBarItem(R.id.menu_default_device);
-    activity.finish();
-    activity = getActivity();
+    //activity.finish();
+    //activity = getActivity();
     //assertThat(pager).hasCurrentItem(device);
-    Spoon.screenshot(activity, "updated_default_device");
+    //Spoon.screenshot(activity, "updated_default_device");
   }
 
   public void testAboutDialogIsShown() throws Exception {
