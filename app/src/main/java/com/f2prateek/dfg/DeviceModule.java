@@ -236,8 +236,8 @@ public class DeviceModule {
         .setUrl("http://www.xiaomi.com/mi2s")
         .setPhysicalSize(4.3f)
         .setDensity("XHDPI")
-        .setLandOffset(236, 358)
-        .setPortOffset(358, 236)
+        .setLandOffset(371, 199)
+        .setPortOffset(216, 353)
         .setPortSize(720, 1280)
         .setRealSize(720, 1280)
         .build();
