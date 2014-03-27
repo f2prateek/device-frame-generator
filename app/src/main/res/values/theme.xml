@@ -40,6 +40,8 @@
   <style name="Widget.DFG.ActionBar"
       parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
     <item name="android:background">@color/action_bar_color</item>
+    <!-- Suppress the title and icon for launching animation. -->
+    <item name="android:displayOptions"></item>
   </style>
 
 </resources>
