@@ -45,6 +45,10 @@ public class DeviceModule {
         .setPortOffset(134, 247)
         .setPortSize(480, 800)
         .setRealSize(480, 800)
+        .addProductId("soju")
+        .addProductId("sojua")
+        .addProductId("sojuk")
+        .addProductId("sojus")
         .build();
   }
 
@@ -58,6 +62,10 @@ public class DeviceModule {
         .setPortOffset(216, 353)
         .setPortSize(720, 1280)
         .setRealSize(720, 1280)
+        .addProductId("takju")
+        .addProductId("yakju")
+        .addProductId("mysid")
+        .addProductId("mysidspr")
         .build();
   }
 
@@ -70,7 +78,7 @@ public class DeviceModule {
         .setLandOffset(349, 214)
         .setPortOffset(213, 350)
         .setPortSize(768, 1280)
-        .setRealSize(768, 1280)
+        .setRealSize(768, 1280).addProductId("occam")
         .build();
   }
 
@@ -83,7 +91,7 @@ public class DeviceModule {
         .setLandOffset(436, 306)
         .setPortOffset(306, 436)
         .setPortSize(1080, 1920)
-        .setRealSize(1080, 1920)
+        .setRealSize(1080, 1920).addProductId("hammerhead")
         .build();
   }
 
@@ -96,7 +104,7 @@ public class DeviceModule {
         .setLandOffset(326, 245)
         .setPortOffset(244, 326)
         .setPortSize(800, 1280)
-        .setRealSize(1200, 1920)
+        .setRealSize(1200, 1920).addProductId("razor").addProductId("razorg")
         .build();
   }
 
@@ -109,7 +117,7 @@ public class DeviceModule {
         .setLandOffset(315, 270)
         .setPortOffset(264, 311)
         .setPortSize(800, 1280)
-        .setRealSize(800, 1280)
+        .setRealSize(800, 1280).addProductId("nakasi").addProductId("nakasig")
         .build();
   }
 
@@ -122,7 +130,7 @@ public class DeviceModule {
         .setLandOffset(227, 217)
         .setPortOffset(217, 223)
         .setPortSize(800, 1280)
-        .setRealSize(1600, 2560)
+        .setRealSize(1600, 2560).addProductId("mantaray")
         .build();
   }
 

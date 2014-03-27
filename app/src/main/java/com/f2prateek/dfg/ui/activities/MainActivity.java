@@ -53,6 +53,8 @@ public class MainActivity extends BaseActivity {
   @InjectView(R.id.pager) ViewPager pager;
   @InjectView(R.id.tabs) PagerSlidingTabStrip tabStrip;
 
+  DeviceFragmentPagerAdapter pagerAdapter;
+
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
@@ -62,7 +64,7 @@ public class MainActivity extends BaseActivity {
 
     inflateView(R.layout.activity_main);
 
-    DeviceFragmentPagerAdapter pagerAdapter =
+    pagerAdapter =
         new DeviceFragmentPagerAdapter(getFragmentManager(), new ArrayList<>(devices.values()));
     pager.setAdapter(pagerAdapter);
     pager.setCurrentItem(pagerAdapter.getDeviceIndex(defaultDevice.get()));
@@ -131,6 +133,8 @@ public class MainActivity extends BaseActivity {
     Ln.d("Device updated to %s", event.newDevice.name());
     Crouton.makeText(this, getString(R.string.saved_as_default_message, event.newDevice.name()),
         Style.CONFIRM).show();
+    // this might be from the application class, so update the position as well
+    pager.setCurrentItem(pagerAdapter.getDeviceIndex(event.newDevice.id()));
     invalidateOptionsMenu();
   }
 

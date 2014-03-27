@@ -18,12 +18,11 @@ package com.f2prateek.dfg.model;
 
 import android.auto.value.AutoValue;
 import android.os.Parcelable;
+import java.util.ArrayList;
+import java.util.List;
 
 @AutoValue
 public abstract class Device implements Parcelable {
-
-  public static final String ORIENTATION_PORTRAIT = "port";
-  public static final String ORIENTATION_LANDSCAPE = "land";
 
   // Unique identifier for each device, used to identify resources.
   public abstract String id();
@@ -53,10 +52,14 @@ public abstract class Device implements Parcelable {
   // This may or may not be same as portSize
   public abstract Bounds realSize();
 
+  // A list of product ids that match {@link android.os.Build#PRODUCT} for this device
+  public abstract List<String> productIds();
+
   private static Device create(String id, String name, String url, float physicalSize,
-      String density, Bounds landOffset, Bounds portOffset, Bounds portSize, Bounds realSize) {
+      String density, Bounds landOffset, Bounds portOffset, Bounds portSize, Bounds realSize,
+      List<String> productIds) {
     return new AutoValue_Device(id, name, url, physicalSize, density, landOffset, portOffset,
-        portSize, realSize);
+        portSize, realSize, productIds);
   }
 
   // Get the name of the shadow resource
@@ -89,6 +92,7 @@ public abstract class Device implements Parcelable {
     private Bounds portOffset;
     private Bounds portSize;
     private Bounds realSize;
+    private List<String> productIds = new ArrayList<>();
 
     public Builder setId(String id) {
       this.id = id;
@@ -135,9 +139,14 @@ public abstract class Device implements Parcelable {
       return this;
     }
 
+    public Builder addProductId(String id) {
+      productIds.add(id);
+      return this;
+    }
+
     public Device build() {
       return create(id, name, url, physicalSize, density, landOffset, portOffset, portSize,
-          realSize);
+          realSize, productIds);
     }
   }
 }

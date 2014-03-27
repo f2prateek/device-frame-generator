@@ -27,6 +27,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
 import com.f2prateek.dfg.AppConstants;
+import com.f2prateek.dfg.Orientation;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Bounds;
 import com.f2prateek.dfg.model.Device;
@@ -53,16 +54,6 @@ public class DeviceFrameGenerator {
     this.device = device;
     this.withShadow = withShadow;
     this.withGlare = withGlare;
-  }
-
-  /**
-   * Check if the orientation is portrait
-   *
-   * @param orientation Orientation to check.
-   * @return true if orientation is portrait
-   */
-  private static boolean isPortrait(String orientation) {
-    return (orientation.compareTo(Device.ORIENTATION_PORTRAIT) == 0);
   }
 
   /**
@@ -110,9 +101,10 @@ public class DeviceFrameGenerator {
    */
   void generateFrame(Bitmap screenshot) {
     callback.startingImage(screenshot);
-    String orientation;
-    orientation = checkDimensions(screenshot);
+    Orientation orientation;
+    orientation = Orientation.calculate(screenshot, device);
     if (orientation == null) {
+      Ln.e("Could not match dimensions to the device.");
       Resources r = context.getResources();
       String failedTitle = r.getString(R.string.failed_match_dimensions_title);
       String failedText = r.getString(R.string.failed_match_dimensions_text, device.portSize().x(),
@@ -122,12 +114,12 @@ public class DeviceFrameGenerator {
       return;
     }
 
-    final Bitmap background =
-        BitmapUtils.decodeResource(context, device.getBackgroundStringResourceName(orientation));
+    final Bitmap background = BitmapUtils.decodeResource(context,
+        device.getBackgroundStringResourceName(orientation.getId()));
     final Bitmap glare =
-        BitmapUtils.decodeResource(context, device.getGlareStringResourceName(orientation));
-    final Bitmap shadow =
-        BitmapUtils.decodeResource(context, device.getShadowStringResourceName(orientation));
+        BitmapUtils.decodeResource(context, device.getGlareStringResourceName(orientation.getId()));
+    final Bitmap shadow = BitmapUtils.decodeResource(context,
+        device.getShadowStringResourceName(orientation.getId()));
 
     Canvas frame;
     if (withShadow) {
@@ -139,7 +131,7 @@ public class DeviceFrameGenerator {
 
     final Bounds offset;
 
-    if (isPortrait(orientation)) {
+    if (orientation == Orientation.PORTRAIT) {
       screenshot =
           Bitmap.createScaledBitmap(screenshot, device.portSize().x(), device.portSize().y(),
               false);
@@ -204,32 +196,6 @@ public class DeviceFrameGenerator {
         frameUri);
 
     callback.doneImage(frameUri);
-  }
-
-  /**
-   * Checks if screenshot matches the aspect ratio of the device.
-   *
-   * @param screenshot The screenshot to frame.
-   * @return {@link Device#ORIENTATION_PORTRAIT} if matched to portrait and {@link
-   * Device#ORIENTATION_LANDSCAPE} if matched to landscape, null if no match
-   */
-  String checkDimensions(Bitmap screenshot) {
-    float aspect1 = (float) screenshot.getHeight() / (float) screenshot.getWidth();
-    float aspect2 = (float) device.portSize().y() / (float) device.portSize().x();
-
-    Ln.d("Screenshot height=%d, width=%d. Device height=%d, width=%d. Aspect1=%f, Aspect2=%f",
-        screenshot.getHeight(), screenshot.getWidth(), device.portSize().y(), device.portSize().x(),
-        aspect1, aspect2);
-
-    if (aspect1 == aspect2) {
-      return Device.ORIENTATION_PORTRAIT;
-    } else if (aspect1 == 1 / aspect2) {
-      return Device.ORIENTATION_LANDSCAPE;
-    }
-
-    Ln.e("Could not match dimensions the device.");
-
-    return null;
   }
 
   /**

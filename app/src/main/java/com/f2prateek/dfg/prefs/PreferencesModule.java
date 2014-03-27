@@ -25,7 +25,7 @@ import javax.inject.Singleton;
 
 @Module(library = true, complete = false)
 public class PreferencesModule {
-  private static final String DEFAULT_DEVICE = "nexus_5"; // Nexus 5
+  private static final String DEFAULT_DEVICE_ID = "nexus_5"; // Nexus 5
   private static final boolean DEFAULT_GLARE_ENABLED = true; // Glare drawn
   private static final boolean DEFAULT_SHADOW_ENABLED = true; // Shadow drawn
 
@@ -33,18 +33,18 @@ public class PreferencesModule {
   private static final String KEY_PREF_OPTION_GLARE = "KEY_PREF_OPTION_GLARE";
   private static final String KEY_PREF_OPTION_SHADOW = "KEY_PREF_OPTION_SHADOW";
 
-  @Provides @Singleton @DefaultDevice StringPreference provideDefaultDevice(
-      SharedPreferences sharedPreferences) {
-    return new StringPreference(sharedPreferences, KEY_PREF_DEFAULT_DEVICE_ID, DEFAULT_DEVICE);
+  @Provides @Singleton @DefaultDevice
+  StringPreference provideDefaultDevice(SharedPreferences sharedPreferences) {
+    return new StringPreference(sharedPreferences, KEY_PREF_DEFAULT_DEVICE_ID, DEFAULT_DEVICE_ID);
   }
 
-  @Provides @Singleton @GlareEnabled BooleanPreference provideGlareEnabled(
-      SharedPreferences sharedPreferences) {
+  @Provides @Singleton @GlareEnabled
+  BooleanPreference provideGlareEnabled(SharedPreferences sharedPreferences) {
     return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_GLARE, DEFAULT_GLARE_ENABLED);
   }
 
-  @Provides @Singleton @ShadowEnabled BooleanPreference provideShadowEnabled(
-      SharedPreferences sharedPreferences) {
+  @Provides @Singleton @ShadowEnabled
+  BooleanPreference provideShadowEnabled(SharedPreferences sharedPreferences) {
     return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_SHADOW, DEFAULT_SHADOW_ENABLED);
   }
 }

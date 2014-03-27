@@ -26,7 +26,7 @@ public abstract class Bounds implements Parcelable {
 
   public abstract int y();
 
-  static Bounds create(int x, int y) {
+  public static Bounds create(int x, int y) {
     return new AutoValue_Bounds(x, y);
   }
 }

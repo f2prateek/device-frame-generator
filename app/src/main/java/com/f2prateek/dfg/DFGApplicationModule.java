@@ -22,6 +22,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.preference.PreferenceManager;
+import android.view.WindowManager;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
@@ -52,8 +53,8 @@ public class DFGApplicationModule {
     return application;
   }
 
-  @Provides @Singleton SharedPreferences provideDefaultSharedPreferences(
-      @ForApplication Context context) {
+  @Provides @Singleton
+  SharedPreferences provideDefaultSharedPreferences(@ForApplication Context context) {
     return PreferenceManager.getDefaultSharedPreferences(context);
   }
 
@@ -65,14 +66,18 @@ public class DFGApplicationModule {
     }
   }
 
-  @SuppressWarnings("unchecked") <T> T getSystemService(final Context context,
-      final String serviceConstant) {
+  @SuppressWarnings("unchecked")
+  <T> T getSystemService(final Context context, final String serviceConstant) {
     return (T) context.getSystemService(serviceConstant);
   }
 
-  @Provides @Singleton NotificationManager provideNotificationManager(
-      @ForApplication Context context) {
+  @Provides @Singleton
+  NotificationManager provideNotificationManager(@ForApplication Context context) {
     return getSystemService(context, Context.NOTIFICATION_SERVICE);
+  }
+
+  @Provides @Singleton WindowManager provideWindow(@ForApplication Context context) {
+    return getSystemService(context, Context.WINDOW_SERVICE);
   }
 
   @Provides @Singleton Bus provideOttoBus() {
