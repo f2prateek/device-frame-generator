@@ -22,12 +22,13 @@
       Base application theme, dependent on API level. This theme is replaced
       by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
   -->
-  <style name="AppBaseTheme" parent="@android:style/Theme.Holo.Light">
+  <style name="AppBaseTheme" parent="@android:style/Theme.Holo.Light.DarkActionBar">
     <!--
         Theme customizations available in newer API levels can go in
         res/values-vXX/styles.xml, while customizations related to
         backward-compatibility can go here.
     -->
+    <item name="android:actionBarStyle">@style/Widget.DFG.ActionBar</item>
   </style>
 
   <!-- Application theme. -->
@@ -36,4 +37,10 @@
     <item name="android:windowBackground">@android:color/white</item>
   </style>
 
+  <style name="Widget.DFG.ActionBar"
+      parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
+    <item name="android:background">@color/action_bar_color</item>
+  </style>
+
 </resources>
+

@@ -68,6 +68,7 @@ public class MainActivity extends BaseActivity {
         new DeviceFragmentPagerAdapter(getFragmentManager(), new ArrayList<>(devices.values()));
     pager.setAdapter(pagerAdapter);
     pager.setCurrentItem(pagerAdapter.getDeviceIndex(defaultDevice.get()));
+    tabStrip.setTextColor(getResources().getColor(R.color.title_text_color));
     tabStrip.setViewPager(pager);
   }
 
