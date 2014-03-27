@@ -27,6 +27,8 @@ import com.crashlytics.android.Crashlytics;
 import com.f2prateek.dfg.model.Bounds;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.DefaultDevice;
+import com.f2prateek.dfg.prefs.FirstRun;
+import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.dfg.ui.ActivityHierarchyServer;
 import com.f2prateek.dfg.util.StorageUtils;
@@ -47,6 +49,7 @@ public class DFGApplication extends Application {
   @Inject WindowManager windowManager;
   @Inject Map<String, Device> deviceMap;
   @Inject @DefaultDevice StringPreference defaultDevice;
+  @Inject @FirstRun BooleanPreference firstRun;
 
   @Override
   public void onCreate() {
@@ -69,22 +72,17 @@ public class DFGApplication extends Application {
       Ln.w("storage unavailable");
     }
 
-    setupDefaultDevice();
+    if (firstRun.get()) {
+      setupDefaultDevice();
+      firstRun.set(false);
+    }
   }
 
   /**
-   * Setup the default device for the user. Skips if the devicePreference has already been set.
+   * Setup the default device for the user. Should be only done for the first run.
    */
   @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
   private void setupDefaultDevice() {
-    if (defaultDevice.isSet()) {
-      // skip if device has been set
-      return;
-    }
-
-    // Explicitly it to a default value so we don't run this everytime the app starts
-    defaultDevice.set(defaultDevice.get());
-
     // look by {@link android.os.Build#PRODUCT} value
     String id = huntDeviceIdByProduct();
     if (id != null) {
