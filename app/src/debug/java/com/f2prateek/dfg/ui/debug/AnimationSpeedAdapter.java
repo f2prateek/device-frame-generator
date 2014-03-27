@@ -21,7 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import com.f2prateek.dfg.util.BindableAdapter;
+import com.f2prateek.dfg.ui.BindableAdapter;
 
 import static butterknife.ButterKnife.findById;
 

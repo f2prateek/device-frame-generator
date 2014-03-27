@@ -21,6 +21,10 @@ import com.f2prateek.ln.Ln;
 
 public class StorageUtils {
 
+  private StorageUtils() {
+    // No instances.
+  }
+
   /**
    * Checks if storage is available for our use.
    *

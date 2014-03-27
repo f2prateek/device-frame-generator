@@ -14,7 +14,7 @@
  *    limitations under the License.
  */
 
-package com.f2prateek.dfg.util;
+package com.f2prateek.dfg.ui;
 
 import android.content.Context;
 import android.view.LayoutInflater;

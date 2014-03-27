@@ -17,6 +17,7 @@
 package com.f2prateek.dfg.util;
 
 public final class Strings {
+
   private Strings() {
     // No instances.
   }
