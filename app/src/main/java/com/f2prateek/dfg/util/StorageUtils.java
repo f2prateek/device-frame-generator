@@ -27,26 +27,26 @@ public class StorageUtils {
    * @return true if storage is available and writeable
    */
   @SuppressWarnings("BooleanMethodIsAlwaysInverted") public static boolean isStorageAvailable() {
-    boolean mExternalStorageAvailable;
-    boolean mExternalStorageWriteable;
+    boolean externalStorageAvailable;
+    boolean externalStorageWriteable;
     String state = Environment.getExternalStorageState();
 
     if (Environment.MEDIA_MOUNTED.equals(state)) {
       // We can read and write the media
-      mExternalStorageAvailable = mExternalStorageWriteable = true;
+      externalStorageAvailable = externalStorageWriteable = true;
     } else if (Environment.MEDIA_MOUNTED_READ_ONLY.equals(state)) {
       // We can only read the media
-      mExternalStorageAvailable = true;
-      mExternalStorageWriteable = false;
+      externalStorageAvailable = true;
+      externalStorageWriteable = false;
     } else {
       // Something else is wrong. It may be one of many other states, but
       // all we need to know is we can neither read nor write
-      mExternalStorageAvailable = mExternalStorageWriteable = false;
+      externalStorageAvailable = externalStorageWriteable = false;
     }
 
-    Ln.i(mExternalStorageAvailable ? "Storage available" : "Storage Unavailable");
-    Ln.i(mExternalStorageWriteable ? "Storage writeable" : "Storage not writeable");
+    Ln.i(externalStorageAvailable ? "Storage available" : "Storage Unavailable");
+    Ln.i(externalStorageWriteable ? "Storage writeable" : "Storage not writeable");
 
-    return (mExternalStorageAvailable && mExternalStorageWriteable);
+    return (externalStorageAvailable && externalStorageWriteable);
   }
 }
