@@ -112,6 +112,7 @@ public class DebugAppContainer implements AppContainer {
 
   @InjectView(R.id.debug_device_make) TextView deviceMakeView;
   @InjectView(R.id.debug_device_model) TextView deviceModelView;
+  @InjectView(R.id.debug_device_product) TextView deviceProductView;
   @InjectView(R.id.debug_device_resolution) TextView deviceResolutionView;
   @InjectView(R.id.debug_device_density) TextView deviceDensityView;
   @InjectView(R.id.debug_device_release) TextView deviceReleaseView;
@@ -272,6 +273,7 @@ public class DebugAppContainer implements AppContainer {
     String densityBucket = getDensityString(displayMetrics);
     deviceMakeView.setText(Strings.truncateAt(Build.MANUFACTURER, 20));
     deviceModelView.setText(Strings.truncateAt(Build.MODEL, 20));
+    deviceProductView.setText(Strings.truncateAt(Build.PRODUCT, 20));
     deviceResolutionView.setText(displayMetrics.heightPixels + "x" + displayMetrics.widthPixels);
     deviceDensityView.setText(displayMetrics.densityDpi + "dpi (" + densityBucket + ")");
     deviceReleaseView.setText(Build.VERSION.RELEASE);

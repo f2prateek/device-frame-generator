@@ -207,6 +207,17 @@
 
   <TextView
       android:layout_gravity="start|end|center_vertical"
+      android:text="Product"
+      style="@style/Widget.DFG.DebugDrawer.RowTitle"
+      />
+  <TextView
+      android:id="@+id/debug_device_product"
+      android:layout_gravity="start|end|center_vertical"
+      style="@style/Widget.DFG.DebugDrawer.RowValue"
+      />
+
+  <TextView
+      android:layout_gravity="start|end|center_vertical"
       android:text="Resolution"
       style="@style/Widget.DFG.DebugDrawer.RowTitle"
       />
