@@ -1,9 +1,12 @@
 ## Change Log
 
-### upcoming (2014/03/28 05:41 +00:00)
+### upcoming (2014/03/29 05:47 +00:00)
 - [52cbb37](https://github.com/f2prateek/android-device-frame-generator/commit/52cbb37362f0406dff8682dedc63115725041b79) Bump for next iteration; (@f2prateek)
 - [b3fd9c9](https://github.com/f2prateek/android-device-frame-generator/commit/b3fd9c9a54e94db3828df94c914ee8d9ae387915) Unnecessary lint flag (@f2prateek)
 - [47d5d3f](https://github.com/f2prateek/android-device-frame-generator/commit/47d5d3fce1c758601c1f953878550e8a0f3c3a24) Smoother Launching Animation (@f2prateek)
+- [6269deb](https://github.com/f2prateek/android-device-frame-generator/commit/6269debed9b598af59356ed26c18658954c96d93) Changelog (@f2prateek)
+- [3c24694](https://github.com/f2prateek/android-device-frame-generator/commit/3c246948f7c5d762c5edc7a0c48c9b41956102e0) Drop Extra Devices for this release (@f2prateek)
+- [1076cf9](https://github.com/f2prateek/android-device-frame-generator/commit/1076cf90e32764e6ca6fa78bc4d2afb1ccaecbfe) Release version 3.0.0 (@f2prateek)
 
 ### v2.0.1.4 (2014/03/27 20:14 +00:00)
 - [3e69b8b](https://github.com/f2prateek/android-device-frame-generator/commit/3e69b8b0a1d40cdfff34042703f95a8ff9b524a3) Bump for next version (@f2prateek)
