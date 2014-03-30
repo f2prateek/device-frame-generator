@@ -19,6 +19,7 @@ package com.f2prateek.dfg.ui.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import com.f2prateek.dfg.DeviceProvider;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
@@ -27,12 +28,11 @@ import com.f2prateek.dfg.prefs.DefaultDevice;
 import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.ln.Ln;
 import java.util.ArrayList;
-import java.util.Map;
 import javax.inject.Inject;
 
 /** A receiver activity, that is registered to receive images. */
 public class ReceiverActivity extends BaseActivity {
-  @Inject Map<String, Device> devices;
+  @Inject DeviceProvider deviceProvider;
   @Inject @DefaultDevice StringPreference defaultDevice;
 
   @Override
@@ -56,7 +56,7 @@ public class ReceiverActivity extends BaseActivity {
   private void handleReceivedSingleImage(Intent i) {
     Uri imageUri = i.getParcelableExtra(Intent.EXTRA_STREAM);
     Ln.d("Generating for single screenshot %s", imageUri);
-    Device device = getDefaultDeviceFromPreferences();
+    Device device = deviceProvider.getDefaultDevice();
     Intent intent = new Intent(this, GenerateFrameService.class);
     intent.putExtra(AbstractGenerateFrameService.KEY_EXTRA_DEVICE, device);
     intent.putExtra(GenerateFrameService.KEY_EXTRA_SCREENSHOT, imageUri);
@@ -66,15 +66,11 @@ public class ReceiverActivity extends BaseActivity {
   /** Handle an intent that provides multiple images. */
   void handleReceivedMultipleImages(Intent i) {
     ArrayList<Uri> imageUris = i.getParcelableArrayListExtra(Intent.EXTRA_STREAM);
-    Device device = getDefaultDeviceFromPreferences();
+    Device device = deviceProvider.getDefaultDevice();
     Intent intent = new Intent(this, GenerateMultipleFramesService.class);
     intent.putExtra(AbstractGenerateFrameService.KEY_EXTRA_DEVICE, device);
     intent.putExtra(GenerateMultipleFramesService.KEY_EXTRA_SCREENSHOTS, imageUris);
     Ln.d("Generating for multiple screenshots %s", imageUris);
     startService(intent);
-  }
-
-  private Device getDefaultDeviceFromPreferences() {
-    return devices.get(defaultDevice.get());
   }
 }

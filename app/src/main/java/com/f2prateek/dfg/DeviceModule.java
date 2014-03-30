@@ -19,10 +19,7 @@ package com.f2prateek.dfg;
 import com.f2prateek.dfg.model.Device;
 import dagger.Module;
 import dagger.Provides;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.Set;
 
 import static dagger.Provides.Type.SET;
@@ -78,7 +75,8 @@ public class DeviceModule {
         .setLandOffset(349, 214)
         .setPortOffset(213, 350)
         .setPortSize(768, 1280)
-        .setRealSize(768, 1280).addProductId("occam")
+        .setRealSize(768, 1280)
+        .addProductId("occam")
         .build();
   }
 
@@ -91,7 +89,8 @@ public class DeviceModule {
         .setLandOffset(436, 306)
         .setPortOffset(306, 436)
         .setPortSize(1080, 1920)
-        .setRealSize(1080, 1920).addProductId("hammerhead")
+        .setRealSize(1080, 1920)
+        .addProductId("hammerhead")
         .build();
   }
 
@@ -104,7 +103,9 @@ public class DeviceModule {
         .setLandOffset(326, 245)
         .setPortOffset(244, 326)
         .setPortSize(800, 1280)
-        .setRealSize(1200, 1920).addProductId("razor").addProductId("razorg")
+        .setRealSize(1200, 1920)
+        .addProductId("razor")
+        .addProductId("razorg")
         .build();
   }
 
@@ -117,7 +118,9 @@ public class DeviceModule {
         .setLandOffset(315, 270)
         .setPortOffset(264, 311)
         .setPortSize(800, 1280)
-        .setRealSize(800, 1280).addProductId("nakasi").addProductId("nakasig")
+        .setRealSize(800, 1280)
+        .addProductId("nakasi")
+        .addProductId("nakasig")
         .build();
   }
 
@@ -130,7 +133,8 @@ public class DeviceModule {
         .setLandOffset(227, 217)
         .setPortOffset(217, 223)
         .setPortSize(800, 1280)
-        .setRealSize(1600, 2560).addProductId("mantaray")
+        .setRealSize(1600, 2560)
+        .addProductId("mantaray")
         .build();
   }
 
@@ -223,13 +227,5 @@ public class DeviceModule {
         .setPortSize(800, 1280)
         .setRealSize(800, 1280)
         .build();
-  }
-
-  @Provides Map<String, Device> devices(Set<Device> deviceSet) {
-    HashMap<String, Device> deviceMap = new LinkedHashMap<>(deviceSet.size());
-    for (Device device : deviceSet) {
-      deviceMap.put(device.id(), device);
-    }
-    return deviceMap;
   }
 }

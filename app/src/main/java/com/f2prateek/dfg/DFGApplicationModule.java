@@ -26,11 +26,15 @@ import android.view.WindowManager;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.core.GenerateMultipleFramesService;
+import com.f2prateek.dfg.model.Device;
+import com.f2prateek.dfg.prefs.DefaultDevice;
 import com.f2prateek.dfg.prefs.PreferencesModule;
+import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.dfg.ui.UiModule;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
+import java.util.Set;
 import javax.inject.Singleton;
 
 @Module(
@@ -82,5 +86,10 @@ public class DFGApplicationModule {
 
   @Provides @Singleton Bus provideOttoBus() {
     return new Bus();
+  }
+
+  @Provides @Singleton
+  DeviceProvider devices(Set<Device> deviceSet, @DefaultDevice StringPreference defaultDevice) {
+    return DeviceProvider.fromSet(deviceSet, defaultDevice);
   }
 }

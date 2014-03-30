@@ -16,20 +16,14 @@
 
 package com.f2prateek.dfg;
 
-import android.annotation.TargetApi;
 import android.app.Application;
 import android.content.Context;
-import android.os.Build;
-import android.util.DisplayMetrics;
 import android.view.WindowManager;
 import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
-import com.f2prateek.dfg.model.Bounds;
 import com.f2prateek.dfg.model.Device;
-import com.f2prateek.dfg.prefs.DefaultDevice;
 import com.f2prateek.dfg.prefs.FirstRun;
 import com.f2prateek.dfg.prefs.model.BooleanPreference;
-import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.dfg.ui.ActivityHierarchyServer;
 import com.f2prateek.dfg.util.StorageUtils;
 import com.f2prateek.ln.DebugLn;
@@ -37,7 +31,6 @@ import com.f2prateek.ln.Ln;
 import com.squareup.otto.Bus;
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
-import java.util.Map;
 import javax.inject.Inject;
 
 public class DFGApplication extends Application {
@@ -47,8 +40,7 @@ public class DFGApplication extends Application {
   @Inject Bus bus;
 
   @Inject WindowManager windowManager;
-  @Inject Map<String, Device> deviceMap;
-  @Inject @DefaultDevice StringPreference defaultDevice;
+  @Inject DeviceProvider deviceProvider;
   @Inject @FirstRun BooleanPreference firstRun;
 
   @Override
@@ -73,57 +65,13 @@ public class DFGApplication extends Application {
     }
 
     if (firstRun.get()) {
-      setupDefaultDevice();
-      firstRun.set(false);
-    }
-  }
-
-  /**
-   * Setup the default device for the user. Should be only done for the first run.
-   */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-  private void setupDefaultDevice() {
-    // look by {@link android.os.Build#PRODUCT} value
-    String id = huntDeviceIdByProduct();
-    if (id != null) {
-      defaultDevice.set(id);
-      bus.post(new Events.DefaultDeviceUpdated(deviceMap.get(id)));
-      return;
-    }
-
-    // Could find by product name, so not look by dimensions
-    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN_MR1) {
-      // The following API is only on 17+ so skip it if this is not available.
-      return;
-    }
-    DisplayMetrics metrics = new DisplayMetrics();
-    windowManager.getDefaultDisplay().getRealMetrics(metrics);
-    Bounds bounds = Bounds.create(metrics.heightPixels, metrics.widthPixels);
-    Ln.d("Searching for a device with bounds %s", bounds);
-    for (Device device : deviceMap.values()) {
-      if (Orientation.calculate(bounds, device) != null) {
-        defaultDevice.set(device.id());
+      Device device = deviceProvider.find(windowManager);
+      if (device != null) {
+        deviceProvider.saveDefaultDevice(device);
         bus.post(new Events.DefaultDeviceUpdated(device));
       }
+      firstRun.set(false);
     }
-  }
-
-  /**
-   * Ideally we would have devices id'd by product name (e.g. crespo instead of nexus_s)
-   * However different flavours (e.g. crespo and crespo4g) are going to require manual checking
-   * anyway.
-   *
-   * @return Device id matching matching our device map.
-   */
-  private String huntDeviceIdByProduct() {
-    String product = Build.PRODUCT;
-    for (Device device : deviceMap.values()) {
-      if (device.productIds().contains(product)) {
-        Ln.d("Found a match for Build.PRODUCT %s", device);
-        return device.id();
-      }
-    }
-    return null;
   }
 
   @DebugLog

@@ -28,6 +28,10 @@
       android:showAsAction="never"
       android:checkable="true"/>
 
+  <item android:id="@+id/menu_match_device"
+      android:title="@string/match_device"
+      android:showAsAction="never"/>
+
   <item android:id="@+id/menu_about"
       android:icon="@drawable/ic_action_info"
       android:title="@string/about"

@@ -1,8 +1,6 @@
-package com.f2prateek.dfg;
+package com.f2prateek.dfg.model;
 
 import android.graphics.Bitmap;
-import com.f2prateek.dfg.model.Bounds;
-import com.f2prateek.dfg.model.Device;
 
 public enum Orientation {
   LANDSCAPE("land"), PORTRAIT("port");

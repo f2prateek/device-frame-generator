@@ -24,7 +24,7 @@ import java.util.List;
 @AutoValue
 public abstract class Device implements Parcelable {
 
-  // Unique identifier for each device, used to identify resources.
+  // Unique identifier for each device, also used to identify resources.
   public abstract String id();
 
   // Device name to display

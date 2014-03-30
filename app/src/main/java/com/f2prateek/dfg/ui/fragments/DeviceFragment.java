@@ -31,13 +31,12 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.f2prateek.dart.InjectExtra;
+import com.f2prateek.dfg.DeviceProvider;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
-import com.f2prateek.dfg.prefs.DefaultDevice;
-import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.dfg.util.BitmapUtils;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
@@ -51,8 +50,8 @@ public class DeviceFragment extends BaseFragment {
   private static final String EXTRA_DEVICE = "device";
   private static final int RESULT_SELECT_PICTURE = 542;
 
-  @Inject @DefaultDevice StringPreference defaultDevice;
   @Inject Picasso picasso;
+  @Inject DeviceProvider deviceProvider;
 
   @InjectView(R.id.tv_device_resolution) TextView deviceResolutionText;
   @InjectView(R.id.tv_device_size) TextView deviceSizeText;
@@ -101,7 +100,7 @@ public class DeviceFragment extends BaseFragment {
     if (isDefault()) {
       return;
     }
-    defaultDevice.set(device.id());
+    deviceProvider.saveDefaultDevice(device);
     bus.post(new Events.DefaultDeviceUpdated(device));
   }
 
@@ -116,7 +115,7 @@ public class DeviceFragment extends BaseFragment {
   }
 
   private boolean isDefault() {
-    return device.id().compareTo(defaultDevice.get()) == 0;
+    return deviceProvider.getDefaultDevice().equals(device);
   }
 
   @OnClick(R.id.iv_device_thumbnail)

@@ -42,14 +42,8 @@ public class DeviceFragmentPagerAdapter extends FragmentStatePagerAdapter {
     return devices.size();
   }
 
-  public int getDeviceIndex(String id) {
-    for (int i = 0, size = devices.size(); i < size; i++) {
-      Device device = devices.get(i);
-      if (device.id().compareTo(id) == 0) {
-        return i;
-      }
-    }
-    return 0;
+  public int getDeviceIndex(Device device) {
+    return devices.indexOf(device);
   }
 
   @Override public CharSequence getPageTitle(int position) {

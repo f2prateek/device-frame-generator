@@ -23,33 +23,31 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.WindowManager;
 import butterknife.InjectView;
 import com.astuetz.PagerSlidingTabStrip;
+import com.f2prateek.dfg.DeviceProvider;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
-import com.f2prateek.dfg.prefs.DefaultDevice;
 import com.f2prateek.dfg.prefs.GlareEnabled;
 import com.f2prateek.dfg.prefs.ShadowEnabled;
 import com.f2prateek.dfg.prefs.model.BooleanPreference;
-import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.dfg.ui.DeviceFragmentPagerAdapter;
 import com.f2prateek.dfg.ui.fragments.AboutFragment;
 import com.f2prateek.ln.Ln;
 import com.squareup.otto.Subscribe;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import java.util.ArrayList;
-import java.util.Map;
 import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity {
 
   @Inject @GlareEnabled BooleanPreference glareEnabled;
   @Inject @ShadowEnabled BooleanPreference shadowEnabled;
-  @Inject @DefaultDevice StringPreference defaultDevice;
+  @Inject DeviceProvider deviceProvider;
+  @Inject WindowManager windowManager;
 
-  @Inject Map<String, Device> devices;
   @InjectView(R.id.pager) ViewPager pager;
   @InjectView(R.id.tabs) PagerSlidingTabStrip tabStrip;
 
@@ -64,10 +62,9 @@ public class MainActivity extends BaseActivity {
 
     inflateView(R.layout.activity_main);
 
-    pagerAdapter =
-        new DeviceFragmentPagerAdapter(getFragmentManager(), new ArrayList<>(devices.values()));
+    pagerAdapter = new DeviceFragmentPagerAdapter(getFragmentManager(), deviceProvider.asList());
     pager.setAdapter(pagerAdapter);
-    pager.setCurrentItem(pagerAdapter.getDeviceIndex(defaultDevice.get()));
+    pager.setCurrentItem(pagerAdapter.getDeviceIndex(deviceProvider.getDefaultDevice()));
     tabStrip.setTextColor(getResources().getColor(R.color.title_text_color));
     tabStrip.setViewPager(pager);
   }
@@ -93,6 +90,14 @@ public class MainActivity extends BaseActivity {
         return true;
       case R.id.menu_checkbox_shadow:
         updateShadowSetting(!item.isChecked());
+        return true;
+      case R.id.menu_match_device:
+        Device device = deviceProvider.find(windowManager);
+        if (device == null) {
+          Crouton.makeText(this, R.string.no_matching_device, Style.ALERT).show();
+        } else {
+          pager.setCurrentItem(pagerAdapter.getDeviceIndex(device));
+        }
         return true;
       case R.id.menu_about:
         final AboutFragment fragment = new AboutFragment();
@@ -134,8 +139,10 @@ public class MainActivity extends BaseActivity {
     Ln.d("Device updated to %s", event.newDevice.name());
     Crouton.makeText(this, getString(R.string.saved_as_default_message, event.newDevice.name()),
         Style.CONFIRM).show();
-    // this might be from the application class, so update the position as well
-    pager.setCurrentItem(pagerAdapter.getDeviceIndex(event.newDevice.id()));
+    // This might be from the application class, so update the position as well
+    // the application class runs it on the main thread currently, so this more for a
+    // future improvement
+    pager.setCurrentItem(pagerAdapter.getDeviceIndex(event.newDevice));
     invalidateOptionsMenu();
   }
 
