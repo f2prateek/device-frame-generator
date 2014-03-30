@@ -86,11 +86,6 @@ android {
       runProguard false
       proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
     }
-    beta.initWith(buildTypes.release)
-    beta {
-      versionNameSuffix "-beta"
-    }
-    sourceSets.beta.setRoot('src/release')
   }
 
   defaultConfig {
