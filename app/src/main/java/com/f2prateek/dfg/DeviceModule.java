@@ -228,4 +228,43 @@ public class DeviceModule {
         .setRealSize(800, 1280)
         .build();
   }
+
+  @Provides(type = SET) Device provideXiaomiMI3() {
+    return new Device.Builder().setId("xiaomi_mi3")
+        .setName("Xiaomi Mi3")
+        .setUrl("http://www.xiaomi.com/en/mi3")
+        .setPhysicalSize(5.0f)
+        .setDensity("XXHDPI")
+        .setLandOffset(436, 306)
+        .setPortOffset(306, 436)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
+  @Provides(type = SET) Device provideXiaomiMI2s() {
+    return new Device.Builder().setId("xiaomi_mi2s")
+        .setName("Xiaomi Mi2S")
+        .setUrl("http://www.xiaomi.com/mi2s")
+        .setPhysicalSize(4.3f)
+        .setDensity("XHDPI")
+        .setLandOffset(371, 199)
+        .setPortOffset(216, 353)
+        .setPortSize(720, 1280)
+        .setRealSize(720, 1280)
+        .build();
+  }
+
+  @Provides(type = SET) Device provideRedmi() {
+    return new Device.Builder().setId("redmi")
+        .setName("Xiaomi Redmi")
+        .setUrl("http://www.xiaomi.com/hongmi1s")
+        .setPhysicalSize(4.7f)
+        .setDensity("XHDPI")
+        .setLandOffset(354, 214)
+        .setPortOffset(214, 354)
+        .setPortSize(720, 1280)
+        .setRealSize(720, 1280)
+        .build();
+  }
 }
