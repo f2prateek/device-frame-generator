@@ -48,6 +48,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
   @Inject @ShadowEnabled BooleanPreference shadowEnabled;
   @Inject @GlareEnabled BooleanPreference glareEnabled;
+  @Inject Resources resources;
 
   @InjectExtra(KEY_EXTRA_SCREENSHOT) Uri screenshotUri;
   DeviceFrameGenerator generator;
@@ -67,11 +68,10 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
   @Override
   public void startingImage(Bitmap screenshot) {
-    Resources r = getResources();
     // Create the large notification icon
     int imageWidth = screenshot.getWidth();
     int imageHeight = screenshot.getHeight();
-    int iconSize = r.getDimensionPixelSize(android.R.dimen.notification_large_icon_height);
+    int iconSize = resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_height);
     final int shortSide = imageWidth < imageHeight ? imageWidth : imageHeight;
     Bitmap preview = Bitmap.createBitmap(shortSide, shortSide, screenshot.getConfig());
     Canvas c = new Canvas(preview);
@@ -91,8 +91,8 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
     notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     notificationBuilder = new NotificationCompat.Builder(this).setTicker(
-        r.getString(R.string.screenshot_saving_ticker))
-        .setContentTitle(r.getString(R.string.screenshot_saving_title))
+        resources.getString(R.string.screenshot_saving_ticker))
+        .setContentTitle(resources.getString(R.string.screenshot_saving_title))
         .setSmallIcon(R.drawable.ic_stat_app_notification)
         .setStyle(new NotificationCompat.BigPictureStyle().bigPicture(preview))
         .setContentIntent(PendingIntent.getActivity(this, 0, nullIntent, 0))
@@ -114,7 +114,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
         bus.post(new Events.SingleImageProcessed(device, imageUri));
       }
     });
-    Resources resources = getResources();
+
     Intent sharingIntent = new Intent(Intent.ACTION_SEND);
     sharingIntent.setType("image/png");
     sharingIntent.putExtra(Intent.EXTRA_STREAM, imageUri);

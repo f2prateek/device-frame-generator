@@ -43,6 +43,7 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
 
   @Inject @ShadowEnabled BooleanPreference shadowEnabled;
   @Inject @GlareEnabled BooleanPreference glareEnabled;
+  @Inject Resources resources;
 
   @InjectExtra(KEY_EXTRA_SCREENSHOTS) ArrayList<Uri> imageUris;
   ArrayList<Uri> processedImageUris;
@@ -68,13 +69,12 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
   }
 
   public void notifyStarting() {
-    Resources r = getResources();
     Intent nullIntent = new Intent(this, MainActivity.class);
     nullIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
     notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
     notificationBuilder = new NotificationCompat.Builder(this).setTicker(
-        r.getString(R.string.screenshot_saving_ticker))
-        .setContentTitle(r.getString(R.string.screenshot_saving_title))
+        resources.getString(R.string.screenshot_saving_ticker))
+        .setContentTitle(resources.getString(R.string.screenshot_saving_title))
         .setSmallIcon(R.drawable.ic_stat_app_notification)
         .setContentIntent(PendingIntent.getActivity(this, 0, nullIntent, 0))
         .setProgress(0, 0, true)
@@ -113,7 +113,6 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
       return;
     }
 
-    Resources resources = getResources();
     String text =
         resources.getString(R.string.multiple_screenshots_saved, processedImageUris.size(),
             device.name());

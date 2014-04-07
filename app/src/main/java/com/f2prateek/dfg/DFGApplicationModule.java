@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.view.WindowManager;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
@@ -60,6 +61,10 @@ public class DFGApplicationModule {
   @Provides @Singleton
   SharedPreferences provideDefaultSharedPreferences(@ForApplication Context context) {
     return PreferenceManager.getDefaultSharedPreferences(context);
+  }
+
+  @Provides @Singleton Resources provideResources(@ForApplication Context context) {
+    return context.getResources();
   }
 
   @Provides @Singleton PackageInfo providePackageInfo(@ForApplication Context context) {
