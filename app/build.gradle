@@ -42,6 +42,7 @@ dependencies {
   compile 'com.github.frankiesardo:android-auto-value:0.1'
   provided 'com.github.frankiesardo:android-auto-value-processor:0.1'
   compile 'de.keyboardsurfer.android.widget:crouton:1.8.4@aar'
+  compile 'com.readystatesoftware.systembartint:systembartint:1.0.3'
   compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.1'
   debugCompile 'com.jakewharton.madge:madge:1.1.1'
