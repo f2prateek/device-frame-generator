@@ -28,6 +28,7 @@ import android.widget.TextView;
 import butterknife.ButterKnife;
 import butterknife.InjectView;
 import butterknife.OnClick;
+import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import javax.inject.Inject;
@@ -56,10 +57,13 @@ public class AboutFragment extends DialogFragment {
   }
 
   @OnClick({
-      R.id.tv_version_number, R.id.tv_gplus, R.id.tv_twitter, R.id.tv_designer
+      R.id.iv_app_logo, R.id.tv_version_number, R.id.tv_gplus, R.id.tv_twitter, R.id.tv_designer
   })
   public void openUrl(View v) {
     switch (v.getId()) {
+      case R.id.iv_app_logo:
+        openUrl(AppConstants.MARKET_URL);
+        break;
       case R.id.tv_version_number:
         openUrl("http://f2prateek.com/android-device-frame-generator/");
         break;

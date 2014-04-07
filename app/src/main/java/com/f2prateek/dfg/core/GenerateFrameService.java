@@ -33,6 +33,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dart.InjectExtra;
+import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.prefs.GlareEnabled;
@@ -115,6 +116,7 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
       }
     });
 
+    // Create the intent to let the user share the image
     Intent sharingIntent = new Intent(Intent.ACTION_SEND);
     sharingIntent.setType("image/png");
     sharingIntent.putExtra(Intent.EXTRA_STREAM, imageUri);
@@ -123,6 +125,12 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
     notificationBuilder.addAction(R.drawable.ic_action_share,
         getResources().getString(R.string.share),
         PendingIntent.getActivity(this, 0, chooserIntent, PendingIntent.FLAG_CANCEL_CURRENT));
+
+    // Create the intent to let the user rate the app
+    Intent rateIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(AppConstants.MARKET_URL));
+    notificationBuilder.addAction(R.drawable.ic_action_rate,
+        getResources().getString(R.string.rate),
+        PendingIntent.getActivity(this, 0, rateIntent, PendingIntent.FLAG_CANCEL_CURRENT));
 
     // Create the intent to show the screenshot in gallery
     Intent launchIntent = new Intent(Intent.ACTION_VIEW);

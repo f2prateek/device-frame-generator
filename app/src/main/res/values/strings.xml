@@ -40,6 +40,7 @@
   <string name="multiple_screenshots_saved">Saved %1$d images for %2$s.</string>
   <string name="processing_image">Processing image %1$d of %2$d.</string>
   <string name="share">Share</string>
+  <string name="rate">Rate</string>
 
   <!-- Notification Error Messages !-->
   <string name="failed_open_screenshot_title">Couldn\'t open screenshot.</string>
