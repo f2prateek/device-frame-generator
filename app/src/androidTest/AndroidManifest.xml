@@ -26,11 +26,6 @@
     <uses-library android:name="android.test.runner"/>
   </application>
 
-  <!--
-  This declares that this app uses the instrumentation test runner targeting
-  the package of com.android.tests.testprojecttest.app.  To run the tests use the command:
-  "adb shell am instrument -w com.android.tests.testprojecttest.test/android.test.InstrumentationTestRunner"
-  -->
   <instrumentation
       android:name="android.test.InstrumentationTestRunner"
       android:targetPackage="com.f2prateek.dfg"/>

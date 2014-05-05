@@ -47,7 +47,6 @@ public class DFGApplication extends Application {
   public void onCreate() {
     super.onCreate();
 
-    // Perform Injection
     buildApplicationGraphAndInject();
 
     registerActivityLifecycleCallbacks(activityHierarchyServer);
