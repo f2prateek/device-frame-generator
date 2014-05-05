@@ -16,16 +16,13 @@
 
 package com.f2prateek.dfg.ui.activities;
 
-import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Intent;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import butterknife.InjectView;
 import com.astuetz.PagerSlidingTabStrip;
@@ -39,7 +36,6 @@ import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.ui.DeviceFragmentPagerAdapter;
 import com.f2prateek.dfg.ui.fragments.AboutFragment;
 import com.f2prateek.ln.Ln;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.squareup.otto.Subscribe;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
@@ -66,36 +62,11 @@ public class MainActivity extends BaseActivity {
 
     inflateView(R.layout.activity_main);
 
-    // create our manager instance after the content view is set
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      // This could have been set in the theme as well, the launching animation
-      // looks a bit jarring (white status bar with white icons on launch)
-      // This looks a bit cleaner, turning from black to grey
-      setTranslucentStatus(true);
-
-      SystemBarTintManager tintManager = new SystemBarTintManager(this);
-      tintManager.setStatusBarTintEnabled(true);
-      tintManager.setStatusBarTintResource(R.color.action_bar_color);
-    }
-
     pagerAdapter = new DeviceFragmentPagerAdapter(getFragmentManager(), deviceProvider.asList());
     pager.setAdapter(pagerAdapter);
     pager.setCurrentItem(pagerAdapter.getDeviceIndex(deviceProvider.getDefaultDevice()));
     tabStrip.setTextColor(getResources().getColor(R.color.title_text_color));
     tabStrip.setViewPager(pager);
-  }
-
-  @TargetApi(19)
-  private void setTranslucentStatus(boolean on) {
-    Window win = getWindow();
-    WindowManager.LayoutParams winParams = win.getAttributes();
-    final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-    if (on) {
-      winParams.flags |= bits;
-    } else {
-      winParams.flags &= ~bits;
-    }
-    win.setAttributes(winParams);
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
