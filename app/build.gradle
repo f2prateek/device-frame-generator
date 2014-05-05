@@ -119,6 +119,8 @@ checkstyle {
 
 android.applicationVariants.all { variant ->
   def name = variant.buildType.name
+
+  // Checkstyle task
   def checkstyle = project.tasks.create "checkstyle${name.capitalize()}", Checkstyle
   checkstyle.dependsOn variant.javaCompile
   checkstyle.source variant.javaCompile.source
@@ -130,6 +132,7 @@ android.applicationVariants.all { variant ->
   checkstyle.exclude('**/*\$\$*.java') // Dagger, ButterKnife, Dart
   project.tasks.getByName("check").dependsOn checkstyle
 
+  // Renaming task
   def apk = variant.packageApplication.outputFile;
   def newName = apk.name.replace(".apk",
       "-v${android.defaultConfig.versionName}-${versionBuild}.apk");
