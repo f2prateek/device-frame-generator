@@ -267,4 +267,32 @@ public class DeviceModule {
         .setRealSize(720, 1280)
         .build();
   }
+
+  @Provides(type = SET) Device provideXiaomiMI4w() {
+    return new Device.Builder().setId("xiaomi_mi4w")
+        .setName("Xiaomi Mi4 White")
+        .setUrl("http://www.mi.com/mi4")
+        .setPhysicalSize(5.0f)
+        .setDensity("XXHDPI")
+        .setLandOffset(436, 306)
+        .setPortOffset(306, 436)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
+  @Provides(type = SET) Device provideXiaomiMI4b() {
+    return new Device.Builder().setId("xiaomi_mi4b")
+        .setName("Xiaomi Mi4 Black")
+        .setUrl("http://www.mi.com/mi4")
+        .setPhysicalSize(5.0f)
+        .setDensity("XXHDPI")
+        .setLandOffset(436, 306)
+        .setPortOffset(306, 436)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
+
 }
