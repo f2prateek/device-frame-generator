@@ -287,12 +287,24 @@ public class DeviceModule {
         .setUrl("http://www.mi.com/mi4")
         .setPhysicalSize(5.0f)
         .setDensity("XXHDPI")
-        .setLandOffset(436, 306)
-        .setPortOffset(306, 436)
+        .setLandOffset(430, 303)
+        .setPortOffset(303, 430)
         .setPortSize(1080, 1920)
         .setRealSize(1080, 1920)
         .build();
   }
 
+  @Provides(type = SET) Device provideXiaomiMIPAD() {
+    return new Device.Builder().setId("xiaomi_mipad")
+        .setName("Xiaomi MiPAD")
+        .setUrl("http://www.mi.com/mipad")
+        .setPhysicalSize(7.9f)
+        .setDensity("XXXHDPI")
+        .setLandOffset(308, 140)
+        .setPortOffset(172, 308)
+        .setPortSize(1536, 2048)
+        .setRealSize(1536, 2048)
+        .build();
+  }
 
 }
