@@ -232,7 +232,7 @@ public class DeviceModule {
   @Provides(type = SET) Device provideXiaomiMI3() {
     return new Device.Builder().setId("xiaomi_mi3")
         .setName("Xiaomi Mi3")
-        .setUrl("http://www.xiaomi.com/en/mi3")
+        .setUrl("http://www.mi.com/mi3")
         .setPhysicalSize(5.0f)
         .setDensity("XXHDPI")
         .setLandOffset(436, 306)
@@ -245,7 +245,7 @@ public class DeviceModule {
   @Provides(type = SET) Device provideXiaomiMI2s() {
     return new Device.Builder().setId("xiaomi_mi2s")
         .setName("Xiaomi Mi2S")
-        .setUrl("http://www.xiaomi.com/mi2s")
+        .setUrl("http://www.mi.com/mi2s")
         .setPhysicalSize(4.3f)
         .setDensity("XHDPI")
         .setLandOffset(371, 199)
@@ -258,7 +258,7 @@ public class DeviceModule {
   @Provides(type = SET) Device provideRedmi() {
     return new Device.Builder().setId("redmi")
         .setName("Xiaomi Redmi")
-        .setUrl("http://www.xiaomi.com/hongmi1s")
+        .setUrl("http://www.mi.com/hongmi1s")
         .setPhysicalSize(4.7f)
         .setDensity("XHDPI")
         .setLandOffset(354, 214)
@@ -267,4 +267,57 @@ public class DeviceModule {
         .setRealSize(720, 1280)
         .build();
   }
+
+  @Provides(type = SET) Device provideXiaomiNote() {
+    return new Device.Builder().setId("xiaomi_note")
+        .setName("Xiaomi Redmi Note")
+        .setUrl("http://www.mi.com/note")
+        .setPhysicalSize(5.5f)
+        .setDensity("XHDPI")
+        .setLandOffset(353, 213)
+        .setPortOffset(213, 353)
+        .setPortSize(720, 1280)
+        .setRealSize(720, 1280)
+        .build();
+  }
+
+  @Provides(type = SET) Device provideXiaomiMI4w() {
+    return new Device.Builder().setId("xiaomi_mi4w")
+        .setName("Xiaomi Mi4 White")
+        .setUrl("http://www.mi.com/mi4")
+        .setPhysicalSize(5.0f)
+        .setDensity("XXHDPI")
+        .setLandOffset(436, 306)
+        .setPortOffset(306, 436)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
+  @Provides(type = SET) Device provideXiaomiMI4b() {
+    return new Device.Builder().setId("xiaomi_mi4b")
+        .setName("Xiaomi Mi4 Black")
+        .setUrl("http://www.mi.com/mi4")
+        .setPhysicalSize(5.0f)
+        .setDensity("XXHDPI")
+        .setLandOffset(430, 303)
+        .setPortOffset(303, 430)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
+  @Provides(type = SET) Device provideXiaomiMIPAD() {
+    return new Device.Builder().setId("xiaomi_mipad")
+        .setName("Xiaomi MiPAD")
+        .setUrl("http://www.mi.com/mipad")
+        .setPhysicalSize(7.9f)
+        .setDensity("XXXHDPI")
+        .setLandOffset(308, 140)
+        .setPortOffset(172, 308)
+        .setPortSize(1536, 2048)
+        .setRealSize(1536, 2048)
+        .build();
+  }
+
 }
