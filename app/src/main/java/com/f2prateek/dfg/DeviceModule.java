@@ -300,8 +300,8 @@ public class DeviceModule {
         .setUrl("http://www.mi.com/mi4")
         .setPhysicalSize(5.0f)
         .setDensity("XXHDPI")
-        .setLandOffset(430, 303)
-        .setPortOffset(303, 430)
+        .setLandOffset(430, 302)
+        .setPortOffset(302, 430)
         .setPortSize(1080, 1920)
         .setRealSize(1080, 1920)
         .build();
