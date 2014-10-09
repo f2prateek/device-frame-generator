@@ -24,6 +24,12 @@ import java.util.List;
 @AutoValue
 public abstract class Device implements Parcelable {
 
+  private static final String SHADOW_SUFFIX = "shadow";
+  private static final String GLARE_SUFFIX = "glare";
+  private static final String BACK_SUFFIX = "back";
+  private static final String THUMB_SUFFIX = "thumb";
+  private static final String UNDERSCORE = "_";
+
   // Unique identifier for each device, also used to identify resources.
   public abstract String id();
 
@@ -64,22 +70,22 @@ public abstract class Device implements Parcelable {
 
   // Get the name of the shadow resource
   public String getShadowStringResourceName(String orientation) {
-    return id() + "_" + orientation + "_shadow";
+    return id() + UNDERSCORE + orientation + UNDERSCORE + SHADOW_SUFFIX;
   }
 
   // Get the name of the glare resource
   public String getGlareStringResourceName(String orientation) {
-    return id() + "_" + orientation + "_glare";
+    return id() + UNDERSCORE + orientation + UNDERSCORE + GLARE_SUFFIX;
   }
 
   // Get the name of the background resource
   public String getBackgroundStringResourceName(String orientation) {
-    return id() + "_" + orientation + "_back";
+    return id() + UNDERSCORE + orientation + UNDERSCORE + BACK_SUFFIX;
   }
 
   // Get the name of the thumbnail resource
   public String getThumbnailResourceName() {
-    return id() + "_thumb";
+    return id() + UNDERSCORE + THUMB_SUFFIX;
   }
 
   public static class Builder {
