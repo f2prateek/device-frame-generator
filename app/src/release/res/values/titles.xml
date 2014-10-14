@@ -16,6 +16,6 @@
   -->
 
 <resources>
-  <string name="application_name">Device Frame Generator Debug</string>
-  <string name="launcher_name">DFG Debug</string>
+  <string name="application_name">Device Frame Generator</string>
+  <string name="launcher_name">DFG</string>
 </resources>

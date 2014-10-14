@@ -29,4 +29,14 @@ public class CrashlyticsLn extends DebugLn {
   @Override protected void println(int priority, String msg) {
     Crashlytics.log(msg);
   }
+
+  @Override public void e(Throwable t) {
+    super.e(t);
+    Crashlytics.logException(t);
+  }
+
+  @Override public void e(Throwable throwable, Object s1, Object... args) {
+    super.e(throwable, s1, args);
+    Crashlytics.logException(throwable);
+  }
 }

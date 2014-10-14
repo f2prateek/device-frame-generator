@@ -16,10 +16,10 @@
 
 package com.f2prateek.dfg;
 
-public class AppConstants {
-  /** Storage */
-  public static final String DFG_DIR_NAME = "Device-Frame-Generator";
-  public static final String DFG_FILE_NAME_TEMPLATE = "DFG_%s.png";
-
-  public static final String MARKET_URL = "market://details?id=com.f2prateek.dfg";
+public class Modules {
+  static Object[] list(final DFGApplication application) {
+    return new Object[] {
+        new DFGApplicationModule(application)
+    };
+  }
 }

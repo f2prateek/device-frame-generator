@@ -25,13 +25,14 @@ import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.FirstRun;
 import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.ui.ActivityHierarchyServer;
-import com.f2prateek.dfg.util.StorageUtils;
 import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
 import com.squareup.otto.Bus;
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
 import javax.inject.Inject;
+
+import static com.f2prateek.dfg.util.StorageUtils.isStorageAvailable;
 
 public class DFGApplication extends Application {
 
@@ -59,7 +60,7 @@ public class DFGApplication extends Application {
       Ln.set(new CrashlyticsLn(getPackageName()));
     }
 
-    if (!StorageUtils.isStorageAvailable()) {
+    if (!isStorageAvailable()) {
       Toast.makeText(this, R.string.storage_unavailable, Toast.LENGTH_SHORT).show();
       Ln.w("storage unavailable");
     }
