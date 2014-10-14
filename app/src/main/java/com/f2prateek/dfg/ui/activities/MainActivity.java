@@ -40,17 +40,19 @@ import com.f2prateek.dfg.ui.DeviceFragmentPagerAdapter;
 import com.f2prateek.dfg.ui.fragments.AboutFragment;
 import com.f2prateek.ln.Ln;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 import com.squareup.otto.Subscribe;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity {
-
   @Inject @GlareEnabled BooleanPreference glareEnabled;
   @Inject @ShadowEnabled BooleanPreference shadowEnabled;
   @Inject DeviceProvider deviceProvider;
   @Inject WindowManager windowManager;
+  @Inject Analytics analytics;
 
   @InjectView(R.id.pager) ViewPager pager;
   @InjectView(R.id.tabs) PagerSlidingTabStrip tabStrip;
@@ -121,6 +123,7 @@ public class MainActivity extends BaseActivity {
         updateShadowSetting(!item.isChecked());
         return true;
       case R.id.menu_match_device:
+        analytics.track("Match Device Menu Item Clicked");
         Device device = deviceProvider.find(windowManager);
         if (device == null) {
           Crouton.makeText(this, R.string.no_matching_device, Style.ALERT).show();
@@ -129,6 +132,7 @@ public class MainActivity extends BaseActivity {
         }
         return true;
       case R.id.menu_about:
+        analytics.track("About Menu Item Clicked");
         final AboutFragment fragment = new AboutFragment();
         fragment.show(getFragmentManager(), "about");
         return true;
@@ -138,11 +142,13 @@ public class MainActivity extends BaseActivity {
   }
 
   public void updateGlareSetting(boolean newSettingEnabled) {
+    analytics.track("Glare " + (newSettingEnabled ? "enabled" : "disabled"));
     updateBooleanPreference(newSettingEnabled, glareEnabled, getString(R.string.glare_enabled),
         getString(R.string.glare_disabled));
   }
 
   public void updateShadowSetting(boolean newSettingEnabled) {
+    analytics.track("Shadow " + (newSettingEnabled ? "enabled" : "disabled"));
     updateBooleanPreference(newSettingEnabled, shadowEnabled, getString(R.string.shadow_enabled),
         getString(R.string.shadow_disabled));
   }
@@ -165,6 +171,7 @@ public class MainActivity extends BaseActivity {
 
   @Subscribe
   public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
+    analytics.track("Updated device", new Properties().putValue("device", event.newDevice.toMap()));
     Ln.d("Device updated to %s", event.newDevice.name());
     Crouton.makeText(this, getString(R.string.saved_as_default_message, event.newDevice.name()),
         Style.CONFIRM).show();

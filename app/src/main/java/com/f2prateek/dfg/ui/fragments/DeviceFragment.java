@@ -38,6 +38,8 @@ import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.util.BitmapUtils;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
@@ -46,11 +48,11 @@ import java.util.List;
 import javax.inject.Inject;
 
 public class DeviceFragment extends BaseFragment {
-
   private static final String EXTRA_DEVICE = "device";
   private static final int RESULT_SELECT_PICTURE = 542;
 
   @Inject Picasso picasso;
+  @Inject Analytics analytics;
   @Inject DeviceProvider deviceProvider;
 
   @InjectView(R.id.tv_device_resolution) TextView deviceResolutionText;
@@ -85,6 +87,7 @@ public class DeviceFragment extends BaseFragment {
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
+    analytics.screen(null, "Device", new Properties().putValue("device", device.toMap()));
     picasso.load(BitmapUtils.getResourceIdentifierForDrawable(getActivity(),
         device.getThumbnailResourceName())).fit().centerInside().into(deviceThumbnailText);
     deviceDefaultText.bringToFront();
@@ -100,6 +103,7 @@ public class DeviceFragment extends BaseFragment {
     if (isDefault()) {
       return;
     }
+    analytics.track("Updated Default Device", new Properties().putValue("device", device.toMap()));
     deviceProvider.saveDefaultDevice(device);
     bus.post(new Events.DefaultDeviceUpdated(device));
   }

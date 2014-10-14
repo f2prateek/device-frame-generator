@@ -19,7 +19,9 @@ package com.f2prateek.dfg.model;
 import android.auto.value.AutoValue;
 import android.os.Parcelable;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 @AutoValue
 public abstract class Device implements Parcelable {
@@ -80,6 +82,18 @@ public abstract class Device implements Parcelable {
   // Get the name of the thumbnail resource
   public String getThumbnailResourceName() {
     return id() + "_thumb";
+  }
+
+  // Put all values as a map
+  public Map<String, Object> toMap() {
+    Map<String, Object> device = new LinkedHashMap<>();
+    device.put("id", id());
+    device.put("name", name());
+    Map<String, Object> bounds = new LinkedHashMap<>();
+    bounds.put("x", portSize().x());
+    bounds.put("y", portSize().y());
+    device.put("bounds", bounds);
+    return device;
   }
 
   public static class Builder {

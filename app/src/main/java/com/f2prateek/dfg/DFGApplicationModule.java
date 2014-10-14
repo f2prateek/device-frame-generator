@@ -32,6 +32,7 @@ import com.f2prateek.dfg.prefs.DefaultDevice;
 import com.f2prateek.dfg.prefs.PreferencesModule;
 import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.dfg.ui.UiModule;
+import com.segment.analytics.Analytics;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
@@ -96,5 +97,9 @@ public class DFGApplicationModule {
   @Provides @Singleton
   DeviceProvider devices(Set<Device> deviceSet, @DefaultDevice StringPreference defaultDevice) {
     return DeviceProvider.fromSet(deviceSet, defaultDevice);
+  }
+
+  @Provides @Singleton Analytics provideAnalytics(@ForApplication Context context) {
+    return new Analytics.Builder(context, "6bsdtx1twy").build();
   }
 }
