@@ -1,35 +1,16 @@
 language: java
 
-jdk: oraclejdk7
+jdk:
+  - oraclejdk8
+
+notifications:
+  email: false
 
 branches:
   except:
     - gh-pages
 
-notifications:
-  email: false
-
 before_install:
-    - export JAVA_OPTS=-Xmx2048m
-    # Install base Android SDK and components
-    - sudo apt-get install -qq libstdc++6:i386 lib32z1
-    - export COMPONENTS=build-tools-19.0.3,android-19,sysimg-19,extra-android-support,extra-google-m2repository,extra-android-m2repository
-    - curl -L https://raw.github.com/embarkmobile/android-sdk-installer/version-1/android-sdk-installer | bash /dev/stdin --install=$COMPONENTS
-    - source ~/.android-sdk-installer/env
-    # Proper permissions
-    - chmod u+x gradlew
-
-    # Create and start emulator
-    - echo no | android create avd --force -n test -t android-19 --abi armeabi-v7a
-    - emulator -avd test -no-skin -no-audio -no-window &
-
-install:
-    # Without TERM=dumb, we get mangled output in the Travis console
-    - TERM=dumb ./gradlew assembleDebug
-
-before_script:
-    # Make sure the emulator has started before running tests
-    - wait_for_emulator
-
-script:
-    - TERM=dumb ./gradlew checkDebug connectedCheck
+  - export TERM=dumb
+  - sudo apt-get update
+  - sudo apt-get install -qq libstdc++6:i386 lib32z1
