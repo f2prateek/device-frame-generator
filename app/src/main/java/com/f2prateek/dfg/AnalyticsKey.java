@@ -16,23 +16,11 @@
 
 package com.f2prateek.dfg;
 
-import android.content.Context;
-import com.f2prateek.dfg.prefs.DebugPreferencesModule;
-import com.f2prateek.dfg.ui.DebugUiModule;
-import com.segment.analytics.Analytics;
-import dagger.Module;
-import dagger.Provides;
-import javax.inject.Singleton;
+import java.lang.annotation.Retention;
+import javax.inject.Qualifier;
 
-@Module(
-    addsTo = DFGApplicationModule.class,
-    includes = {
-        DebugUiModule.class, DebugPreferencesModule.class
-    },
-    overrides = true)
-public final class DebugDFGApplicationModule {
-  @Provides @Singleton //
-  Analytics provideAnalytics(@ForApplication Context context, @AnalyticsKey String key) {
-    return new Analytics.Builder(context, key).logging(true).build();
-  }
+import static java.lang.annotation.RetentionPolicy.RUNTIME;
+
+@Qualifier @Retention(RUNTIME)
+public @interface AnalyticsKey {
 }

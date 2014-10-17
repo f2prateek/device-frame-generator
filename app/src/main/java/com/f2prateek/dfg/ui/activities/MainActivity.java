@@ -171,7 +171,8 @@ public class MainActivity extends BaseActivity {
 
   @Subscribe
   public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
-    analytics.track("Updated Device", new Properties().putValue("device", event.newDevice.toMap()));
+    analytics.track("Updated Default Device",
+        new Properties().putValue("device", event.newDevice.toMap()));
     Ln.d("Device updated to %s", event.newDevice.name());
     Crouton.makeText(this, getString(R.string.saved_as_default_message, event.newDevice.name()),
         Style.CONFIRM).show();

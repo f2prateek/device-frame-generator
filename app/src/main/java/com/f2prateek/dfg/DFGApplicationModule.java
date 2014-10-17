@@ -59,7 +59,7 @@ public class DFGApplicationModule {
     return application;
   }
 
-  @Provides @Singleton
+  @Provides @Singleton //
   SharedPreferences provideDefaultSharedPreferences(@ForApplication Context context) {
     return PreferenceManager.getDefaultSharedPreferences(context);
   }
@@ -76,12 +76,12 @@ public class DFGApplicationModule {
     }
   }
 
-  @SuppressWarnings("unchecked")
+  @SuppressWarnings("unchecked") //
   <T> T getSystemService(final Context context, final String serviceConstant) {
     return (T) context.getSystemService(serviceConstant);
   }
 
-  @Provides @Singleton
+  @Provides @Singleton //
   NotificationManager provideNotificationManager(@ForApplication Context context) {
     return getSystemService(context, Context.NOTIFICATION_SERVICE);
   }
@@ -94,12 +94,17 @@ public class DFGApplicationModule {
     return new Bus();
   }
 
-  @Provides @Singleton
+  @Provides @Singleton //
   DeviceProvider devices(Set<Device> deviceSet, @DefaultDevice StringPreference defaultDevice) {
     return DeviceProvider.fromSet(deviceSet, defaultDevice);
   }
 
-  @Provides @Singleton Analytics provideAnalytics(@ForApplication Context context) {
-    return new Analytics.Builder(context, "6bsdtx1twy").build();
+  @Provides @Singleton @AnalyticsKey String provideAnalyticsKey() {
+    return "6bsdtx1twy";
+  }
+
+  @Provides @Singleton //
+  Analytics provideAnalytics(@ForApplication Context context, @AnalyticsKey String key) {
+    return new Analytics.Builder(context, key).build();
   }
 }

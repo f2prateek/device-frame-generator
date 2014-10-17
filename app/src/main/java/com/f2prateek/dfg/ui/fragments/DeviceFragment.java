@@ -103,7 +103,6 @@ public class DeviceFragment extends BaseFragment {
     if (isDefault()) {
       return;
     }
-    analytics.track("Updated Default Device", new Properties().putValue("device", device.toMap()));
     deviceProvider.saveDefaultDevice(device);
     bus.post(new Events.DefaultDeviceUpdated(device));
   }
