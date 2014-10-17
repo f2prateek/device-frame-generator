@@ -74,7 +74,10 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
     int imageHeight = screenshot.getHeight();
     int iconSize = resources.getDimensionPixelSize(android.R.dimen.notification_large_icon_height);
     final int shortSide = imageWidth < imageHeight ? imageWidth : imageHeight;
-    Bitmap preview = Bitmap.createBitmap(shortSide, shortSide, screenshot.getConfig());
+
+    // Check for if config is null, http://crashes.to/s/dd0857c8648
+    Bitmap preview = Bitmap.createBitmap(shortSide, shortSide,
+        screenshot.getConfig() == null ? Bitmap.Config.ARGB_8888 : screenshot.getConfig());
     Canvas c = new Canvas(preview);
     Paint paint = new Paint();
     ColorMatrix desat = new ColorMatrix();
