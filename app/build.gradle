@@ -55,7 +55,7 @@ dependencies {
 
 def versionMajor = 3
 def versionMinor = 0
-def versionPatch = 3
+def versionPatch = 4
 // bump for dogfood builds, public betas, etc.
 def versionBuild = 0
 
