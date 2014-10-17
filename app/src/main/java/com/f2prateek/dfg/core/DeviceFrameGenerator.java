@@ -26,6 +26,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.text.TextUtils;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Bounds;
@@ -166,6 +167,9 @@ public class DeviceFrameGenerator {
     Uri frameUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
     try {
+      if (frameUri == null || TextUtils.getTrimmedLength(frame.toString()) == 0) {
+        throw new IOException("Content Resolved could not save image");
+      }
       OutputStream out = resolver.openOutputStream(frameUri);
       if (withShadow) {
         shadow.compress(Bitmap.CompressFormat.PNG, 100, out);
