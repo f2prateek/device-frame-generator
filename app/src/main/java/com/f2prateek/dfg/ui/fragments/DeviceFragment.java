@@ -119,7 +119,7 @@ public class DeviceFragment extends BaseFragment {
   }
 
   private boolean isDefault() {
-    return deviceProvider.getDefaultDevice().equals(device);
+    return deviceProvider.getDefaultDevice().id().equals(device.id());
   }
 
   @OnClick(R.id.iv_device_thumbnail)
