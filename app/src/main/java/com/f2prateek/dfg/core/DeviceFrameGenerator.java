@@ -70,7 +70,7 @@ public class DeviceFrameGenerator {
     if (screenshotUri == null) {
       Resources r = context.getResources();
       callback.failedImage(r.getString(R.string.failed_open_screenshot_title),
-          r.getString(R.string.no_image_received), r.getString(R.string.no_image_received));
+          r.getString(R.string.no_image_received), null);
       return;
     }
 
@@ -91,8 +91,7 @@ public class DeviceFrameGenerator {
   private void failedToOpenScreenshot(Uri screenshotUri) {
     Resources r = context.getResources();
     callback.failedImage(r.getString(R.string.failed_open_screenshot_title),
-        r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()),
-        r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()));
+        r.getString(R.string.failed_open_screenshot_text, screenshotUri.toString()), null);
   }
 
   /**
@@ -107,11 +106,11 @@ public class DeviceFrameGenerator {
     if (orientation == null) {
       Ln.e("Could not match dimensions to the device.");
       Resources r = context.getResources();
-      String failedTitle = r.getString(R.string.failed_match_dimensions_title);
-      String failedText = r.getString(R.string.failed_match_dimensions_text, device.portSize().x(),
-          device.portSize().y(), screenshot.getHeight(), screenshot.getWidth());
-      String failedSmallText = r.getString(R.string.device_chosen, device.name());
-      callback.failedImage(failedTitle, failedSmallText, failedText);
+      callback.failedImage(r.getString(R.string.failed_match_dimensions_title),
+          r.getString(R.string.failed_match_dimensions_text, device.portSize().x(),
+              device.portSize().y(), screenshot.getHeight(), screenshot.getWidth()),
+          r.getString(R.string.device_chosen, device.name())
+      );
       return;
     }
 
@@ -182,7 +181,7 @@ public class DeviceFrameGenerator {
       Ln.e(e, "IOException when saving image.");
       Resources r = context.getResources();
       callback.failedImage(r.getString(R.string.unknown_error_title),
-          r.getString(R.string.unknown_error_text), r.getString(R.string.unknown_error_text));
+          r.getString(R.string.unknown_error_text), null);
       return;
     } finally {
       screenshot.recycle();
@@ -225,7 +224,7 @@ public class DeviceFrameGenerator {
   public interface Callback {
     void startingImage(Bitmap screenshot);
 
-    void failedImage(String title, String smallText, String text);
+    void failedImage(String title, String text, String extra);
 
     void doneImage(Uri imageUri);
   }

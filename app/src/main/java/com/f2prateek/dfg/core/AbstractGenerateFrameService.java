@@ -61,17 +61,21 @@ public abstract class AbstractGenerateFrameService extends IntentService
   /**
    * Notify the user of a error.
    *
-   * @param failedText Text for notification.
-   * @param failedTitle Title for notification.
+   * @param title Title of the notification.
+   * @param text Text of the notification.
+   * @param extra Extra information to show to user.
    */
   @Override
-  public void failedImage(String failedTitle, String failedSmallText, String failedText) {
-    Notification notification = new NotificationCompat.Builder(this).setTicker(failedTitle)
-        .setContentTitle(failedTitle)
-        .setContentText(failedSmallText)
-        .setStyle(new NotificationCompat.BigTextStyle().bigText(failedSmallText)
-            .setBigContentTitle(failedTitle)
-            .setSummaryText(failedText))
+  public void failedImage(String title, String text, String extra) {
+    Notification notification = new NotificationCompat.Builder(this) //
+        .setTicker(title)
+        .setContentTitle(title)
+        .setContentText(text)
+        .setStyle(new NotificationCompat.BigTextStyle() //
+                .setBigContentTitle(title) //
+                .bigText(text) //
+                .setSummaryText(extra)
+        )
         .setSmallIcon(R.drawable.ic_action_error)
         .setWhen(System.currentTimeMillis())
         .setAutoCancel(true)
