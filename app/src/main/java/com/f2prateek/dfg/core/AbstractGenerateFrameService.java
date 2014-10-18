@@ -28,6 +28,8 @@ import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.ui.activities.MainActivity;
+import com.segment.analytics.Analytics;
+import com.segment.analytics.Properties;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
@@ -39,6 +41,7 @@ public abstract class AbstractGenerateFrameService extends IntentService
 
   @Inject NotificationManager notificationManager;
   @Inject Bus bus;
+  @Inject Analytics analytics;
 
   @InjectExtra(KEY_EXTRA_DEVICE) Device device;
   NotificationCompat.Builder notificationBuilder;
@@ -56,6 +59,7 @@ public abstract class AbstractGenerateFrameService extends IntentService
   @Override
   protected void onHandleIntent(Intent intent) {
     Dart.inject(this, intent.getExtras());
+    analytics.track("Generating Frame", new Properties().putValue("device", device.toMap()));
   }
 
   /**
