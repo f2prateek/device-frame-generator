@@ -42,9 +42,11 @@ import com.f2prateek.ln.Ln;
 import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
+import com.segment.analytics.Traits;
 import com.squareup.otto.Subscribe;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import java.util.Map;
 import javax.inject.Inject;
 
 public class MainActivity extends BaseActivity {
@@ -143,12 +145,16 @@ public class MainActivity extends BaseActivity {
 
   public void updateGlareSetting(boolean newSettingEnabled) {
     analytics.track("Glare " + (newSettingEnabled ? "Enabled" : "Disabled"));
+    analytics.identify(new Traits().putValue("glare_enabled", newSettingEnabled));
+
     updateBooleanPreference(newSettingEnabled, glareEnabled, getString(R.string.glare_enabled),
         getString(R.string.glare_disabled));
   }
 
   public void updateShadowSetting(boolean newSettingEnabled) {
     analytics.track("Shadow " + (newSettingEnabled ? "Enabled" : "Disabled"));
+    analytics.identify(new Traits().putValue("shadow_enabled", newSettingEnabled));
+
     updateBooleanPreference(newSettingEnabled, shadowEnabled, getString(R.string.shadow_enabled),
         getString(R.string.shadow_disabled));
   }
@@ -171,9 +177,11 @@ public class MainActivity extends BaseActivity {
 
   @Subscribe
   public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
-    analytics.track("Updated Default Device",
-        new Properties().putValue("device", event.newDevice.toMap()));
+    Map<String, Object> deviceMap = event.newDevice.toMap();
     Ln.d("Device updated to %s", event.newDevice.name());
+    analytics.track("Updated Default Device", new Properties().putValue("device", deviceMap));
+    analytics.identify(new Traits().putValue("default_device", deviceMap));
+
     Crouton.makeText(this, getString(R.string.saved_as_default_message, event.newDevice.name()),
         Style.CONFIRM).show();
     // This might be from the application class, so update the position as well
