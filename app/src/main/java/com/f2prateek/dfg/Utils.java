@@ -23,6 +23,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Environment;
+import android.support.annotation.ColorRes;
 import com.f2prateek.ln.Ln;
 import java.io.IOException;
 
@@ -30,6 +31,18 @@ public class Utils {
 
   private Utils() {
     throw new AssertionError("no instances.");
+  }
+
+  // Color
+
+  public static int getColor(Context context, @ColorRes int resourceId, int defaultColor) {
+    // Workaround for http://crashes.to/s/88afcd93aba
+    try {
+      return context.getResources().getColor(resourceId);
+    } catch (Resources.NotFoundException e) {
+      Ln.e(e);
+      return defaultColor;
+    }
   }
 
   // Strings

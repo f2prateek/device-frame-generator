@@ -19,6 +19,7 @@ package com.f2prateek.dfg.ui.activities;
 import android.annotation.TargetApi;
 import android.app.ActionBar;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
@@ -48,6 +49,8 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import java.util.Map;
 import javax.inject.Inject;
+
+import static com.f2prateek.dfg.Utils.getColor;
 
 public class MainActivity extends BaseActivity {
   @Inject @GlareEnabled BooleanPreference glareEnabled;
@@ -85,7 +88,7 @@ public class MainActivity extends BaseActivity {
     pagerAdapter = new DeviceFragmentPagerAdapter(getFragmentManager(), deviceProvider.asList());
     pager.setAdapter(pagerAdapter);
     pager.setCurrentItem(pagerAdapter.getDeviceIndex(deviceProvider.getDefaultDevice()));
-    tabStrip.setTextColor(getResources().getColor(R.color.title_text_color));
+    tabStrip.setTextColor(getColor(this, R.color.title_text_color, Color.WHITE));
     tabStrip.setViewPager(pager);
   }
 
