@@ -31,6 +31,10 @@ import javax.inject.Singleton;
     },
     overrides = true)
 public final class DebugDFGApplicationModule {
+  @Provides @Singleton @AnalyticsKey String provideAnalyticsKey() {
+    return "5UsMbFwbXy";
+  }
+
   @Provides @Singleton //
   Analytics provideAnalytics(@ForApplication Context context, @AnalyticsKey String key) {
     return new Analytics.Builder(context, key).logging(true).build();
