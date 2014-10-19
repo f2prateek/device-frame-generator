@@ -49,7 +49,7 @@ import javax.inject.Inject;
 
 public class DeviceFragment extends BaseFragment {
   private static final String EXTRA_DEVICE = "device";
-  private static final int RESULT_SELECT_PICTURE = 542;
+  private static final int RESULT_SELECT_PICTURE = 1;
 
   @Inject Picasso picasso;
   @Inject Analytics analytics;
