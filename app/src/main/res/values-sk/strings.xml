@@ -17,14 +17,18 @@
 
 <resources>
 
+  <!-- Main Activity !-->
+  <string name="shadow_preference">Tieň</string>
+  <string name="match_device">Podľa zariadenia</string>
+  <string name="glare_preference">Odlesk</string>
+  <string name="no_matching_device">Nenašlo sa žiadne podobné zariadenie</string>
+
   <!-- Device Fragment !-->
   <string name="saved_as_default_message">%s nastavené ako predvolené zariadenie.</string>
-  <string name="shadow_preference">Tieň</string>
-  <string name="glare_preference">Odlesk</string>
-  <string name="glare_enabled">Odlesk bude zobrazený na screenshote.</string>
-  <string name="glare_disabled">Odlesk nebude zobrazený na screenshote.</string>
-  <string name="shadow_enabled">Tieň bude zobrazený na screenshote.</string>
-  <string name="shadow_disabled">Tieň nebude zobrazený na screenshote.</string>
+  <string name="glare_enabled">Odlesk bude zobrazený vo výslednom obrázku.</string>
+  <string name="glare_disabled">Odlesk nebude zobrazený vo výslednom obrázku.</string>
+  <string name="shadow_enabled">Tieň bude zobrazený vo výslednom obrázku.</string>
+  <string name="shadow_disabled">Tieň nebude zobrazený vo výslednom obrázku.</string>
   <string name="no_apps_available">Žiadna dostupná aplikácia pre vybranie obrázku.</string>
 
   <!-- Notifications !-->
@@ -34,6 +38,7 @@
   <string name="multiple_screenshots_saved">Uložené %1$d obrázky pre %2$s.</string>
   <string name="processing_image">Spracovávanie obrázkov: %1$d / %2$d.</string>
   <string name="share">Zdieľať</string>
+  <string name="rate">Hodnotiť</string>
 
   <!-- Notification Error Messages !-->
   <string name="failed_open_screenshot_title">Nie je možné otvoriť screenshot.</string>
@@ -51,7 +56,7 @@
   <string name="device_chosen">Zvolené: %s.</string>
 
   <!-- About screen !-->
-  <string name="about">O aplikácií</string>
+  <string name="about">O aplikácii</string>
   <string name="developer">Autor</string>
   <string name="designer">Designer</string>
 </resources>
