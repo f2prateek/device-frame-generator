@@ -44,7 +44,7 @@ dependencies {
   provided 'com.github.frankiesardo:android-auto-value-processor:0.1'
   compile 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
   compile 'com.readystatesoftware.systembartint:systembartint:1.0.4'
-  compile 'com.segment.analytics.android:core:2.1.1'
+  compile 'com.segment.analytics.android:core:2.1.3'
   compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
   debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
   debugCompile 'com.jakewharton.madge:madge:1.1.1'
@@ -55,7 +55,7 @@ dependencies {
 
 def versionMajor = 3
 def versionMinor = 0
-def versionPatch = 5
+def versionPatch = 6
 // bump for dogfood builds, public betas, etc.
 def versionBuild = 0
 
