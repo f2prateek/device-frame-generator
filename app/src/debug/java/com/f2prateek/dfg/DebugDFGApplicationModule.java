@@ -29,7 +29,8 @@ import javax.inject.Singleton;
     includes = {
         DebugUiModule.class, DebugPreferencesModule.class
     },
-    overrides = true)
+    overrides = true //
+)
 public final class DebugDFGApplicationModule {
   @Provides @Singleton @AnalyticsKey String provideAnalyticsKey() {
     return "5UsMbFwbXy";
