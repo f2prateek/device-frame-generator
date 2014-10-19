@@ -37,7 +37,6 @@ import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
 import com.f2prateek.dfg.model.Device;
-import com.f2prateek.dfg.util.BitmapUtils;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
 import com.squareup.otto.Subscribe;
@@ -46,6 +45,8 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import java.util.List;
 import javax.inject.Inject;
+
+import static com.f2prateek.dfg.Utils.getResourceIdentifierForDrawable;
 
 public class DeviceFragment extends BaseFragment {
   private static final String EXTRA_DEVICE = "device";
@@ -88,8 +89,10 @@ public class DeviceFragment extends BaseFragment {
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     analytics.screen("Device", device.name(), new Properties().putValue("device", device.toMap()));
-    picasso.load(BitmapUtils.getResourceIdentifierForDrawable(getActivity(),
-        device.getThumbnailResourceName())).fit().centerInside().into(deviceThumbnailText);
+    picasso.load(getResourceIdentifierForDrawable(getActivity(), device.getThumbnailResourceName()))
+        .fit()
+        .centerInside()
+        .into(deviceThumbnailText);
     deviceDefaultText.bringToFront();
     deviceDefaultText.setImageResource(
         isDefault() ? R.drawable.ic_action_star_selected : R.drawable.ic_action_star);

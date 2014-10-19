@@ -48,7 +48,7 @@ import com.f2prateek.dfg.prefs.debug.SeenDebugDrawer;
 import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.prefs.model.IntPreference;
 import com.f2prateek.dfg.ui.AppContainer;
-import com.f2prateek.dfg.util.Strings;
+import com.f2prateek.dfg.Utils;
 import com.f2prateek.ln.Ln;
 import com.jakewharton.madge.MadgeFrameLayout;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
@@ -287,9 +287,9 @@ public class DebugAppContainer implements AppContainer {
   private void setupDeviceSection() {
     DisplayMetrics displayMetrics = activity.getResources().getDisplayMetrics();
     String densityBucket = getDensityString(displayMetrics);
-    deviceMakeView.setText(Strings.truncateAt(Build.MANUFACTURER, 20));
-    deviceModelView.setText(Strings.truncateAt(Build.MODEL, 20));
-    deviceProductView.setText(Strings.truncateAt(Build.PRODUCT, 20));
+    deviceMakeView.setText(Utils.truncateAt(Build.MANUFACTURER, 20));
+    deviceModelView.setText(Utils.truncateAt(Build.MODEL, 20));
+    deviceProductView.setText(Utils.truncateAt(Build.PRODUCT, 20));
     deviceResolutionView.setText(displayMetrics.heightPixels + "x" + displayMetrics.widthPixels);
     deviceDensityView.setText(displayMetrics.densityDpi + "dpi (" + densityBucket + ")");
     deviceReleaseView.setText(Build.VERSION.RELEASE);

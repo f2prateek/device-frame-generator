@@ -32,7 +32,7 @@ import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Bounds;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.Orientation;
-import com.f2prateek.dfg.util.BitmapUtils;
+import com.f2prateek.dfg.Utils;
 import com.f2prateek.ln.Ln;
 import java.io.File;
 import java.io.IOException;
@@ -75,7 +75,7 @@ public class DeviceFrameGenerator {
     }
 
     try {
-      Bitmap screenshot = BitmapUtils.decodeUri(context.getContentResolver(), screenshotUri);
+      Bitmap screenshot = Utils.decodeUri(context.getContentResolver(), screenshotUri);
       if (screenshot != null) {
         generateFrame(screenshot);
       } else {
@@ -114,11 +114,11 @@ public class DeviceFrameGenerator {
       return;
     }
 
-    final Bitmap background = BitmapUtils.decodeResource(context,
+    final Bitmap background = Utils.decodeResource(context,
         device.getBackgroundStringResourceName(orientation.getId()));
     final Bitmap glare =
-        BitmapUtils.decodeResource(context, device.getGlareStringResourceName(orientation.getId()));
-    final Bitmap shadow = BitmapUtils.decodeResource(context,
+        Utils.decodeResource(context, device.getGlareStringResourceName(orientation.getId()));
+    final Bitmap shadow = Utils.decodeResource(context,
         device.getShadowStringResourceName(orientation.getId()));
 
     Canvas frame;

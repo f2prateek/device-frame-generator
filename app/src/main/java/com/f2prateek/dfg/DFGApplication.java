@@ -32,7 +32,7 @@ import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
 import javax.inject.Inject;
 
-import static com.f2prateek.dfg.util.StorageUtils.isStorageAvailable;
+import static com.f2prateek.dfg.Utils.isStorageAvailable;
 
 public class DFGApplication extends Application {
 
