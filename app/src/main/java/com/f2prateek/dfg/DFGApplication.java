@@ -27,6 +27,7 @@ import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.ui.ActivityHierarchyServer;
 import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
+import com.segment.analytics.Analytics;
 import com.squareup.otto.Bus;
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
@@ -43,6 +44,7 @@ public class DFGApplication extends Application {
   @Inject WindowManager windowManager;
   @Inject DeviceProvider deviceProvider;
   @Inject @FirstRun BooleanPreference firstRun;
+  @Inject Analytics analytics;
 
   @Override
   public void onCreate() {
@@ -66,6 +68,7 @@ public class DFGApplication extends Application {
     }
 
     if (firstRun.get()) {
+      analytics.track("First launch");
       Device device = deviceProvider.find(windowManager);
       if (device != null) {
         deviceProvider.saveDefaultDevice(device);
