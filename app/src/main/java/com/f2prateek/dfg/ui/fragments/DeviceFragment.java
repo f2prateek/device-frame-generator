@@ -87,7 +87,7 @@ public class DeviceFragment extends BaseFragment {
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    analytics.screen(null, "Device", new Properties().putValue("device", device.toMap()));
+    analytics.screen("Device", device.name(), new Properties().putValue("device", device.toMap()));
     picasso.load(BitmapUtils.getResourceIdentifierForDrawable(getActivity(),
         device.getThumbnailResourceName())).fit().centerInside().into(deviceThumbnailText);
     deviceDefaultText.bringToFront();
