@@ -147,7 +147,9 @@ public class DeviceFragment extends BaseFragment {
 
   @OnClick(R.id.tv_device_name)
   public void openDevicePage() {
-    analytics.track("Clicked Device Website", new Properties().putValue("device", device.toMap()));
+    Properties properties = new Properties();
+    device.into(properties);
+    analytics.track("Clicked Device Website", properties);
     Intent i = new Intent(Intent.ACTION_VIEW);
     i.setData(Uri.parse(device.url()));
     startActivity(i);

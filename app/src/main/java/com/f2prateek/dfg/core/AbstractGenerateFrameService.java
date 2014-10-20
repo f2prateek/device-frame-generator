@@ -58,7 +58,9 @@ public abstract class AbstractGenerateFrameService extends IntentService
   @Override
   protected void onHandleIntent(Intent intent) {
     Dart.inject(this, intent.getExtras());
-    analytics.track("Generating Frame", new Properties().putValue("device", device.toMap()));
+    Properties properties = new Properties();
+    device.into(properties);
+    analytics.track("Generating Frame", properties);
   }
 
   /**

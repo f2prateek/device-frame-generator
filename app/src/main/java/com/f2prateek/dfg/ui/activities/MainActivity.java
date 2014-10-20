@@ -47,7 +47,6 @@ import com.segment.analytics.Traits;
 import com.squareup.otto.Subscribe;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
-import java.util.Map;
 import javax.inject.Inject;
 
 import static com.f2prateek.dfg.Utils.getColor;
@@ -182,10 +181,13 @@ public class MainActivity extends BaseActivity {
 
   @Subscribe
   public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
-    Map<String, Object> deviceMap = event.newDevice.toMap();
     Ln.d("Device updated to %s", event.newDevice.name());
-    analytics.track("Updated Default Device", new Properties().putValue("device", deviceMap));
-    analytics.identify(new Traits().putValue("default_device", deviceMap));
+    Properties properties = new Properties();
+    event.newDevice.into(properties);
+    analytics.track("Updated Default Device", properties);
+    Traits traits = new Traits();
+    event.newDevice.into(traits);
+    analytics.identify(traits);
 
     Crouton.makeText(this, getString(R.string.saved_as_default_message, event.newDevice.name()),
         Style.CONFIRM).show();

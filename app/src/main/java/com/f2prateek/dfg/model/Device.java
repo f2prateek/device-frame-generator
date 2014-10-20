@@ -19,7 +19,6 @@ package com.f2prateek.dfg.model;
 import android.auto.value.AutoValue;
 import android.os.Parcelable;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -84,16 +83,12 @@ public abstract class Device implements Parcelable {
     return id() + "_thumb";
   }
 
-  // Put all values as a map
-  public Map<String, Object> toMap() {
-    Map<String, Object> device = new LinkedHashMap<>();
-    device.put("id", id());
-    device.put("name", name());
-    Map<String, Object> bounds = new LinkedHashMap<>();
-    bounds.put("x", portSize().x());
-    bounds.put("y", portSize().y());
-    device.put("bounds", bounds);
-    return device;
+  // Put all relevant values into the given container object and return it
+  public void into(Map<String, Object> container) {
+    container.put("device_id", id());
+    container.put("device_name", name());
+    container.put("device_bounds_x", portSize().x());
+    container.put("device_bounds_y", portSize().y());
   }
 
   public static class Builder {
