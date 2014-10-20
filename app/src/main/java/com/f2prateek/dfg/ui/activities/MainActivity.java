@@ -71,6 +71,8 @@ public class MainActivity extends BaseActivity {
     getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
     getActionBar().setCustomView(R.layout.action_bar_custom);
 
+    analytics.screen(null, "Device");
+
     inflateView(R.layout.activity_main);
 
     // create our manager instance after the content view is set

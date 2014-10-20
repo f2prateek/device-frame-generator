@@ -88,7 +88,6 @@ public class DeviceFragment extends BaseFragment {
   @Override
   public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
-    analytics.screen("Device", device.name(), new Properties().putValue("device", device.toMap()));
     picasso.load(getResourceIdentifierForDrawable(getActivity(), device.getThumbnailResourceName()))
         .fit()
         .centerInside()
