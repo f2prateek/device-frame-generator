@@ -72,6 +72,8 @@ public abstract class AbstractGenerateFrameService extends IntentService
    */
   @Override
   public void failedImage(String title, String text, String extra) {
+    analytics.track("Frame Generation Error",
+        new Properties().putValue("title", title).putValue("text", text).putValue("extra", extra));
     Notification notification = new NotificationCompat.Builder(this) //
         .setTicker(title)
         .setContentTitle(title)
