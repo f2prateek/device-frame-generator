@@ -30,6 +30,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import butterknife.InjectView;
 import com.astuetz.PagerSlidingTabStrip;
+import com.f2prateek.dfg.DFGComponent;
 import com.f2prateek.dfg.DeviceProvider;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
@@ -91,6 +92,10 @@ public class MainActivity extends BaseActivity {
     pager.setCurrentItem(pagerAdapter.getDeviceIndex(deviceProvider.getDefaultDevice()));
     tabStrip.setTextColor(getColor(this, R.color.title_text_color, Color.WHITE));
     tabStrip.setViewPager(pager);
+  }
+
+  @Override void inject(DFGComponent component) {
+    component.inject(this);
   }
 
   @TargetApi(19)

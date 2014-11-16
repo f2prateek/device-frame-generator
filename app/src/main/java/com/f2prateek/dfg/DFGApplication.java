@@ -29,7 +29,6 @@ import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
 import com.segment.analytics.Analytics;
 import com.squareup.otto.Bus;
-import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
 import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
@@ -37,11 +36,9 @@ import javax.inject.Inject;
 import static com.f2prateek.dfg.Utils.isStorageAvailable;
 
 public class DFGApplication extends Application {
-
-  ObjectGraph applicationGraph;
+  DFGComponent component;
   @Inject ActivityHierarchyServer activityHierarchyServer;
   @Inject Bus bus;
-
   @Inject WindowManager windowManager;
   @Inject DeviceProvider deviceProvider;
   @Inject @FirstRun BooleanPreference firstRun;
@@ -81,15 +78,15 @@ public class DFGApplication extends Application {
 
   @DebugLog
   public void buildApplicationGraphAndInject() {
-    applicationGraph = ObjectGraph.create(Modules.list(this));
-    applicationGraph.inject(this);
+    component = RealDFGComponent.Initializer.init(this);
+    component.inject(this);
   }
 
   public static DFGApplication get(Context context) {
     return (DFGApplication) context.getApplicationContext();
   }
 
-  public void inject(Object object) {
-    applicationGraph.inject(object);
+  public DFGComponent component() {
+    return component;
   }
 }

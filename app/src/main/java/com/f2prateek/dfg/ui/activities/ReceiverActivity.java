@@ -19,6 +19,7 @@ package com.f2prateek.dfg.ui.activities;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import com.f2prateek.dfg.DFGComponent;
 import com.f2prateek.dfg.DeviceProvider;
 import com.f2prateek.dfg.core.AbstractGenerateFrameService;
 import com.f2prateek.dfg.core.GenerateFrameService;
@@ -50,6 +51,10 @@ public class ReceiverActivity extends BaseActivity {
     }
 
     finish();
+  }
+
+  @Override void inject(DFGComponent component) {
+    component.inject(this);
   }
 
   /** Handle an intent that provides a single image. */

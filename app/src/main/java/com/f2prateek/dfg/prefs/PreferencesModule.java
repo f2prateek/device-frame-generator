@@ -23,7 +23,7 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module(library = true, complete = false)
+@Module
 public class PreferencesModule {
   private static final String DEFAULT_DEVICE_ID = "nexus_5"; // Nexus 5
   private static final boolean DEFAULT_GLARE_ENABLED = true; // Glare drawn
@@ -34,22 +34,22 @@ public class PreferencesModule {
   private static final String KEY_PREF_OPTION_SHADOW = "KEY_PREF_OPTION_SHADOW";
   private static final String KEY_FIRST_RUN = "KEY_FIRST_RUN";
 
-  @Provides @Singleton @DefaultDevice
+  @Provides @Singleton @DefaultDevice //
   StringPreference provideDefaultDevice(SharedPreferences sharedPreferences) {
     return new StringPreference(sharedPreferences, KEY_PREF_DEFAULT_DEVICE_ID, DEFAULT_DEVICE_ID);
   }
 
-  @Provides @Singleton @GlareEnabled
+  @Provides @Singleton @GlareEnabled //
   BooleanPreference provideGlareEnabled(SharedPreferences sharedPreferences) {
     return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_GLARE, DEFAULT_GLARE_ENABLED);
   }
 
-  @Provides @Singleton @ShadowEnabled
+  @Provides @Singleton @ShadowEnabled //
   BooleanPreference provideShadowEnabled(SharedPreferences sharedPreferences) {
     return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_SHADOW, DEFAULT_SHADOW_ENABLED);
   }
 
-  @Provides @Singleton @FirstRun
+  @Provides @Singleton @FirstRun //
   BooleanPreference provideFirstRun(SharedPreferences sharedPreferences) {
     return new BooleanPreference(sharedPreferences, KEY_FIRST_RUN, true);
   }

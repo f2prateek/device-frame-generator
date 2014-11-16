@@ -25,6 +25,7 @@ import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.dfg.DFGApplication;
+import com.f2prateek.dfg.DFGComponent;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.ui.activities.MainActivity;
@@ -52,8 +53,10 @@ public abstract class AbstractGenerateFrameService extends IntentService
   @Override
   public void onCreate() {
     super.onCreate();
-    ((DFGApplication) getApplication()).inject(this);
+    inject(DFGApplication.get(this).component());
   }
+
+  abstract void inject(DFGComponent component);
 
   @Override
   protected void onHandleIntent(Intent intent) {
@@ -81,8 +84,7 @@ public abstract class AbstractGenerateFrameService extends IntentService
         .setStyle(new NotificationCompat.BigTextStyle() //
                 .setBigContentTitle(title) //
                 .bigText(text) //
-                .setSummaryText(extra)
-        )
+                .setSummaryText(extra))
         .setSmallIcon(R.drawable.ic_action_error)
         .setWhen(System.currentTimeMillis())
         .setAutoCancel(true)

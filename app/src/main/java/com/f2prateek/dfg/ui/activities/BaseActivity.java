@@ -23,11 +23,12 @@ import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dfg.DFGApplication;
+import com.f2prateek.dfg.DFGComponent;
 import com.f2prateek.dfg.ui.AppContainer;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
-@SuppressLint("Registered") public class BaseActivity extends Activity {
+@SuppressLint("Registered") public abstract class BaseActivity extends Activity {
 
   @Inject Bus bus;
   @Inject AppContainer appContainer;
@@ -39,12 +40,14 @@ import javax.inject.Inject;
     super.onCreate(savedInstanceState);
 
     DFGApplication app = DFGApplication.get(this);
-    app.inject(this);
+    inject(app.component());
 
     Dart.inject(this);
 
     container = appContainer.get(this, app);
   }
+
+  abstract void inject(DFGComponent component);
 
   void inflateView(int layoutId) {
     getLayoutInflater().inflate(layoutId, container);

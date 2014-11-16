@@ -14,12 +14,19 @@
  * limitations under the License.
  */
 
-package com.f2prateek.dfg;
+package com.f2prateek.dfg.ui;
 
-public class Modules {
-  static Object[] list(final DFGApplication application) {
-    return new Object[] {
-        new DFGApplicationModule(application), new DebugDFGApplicationModule()
-    };
+import dagger.Module;
+import dagger.Provides;
+import javax.inject.Singleton;
+
+@Module
+public class ReleaseUiModule {
+  @Provides @Singleton AppContainer provideAppContainer() {
+    return AppContainer.DEFAULT;
+  }
+
+  @Provides @Singleton ActivityHierarchyServer provideActivityHierarchyServer() {
+    return ActivityHierarchyServer.NONE;
   }
 }

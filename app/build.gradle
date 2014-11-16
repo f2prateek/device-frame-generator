@@ -7,23 +7,22 @@ buildscript {
     classpath 'com.android.tools.build:gradle:0.14.4'
     classpath 'io.fabric.tools:gradle:1.+'
     classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
-    classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
     classpath 'com.f2prateek.checkstyle:checkstyle:1.0.0'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
   }
 }
 
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'io.fabric'
 apply plugin: 'checkstyle'
 apply plugin: 'com.f2prateek.checkstyle'
 apply plugin: 'hugo'
+apply plugin: 'com.neenbedankt.android-apt'
 
 dependencies {
   repositories {
     mavenCentral()
     maven { url 'https://maven.fabric.io/repo' }
-    maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
   compile 'com.android.support:support-v13:21.0.2'
@@ -37,10 +36,12 @@ dependencies {
   // Code Generators
   compile 'com.jakewharton:butterknife:5.1.2'
   compile 'com.squareup.dagger:dagger:1.2.2'
-  provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+  compile 'com.google.dagger:dagger:2.0'
+  apt 'com.google.dagger:dagger-compiler:2.0'
+  compile 'org.glassfish:javax.annotation:10.0-b28'
   compile 'com.squareup.picasso:picasso:2.3.4'
   compile 'com.github.frankiesardo:android-auto-value:0.1'
-  provided 'com.github.frankiesardo:android-auto-value-processor:0.1'
+  apt 'com.github.frankiesardo:android-auto-value-processor:0.1'
 
   // Views
   compile 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
@@ -48,7 +49,7 @@ dependencies {
   compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 
   // Analytics
-  compile('com.segment.analytics.android:all:2.4.7-SNAPSHOT') {
+  compile('com.segment.analytics.android:analytics:3.0.2@aar') {
     transitive = true;
   }
   compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {

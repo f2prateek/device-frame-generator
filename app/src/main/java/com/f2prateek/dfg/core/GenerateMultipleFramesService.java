@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dart.InjectExtra;
+import com.f2prateek.dfg.DFGComponent;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.prefs.GlareEnabled;
@@ -51,6 +52,10 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
 
   public GenerateMultipleFramesService() {
     super("GenerateMultipleFramesService");
+  }
+
+  @Override void inject(DFGComponent component) {
+    component.inject(this);
   }
 
   @Override
@@ -95,8 +100,7 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     processedImageUris.add(imageUri);
     notificationBuilder.setContentText(
         getResources().getString(R.string.processing_image, processedImageUris.size(),
-            imageUris.size())
-    ).setProgress(imageUris.size(), processedImageUris.size(), false);
+            imageUris.size())).setProgress(imageUris.size(), processedImageUris.size(), false);
     notificationManager.notify(DFG_NOTIFICATION_ID, notificationBuilder.build());
   }
 
