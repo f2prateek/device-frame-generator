@@ -63,6 +63,9 @@
     <service android:name=".core.GenerateMultipleFramesService">
     </service>
 
+    <meta-data android:name="com.crashlytics.ApiKey"
+        android:value="860c95de98a8295ab9d88635ab4a6e7b5f873915"/>
+
   </application>
 
 </manifest>

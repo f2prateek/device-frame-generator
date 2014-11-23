@@ -113,7 +113,6 @@ local.properties
 
 #Sensitive data
 app/keystore
-app/src/release/AndroidManifest.xml
 crashlytics.properties
 signing.properties
 com_crashlytics_export_strings.xml
