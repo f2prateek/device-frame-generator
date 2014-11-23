@@ -31,6 +31,7 @@ import com.segment.analytics.Analytics;
 import com.squareup.otto.Bus;
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
+import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
 
 import static com.f2prateek.dfg.Utils.isStorageAvailable;
@@ -58,7 +59,7 @@ public class DFGApplication extends Application {
     if (BuildConfig.DEBUG) {
       Ln.set(DebugLn.from(this));
     } else {
-      Crashlytics.start(this);
+      Fabric.with(this, new Crashlytics());
       Ln.set(new CrashlyticsLn(getPackageName()));
     }
 
