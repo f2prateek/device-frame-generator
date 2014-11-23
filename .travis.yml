@@ -14,9 +14,3 @@ before_install:
   - export TERM=dumb
   - sudo apt-get update
   - sudo apt-get install -qq libstdc++6:i386 lib32z1
-
-install:
-  - TERM=dumb ./gradlew assembleDebug
-
-script:
-  - TERM=dumb ./gradlew checkDebug
