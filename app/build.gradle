@@ -60,7 +60,7 @@ def versionMajor = 3
 def versionMinor = 0
 def versionPatch = 8
 // bump for dogfood builds, public betas, etc.
-def versionBuild = 0
+def versionBuild = 1
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
@@ -69,8 +69,8 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
-  compileSdkVersion 19
-  buildToolsVersion '19.1.0'
+  compileSdkVersion 21
+  buildToolsVersion '21.1.1'
 
   dexOptions {
     // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
@@ -104,7 +104,7 @@ android {
 
   defaultConfig {
     minSdkVersion 14
-    targetSdkVersion 19
+    targetSdkVersion 21
 
     applicationId "com.f2prateek.dfg"
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
