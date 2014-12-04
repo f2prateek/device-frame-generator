@@ -58,10 +58,10 @@ dependencies {
 }
 
 def versionMajor = 3
-def versionMinor = 0
-def versionPatch = 8
+def versionMinor = 1
+def versionPatch = 0
 // bump for dogfood builds, public betas, etc.
-def versionBuild = 2
+def versionBuild = 0
 
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
 def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
