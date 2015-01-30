@@ -32,6 +32,8 @@ public class DeviceModule {
         return new HashSet<>(); // Empty set to ensure the Set is initialized.
     }
 
+
+
     @Provides(type = SET) Device provideNexus4() {
         return new Device.Builder().setId("nexus_4")
                 .setName("Nexus 4")
@@ -59,8 +61,6 @@ public class DeviceModule {
                 .addProductId("hammerhead")
                 .build();
     }
-
-
 
 
 
