@@ -306,7 +306,33 @@ public class DeviceModule {
         .setRealSize(1080, 1920)
         .build();
   }
-
+  
+  @Provides(type = SET) Device provideXiaomiMiNoteb() {
+    return new Device.Builder().setId("xiaomi_minoteb")
+        .setName("Xiaomi MiNote Black")
+        .setUrl("http://www.mi.com/minote")
+        .setPhysicalSize(5.7f)
+        .setDensity("XXHDPI")
+        .setLandOffset(430, 303)
+        .setPortOffset(303, 430)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+  
+    @Provides(type = SET) Device provideXiaomiMiNotew() {
+    return new Device.Builder().setId("xiaomi_minotew")
+        .setName("Xiaomi MiNote White")
+        .setUrl("http://www.mi.com/minote")
+        .setPhysicalSize(5.7f)
+        .setDensity("XXHDPI")
+        .setLandOffset(430, 303)
+        .setPortOffset(303, 430)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+  
   @Provides(type = SET) Device provideXiaomiMIPAD() {
     return new Device.Builder().setId("xiaomi_mipad")
         .setName("Xiaomi MiPAD")
@@ -319,5 +345,5 @@ public class DeviceModule {
         .setRealSize(1536, 2048)
         .build();
   }
-
+  
 }
