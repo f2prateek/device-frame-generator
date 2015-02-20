@@ -229,6 +229,19 @@ public class DeviceModule {
         .build();
   }
 
+  @Provides(type = SET) Device provideMotoX() {
+    return new Device.Builder().setId("motox")
+        .setName("Motorola Moto X")
+        .setUrl("https://www.motorola.com/us/motomaker?pid=FLEXR2")
+        .setPhysicalSize(4.7f)
+        .setDensity("XHDPI")
+        .setLandOffset(210, 113)
+        .setPortOffset(149, 210)
+        .setPortSize(720, 1280)
+        .setRealSize(720, 1280)
+        .build();
+  }
+
   @Provides(type = SET) Device provideXiaomiMI3() {
     return new Device.Builder().setId("xiaomi_mi3")
         .setName("Xiaomi Mi3")
