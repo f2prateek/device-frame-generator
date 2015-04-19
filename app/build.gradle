@@ -4,8 +4,8 @@ buildscript {
     maven { url 'https://maven.fabric.io/repo' }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.14.4'
-    classpath 'io.fabric.tools:gradle:1.+'
+    classpath 'com.android.tools.build:gradle:1.1.3'
+    classpath 'io.fabric.tools:gradle:1.18.0'
     classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
     classpath 'com.f2prateek.checkstyle:checkstyle:1.0.0'
   }
@@ -24,8 +24,8 @@ dependencies {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
-  compile 'com.android.support:support-v13:21.0.2'
-  compile 'com.android.support:support-v4:21.0.2'
+  compile 'com.android.support:support-v13:21.0.3'
+  compile 'com.android.support:support-v4:21.0.3'
 
   // Utilities
   compile 'com.squareup:otto:1.3.5'
@@ -45,8 +45,8 @@ dependencies {
   compile 'com.readystatesoftware.systembartint:systembartint:1.0.4'
   compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 
-  // Analytics
-  compile('com.segment.analytics.android:all:2.4.7-SNAPSHOT') {
+  // Reporting
+  compile('com.segment.analytics.android:analytics:3.0.2') {
     transitive = true;
   }
   compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
@@ -71,8 +71,8 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
-  compileSdkVersion 21
-  buildToolsVersion '21.1.1'
+  compileSdkVersion 22
+  buildToolsVersion '21.1.2'
 
   dexOptions {
     // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
@@ -106,7 +106,7 @@ android {
 
   defaultConfig {
     minSdkVersion 14
-    targetSdkVersion 21
+    targetSdkVersion 22
 
     applicationId "com.f2prateek.dfg"
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild

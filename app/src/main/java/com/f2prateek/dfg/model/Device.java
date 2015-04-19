@@ -18,9 +18,10 @@ package com.f2prateek.dfg.model;
 
 import android.auto.value.AutoValue;
 import android.os.Parcelable;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Collection;
+import java.util.LinkedHashSet;
 import java.util.Map;
+import java.util.Set;
 
 @AutoValue
 public abstract class Device implements Parcelable {
@@ -54,11 +55,11 @@ public abstract class Device implements Parcelable {
   public abstract Bounds realSize();
 
   // A list of product ids that match {@link android.os.Build#PRODUCT} for this device
-  public abstract List<String> productIds();
+  public abstract Collection<String> productIds();
 
   private static Device create(String id, String name, String url, float physicalSize,
       String density, Bounds landOffset, Bounds portOffset, Bounds portSize, Bounds realSize,
-      List<String> productIds) {
+      Set<String> productIds) {
     return new AutoValue_Device(id, name, url, physicalSize, density, landOffset, portOffset,
         portSize, realSize, productIds);
   }
@@ -92,6 +93,7 @@ public abstract class Device implements Parcelable {
   }
 
   public static class Builder {
+
     private String id;
     private String name;
     private String url;
@@ -101,7 +103,7 @@ public abstract class Device implements Parcelable {
     private Bounds portOffset;
     private Bounds portSize;
     private Bounds realSize;
-    private List<String> productIds = new ArrayList<>();
+    private Set<String> productIds = new LinkedHashSet<>();
 
     public Builder setId(String id) {
       this.id = id;
