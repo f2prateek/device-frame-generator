@@ -23,10 +23,11 @@ import android.view.View;
 import butterknife.ButterKnife;
 import com.f2prateek.dart.Dart;
 import com.f2prateek.dfg.DFGApplication;
+import com.f2prateek.dfg.DFGComponent;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
-public class BaseFragment extends Fragment {
+public abstract class BaseFragment extends Fragment {
   @Inject Bus bus;
   Context activityContext;
 
@@ -35,11 +36,12 @@ public class BaseFragment extends Fragment {
     super.onCreate(savedInstanceState);
     activityContext = getActivity();
 
-    DFGApplication app = DFGApplication.get(activityContext);
-    app.inject(this);
+    inject(DFGApplication.get(activityContext).component());
 
     Dart.inject(this);
   }
+
+  abstract void inject(DFGComponent component);
 
   @Override
   public void onResume() {

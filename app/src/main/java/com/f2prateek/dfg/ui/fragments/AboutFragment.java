@@ -43,7 +43,9 @@ public class AboutFragment extends DialogFragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setStyle(STYLE_NO_TITLE, getTheme());
-    ((DFGApplication) getActivity().getApplication()).inject(this);
+
+    DFGApplication app = DFGApplication.get(getActivity());
+    app.component().inject(this);
   }
 
   @Override

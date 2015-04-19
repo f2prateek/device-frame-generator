@@ -24,31 +24,19 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.preference.PreferenceManager;
 import android.view.WindowManager;
-import com.f2prateek.dfg.core.AbstractGenerateFrameService;
-import com.f2prateek.dfg.core.GenerateFrameService;
-import com.f2prateek.dfg.core.GenerateMultipleFramesService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.DefaultDevice;
-import com.f2prateek.dfg.prefs.PreferencesModule;
 import com.f2prateek.dfg.prefs.model.StringPreference;
-import com.f2prateek.dfg.ui.UiModule;
 import com.segment.analytics.Analytics;
 import com.squareup.otto.Bus;
+import com.squareup.picasso.Picasso;
 import dagger.Module;
 import dagger.Provides;
 import java.util.Set;
 import javax.inject.Singleton;
 
-@Module(
-    includes = {
-        DeviceModule.class, PreferencesModule.class, UiModule.class
-    },
-    injects = {
-        DFGApplication.class, AbstractGenerateFrameService.class, GenerateFrameService.class,
-        GenerateMultipleFramesService.class
-    })
+@Module
 public class DFGApplicationModule {
-
   private final DFGApplication application;
 
   public DFGApplicationModule(DFGApplication application) {
@@ -106,5 +94,9 @@ public class DFGApplicationModule {
   @Provides @Singleton //
   Analytics provideAnalytics(@ForApplication Context context, @AnalyticsKey String key) {
     return new Analytics.Builder(context, key).build();
+  }
+
+  @Provides @Singleton Picasso providePicasso(@ForApplication Context app) {
+    return new Picasso.Builder(app).build();
   }
 }

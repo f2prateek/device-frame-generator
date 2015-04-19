@@ -31,6 +31,7 @@ import android.widget.TextView;
 import butterknife.InjectView;
 import butterknife.OnClick;
 import com.f2prateek.dart.InjectExtra;
+import com.f2prateek.dfg.DFGComponent;
 import com.f2prateek.dfg.DeviceProvider;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
@@ -77,6 +78,10 @@ public class DeviceFragment extends BaseFragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setHasOptionsMenu(true);
+  }
+
+  @Override void inject(DFGComponent component) {
+    component.inject(this);
   }
 
   @Override

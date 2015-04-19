@@ -25,7 +25,7 @@ import java.util.Set;
 import static dagger.Provides.Type.SET;
 import static dagger.Provides.Type.SET_VALUES;
 
-@Module(library = true)
+@Module
 public class DeviceModule {
 
   @Provides(type = SET_VALUES) Set<Device> provideEmptyDevices() {
