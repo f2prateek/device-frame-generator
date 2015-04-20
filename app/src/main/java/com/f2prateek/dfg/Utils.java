@@ -25,6 +25,7 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.annotation.ColorRes;
 import com.f2prateek.ln.Ln;
+import java.io.File;
 import java.io.IOException;
 
 public class Utils {
@@ -34,7 +35,6 @@ public class Utils {
   }
 
   // Color
-
   public static int getColor(Context context, @ColorRes int resourceId, int defaultColor) {
     // Workaround for http://crashes.to/s/88afcd93aba
     try {
@@ -46,13 +46,8 @@ public class Utils {
   }
 
   // Strings
-
   public static boolean isBlank(CharSequence string) {
     return (string == null || string.toString().trim().length() == 0);
-  }
-
-  public static String valueOrDefault(String string, String defaultString) {
-    return isBlank(string) ? defaultString : string;
   }
 
   public static String truncateAt(String string, int length) {
@@ -88,6 +83,13 @@ public class Utils {
     Ln.i(externalStorageWriteable ? "Storage writeable" : "Storage not writeable");
 
     return (externalStorageAvailable && externalStorageWriteable);
+  }
+
+  /** Ensures that a directory is created in the given location, throws an IOException otherwise. */
+  public static void createDirectory(File location) throws IOException {
+    if (!(location.exists() || location.mkdirs() || location.isDirectory())) {
+      throw new IOException("Could not create directory at " + location);
+    }
   }
 
   // Bitmap
@@ -131,5 +133,27 @@ public class Utils {
     Resources resources = context.getResources();
     String packageName = context.getPackageName();
     return resources.getIdentifier(resourceName, "drawable", packageName);
+  }
+
+  /**
+   * Scale the bitmap down so that it's smallest dimension is {@code minSize}. If {@code bitmap} is
+   * smaller than this, than it will simply be returned.
+   */
+  public static Bitmap scaleBitmapDown(Bitmap bitmap, int minSize) {
+    final int minDimension = Math.min(bitmap.getWidth(), bitmap.getHeight());
+
+    if (minDimension <= minSize) {
+      // If the bitmap is small enough already, just return it
+      return bitmap;
+    }
+
+    final float scaleRatio = minSize / (float) minDimension;
+    return Bitmap.createScaledBitmap(bitmap, Math.round(bitmap.getWidth() * scaleRatio),
+        Math.round(bitmap.getHeight() * scaleRatio), false);
+  }
+
+  /** Recycle the given {@code bitmap} if it is not null. */
+  public static void recycleBitmap(Bitmap bitmap) {
+    if (bitmap != null) bitmap.recycle();
   }
 }

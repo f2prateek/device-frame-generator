@@ -24,8 +24,10 @@ dependencies {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
+  // Support Library
   compile 'com.android.support:support-v13:21.0.3'
   compile 'com.android.support:support-v4:21.0.3'
+  compile 'com.android.support:palette-v7:21.0.3'
 
   // Utilities
   compile 'com.squareup:otto:1.3.5'
@@ -47,7 +49,8 @@ dependencies {
 
   // Reporting
   compile('com.segment.analytics.android:analytics:3.0.2') {
-    transitive = true;
+    transitive = true
+    exclude group: 'com.segment.analytics.android', module: 'analytics-integration-leanplum'
   }
   compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
     transitive = true;
@@ -114,6 +117,10 @@ android {
 
     buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
     buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+
+    // Renderscript support http://bit.ly/1G9c1HQ
+    renderscriptTargetApi 19
+    renderscriptSupportModeEnabled true
   }
 
   compileOptions {

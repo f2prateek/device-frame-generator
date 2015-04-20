@@ -21,8 +21,8 @@ import javax.inject.Qualifier;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** Identifies whether the first launch of the application. */
+/** Identifies the user preference of what color should be used to color the background. */
 @Qualifier
 @Retention(RUNTIME)
-public @interface FirstRun {
+public @interface CustomBackgroundColor {
 }

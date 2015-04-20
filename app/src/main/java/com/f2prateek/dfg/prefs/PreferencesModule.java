@@ -17,7 +17,10 @@
 package com.f2prateek.dfg.prefs;
 
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import com.f2prateek.dfg.prefs.model.BooleanPreference;
+import com.f2prateek.dfg.prefs.model.EnumPreference;
+import com.f2prateek.dfg.prefs.model.IntPreference;
 import com.f2prateek.dfg.prefs.model.StringPreference;
 import dagger.Module;
 import dagger.Provides;
@@ -29,28 +32,54 @@ public class PreferencesModule {
   private static final boolean DEFAULT_GLARE_ENABLED = true; // Glare drawn
   private static final boolean DEFAULT_SHADOW_ENABLED = true; // Shadow drawn
 
+  private static final String KEY_FIRST_RUN = "KEY_FIRST_RUN";
   private static final String KEY_PREF_DEFAULT_DEVICE_ID = "KEY_PREF_DEFAULT_DEVICE_ID";
   private static final String KEY_PREF_OPTION_GLARE = "KEY_PREF_OPTION_GLARE";
   private static final String KEY_PREF_OPTION_SHADOW = "KEY_PREF_OPTION_SHADOW";
-  private static final String KEY_FIRST_RUN = "KEY_FIRST_RUN";
+  private static final String KEY_BLUR_BACKGROUND = "KEY_PREF_OPTION_BLUR_BACKGROUND";
+  private static final String KEY_COLOR_BACKGROUND = "KEY_PREF_OPTION_COLOR_BACKGROUND";
+  private static final String KEY_BACKGROUND_COLOR = "KEY_PREF_OPTION_BACKGROUND_COLOR";
+  private static final String KEY_CUSTOM_BACKGROUND_COLOR =
+      "KEY_PREF_OPTION_CUSTOM_BACKGROUND_COLOR";
 
-  @Provides @Singleton @DefaultDevice
+  @Provides @Singleton @FirstRun //
+  BooleanPreference provideFirstRun(SharedPreferences sharedPreferences) {
+    return new BooleanPreference(sharedPreferences, KEY_FIRST_RUN, true);
+  }
+
+  @Provides @Singleton @DefaultDevice //
   StringPreference provideDefaultDevice(SharedPreferences sharedPreferences) {
     return new StringPreference(sharedPreferences, KEY_PREF_DEFAULT_DEVICE_ID, DEFAULT_DEVICE_ID);
   }
 
-  @Provides @Singleton @GlareEnabled
+  @Provides @Singleton @GlareEnabled //
   BooleanPreference provideGlareEnabled(SharedPreferences sharedPreferences) {
     return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_GLARE, DEFAULT_GLARE_ENABLED);
   }
 
-  @Provides @Singleton @ShadowEnabled
+  @Provides @Singleton @ShadowEnabled //
   BooleanPreference provideShadowEnabled(SharedPreferences sharedPreferences) {
     return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_SHADOW, DEFAULT_SHADOW_ENABLED);
   }
 
-  @Provides @Singleton @FirstRun
-  BooleanPreference provideFirstRun(SharedPreferences sharedPreferences) {
-    return new BooleanPreference(sharedPreferences, KEY_FIRST_RUN, true);
+  @Provides @Singleton @BlurBackgroundEnabled //
+  BooleanPreference provideBlurBackgroundEnabled(SharedPreferences sharedPreferences) {
+    return new BooleanPreference(sharedPreferences, KEY_BLUR_BACKGROUND, false);
+  }
+
+  @Provides @Singleton @ColorBackgroundEnabled //
+  BooleanPreference provideColorBackgroundEnabled(SharedPreferences sharedPreferences) {
+    return new BooleanPreference(sharedPreferences, KEY_COLOR_BACKGROUND, false);
+  }
+
+  @Provides @Singleton @BackgroundColor EnumPreference<BackgroundColor.Option> //
+  provideBackgroundColorOptionPreference(SharedPreferences sharedPreferences) {
+    return new EnumPreference<>(sharedPreferences, KEY_BACKGROUND_COLOR,
+        BackgroundColor.Option.CUSTOM, BackgroundColor.Option.class);
+  }
+
+  @Provides @Singleton @CustomBackgroundColor IntPreference //
+  provideCustomBackgroundColorPreference(SharedPreferences sharedPreferences) {
+    return new IntPreference(sharedPreferences, KEY_CUSTOM_BACKGROUND_COLOR, Color.DKGRAY);
   }
 }

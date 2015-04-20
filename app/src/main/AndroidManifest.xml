@@ -42,6 +42,10 @@
     </activity>
 
     <activity
+        android:name=".ui.activities.DFGPreferencesActivity"
+        android:launchMode="singleTop"/>
+
+    <activity
         android:name=".ui.activities.ReceiverActivity"
         android:configChanges="orientation|keyboardHidden|screenSize"
         android:theme="@android:style/Theme.Translucent.NoTitleBar"

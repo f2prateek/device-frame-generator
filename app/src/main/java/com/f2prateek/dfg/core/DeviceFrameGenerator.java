@@ -16,45 +16,69 @@
 
 package com.f2prateek.dfg.core;
 
+import android.annotation.SuppressLint;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v7.graphics.Palette;
+import android.support.v8.renderscript.Allocation;
+import android.support.v8.renderscript.Element;
+import android.support.v8.renderscript.RenderScript;
+import android.support.v8.renderscript.ScriptIntrinsicBlur;
 import android.text.TextUtils;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
+import com.f2prateek.dfg.Utils;
 import com.f2prateek.dfg.model.Bounds;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.Orientation;
-import com.f2prateek.dfg.Utils;
+import com.f2prateek.dfg.prefs.BackgroundColor;
 import com.f2prateek.ln.Ln;
 import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import static com.f2prateek.dfg.Utils.createDirectory;
+import static com.f2prateek.dfg.Utils.recycleBitmap;
+import static com.f2prateek.dfg.Utils.scaleBitmapDown;
+
 public class DeviceFrameGenerator {
 
+  @SuppressLint("SimpleDateFormat") private static final DateFormat DATE_FORMAT =
+      new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
   private final Context context;
   private final Callback callback;
   private final Device device;
   private final boolean withShadow;
   private final boolean withGlare;
+  private final boolean colorBackground;
+  private final boolean blurBackground;
+  private final BackgroundColor.Option backgroundColorOption;
+  private final int customBackgroundColor;
 
   public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow,
-      boolean withGlare) {
-    this.context = context;
+      boolean withGlare, boolean colorBackground, boolean blurBackground,
+      BackgroundColor.Option backgroundColorOption, int customBackgroundColor) {
+    this.context = context.getApplicationContext();
     this.callback = callback;
     this.device = device;
     this.withShadow = withShadow;
     this.withGlare = withGlare;
+    this.colorBackground = colorBackground;
+    this.blurBackground = blurBackground;
+    this.backgroundColorOption = backgroundColorOption;
+    this.customBackgroundColor = customBackgroundColor;
   }
 
   /**
@@ -109,28 +133,12 @@ public class DeviceFrameGenerator {
       callback.failedImage(r.getString(R.string.failed_match_dimensions_title),
           r.getString(R.string.failed_match_dimensions_text, device.portSize().x(),
               device.portSize().y(), screenshot.getHeight(), screenshot.getWidth()),
-          r.getString(R.string.device_chosen, device.name())
-      );
+          r.getString(R.string.device_chosen, device.name()));
       return;
     }
 
-    final Bitmap background = Utils.decodeResource(context,
-        device.getBackgroundStringResourceName(orientation.getId()));
-    final Bitmap glare =
-        Utils.decodeResource(context, device.getGlareStringResourceName(orientation.getId()));
-    final Bitmap shadow = Utils.decodeResource(context,
-        device.getShadowStringResourceName(orientation.getId()));
-
-    Canvas frame;
-    if (withShadow) {
-      frame = new Canvas(shadow);
-      frame.drawBitmap(background, 0f, 0f, null);
-    } else {
-      frame = new Canvas(background);
-    }
-
-    final Bounds offset;
-
+    // Calculate the offset for the screenshot depending on the orientation, and scale if necessary
+    Bounds offset;
     if (orientation == Orientation.PORTRAIT) {
       screenshot =
           Bitmap.createScaledBitmap(screenshot, device.portSize().x(), device.portSize().y(),
@@ -142,10 +150,76 @@ public class DeviceFrameGenerator {
               false);
       offset = device.landOffset();
     }
-    frame.drawBitmap(screenshot, offset.x(), offset.y(), null);
 
+    // Get the frame for the orientation
+    Bitmap frame =
+        Utils.decodeResource(context, device.getBackgroundStringResourceName(orientation.getId()));
+
+    // Generate a bitmap to draw into
+    Bitmap generatedBitmap = Bitmap.createBitmap(frame.getWidth() + (frame.getWidth() / 10),
+        frame.getHeight() + (frame.getHeight() / 10), Bitmap.Config.ARGB_8888);
+    Canvas generatedCanvas = new Canvas(generatedBitmap);
+
+    // Generate a background
+    if (colorBackground) {
+      int color = getBackgroundColor(screenshot);
+      generatedCanvas.drawColor(color);
+    } else if (blurBackground) {
+      Bitmap downscaledScreenshot = scaleBitmapDown(screenshot, 100);
+
+      // Create an empty bitmap with the same size of the bitmap we want to blur
+      Bitmap blurredScreenshot =
+          Bitmap.createBitmap(downscaledScreenshot.getWidth(), downscaledScreenshot.getHeight(),
+              Bitmap.Config.ARGB_8888);
+
+      // Instantiate a new Renderscript
+      RenderScript renderScript = RenderScript.create(context);
+
+      // Create an Intrinsic Blur Script using the Renderscript
+      ScriptIntrinsicBlur blurScript =
+          ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+      blurScript.setRadius(25);
+
+      // Create the in/out Allocations with the Renderscript and the in/out bitmaps
+      Allocation allIn = Allocation.createFromBitmap(renderScript, downscaledScreenshot);
+      Allocation allOut = Allocation.createFromBitmap(renderScript, blurredScreenshot);
+
+      // Perform the Renderscript
+      blurScript.setInput(allIn);
+      blurScript.forEach(allOut);
+
+      // Copy the final bitmap created by the out Allocation to the blurredScreenshot
+      allOut.copyTo(blurredScreenshot);
+
+      Rect bounds = new Rect();
+      bounds.set(0, 0, generatedBitmap.getWidth(), generatedBitmap.getHeight());
+      generatedCanvas.drawBitmap(blurredScreenshot, null, bounds, null);
+
+      //After finishing everything, we destroy the Renderscript.
+      renderScript.destroy();
+
+      recycleBitmap(downscaledScreenshot);
+    }
+
+    // Draw the shadow if enabled
+    Bitmap shadow = null;
+    if (withShadow) {
+      shadow =
+          Utils.decodeResource(context, device.getShadowStringResourceName(orientation.getId()));
+      generatedCanvas.drawBitmap(shadow, 0f, 0f, null);
+    }
+
+    // Draw the frame
+    generatedCanvas.drawBitmap(frame, 0f, 0f, null);
+
+    // Draw the screenshot
+    generatedCanvas.drawBitmap(screenshot, offset.x(), offset.y(), null);
+
+    // Draw the glare if enabled
+    Bitmap glare = null;
     if (withGlare) {
-      frame.drawBitmap(glare, 0f, 0f, null);
+      glare = Utils.decodeResource(context, device.getGlareStringResourceName(orientation.getId()));
+      generatedCanvas.drawBitmap(glare, 0f, 0f, null);
     }
 
     ImageMetadata imageMetadata = prepareMetadata();
@@ -160,21 +234,17 @@ public class DeviceFrameGenerator {
     values.put(MediaStore.Images.ImageColumns.DATE_MODIFIED, imageMetadata.imageTime);
     values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/png");
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-      values.put(MediaStore.Images.ImageColumns.WIDTH, background.getWidth());
-      values.put(MediaStore.Images.ImageColumns.HEIGHT, background.getHeight());
+      values.put(MediaStore.Images.ImageColumns.WIDTH, frame.getWidth());
+      values.put(MediaStore.Images.ImageColumns.HEIGHT, frame.getHeight());
     }
     Uri frameUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
     try {
-      if (frameUri == null || TextUtils.getTrimmedLength(frame.toString()) == 0) {
+      if (frameUri == null || TextUtils.getTrimmedLength(generatedCanvas.toString()) == 0) {
         throw new IOException("Content Resolved could not save image");
       }
       OutputStream out = resolver.openOutputStream(frameUri);
-      if (withShadow) {
-        shadow.compress(Bitmap.CompressFormat.PNG, 100, out);
-      } else {
-        background.compress(Bitmap.CompressFormat.PNG, 100, out);
-      }
+      generatedBitmap.compress(Bitmap.CompressFormat.PNG, 100, out);
       out.flush();
       out.close();
     } catch (IOException e) {
@@ -184,10 +254,11 @@ public class DeviceFrameGenerator {
           r.getString(R.string.unknown_error_text), null);
       return;
     } finally {
-      screenshot.recycle();
-      background.recycle();
-      glare.recycle();
-      shadow.recycle();
+      recycleBitmap(screenshot);
+      recycleBitmap(frame);
+      recycleBitmap(glare);
+      recycleBitmap(shadow);
+      recycleBitmap(generatedBitmap);
     }
 
     // update file size in the database
@@ -201,6 +272,30 @@ public class DeviceFrameGenerator {
     callback.doneImage(frameUri);
   }
 
+  int getBackgroundColor(Bitmap screenshot) {
+    if (backgroundColorOption == BackgroundColor.Option.CUSTOM) {
+      return customBackgroundColor;
+    } else {
+      Palette palette = Palette.generate(screenshot);
+      switch (backgroundColorOption) {
+        case VIBRANT:
+          return palette.getVibrantColor(customBackgroundColor);
+        case VIBRANT_DARK:
+          return palette.getDarkVibrantColor(customBackgroundColor);
+        case VIBRANT_LIGHT:
+          return palette.getLightVibrantColor(customBackgroundColor);
+        case MUTED:
+          return palette.getMutedColor(customBackgroundColor);
+        case MUTED_DARK:
+          return palette.getDarkMutedColor(customBackgroundColor);
+        case MUTED_LIGHT:
+          return palette.getLightMutedColor(customBackgroundColor);
+        default:
+          throw new IllegalArgumentException("Unhandled color option");
+      }
+    }
+  }
+
   /**
    * Prepare the metadata for our image.
    *
@@ -209,19 +304,29 @@ public class DeviceFrameGenerator {
   ImageMetadata prepareMetadata() {
     ImageMetadata imageMetadata = new ImageMetadata();
     imageMetadata.imageTime = System.currentTimeMillis();
-    String imageDate =
-        new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss").format(new Date(imageMetadata.imageTime));
-    String imageDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
-        .getAbsolutePath();
-    File dfgDir = new File(imageDir, AppConstants.DFG_DIR_NAME);
-    dfgDir.mkdirs();
+    String imageDate = DATE_FORMAT.format(new Date(imageMetadata.imageTime));
+    File dfgDir = createFramesFolder();
     imageMetadata.imageFileName = String.format(AppConstants.DFG_FILE_NAME_TEMPLATE, imageDate);
     imageMetadata.imageFilePath = new File(dfgDir, imageMetadata.imageFileName).getAbsolutePath();
     return imageMetadata;
   }
 
+  File createFramesFolder() {
+    File dfgDir = new File(
+        Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
+            .getAbsolutePath(), AppConstants.DFG_DIR_NAME);
+    try {
+      createDirectory(dfgDir);
+    } catch (IOException e) {
+      Ln.e(e);
+      throw new AssertionError("Could not create folder " + dfgDir);
+    }
+    return dfgDir;
+  }
+
   // Views should have these methods to notify the user.
   public interface Callback {
+
     void startingImage(Bitmap screenshot);
 
     void failedImage(String title, String text, String extra);
@@ -230,6 +335,7 @@ public class DeviceFrameGenerator {
   }
 
   public class ImageMetadata {
+
     String imageFileName;
     String imageFilePath;
     long imageTime;

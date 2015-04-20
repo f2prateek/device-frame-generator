@@ -47,8 +47,7 @@ public class DFGApplication extends Application {
   @Inject @FirstRun BooleanPreference firstRun;
   @Inject Analytics analytics;
 
-  @Override
-  public void onCreate() {
+  @Override public void onCreate() {
     super.onCreate();
 
     // Perform Injection
@@ -69,7 +68,7 @@ public class DFGApplication extends Application {
     }
 
     if (firstRun.get()) {
-      analytics.track("First launch");
+      analytics.track("First Launch");
       Device device = deviceProvider.find(windowManager);
       if (device != null) {
         deviceProvider.saveDefaultDevice(device);
@@ -79,8 +78,7 @@ public class DFGApplication extends Application {
     }
   }
 
-  @DebugLog
-  public void buildApplicationGraphAndInject() {
+  @DebugLog public void buildApplicationGraphAndInject() {
     applicationGraph = ObjectGraph.create(Modules.list(this));
     applicationGraph.inject(this);
   }

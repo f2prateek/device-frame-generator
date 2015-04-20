@@ -36,9 +36,6 @@ import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
-import com.f2prateek.dfg.prefs.GlareEnabled;
-import com.f2prateek.dfg.prefs.ShadowEnabled;
-import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.ui.activities.MainActivity;
 import javax.inject.Inject;
 
@@ -47,28 +44,20 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
 
   public static final String KEY_EXTRA_SCREENSHOT = "KEY_EXTRA_SCREENSHOT";
 
-  @Inject @ShadowEnabled BooleanPreference shadowEnabled;
-  @Inject @GlareEnabled BooleanPreference glareEnabled;
   @Inject Resources resources;
-
   @InjectExtra(KEY_EXTRA_SCREENSHOT) Uri screenshotUri;
-  DeviceFrameGenerator generator;
 
   public GenerateFrameService() {
     super("GenerateFrameService");
   }
 
-  @Override
-  protected void onHandleIntent(Intent intent) {
+  @Override protected void onHandleIntent(Intent intent) {
     super.onHandleIntent(intent);
 
-    generator =
-        new DeviceFrameGenerator(this, this, device, shadowEnabled.get(), glareEnabled.get());
     generator.generateFrame(screenshotUri);
   }
 
-  @Override
-  public void startingImage(Bitmap screenshot) {
+  @Override public void startingImage(Bitmap screenshot) {
     // Create the large notification icon
     int imageWidth = screenshot.getWidth();
     int imageHeight = screenshot.getHeight();
@@ -109,12 +98,10 @@ public class GenerateFrameService extends AbstractGenerateFrameService {
     notificationManager.notify(DFG_NOTIFICATION_ID, n);
   }
 
-  @Override
-  public void doneImage(final Uri imageUri) {
+  @Override public void doneImage(final Uri imageUri) {
     Handler handler = new Handler(Looper.getMainLooper());
     handler.post(new Runnable() {
-      @Override
-      public void run() {
+      @Override public void run() {
         bus.post(new Events.SingleImageProcessed(device, imageUri));
       }
     });

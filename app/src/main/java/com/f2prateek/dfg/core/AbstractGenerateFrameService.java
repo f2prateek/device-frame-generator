@@ -27,6 +27,15 @@ import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
+import com.f2prateek.dfg.prefs.BackgroundColor;
+import com.f2prateek.dfg.prefs.BlurBackgroundEnabled;
+import com.f2prateek.dfg.prefs.ColorBackgroundEnabled;
+import com.f2prateek.dfg.prefs.CustomBackgroundColor;
+import com.f2prateek.dfg.prefs.GlareEnabled;
+import com.f2prateek.dfg.prefs.ShadowEnabled;
+import com.f2prateek.dfg.prefs.model.BooleanPreference;
+import com.f2prateek.dfg.prefs.model.EnumPreference;
+import com.f2prateek.dfg.prefs.model.IntPreference;
 import com.f2prateek.dfg.ui.activities.MainActivity;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
@@ -42,25 +51,36 @@ public abstract class AbstractGenerateFrameService extends IntentService
   @Inject Bus bus;
   @Inject Analytics analytics;
 
+  @Inject @ShadowEnabled BooleanPreference shadowEnabledPreference;
+  @Inject @GlareEnabled BooleanPreference glareEnabledPreference;
+  @Inject @BlurBackgroundEnabled BooleanPreference blurBackgroundPreference;
+  @Inject @ColorBackgroundEnabled BooleanPreference colorBackgroundPreference;
+  @Inject @BackgroundColor EnumPreference<BackgroundColor.Option> backgroundColorOptionPreference;
+  @Inject @CustomBackgroundColor IntPreference customBackgroundColorPreference;
+
   @InjectExtra(KEY_EXTRA_DEVICE) Device device;
   NotificationCompat.Builder notificationBuilder;
+  DeviceFrameGenerator generator;
 
   public AbstractGenerateFrameService(String name) {
     super(name);
   }
 
-  @Override
-  public void onCreate() {
+  @Override public void onCreate() {
     super.onCreate();
     ((DFGApplication) getApplication()).inject(this);
   }
 
-  @Override
-  protected void onHandleIntent(Intent intent) {
+  @Override protected void onHandleIntent(Intent intent) {
     Dart.inject(this, intent.getExtras());
     Properties properties = new Properties();
     device.into(properties);
     analytics.track("Generating Frame", properties);
+
+    generator = new DeviceFrameGenerator(this, this, device, shadowEnabledPreference.get(),
+        glareEnabledPreference.get(), colorBackgroundPreference.get(),
+        blurBackgroundPreference.get(), backgroundColorOptionPreference.get(),
+        customBackgroundColorPreference.get());
   }
 
   /**
@@ -70,8 +90,7 @@ public abstract class AbstractGenerateFrameService extends IntentService
    * @param text Text of the notification.
    * @param extra Extra information to show to user.
    */
-  @Override
-  public void failedImage(String title, String text, String extra) {
+  @Override public void failedImage(String title, String text, String extra) {
     analytics.track("Frame Generation Error",
         new Properties().putValue("title", title).putValue("text", text).putValue("extra", extra));
     Notification notification = new NotificationCompat.Builder(this) //
@@ -79,10 +98,9 @@ public abstract class AbstractGenerateFrameService extends IntentService
         .setContentTitle(title)
         .setContentText(text)
         .setStyle(new NotificationCompat.BigTextStyle() //
-                .setBigContentTitle(title) //
-                .bigText(text) //
-                .setSummaryText(extra)
-        )
+            .setBigContentTitle(title) //
+            .bigText(text) //
+            .setSummaryText(extra))
         .setSmallIcon(R.drawable.ic_action_error)
         .setWhen(System.currentTimeMillis())
         .setAutoCancel(true)

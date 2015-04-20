@@ -21,8 +21,8 @@ import javax.inject.Qualifier;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** Identifies whether the first launch of the application. */
+/** Identifies the user preference of whether to blur the screenshot as a background. */
 @Qualifier
 @Retention(RUNTIME)
-public @interface FirstRun {
+public @interface BlurBackgroundEnabled {
 }

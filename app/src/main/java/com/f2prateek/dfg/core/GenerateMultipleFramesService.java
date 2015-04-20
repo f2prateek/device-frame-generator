@@ -30,9 +30,6 @@ import android.support.v4.app.NotificationCompat;
 import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
-import com.f2prateek.dfg.prefs.GlareEnabled;
-import com.f2prateek.dfg.prefs.ShadowEnabled;
-import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.ui.activities.MainActivity;
 import java.util.ArrayList;
 import javax.inject.Inject;
@@ -41,24 +38,17 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
 
   public static final String KEY_EXTRA_SCREENSHOTS = "KEY_EXTRA_SCREENSHOTS";
 
-  @Inject @ShadowEnabled BooleanPreference shadowEnabled;
-  @Inject @GlareEnabled BooleanPreference glareEnabled;
   @Inject Resources resources;
 
   @InjectExtra(KEY_EXTRA_SCREENSHOTS) ArrayList<Uri> imageUris;
   ArrayList<Uri> processedImageUris;
-  DeviceFrameGenerator generator;
 
   public GenerateMultipleFramesService() {
     super("GenerateMultipleFramesService");
   }
 
-  @Override
-  protected void onHandleIntent(Intent intent) {
+  @Override protected void onHandleIntent(Intent intent) {
     super.onHandleIntent(intent);
-
-    generator =
-        new DeviceFrameGenerator(this, this, device, shadowEnabled.get(), glareEnabled.get());
 
     notifyStarting();
     processedImageUris = new ArrayList<>();
@@ -85,26 +75,22 @@ public class GenerateMultipleFramesService extends AbstractGenerateFrameService 
     notificationManager.notify(DFG_NOTIFICATION_ID, n);
   }
 
-  @Override
-  public void startingImage(Bitmap screenshot) {
+  @Override public void startingImage(Bitmap screenshot) {
     // Don't really do anything
   }
 
-  @Override
-  public void doneImage(Uri imageUri) {
+  @Override public void doneImage(Uri imageUri) {
     processedImageUris.add(imageUri);
     notificationBuilder.setContentText(
         getResources().getString(R.string.processing_image, processedImageUris.size(),
-            imageUris.size())
-    ).setProgress(imageUris.size(), processedImageUris.size(), false);
+            imageUris.size())).setProgress(imageUris.size(), processedImageUris.size(), false);
     notificationManager.notify(DFG_NOTIFICATION_ID, notificationBuilder.build());
   }
 
   public void notifyFinished() {
     Handler handler = new Handler(Looper.getMainLooper());
     handler.post(new Runnable() {
-      @Override
-      public void run() {
+      @Override public void run() {
         bus.post(new Events.MultipleImagesProcessed(device, processedImageUris));
       }
     });
