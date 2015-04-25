@@ -63,5 +63,14 @@
       android:layout_gravity="start|center_vertical"
       style="@style/Widget.DFG.PreferenceActivity.RowWidget"/>
 
+  <!-- Background Color  -->
+  <TextView
+      android:layout_gravity="start|end|center_vertical"
+      android:text="@string/background_color_preference"
+      style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
+  <Spinner
+      android:id="@+id/background_color_preference"
+      android:layout_gravity="start|end|center_vertical"/>
+
 
 </GridLayout>

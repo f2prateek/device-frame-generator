@@ -2,6 +2,9 @@ package com.f2prateek.dfg.ui.activities;
 
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 import android.widget.Switch;
 import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
@@ -17,6 +20,7 @@ import com.f2prateek.dfg.prefs.ShadowEnabled;
 import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.prefs.model.EnumPreference;
 import com.f2prateek.dfg.prefs.model.IntPreference;
+import com.f2prateek.dfg.ui.EnumAdapter;
 import com.f2prateek.ln.Ln;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Traits;
@@ -41,6 +45,7 @@ public class DFGPreferencesActivity extends BaseActivity {
   @InjectView(R.id.glare_preference) Switch glarePreferenceSwitch;
   @InjectView(R.id.blur_background_preference) Switch blurBackgroundPreferenceSwitch;
   @InjectView(R.id.color_background_preference) Switch colorBackgroundPreferenceSwitch;
+  @InjectView(R.id.background_color_preference) Spinner backgroundColorPreferenceSpinner;
 
   /** Flag to suppress preference listeners from being invoked during initialization. */
   boolean initializing;
@@ -57,11 +62,36 @@ public class DFGPreferencesActivity extends BaseActivity {
     initBooleanPreferenceSwitch(glarePreferenceSwitch, glareEnabledPreference);
     initBooleanPreferenceSwitch(blurBackgroundPreferenceSwitch, blurBackgroundEnabledPreference);
     initBooleanPreferenceSwitch(colorBackgroundPreferenceSwitch, colorBackgroundEnabledPreference);
+    initBackgroundColorAdapter();
     initializing = false;
   }
 
   private void initBooleanPreferenceSwitch(Switch preferenceSwitch, BooleanPreference preference) {
     preferenceSwitch.setChecked(preference.get());
+  }
+
+  private void initBackgroundColorAdapter() {
+    final EnumAdapter<BackgroundColor.Option> backgroundColorAdapter =
+        new EnumAdapter<>(this, BackgroundColor.Option.class);
+    backgroundColorPreferenceSpinner.setAdapter(backgroundColorAdapter);
+    final BackgroundColor.Option backgroundColorValue = backgroundColorOptionPreference.get();
+    backgroundColorPreferenceSpinner.setSelection(backgroundColorValue.ordinal());
+    backgroundColorPreferenceSpinner.setOnItemSelectedListener(
+        new AdapterView.OnItemSelectedListener() {
+          @Override
+          public void onItemSelected(AdapterView<?> adapterView, View view, int position, long id) {
+            BackgroundColor.Option selected = backgroundColorAdapter.getItem(position);
+            if (selected != backgroundColorOptionPreference.get()) {
+              Ln.d("Setting background color to %s", selected);
+              backgroundColorOptionPreference.set(selected);
+            } else {
+              Ln.d("Ignoring re-selection of background color %s", selected);
+            }
+          }
+
+          @Override public void onNothingSelected(AdapterView<?> adapterView) {
+          }
+        });
   }
 
   @OnCheckedChanged(R.id.shadow_preference) void onShadowPreferenceChanged() {

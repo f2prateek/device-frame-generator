@@ -79,4 +79,5 @@
   <string name="color_background_preference">Color Background</string>
   <string name="color_background_enabled">Background will be colored.</string>
   <string name="color_background_disabled">Background will not be colored.</string>
+  <string name="background_color_preference">Background Color</string>
 </resources>

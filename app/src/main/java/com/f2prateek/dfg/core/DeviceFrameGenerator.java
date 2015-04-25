@@ -180,43 +180,10 @@ public class DeviceFrameGenerator {
     // Draw the background
     if (colorBackgroundEnabled) {
       int color = getBackgroundColor(screenshot);
+      Ln.d("Using background color %s.", color);
       generatedCanvas.drawColor(color);
     } else if (blurBackgroundEnabled) {
-      Bitmap downscaledScreenshot = scaleBitmapDown(screenshot, 200);
-
-      // Create an empty bitmap with the same size of the bitmap we want to blur
-      Bitmap blurredScreenshot =
-          Bitmap.createBitmap(downscaledScreenshot.getWidth(), downscaledScreenshot.getHeight(),
-              Bitmap.Config.ARGB_8888);
-
-      // Instantiate a new Renderscript
-      RenderScript renderScript = RenderScript.create(context);
-
-      // Create an Intrinsic Blur Script using the Renderscript
-      ScriptIntrinsicBlur blurScript =
-          ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-      blurScript.setRadius(backgroundBlurRadius);
-
-      // Create the in/out Allocations with the Renderscript and the in/out bitmaps
-      Allocation allIn = Allocation.createFromBitmap(renderScript, downscaledScreenshot);
-      Allocation allOut = Allocation.createFromBitmap(renderScript, blurredScreenshot);
-
-      // Perform the Renderscript
-      blurScript.setInput(allIn);
-      blurScript.forEach(allOut);
-
-      // Copy the final bitmap created by the out Allocation to the blurredScreenshot
-      allOut.copyTo(blurredScreenshot);
-
-      // Draw the blurred screenshot into our canvas
-      Rect bounds = new Rect();
-      bounds.set(0, 0, generatedBitmap.getWidth(), generatedBitmap.getHeight());
-      generatedCanvas.drawBitmap(blurredScreenshot, null, bounds, null);
-
-      // After finishing everything, we destroy the Renderscript.
-      renderScript.destroy();
-
-      recycleBitmap(downscaledScreenshot);
+      drawBlur(generatedCanvas, screenshot, generatedBitmap);
     }
 
     // Draw the shadow if enabled
@@ -240,23 +207,19 @@ public class DeviceFrameGenerator {
       generatedCanvas.drawBitmap(glare, leftOffset, topOffset, null);
     }
 
+    // Prepare data about the image
     ImageMetadata imageMetadata = prepareMetadata();
-    // Save the screenshot to the MediaStore
     ContentValues values = new ContentValues();
     ContentResolver resolver = context.getContentResolver();
-    values.put(MediaStore.Images.ImageColumns.DATA, imageMetadata.imageFilePath);
-    values.put(MediaStore.Images.ImageColumns.TITLE, imageMetadata.imageFileName);
-    values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, imageMetadata.imageFileName);
-    values.put(MediaStore.Images.ImageColumns.DATE_TAKEN, imageMetadata.imageTime);
-    values.put(MediaStore.Images.ImageColumns.DATE_ADDED, imageMetadata.imageTime);
-    values.put(MediaStore.Images.ImageColumns.DATE_MODIFIED, imageMetadata.imageTime);
+    imageMetadata.copyTo(values);
     values.put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/png");
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
       values.put(MediaStore.Images.ImageColumns.WIDTH, frame.getWidth());
       values.put(MediaStore.Images.ImageColumns.HEIGHT, frame.getHeight());
     }
-    Uri frameUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
+    // Save the screenshot to the MediaStore
+    Uri frameUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
     try {
       if (frameUri == null) {
         throw new IOException("Content Resolved could not save image");
@@ -279,15 +242,52 @@ public class DeviceFrameGenerator {
       recycleBitmap(generatedBitmap);
     }
 
-    // update file size in the database
+    // Update file size in the database
     values.clear();
     values.put(MediaStore.Images.ImageColumns.SIZE, new File(imageMetadata.imageFilePath).length());
     resolver.update(frameUri, values, null, null);
 
     Ln.d("Generated for %s at %s with uri %s", device.name(), imageMetadata.imageFilePath,
         frameUri);
-
     callback.doneImage(frameUri);
+  }
+
+  private void drawBlur(Canvas canvas, Bitmap screenshot, Bitmap generatedBitmap) {
+    Bitmap downscaledScreenshot = scaleBitmapDown(screenshot, 200);
+
+    // Create an empty bitmap with the same size of the bitmap we want to blur
+    Bitmap blurredScreenshot =
+        Bitmap.createBitmap(downscaledScreenshot.getWidth(), downscaledScreenshot.getHeight(),
+            Bitmap.Config.ARGB_8888);
+
+    // Instantiate a new Renderscript
+    RenderScript renderScript = RenderScript.create(context);
+
+    // Create an Intrinsic Blur Script using the Renderscript
+    ScriptIntrinsicBlur blurScript =
+        ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
+    blurScript.setRadius(backgroundBlurRadius);
+
+    // Create the in/out Allocations with the Renderscript and the in/out bitmaps
+    Allocation allIn = Allocation.createFromBitmap(renderScript, downscaledScreenshot);
+    Allocation allOut = Allocation.createFromBitmap(renderScript, blurredScreenshot);
+
+    // Perform the Renderscript
+    blurScript.setInput(allIn);
+    blurScript.forEach(allOut);
+
+    // Copy the final bitmap created by the out Allocation to the blurredScreenshot
+    allOut.copyTo(blurredScreenshot);
+
+    // Draw the blurred screenshot into our canvas
+    Rect bounds = new Rect();
+    bounds.set(0, 0, generatedBitmap.getWidth(), generatedBitmap.getHeight());
+    canvas.drawBitmap(blurredScreenshot, null, bounds, null);
+
+    // After finishing everything, we destroy the Renderscript.
+    renderScript.destroy();
+
+    recycleBitmap(downscaledScreenshot);
   }
 
   int getBackgroundColor(Bitmap screenshot) {
@@ -353,9 +353,17 @@ public class DeviceFrameGenerator {
   }
 
   public class ImageMetadata {
-
     String imageFileName;
     String imageFilePath;
     long imageTime;
+
+    void copyTo(ContentValues values) {
+      values.put(MediaStore.Images.ImageColumns.DATA, imageFilePath);
+      values.put(MediaStore.Images.ImageColumns.TITLE, imageFileName);
+      values.put(MediaStore.Images.ImageColumns.DISPLAY_NAME, imageFileName);
+      values.put(MediaStore.Images.ImageColumns.DATE_TAKEN, imageTime);
+      values.put(MediaStore.Images.ImageColumns.DATE_ADDED, imageTime);
+      values.put(MediaStore.Images.ImageColumns.DATE_MODIFIED, imageTime);
+    }
   }
 }
