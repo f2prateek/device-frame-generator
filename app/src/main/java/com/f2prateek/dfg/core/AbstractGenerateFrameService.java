@@ -55,8 +55,8 @@ public abstract class AbstractGenerateFrameService extends IntentService
 
   @Inject @ShadowEnabled BooleanPreference shadowEnabledPreference;
   @Inject @GlareEnabled BooleanPreference glareEnabledPreference;
-  @Inject @BlurBackgroundEnabled BooleanPreference blurBackgroundPreference;
-  @Inject @ColorBackgroundEnabled BooleanPreference colorBackgroundPreference;
+  @Inject @BlurBackgroundEnabled BooleanPreference blurBackgroundEnabledPreference;
+  @Inject @ColorBackgroundEnabled BooleanPreference colorBackgroundEnabledPreference;
   @Inject @BackgroundColor EnumPreference<BackgroundColor.Option> backgroundColorOptionPreference;
   @Inject @CustomBackgroundColor IntPreference customBackgroundColorPreference;
   @Inject @BackgroundPaddingPercentage IntPreference backgroundPaddingPercentagePreference;
@@ -82,8 +82,8 @@ public abstract class AbstractGenerateFrameService extends IntentService
     analytics.track("Generating Frame", properties);
 
     generator = new DeviceFrameGenerator(this, this, device, shadowEnabledPreference.get(),
-        glareEnabledPreference.get(), colorBackgroundPreference.get(),
-        blurBackgroundPreference.get(), backgroundColorOptionPreference.get(),
+        glareEnabledPreference.get(), colorBackgroundEnabledPreference.get(),
+        blurBackgroundEnabledPreference.get(), backgroundColorOptionPreference.get(),
         customBackgroundColorPreference.get(), backgroundPaddingPercentagePreference.get(),
         backgroundBlurRadiusPreference.get());
   }

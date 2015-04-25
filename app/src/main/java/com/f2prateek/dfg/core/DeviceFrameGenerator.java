@@ -59,28 +59,28 @@ public class DeviceFrameGenerator {
   private final Context context;
   private final Callback callback;
   private final Device device;
-  private final boolean withShadow;
-  private final boolean withGlare;
-  private final boolean colorBackground;
-  private final boolean blurBackground;
+  private final boolean shadowEnabled;
+  private final boolean glareEnabled;
+  private final boolean colorBackgroundEnabled;
+  private final boolean blurBackgroundEnabled;
   private final BackgroundColor.Option backgroundColorOption;
   private final int customBackgroundColor;
   private final int backgroundPaddingPercentage;
   private final int backgroundBlurRadius;
 
-  public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow,
-      boolean withGlare, boolean colorBackground, boolean blurBackground,
-      BackgroundColor.Option backgroundColorOption, int customBackgroundColor,
-      int backgroundPaddingPercentage, int backgroundBlurRadius) {
+  public DeviceFrameGenerator(Context context, Callback callback, Device device,
+      boolean shadowEnabled, boolean glareEnabled, boolean colorBackgroundEnabled,
+      boolean blurBackgroundEnabled, BackgroundColor.Option backgroundColorOption,
+      int customBackgroundColor, int backgroundPaddingPercentage, int backgroundBlurRadius) {
     this.backgroundPaddingPercentage = backgroundPaddingPercentage;
     this.backgroundBlurRadius = backgroundBlurRadius;
     this.context = context.getApplicationContext();
     this.callback = callback;
     this.device = device;
-    this.withShadow = withShadow;
-    this.withGlare = withGlare;
-    this.colorBackground = colorBackground;
-    this.blurBackground = blurBackground;
+    this.shadowEnabled = shadowEnabled;
+    this.glareEnabled = glareEnabled;
+    this.colorBackgroundEnabled = colorBackgroundEnabled;
+    this.blurBackgroundEnabled = blurBackgroundEnabled;
     this.backgroundColorOption = backgroundColorOption;
     this.customBackgroundColor = customBackgroundColor;
   }
@@ -92,8 +92,8 @@ public class DeviceFrameGenerator {
    */
   public void generateFrame(Uri screenshotUri) {
     Ln.d("Generating for %s %s and %s from uri %s.", device.name(),
-        withGlare ? " with glare " : " without glare ",
-        withShadow ? " with shadow " : " without shadow ", screenshotUri);
+        glareEnabled ? " with glare " : " without glare ",
+        shadowEnabled ? " with shadow " : " without shadow ", screenshotUri);
 
     if (screenshotUri == null) {
       Resources r = context.getResources();
@@ -165,7 +165,7 @@ public class DeviceFrameGenerator {
     // Generated bitmap dimensions w/ padding
     int generatedBitmapWidth = frame.getWidth();
     int generatedBitmapHeight = frame.getHeight();
-    if (colorBackground || blurBackground) {
+    if (colorBackgroundEnabled || blurBackgroundEnabled) {
       leftOffset = frame.getWidth() * backgroundPaddingPercentage / 100;
       topOffset = frame.getHeight() * backgroundPaddingPercentage / 100;
       generatedBitmapWidth += (leftOffset * 2);
@@ -178,10 +178,10 @@ public class DeviceFrameGenerator {
     Canvas generatedCanvas = new Canvas(generatedBitmap);
 
     // Draw the background
-    if (colorBackground) {
+    if (colorBackgroundEnabled) {
       int color = getBackgroundColor(screenshot);
       generatedCanvas.drawColor(color);
-    } else if (blurBackground) {
+    } else if (blurBackgroundEnabled) {
       Bitmap downscaledScreenshot = scaleBitmapDown(screenshot, 200);
 
       // Create an empty bitmap with the same size of the bitmap we want to blur
@@ -221,7 +221,7 @@ public class DeviceFrameGenerator {
 
     // Draw the shadow if enabled
     Bitmap shadow = null;
-    if (withShadow) {
+    if (shadowEnabled) {
       shadow =
           Utils.decodeResource(context, device.getShadowStringResourceName(orientation.getId()));
       generatedCanvas.drawBitmap(shadow, leftOffset, topOffset, null);
@@ -235,7 +235,7 @@ public class DeviceFrameGenerator {
 
     // Draw the glare if enabled
     Bitmap glare = null;
-    if (withGlare) {
+    if (glareEnabled) {
       glare = Utils.decodeResource(context, device.getGlareStringResourceName(orientation.getId()));
       generatedCanvas.drawBitmap(glare, leftOffset, topOffset, null);
     }

@@ -6,7 +6,9 @@ import android.widget.Switch;
 import butterknife.InjectView;
 import butterknife.OnCheckedChanged;
 import com.f2prateek.dfg.R;
+import com.f2prateek.dfg.prefs.BackgroundBlurRadius;
 import com.f2prateek.dfg.prefs.BackgroundColor;
+import com.f2prateek.dfg.prefs.BackgroundPaddingPercentage;
 import com.f2prateek.dfg.prefs.BlurBackgroundEnabled;
 import com.f2prateek.dfg.prefs.ColorBackgroundEnabled;
 import com.f2prateek.dfg.prefs.CustomBackgroundColor;
@@ -32,6 +34,8 @@ public class DFGPreferencesActivity extends BaseActivity {
   @Inject @ColorBackgroundEnabled BooleanPreference colorBackgroundEnabledPreference;
   @Inject @BackgroundColor EnumPreference<BackgroundColor.Option> backgroundColorOptionPreference;
   @Inject @CustomBackgroundColor IntPreference customBackgroundColorPreference;
+  @Inject @BackgroundPaddingPercentage IntPreference backgroundPaddingPercentagePreference;
+  @Inject @BackgroundBlurRadius IntPreference backgroundBlurRadiusPreference;
 
   @InjectView(R.id.shadow_preference) Switch shadowPreferenceSwitch;
   @InjectView(R.id.glare_preference) Switch glarePreferenceSwitch;
