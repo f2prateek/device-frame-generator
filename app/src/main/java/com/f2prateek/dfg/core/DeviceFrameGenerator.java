@@ -163,7 +163,7 @@ public class DeviceFrameGenerator {
             frame.getHeight() + (frame.getHeight() / backgroundPadding), Bitmap.Config.ARGB_8888);
     Canvas generatedCanvas = new Canvas(generatedBitmap);
 
-    // Generate a background
+    // Draw the background
     if (colorBackground) {
       int color = getBackgroundColor(screenshot);
       generatedCanvas.drawColor(color);
@@ -194,11 +194,12 @@ public class DeviceFrameGenerator {
       // Copy the final bitmap created by the out Allocation to the blurredScreenshot
       allOut.copyTo(blurredScreenshot);
 
+      // Draw the blurred screenshot into our canvas
       Rect bounds = new Rect();
       bounds.set(0, 0, generatedBitmap.getWidth(), generatedBitmap.getHeight());
       generatedCanvas.drawBitmap(blurredScreenshot, null, bounds, null);
 
-      //After finishing everything, we destroy the Renderscript.
+      // After finishing everything, we destroy the Renderscript.
       renderScript.destroy();
 
       recycleBitmap(downscaledScreenshot);
