@@ -33,7 +33,6 @@ import android.support.v8.renderscript.Allocation;
 import android.support.v8.renderscript.Element;
 import android.support.v8.renderscript.RenderScript;
 import android.support.v8.renderscript.ScriptIntrinsicBlur;
-import android.text.TextUtils;
 import com.f2prateek.dfg.AppConstants;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.Utils;
@@ -244,7 +243,7 @@ public class DeviceFrameGenerator {
     Uri frameUri = resolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
 
     try {
-      if (frameUri == null || TextUtils.getTrimmedLength(generatedCanvas.toString()) == 0) {
+      if (frameUri == null) {
         throw new IOException("Content Resolved could not save image");
       }
       OutputStream out = resolver.openOutputStream(frameUri);
