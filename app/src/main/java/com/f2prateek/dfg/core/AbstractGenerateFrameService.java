@@ -27,6 +27,7 @@ import com.f2prateek.dart.InjectExtra;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
+import com.f2prateek.dfg.prefs.BackgroundBlurRadius;
 import com.f2prateek.dfg.prefs.BackgroundColor;
 import com.f2prateek.dfg.prefs.BackgroundPadding;
 import com.f2prateek.dfg.prefs.BlurBackgroundEnabled;
@@ -59,6 +60,7 @@ public abstract class AbstractGenerateFrameService extends IntentService
   @Inject @BackgroundColor EnumPreference<BackgroundColor.Option> backgroundColorOptionPreference;
   @Inject @CustomBackgroundColor IntPreference customBackgroundColorPreference;
   @Inject @BackgroundPadding IntPreference backgroundPaddingPreference;
+  @Inject @BackgroundBlurRadius IntPreference backgroundBlurRadiusPreference;
 
   @InjectExtra(KEY_EXTRA_DEVICE) Device device;
   NotificationCompat.Builder notificationBuilder;
@@ -82,7 +84,8 @@ public abstract class AbstractGenerateFrameService extends IntentService
     generator = new DeviceFrameGenerator(this, this, device, shadowEnabledPreference.get(),
         glareEnabledPreference.get(), colorBackgroundPreference.get(),
         blurBackgroundPreference.get(), backgroundColorOptionPreference.get(),
-        customBackgroundColorPreference.get(), backgroundPaddingPreference.get());
+        customBackgroundColorPreference.get(), backgroundPaddingPreference.get(),
+        backgroundBlurRadiusPreference.get());
   }
 
   /**

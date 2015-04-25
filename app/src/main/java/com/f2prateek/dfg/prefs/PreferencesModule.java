@@ -31,7 +31,8 @@ public class PreferencesModule {
   private static final String DEFAULT_DEVICE_ID = "nexus_5"; // Nexus 5
   private static final boolean DEFAULT_GLARE_ENABLED = true; // Glare drawn
   private static final boolean DEFAULT_SHADOW_ENABLED = true; // Shadow drawn
-  private static final int DEFAULT_BACKGROUND_PADDING = 10; // 10% of screenshot size
+  private static final int DEFAULT_BACKGROUND_PADDING = 50; // 50% of screenshot size
+  private static final int DEFAULT_BACKGROUND_BLUR_RADIUS = 25;
 
   private static final String KEY_FIRST_RUN = "KEY_FIRST_RUN";
   private static final String KEY_PREF_DEFAULT_DEVICE_ID = "KEY_PREF_DEFAULT_DEVICE_ID";
@@ -43,6 +44,8 @@ public class PreferencesModule {
   private static final String KEY_PREF_OPTION_CUSTOM_BACKGROUND_COLOR =
       "KEY_PREF_OPTION_CUSTOM_BACKGROUND_COLOR";
   private static final String KEY_PREF_BACKGROUND_PADDING = "KEY_PREF_OPTION_BACKGROUND_PADDING";
+  private static final String KEY_PREF_BACKGROUND_BLUR_RADIUS =
+      "KEY_PREF_OPTION_BACKGROUND_BLUR_RADIUS";
 
   @Provides @Singleton @FirstRun //
   BooleanPreference provideFirstRun(SharedPreferences sharedPreferences) {
@@ -90,5 +93,11 @@ public class PreferencesModule {
   provideBackgroundPaddingPreference(SharedPreferences sharedPreferences) {
     return new IntPreference(sharedPreferences, KEY_PREF_BACKGROUND_PADDING,
         DEFAULT_BACKGROUND_PADDING);
+  }
+
+  @Provides @Singleton @BackgroundBlurRadius IntPreference //
+  provideBackgroundBlurRadiusPreference(SharedPreferences sharedPreferences) {
+    return new IntPreference(sharedPreferences, KEY_PREF_BACKGROUND_BLUR_RADIUS,
+        DEFAULT_BACKGROUND_BLUR_RADIUS);
   }
 }

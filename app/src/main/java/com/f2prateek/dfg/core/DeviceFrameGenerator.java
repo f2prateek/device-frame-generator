@@ -66,12 +66,14 @@ public class DeviceFrameGenerator {
   private final BackgroundColor.Option backgroundColorOption;
   private final int customBackgroundColor;
   private final int backgroundPadding;
+  private final int backgroundBlurRadius;
 
   public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow,
       boolean withGlare, boolean colorBackground, boolean blurBackground,
       BackgroundColor.Option backgroundColorOption, int customBackgroundColor,
-      int backgroundPadding) {
+      int backgroundPadding, int backgroundBlurRadius) {
     this.backgroundPadding = backgroundPadding;
+    this.backgroundBlurRadius = backgroundBlurRadius;
     this.context = context.getApplicationContext();
     this.callback = callback;
     this.device = device;
@@ -158,9 +160,11 @@ public class DeviceFrameGenerator {
         Utils.decodeResource(context, device.getBackgroundStringResourceName(orientation.getId()));
 
     // Generate a bitmap to draw into
+    int widthPadding = frame.getWidth() * backgroundPadding / 100;
+    int heightPadding = frame.getHeight() * backgroundPadding / 100;
     Bitmap generatedBitmap =
-        Bitmap.createBitmap(frame.getWidth() + (frame.getWidth() / backgroundPadding),
-            frame.getHeight() + (frame.getHeight() / backgroundPadding), Bitmap.Config.ARGB_8888);
+        Bitmap.createBitmap(frame.getWidth() + widthPadding, frame.getHeight() + heightPadding,
+            Bitmap.Config.ARGB_8888);
     Canvas generatedCanvas = new Canvas(generatedBitmap);
 
     // Draw the background
@@ -181,7 +185,7 @@ public class DeviceFrameGenerator {
       // Create an Intrinsic Blur Script using the Renderscript
       ScriptIntrinsicBlur blurScript =
           ScriptIntrinsicBlur.create(renderScript, Element.U8_4(renderScript));
-      blurScript.setRadius(25);
+      blurScript.setRadius(backgroundBlurRadius);
 
       // Create the in/out Allocations with the Renderscript and the in/out bitmaps
       Allocation allIn = Allocation.createFromBitmap(renderScript, downscaledScreenshot);
