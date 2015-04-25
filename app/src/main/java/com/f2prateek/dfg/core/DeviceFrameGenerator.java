@@ -66,10 +66,13 @@ public class DeviceFrameGenerator {
   private final boolean blurBackground;
   private final BackgroundColor.Option backgroundColorOption;
   private final int customBackgroundColor;
+  private final int backgroundPadding;
 
   public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow,
       boolean withGlare, boolean colorBackground, boolean blurBackground,
-      BackgroundColor.Option backgroundColorOption, int customBackgroundColor) {
+      BackgroundColor.Option backgroundColorOption, int customBackgroundColor,
+      int backgroundPadding) {
+    this.backgroundPadding = backgroundPadding;
     this.context = context.getApplicationContext();
     this.callback = callback;
     this.device = device;
@@ -156,8 +159,9 @@ public class DeviceFrameGenerator {
         Utils.decodeResource(context, device.getBackgroundStringResourceName(orientation.getId()));
 
     // Generate a bitmap to draw into
-    Bitmap generatedBitmap = Bitmap.createBitmap(frame.getWidth() + (frame.getWidth() / 10),
-        frame.getHeight() + (frame.getHeight() / 10), Bitmap.Config.ARGB_8888);
+    Bitmap generatedBitmap =
+        Bitmap.createBitmap(frame.getWidth() + (frame.getWidth() / backgroundPadding),
+            frame.getHeight() + (frame.getHeight() / backgroundPadding), Bitmap.Config.ARGB_8888);
     Canvas generatedCanvas = new Canvas(generatedBitmap);
 
     // Generate a background

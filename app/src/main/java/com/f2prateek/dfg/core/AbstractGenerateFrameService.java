@@ -28,6 +28,7 @@ import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.BackgroundColor;
+import com.f2prateek.dfg.prefs.BackgroundPadding;
 import com.f2prateek.dfg.prefs.BlurBackgroundEnabled;
 import com.f2prateek.dfg.prefs.ColorBackgroundEnabled;
 import com.f2prateek.dfg.prefs.CustomBackgroundColor;
@@ -57,6 +58,7 @@ public abstract class AbstractGenerateFrameService extends IntentService
   @Inject @ColorBackgroundEnabled BooleanPreference colorBackgroundPreference;
   @Inject @BackgroundColor EnumPreference<BackgroundColor.Option> backgroundColorOptionPreference;
   @Inject @CustomBackgroundColor IntPreference customBackgroundColorPreference;
+  @Inject @BackgroundPadding IntPreference backgroundPaddingPreference;
 
   @InjectExtra(KEY_EXTRA_DEVICE) Device device;
   NotificationCompat.Builder notificationBuilder;
@@ -80,7 +82,7 @@ public abstract class AbstractGenerateFrameService extends IntentService
     generator = new DeviceFrameGenerator(this, this, device, shadowEnabledPreference.get(),
         glareEnabledPreference.get(), colorBackgroundPreference.get(),
         blurBackgroundPreference.get(), backgroundColorOptionPreference.get(),
-        customBackgroundColorPreference.get());
+        customBackgroundColorPreference.get(), backgroundPaddingPreference.get());
   }
 
   /**

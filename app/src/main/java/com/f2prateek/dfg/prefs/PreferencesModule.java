@@ -31,16 +31,18 @@ public class PreferencesModule {
   private static final String DEFAULT_DEVICE_ID = "nexus_5"; // Nexus 5
   private static final boolean DEFAULT_GLARE_ENABLED = true; // Glare drawn
   private static final boolean DEFAULT_SHADOW_ENABLED = true; // Shadow drawn
+  private static final int DEFAULT_BACKGROUND_PADDING = 10; // 10% of screenshot size
 
   private static final String KEY_FIRST_RUN = "KEY_FIRST_RUN";
   private static final String KEY_PREF_DEFAULT_DEVICE_ID = "KEY_PREF_DEFAULT_DEVICE_ID";
   private static final String KEY_PREF_OPTION_GLARE = "KEY_PREF_OPTION_GLARE";
   private static final String KEY_PREF_OPTION_SHADOW = "KEY_PREF_OPTION_SHADOW";
-  private static final String KEY_BLUR_BACKGROUND = "KEY_PREF_OPTION_BLUR_BACKGROUND";
-  private static final String KEY_COLOR_BACKGROUND = "KEY_PREF_OPTION_COLOR_BACKGROUND";
-  private static final String KEY_BACKGROUND_COLOR = "KEY_PREF_OPTION_BACKGROUND_COLOR";
-  private static final String KEY_CUSTOM_BACKGROUND_COLOR =
+  private static final String KEY_PREF_OPTION_BLUR_BACKGROUND = "KEY_PREF_OPTION_BLUR_BACKGROUND";
+  private static final String KEY_PREF_OPTION_COLOR_BACKGROUND = "KEY_PREF_OPTION_COLOR_BACKGROUND";
+  private static final String KEY_PREF_OPTION_BACKGROUND_COLOR = "KEY_PREF_OPTION_BACKGROUND_COLOR";
+  private static final String KEY_PREF_OPTION_CUSTOM_BACKGROUND_COLOR =
       "KEY_PREF_OPTION_CUSTOM_BACKGROUND_COLOR";
+  private static final String KEY_PREF_BACKGROUND_PADDING = "KEY_PREF_OPTION_BACKGROUND_PADDING";
 
   @Provides @Singleton @FirstRun //
   BooleanPreference provideFirstRun(SharedPreferences sharedPreferences) {
@@ -64,22 +66,29 @@ public class PreferencesModule {
 
   @Provides @Singleton @BlurBackgroundEnabled //
   BooleanPreference provideBlurBackgroundEnabled(SharedPreferences sharedPreferences) {
-    return new BooleanPreference(sharedPreferences, KEY_BLUR_BACKGROUND, false);
+    return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_BLUR_BACKGROUND, false);
   }
 
   @Provides @Singleton @ColorBackgroundEnabled //
   BooleanPreference provideColorBackgroundEnabled(SharedPreferences sharedPreferences) {
-    return new BooleanPreference(sharedPreferences, KEY_COLOR_BACKGROUND, false);
+    return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_COLOR_BACKGROUND, false);
   }
 
   @Provides @Singleton @BackgroundColor EnumPreference<BackgroundColor.Option> //
   provideBackgroundColorOptionPreference(SharedPreferences sharedPreferences) {
-    return new EnumPreference<>(sharedPreferences, KEY_BACKGROUND_COLOR,
+    return new EnumPreference<>(sharedPreferences, KEY_PREF_OPTION_BACKGROUND_COLOR,
         BackgroundColor.Option.CUSTOM, BackgroundColor.Option.class);
   }
 
   @Provides @Singleton @CustomBackgroundColor IntPreference //
   provideCustomBackgroundColorPreference(SharedPreferences sharedPreferences) {
-    return new IntPreference(sharedPreferences, KEY_CUSTOM_BACKGROUND_COLOR, Color.DKGRAY);
+    return new IntPreference(sharedPreferences, KEY_PREF_OPTION_CUSTOM_BACKGROUND_COLOR,
+        Color.DKGRAY);
+  }
+
+  @Provides @Singleton @BackgroundPadding IntPreference //
+  provideBackgroundPaddingPreference(SharedPreferences sharedPreferences) {
+    return new IntPreference(sharedPreferences, KEY_PREF_BACKGROUND_PADDING,
+        DEFAULT_BACKGROUND_PADDING);
   }
 }

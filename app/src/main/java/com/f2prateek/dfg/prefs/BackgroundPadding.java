@@ -21,8 +21,11 @@ import javax.inject.Qualifier;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** Identifies the user preference of whether glare should be drawn on the screenshots or not. */
+/**
+ * Identifies the user preference of how much padding (relative to the screenshot size) the
+ * background should have.
+ */
 @Qualifier
 @Retention(RUNTIME)
-public @interface GlareEnabled {
+public @interface BackgroundPadding {
 }
