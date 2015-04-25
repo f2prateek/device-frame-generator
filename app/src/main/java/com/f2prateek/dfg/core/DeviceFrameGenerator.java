@@ -160,11 +160,15 @@ public class DeviceFrameGenerator {
         Utils.decodeResource(context, device.getBackgroundStringResourceName(orientation.getId()));
 
     // Generate a bitmap to draw into
-    int widthPadding = frame.getWidth() * backgroundPadding / 100;
-    int heightPadding = frame.getHeight() * backgroundPadding / 100;
+    int generatedBitmapWidth = frame.getWidth();
+    int generatedBitmapHeight = frame.getHeight();
+    if (colorBackground || blurBackground) {
+      generatedBitmapWidth += frame.getWidth() * backgroundPadding / 100;
+      generatedBitmapHeight += frame.getHeight() * backgroundPadding / 100;
+    }
+
     Bitmap generatedBitmap =
-        Bitmap.createBitmap(frame.getWidth() + widthPadding, frame.getHeight() + heightPadding,
-            Bitmap.Config.ARGB_8888);
+        Bitmap.createBitmap(generatedBitmapWidth, generatedBitmapHeight, Bitmap.Config.ARGB_8888);
     Canvas generatedCanvas = new Canvas(generatedBitmap);
 
     // Draw the background
@@ -172,7 +176,7 @@ public class DeviceFrameGenerator {
       int color = getBackgroundColor(screenshot);
       generatedCanvas.drawColor(color);
     } else if (blurBackground) {
-      Bitmap downscaledScreenshot = scaleBitmapDown(screenshot, 100);
+      Bitmap downscaledScreenshot = scaleBitmapDown(screenshot, 200);
 
       // Create an empty bitmap with the same size of the bitmap we want to blur
       Bitmap blurredScreenshot =

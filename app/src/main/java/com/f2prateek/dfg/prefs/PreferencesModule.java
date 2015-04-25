@@ -32,7 +32,7 @@ public class PreferencesModule {
   private static final boolean DEFAULT_GLARE_ENABLED = true; // Glare drawn
   private static final boolean DEFAULT_SHADOW_ENABLED = true; // Shadow drawn
   private static final int DEFAULT_BACKGROUND_PADDING = 50; // 50% of screenshot size
-  private static final int DEFAULT_BACKGROUND_BLUR_RADIUS = 25;
+  private static final int DEFAULT_BACKGROUND_BLUR_RADIUS = 15;
 
   private static final String KEY_FIRST_RUN = "KEY_FIRST_RUN";
   private static final String KEY_PREF_DEFAULT_DEVICE_ID = "KEY_PREF_DEFAULT_DEVICE_ID";
