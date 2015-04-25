@@ -27,5 +27,5 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  */
 @Qualifier
 @Retention(RUNTIME)
-public @interface BackgroundPadding {
+public @interface BackgroundPaddingPercentage {
 }

@@ -65,14 +65,14 @@ public class DeviceFrameGenerator {
   private final boolean blurBackground;
   private final BackgroundColor.Option backgroundColorOption;
   private final int customBackgroundColor;
-  private final int backgroundPadding;
+  private final int backgroundPaddingPercentage;
   private final int backgroundBlurRadius;
 
   public DeviceFrameGenerator(Context context, Callback callback, Device device, boolean withShadow,
       boolean withGlare, boolean colorBackground, boolean blurBackground,
       BackgroundColor.Option backgroundColorOption, int customBackgroundColor,
-      int backgroundPadding, int backgroundBlurRadius) {
-    this.backgroundPadding = backgroundPadding;
+      int backgroundPaddingPercentage, int backgroundBlurRadius) {
+    this.backgroundPaddingPercentage = backgroundPaddingPercentage;
     this.backgroundBlurRadius = backgroundBlurRadius;
     this.context = context.getApplicationContext();
     this.callback = callback;
@@ -159,14 +159,18 @@ public class DeviceFrameGenerator {
     Bitmap frame =
         Utils.decodeResource(context, device.getBackgroundStringResourceName(orientation.getId()));
 
-    // Generate a bitmap to draw into
+    // Offsets to account for generated background padding
+    float widthOffset = 0f;
+    float heightOffset = 0f;
+    // Generated bitmap dimensions w/ padding
     int generatedBitmapWidth = frame.getWidth();
     int generatedBitmapHeight = frame.getHeight();
     if (colorBackground || blurBackground) {
-      generatedBitmapWidth += frame.getWidth() * backgroundPadding / 100;
-      generatedBitmapHeight += frame.getHeight() * backgroundPadding / 100;
+      generatedBitmapWidth += frame.getWidth() * backgroundPaddingPercentage / 100;
+      generatedBitmapHeight += frame.getHeight() * backgroundPaddingPercentage / 100;
     }
 
+    // Generate a bitmap to draw into
     Bitmap generatedBitmap =
         Bitmap.createBitmap(generatedBitmapWidth, generatedBitmapHeight, Bitmap.Config.ARGB_8888);
     Canvas generatedCanvas = new Canvas(generatedBitmap);
