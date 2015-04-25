@@ -160,14 +160,16 @@ public class DeviceFrameGenerator {
         Utils.decodeResource(context, device.getBackgroundStringResourceName(orientation.getId()));
 
     // Offsets to account for generated background padding
-    float widthOffset = 0f;
-    float heightOffset = 0f;
+    float leftOffset = 0f;
+    float topOffset = 0f;
     // Generated bitmap dimensions w/ padding
     int generatedBitmapWidth = frame.getWidth();
     int generatedBitmapHeight = frame.getHeight();
     if (colorBackground || blurBackground) {
-      generatedBitmapWidth += frame.getWidth() * backgroundPaddingPercentage / 100;
-      generatedBitmapHeight += frame.getHeight() * backgroundPaddingPercentage / 100;
+      leftOffset = frame.getWidth() * backgroundPaddingPercentage / 100;
+      topOffset = frame.getHeight() * backgroundPaddingPercentage / 100;
+      generatedBitmapWidth += (leftOffset * 2);
+      generatedBitmapHeight += (topOffset * 2);
     }
 
     // Generate a bitmap to draw into
@@ -222,20 +224,20 @@ public class DeviceFrameGenerator {
     if (withShadow) {
       shadow =
           Utils.decodeResource(context, device.getShadowStringResourceName(orientation.getId()));
-      generatedCanvas.drawBitmap(shadow, 0f, 0f, null);
+      generatedCanvas.drawBitmap(shadow, leftOffset, topOffset, null);
     }
 
     // Draw the frame
-    generatedCanvas.drawBitmap(frame, 0f, 0f, null);
+    generatedCanvas.drawBitmap(frame, leftOffset, topOffset, null);
 
     // Draw the screenshot
-    generatedCanvas.drawBitmap(screenshot, offset.x(), offset.y(), null);
+    generatedCanvas.drawBitmap(screenshot, leftOffset + offset.x(), topOffset + offset.y(), null);
 
     // Draw the glare if enabled
     Bitmap glare = null;
     if (withGlare) {
       glare = Utils.decodeResource(context, device.getGlareStringResourceName(orientation.getId()));
-      generatedCanvas.drawBitmap(glare, 0f, 0f, null);
+      generatedCanvas.drawBitmap(glare, leftOffset, topOffset, null);
     }
 
     ImageMetadata imageMetadata = prepareMetadata();

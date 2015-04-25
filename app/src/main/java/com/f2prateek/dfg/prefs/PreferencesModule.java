@@ -31,7 +31,7 @@ public class PreferencesModule {
   private static final String DEFAULT_DEVICE_ID = "nexus_5"; // Nexus 5
   private static final boolean DEFAULT_GLARE_ENABLED = true; // Glare drawn
   private static final boolean DEFAULT_SHADOW_ENABLED = true; // Shadow drawn
-  private static final int DEFAULT_BACKGROUND_PADDING_PERCENTAGE = 50; // 50% of screenshot size
+  private static final int DEFAULT_BACKGROUND_PADDING_PERCENTAGE = 10; // 10% of screenshot size
   private static final int DEFAULT_BACKGROUND_BLUR_RADIUS = 15;
 
   private static final String KEY_FIRST_RUN = "KEY_FIRST_RUN";
