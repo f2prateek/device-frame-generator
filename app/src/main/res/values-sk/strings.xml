@@ -22,6 +22,7 @@
   <string name="match_device">Podľa zariadenia</string>
   <string name="glare_preference">Odlesk</string>
   <string name="no_matching_device">Nenašlo sa žiadne podobné zariadenie</string>
+  <string name="background_color_preference">Farba pozadia</string>
 
   <!-- Device Fragment !-->
   <string name="saved_as_default_message">%s nastavené ako predvolené zariadenie.</string>
