@@ -20,7 +20,7 @@ import com.f2prateek.dfg.prefs.ShadowEnabled;
 import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.prefs.model.EnumPreference;
 import com.f2prateek.dfg.prefs.model.IntPreference;
-import com.f2prateek.dfg.ui.EnumAdapter;
+import com.f2prateek.dfg.ui.BackgroundColorOptionAdapter;
 import com.f2prateek.ln.Ln;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Traits;
@@ -71,8 +71,8 @@ public class DFGPreferencesActivity extends BaseActivity {
   }
 
   private void initBackgroundColorAdapter() {
-    final EnumAdapter<BackgroundColor.Option> backgroundColorAdapter =
-        new EnumAdapter<>(this, BackgroundColor.Option.class);
+    final BackgroundColorOptionAdapter backgroundColorAdapter =
+        new BackgroundColorOptionAdapter(this);
     backgroundColorPreferenceSpinner.setAdapter(backgroundColorAdapter);
     final BackgroundColor.Option backgroundColorValue = backgroundColorOptionPreference.get();
     backgroundColorPreferenceSpinner.setSelection(backgroundColorValue.ordinal());

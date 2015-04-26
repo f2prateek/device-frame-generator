@@ -80,4 +80,11 @@
   <string name="color_background_enabled">Background will be colored.</string>
   <string name="color_background_disabled">Background will not be colored.</string>
   <string name="background_color_preference">Background Color</string>
+  <string name="custom_color">Custom</string>
+  <string name="vibrant_color">Vibrant</string>
+  <string name="vibrant_dark_color">Vibrant Dark</string>
+  <string name="vibrant_light_color">Vibrant Light</string>
+  <string name="muted_color">Muted</string>
+  <string name="muted_dark_color">Muted Dark</string>
+  <string name="muted_light_color">Muted Light</string>
 </resources>
