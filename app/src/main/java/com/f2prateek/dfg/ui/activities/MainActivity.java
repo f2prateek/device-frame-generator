@@ -66,8 +66,9 @@ public class MainActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-    getActionBar().setCustomView(R.layout.action_bar_custom);
+    ActionBar actionBar = getActionBar();
+    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+    actionBar.setCustomView(R.layout.action_bar_custom);
 
     analytics.screen(null, "Main");
 
@@ -113,7 +114,7 @@ public class MainActivity extends BaseActivity {
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
       case R.id.menu_preferences:
-        Intent preferenceActivityIntent = new Intent(this, DFGPreferencesActivity.class);
+        Intent preferenceActivityIntent = new Intent(this, UserPreferencesActivity.class);
         startActivity(preferenceActivityIntent);
         return false;
       case R.id.menu_match_device:

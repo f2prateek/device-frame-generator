@@ -1,12 +1,17 @@
 package com.f2prateek.dfg.ui.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.StringRes;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
+import butterknife.ButterKnife;
 import butterknife.InjectView;
+import butterknife.InjectViews;
 import butterknife.OnCheckedChanged;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.prefs.BackgroundBlurRadius;
@@ -22,13 +27,15 @@ import com.f2prateek.dfg.prefs.model.EnumPreference;
 import com.f2prateek.dfg.prefs.model.IntPreference;
 import com.f2prateek.dfg.ui.BackgroundColorOptionAdapter;
 import com.f2prateek.ln.Ln;
+import com.larswerkman.holocolorpicker.ColorPicker;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Traits;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
+import java.util.List;
 import javax.inject.Inject;
 
-public class DFGPreferencesActivity extends BaseActivity {
+public class UserPreferencesActivity extends BaseActivity {
 
   @Inject Analytics analytics;
 
@@ -39,13 +46,44 @@ public class DFGPreferencesActivity extends BaseActivity {
   @Inject @BackgroundColor EnumPreference<BackgroundColor.Option> backgroundColorOptionPreference;
   @Inject @CustomBackgroundColor IntPreference customBackgroundColorPreference;
   @Inject @BackgroundPaddingPercentage IntPreference backgroundPaddingPercentagePreference;
-  @Inject @BackgroundBlurRadius IntPreference backgroundBlurRadiusPreference;
+  @Inject @BackgroundBlurRadius IntPreference backgroundBlurPreference;
 
   @InjectView(R.id.shadow_preference) Switch shadowPreferenceSwitch;
   @InjectView(R.id.glare_preference) Switch glarePreferenceSwitch;
   @InjectView(R.id.blur_background_preference) Switch blurBackgroundPreferenceSwitch;
   @InjectView(R.id.color_background_preference) Switch colorBackgroundPreferenceSwitch;
   @InjectView(R.id.background_color_preference) Spinner backgroundColorPreferenceSpinner;
+  @InjectView(R.id.custom_background_color_preference) ColorPicker
+      customBackgroundColorPreferencePicker;
+  @InjectView(R.id.background_padding_percentage_preference) SeekBar
+      backgroundPaddingPercentagePreferenceSeekBar;
+  @InjectView(R.id.background_blur_preference) SeekBar backgroundBlurPreferenceSeekBar;
+
+  @InjectViews({
+      R.id.background_padding_percentage_preference,
+      R.id.background_padding_percentage_preference_text
+  }) List<View> backgroundPaddingPercentagePreferenceViews;
+  @InjectViews({
+      R.id.background_blur_preference, R.id.background_blur_preference_text
+  }) List<View> backgroundBlurPreferenceViews;
+  @InjectViews({
+      R.id.background_color_preference, R.id.background_color_preference_text,
+      R.id.custom_background_color_preference, R.id.custom_background_color_preference_text
+  }) List<View> colorBackgroundPreferenceViews;
+  @InjectViews({
+      R.id.custom_background_color_preference, R.id.custom_background_color_preference_text
+  }) List<View> customColorBackgroundPreferenceViews;
+
+  private static final ButterKnife.Action<View> HIDE = new ButterKnife.Action<View>() {
+    @Override public void apply(View view, int i) {
+      view.setVisibility(View.GONE);
+    }
+  };
+  private static final ButterKnife.Action<View> SHOW = new ButterKnife.Action<View>() {
+    @Override public void apply(View view, int i) {
+      view.setVisibility(View.VISIBLE);
+    }
+  };
 
   /** Flag to suppress preference listeners from being invoked during initialization. */
   boolean initializing;
@@ -57,20 +95,70 @@ public class DFGPreferencesActivity extends BaseActivity {
 
     inflateView(R.layout.activity_preferences);
 
+    getActionBar().setDisplayHomeAsUpEnabled(true);
+
     initializing = true;
     initBooleanPreferenceSwitch(shadowPreferenceSwitch, shadowEnabledPreference);
     initBooleanPreferenceSwitch(glarePreferenceSwitch, glareEnabledPreference);
     initBooleanPreferenceSwitch(blurBackgroundPreferenceSwitch, blurBackgroundEnabledPreference);
     initBooleanPreferenceSwitch(colorBackgroundPreferenceSwitch, colorBackgroundEnabledPreference);
-    initBackgroundColorAdapter();
+    initBackgroundColorOptionSpinner();
+    initCustomBackgroundColorPicker();
+    // todo: make min and max more reusable - possibly stashed inside IntPreference
+    initIntPreferenceSeekBar(backgroundPaddingPercentagePreferenceSeekBar,
+        backgroundPaddingPercentagePreference, 0, 100);
+    initIntPreferenceSeekBar(backgroundBlurPreferenceSeekBar, backgroundBlurPreference, 0, 25);
+
+    if (blurBackgroundEnabledPreference.get() || colorBackgroundEnabledPreference.get()) {
+      ButterKnife.apply(backgroundPaddingPercentagePreferenceViews, SHOW);
+    } else {
+      ButterKnife.apply(backgroundPaddingPercentagePreferenceViews, HIDE);
+    }
+    if (blurBackgroundEnabledPreference.get()) {
+      ButterKnife.apply(backgroundBlurPreferenceViews, SHOW);
+    } else {
+      ButterKnife.apply(backgroundBlurPreferenceViews, HIDE);
+    }
+    if (colorBackgroundEnabledPreference.get()) {
+      ButterKnife.apply(colorBackgroundPreferenceViews, SHOW);
+      if (backgroundColorOptionPreference.get() == BackgroundColor.Option.CUSTOM) {
+        ButterKnife.apply(customColorBackgroundPreferenceViews, SHOW);
+      } else {
+        ButterKnife.apply(customColorBackgroundPreferenceViews, HIDE);
+      }
+    } else {
+      ButterKnife.apply(colorBackgroundPreferenceViews, HIDE);
+    }
+
     initializing = false;
+  }
+
+  private void initIntPreferenceSeekBar(SeekBar seekBar, final IntPreference preference,
+      final int min, final int max) {
+    int normalizedProgress = preference.get() * (max - min) / 100;
+    seekBar.setProgress(normalizedProgress);
+    seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+      @Override public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        int normalizedValue = progress * (max - min) / 100;
+        Ln.d("Updating preference to %s", normalizedValue);
+        preference.set(normalizedValue);
+      }
+
+      @Override public void onStartTrackingTouch(SeekBar seekBar) {
+        // Ignore
+      }
+
+      @Override public void onStopTrackingTouch(SeekBar seekBar) {
+        // Ignore
+      }
+    });
   }
 
   private void initBooleanPreferenceSwitch(Switch preferenceSwitch, BooleanPreference preference) {
     preferenceSwitch.setChecked(preference.get());
   }
 
-  private void initBackgroundColorAdapter() {
+  private void initBackgroundColorOptionSpinner() {
     final BackgroundColorOptionAdapter backgroundColorAdapter =
         new BackgroundColorOptionAdapter(this);
     backgroundColorPreferenceSpinner.setAdapter(backgroundColorAdapter);
@@ -84,12 +172,29 @@ public class DFGPreferencesActivity extends BaseActivity {
             if (selected != backgroundColorOptionPreference.get()) {
               Ln.d("Setting background color to %s", selected);
               backgroundColorOptionPreference.set(selected);
+              if (selected == BackgroundColor.Option.CUSTOM) {
+                ButterKnife.apply(customColorBackgroundPreferenceViews, SHOW);
+              } else {
+                ButterKnife.apply(customColorBackgroundPreferenceViews, HIDE);
+              }
             } else {
               Ln.d("Ignoring re-selection of background color %s", selected);
             }
           }
 
           @Override public void onNothingSelected(AdapterView<?> adapterView) {
+            // Ignore
+          }
+        });
+  }
+
+  private void initCustomBackgroundColorPicker() {
+    customBackgroundColorPreferencePicker.setColor(customBackgroundColorPreference.get());
+    customBackgroundColorPreferencePicker.setOnColorChangedListener(
+        new ColorPicker.OnColorChangedListener() {
+          @Override public void onColorChanged(int color) {
+            Ln.d("Setting custom background color to %s", color);
+            customBackgroundColorPreference.set(color);
           }
         });
   }
@@ -111,13 +216,21 @@ public class DFGPreferencesActivity extends BaseActivity {
   @OnCheckedChanged(R.id.blur_background_preference) void onBlurBackgroundPreferenceChanged() {
     if (initializing) return;
 
-    boolean newValue = blurBackgroundPreferenceSwitch.isChecked();
+    boolean blurBackgroundEnabled = blurBackgroundPreferenceSwitch.isChecked();
 
     updateBooleanPreference(blurBackgroundPreferenceSwitch, blurBackgroundEnabledPreference,
         "Blur Background", "blur_background_enabled", R.string.blur_background_enabled,
         R.string.blur_background_disabled);
 
-    if (newValue && colorBackgroundEnabledPreference.get()) {
+    if (blurBackgroundEnabled) {
+      ButterKnife.apply(backgroundPaddingPercentagePreferenceViews, SHOW);
+      ButterKnife.apply(backgroundBlurPreferenceViews, SHOW);
+    } else {
+      ButterKnife.apply(backgroundPaddingPercentagePreferenceViews, HIDE);
+      ButterKnife.apply(backgroundBlurPreferenceViews, HIDE);
+    }
+
+    if (blurBackgroundEnabled && colorBackgroundEnabledPreference.get()) {
       colorBackgroundPreferenceSwitch.toggle();
     }
   }
@@ -125,13 +238,21 @@ public class DFGPreferencesActivity extends BaseActivity {
   @OnCheckedChanged(R.id.color_background_preference) void onColorBackgroundPreferenceChanged() {
     if (initializing) return;
 
-    boolean newValue = colorBackgroundPreferenceSwitch.isChecked();
+    boolean colorBackgroundEnabled = colorBackgroundPreferenceSwitch.isChecked();
 
     updateBooleanPreference(colorBackgroundPreferenceSwitch, colorBackgroundEnabledPreference,
         "Color Background", "color_background_enabled", R.string.color_background_enabled,
         R.string.color_background_disabled);
 
-    if (newValue && blurBackgroundEnabledPreference.get()) {
+    if (colorBackgroundEnabled) {
+      ButterKnife.apply(backgroundPaddingPercentagePreferenceViews, SHOW);
+      ButterKnife.apply(colorBackgroundPreferenceViews, SHOW);
+    } else {
+      ButterKnife.apply(backgroundPaddingPercentagePreferenceViews, HIDE);
+      ButterKnife.apply(colorBackgroundPreferenceViews, HIDE);
+    }
+
+    if (colorBackgroundEnabled && blurBackgroundEnabledPreference.get()) {
       blurBackgroundPreferenceSwitch.toggle();
     }
   }
@@ -145,6 +266,7 @@ public class DFGPreferencesActivity extends BaseActivity {
     analytics.track(eventName + " " + (newValue ? "Enabled" : "Disabled"));
     analytics.identify(new Traits().putValue(trait, newValue));
 
+    Crouton.clearCroutonsForActivity(this);
     if (newValue) {
       Crouton.makeText(this, enabledMessage, Style.CONFIRM).show();
     } else {
@@ -152,5 +274,15 @@ public class DFGPreferencesActivity extends BaseActivity {
     }
 
     Ln.d("%s preference updated to %s", eventName, newValue);
+  }
+
+  @Override public boolean onOptionsItemSelected(MenuItem item) {
+    if (item.getItemId() == android.R.id.home) {
+      Intent homeIntent = new Intent(this, MainActivity.class);
+      homeIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+      startActivity(homeIntent);
+      return true;
+    }
+    return super.onOptionsItemSelected(item);
   }
 }

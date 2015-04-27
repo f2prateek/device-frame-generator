@@ -26,8 +26,7 @@ import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
 
-@Module(library = true, complete = false)
-public class PreferencesModule {
+@Module(library = true, complete = false) public class PreferencesModule {
   private static final String DEFAULT_DEVICE_ID = "nexus_5"; // Nexus 5
   private static final boolean DEFAULT_GLARE_ENABLED = true; // Glare drawn
   private static final boolean DEFAULT_SHADOW_ENABLED = true; // Shadow drawn
@@ -81,7 +80,7 @@ public class PreferencesModule {
   @Provides @Singleton @BackgroundColor EnumPreference<BackgroundColor.Option> //
   provideBackgroundColorOptionPreference(SharedPreferences sharedPreferences) {
     return new EnumPreference<>(sharedPreferences, KEY_PREF_OPTION_BACKGROUND_COLOR,
-        BackgroundColor.Option.CUSTOM, BackgroundColor.Option.class);
+        BackgroundColor.Option.MUTED, BackgroundColor.Option.class);
   }
 
   @Provides @Singleton @CustomBackgroundColor IntPreference //

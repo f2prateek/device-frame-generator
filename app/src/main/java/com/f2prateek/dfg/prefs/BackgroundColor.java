@@ -22,16 +22,15 @@ import javax.inject.Qualifier;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /** Identifies the user preference of what color should be used to color the background. */
-@Qualifier
-@Retention(RUNTIME)
+@Qualifier @Retention(RUNTIME)
 public @interface BackgroundColor {
   enum Option {
-    CUSTOM,
     VIBRANT,
     VIBRANT_DARK,
     VIBRANT_LIGHT,
     MUTED,
     MUTED_DARK,
-    MUTED_LIGHT;
+    MUTED_LIGHT,
+    CUSTOM
   }
 }

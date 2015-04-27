@@ -16,61 +16,117 @@
   ~ limitations under the License.
   -->
 
-<GridLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:padding="12dp"
-    android:columnCount="2">
+    android:layout_height="match_parent">
 
-  <!-- Shadow  -->
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="@string/shadow_preference"
-      style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
-  <Switch
-      android:id="@+id/shadow_preference"
-      android:layout_gravity="start|center_vertical"
-      style="@style/Widget.DFG.PreferenceActivity.RowWidget"/>
+  <GridLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="12dp"
+      android:columnCount="2"
+      android:animateLayoutChanges="true">
 
-  <!-- Glare  -->
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="@string/glare_preference"
-      style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
-  <Switch
-      android:id="@+id/glare_preference"
-      android:layout_gravity="start|center_vertical"
-      style="@style/Widget.DFG.PreferenceActivity.RowWidget"/>
+    <TextView
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|end"
+        android:text="Basic"
+        style="@style/Widget.DFG.PreferenceActivity.Header"/>
 
-  <!-- Blur Background  -->
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="@string/blur_background_preference"
-      style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
-  <Switch
-      android:id="@+id/blur_background_preference"
-      android:layout_gravity="start|center_vertical"
-      style="@style/Widget.DFG.PreferenceActivity.RowWidget"/>
+    <!-- Shadow  -->
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="@string/shadow_preference"
+        style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
+    <Switch
+        android:id="@+id/shadow_preference"
+        android:layout_gravity="start|center_vertical"
+        style="@style/Widget.DFG.PreferenceActivity.RowWidget"/>
 
-  <!-- Color Background  -->
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="@string/color_background_preference"
-      style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
-  <Switch
-      android:id="@+id/color_background_preference"
-      android:layout_gravity="start|center_vertical"
-      style="@style/Widget.DFG.PreferenceActivity.RowWidget"/>
+    <!-- Glare  -->
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="@string/glare_preference"
+        style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
+    <Switch
+        android:id="@+id/glare_preference"
+        android:layout_gravity="start|center_vertical"
+        style="@style/Widget.DFG.PreferenceActivity.RowWidget"/>
 
-  <!-- Background Color  -->
-  <TextView
-      android:layout_gravity="start|end|center_vertical"
-      android:text="@string/background_color_preference"
-      style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
-  <Spinner
-      android:id="@+id/background_color_preference"
-      android:layout_gravity="start|end|center_vertical"/>
+    <TextView
+        android:layout_columnSpan="2"
+        android:layout_gravity="start|end"
+        android:text="Background"
+        style="@style/Widget.DFG.PreferenceActivity.Header"/>
+
+    <!-- Background Blur -->
+    <TextView
+        android:id="@+id/background_blur_preference_text"
+        android:layout_gravity="start|end"
+        android:layout_rowSpan="2"
+        android:text="@string/background_blur_preference"
+        style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
+    <SeekBar
+        android:id="@+id/background_blur_preference"
+        android:layout_gravity="start|end"
+        android:layout_rowSpan="2"/>
+
+    <!-- Blur Background  -->
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="@string/blur_background_preference"
+        style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
+    <Switch
+        android:id="@+id/blur_background_preference"
+        android:layout_gravity="start|center_vertical"
+        style="@style/Widget.DFG.PreferenceActivity.RowWidget"/>
+
+    <!-- Color Background Enabled -->
+    <TextView
+        android:layout_gravity="start|end|center_vertical"
+        android:text="@string/color_background_preference"
+        style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
+    <Switch
+        android:id="@+id/color_background_preference"
+        android:layout_gravity="start|center_vertical"
+        style="@style/Widget.DFG.PreferenceActivity.RowWidget"/>
+
+    <!-- Background Color Option -->
+    <TextView
+        android:id="@+id/background_color_preference_text"
+        android:layout_gravity="start|end|center_vertical"
+        android:text="@string/background_color_preference"
+        style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
+    <Spinner
+        android:id="@+id/background_color_preference"
+        android:layout_gravity="start|end|center_vertical"/>
+
+    <!-- Custom Background Color -->
+    <TextView
+        android:id="@+id/custom_background_color_preference_text"
+        android:layout_gravity="start|end|center_vertical"
+        android:layout_columnSpan="2"
+        android:text="@string/custom_background_color_preference"
+        style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
+    <com.larswerkman.holocolorpicker.ColorPicker
+        android:id="@+id/custom_background_color_preference"
+        android:layout_gravity="start|end|center_vertical"
+        android:layout_columnSpan="2"/>
+
+    <!-- Background Padding -->
+    <TextView
+        android:id="@+id/background_padding_percentage_preference_text"
+        android:layout_gravity="start|end"
+        android:layout_rowSpan="2"
+        android:text="@string/background_padding_percentage_preference"
+        style="@style/Widget.DFG.PreferenceActivity.RowTitle"/>
+    <SeekBar
+        android:id="@+id/background_padding_percentage_preference"
+        android:layout_gravity="start|end|center_vertical"
+        android:layout_rowSpan="2"/>
 
 
-</GridLayout>
+  </GridLayout>
+
+</ScrollView>
