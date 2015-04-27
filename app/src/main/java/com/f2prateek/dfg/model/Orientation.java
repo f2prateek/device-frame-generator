@@ -23,7 +23,7 @@ public enum Orientation {
 
   String id;
 
-  private Orientation(String id) {
+  Orientation(String id) {
     this.id = id;
   }
 

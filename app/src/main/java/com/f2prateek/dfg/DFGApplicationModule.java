@@ -46,8 +46,7 @@ import javax.inject.Singleton;
     injects = {
         DFGApplication.class, AbstractGenerateFrameService.class, GenerateFrameService.class,
         GenerateMultipleFramesService.class
-    })
-public class DFGApplicationModule {
+    }) public class DFGApplicationModule {
 
   private final DFGApplication application;
 

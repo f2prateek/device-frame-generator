@@ -63,20 +63,20 @@ public class MainActivity extends BaseActivity {
 
   DeviceFragmentPagerAdapter pagerAdapter;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    getActionBar().setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-    getActionBar().setCustomView(R.layout.action_bar_custom);
+    ActionBar actionBar = getActionBar();
+    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
+    actionBar.setCustomView(R.layout.action_bar_custom);
 
-    analytics.screen(null, "Device");
+    analytics.screen(null, "Main");
 
     inflateView(R.layout.activity_main);
 
     // create our manager instance after the content view is set
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      // This could have been set in the theme as well, the launching animation
+      // Though this could have been set in the theme as well, the launching animation
       // looks a bit jarring (white status bar with white icons on launch)
       // This looks a bit cleaner, turning from black to grey
       setTranslucentStatus(true);
@@ -93,8 +93,7 @@ public class MainActivity extends BaseActivity {
     tabStrip.setViewPager(pager);
   }
 
-  @TargetApi(19)
-  private void setTranslucentStatus(boolean on) {
+  @TargetApi(19) private void setTranslucentStatus(boolean on) {
     Window win = getWindow();
     WindowManager.LayoutParams winParams = win.getAttributes();
     final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
@@ -109,29 +108,20 @@ public class MainActivity extends BaseActivity {
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
     getMenuInflater().inflate(R.menu.activity_main, menu);
-    initMenuItem(menu.findItem(R.id.menu_checkbox_glare), glareEnabled);
-    initMenuItem(menu.findItem(R.id.menu_checkbox_shadow), shadowEnabled);
     return true;
-  }
-
-  void initMenuItem(MenuItem menuItem, BooleanPreference preference) {
-    menuItem.setChecked(preference.get());
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-      // items aren't toggled automatically, so we
-      // just use the opposite of the state we're in
-      case R.id.menu_checkbox_glare:
-        updateGlareSetting(!item.isChecked());
-        return true;
-      case R.id.menu_checkbox_shadow:
-        updateShadowSetting(!item.isChecked());
-        return true;
+      case R.id.menu_preferences:
+        Intent preferenceActivityIntent = new Intent(this, UserPreferencesActivity.class);
+        startActivity(preferenceActivityIntent);
+        return false;
       case R.id.menu_match_device:
         analytics.track("Match Device Menu Item Clicked");
         Device device = deviceProvider.find(windowManager);
         if (device == null) {
+          analytics.track("Device Not Matched");
           Crouton.makeText(this, R.string.no_matching_device, Style.ALERT).show();
         } else {
           pager.setCurrentItem(pagerAdapter.getDeviceIndex(device));
@@ -147,40 +137,7 @@ public class MainActivity extends BaseActivity {
     }
   }
 
-  public void updateGlareSetting(boolean newSettingEnabled) {
-    analytics.track("Glare " + (newSettingEnabled ? "Enabled" : "Disabled"));
-    analytics.identify(new Traits().putValue("glare_enabled", newSettingEnabled));
-
-    updateBooleanPreference(newSettingEnabled, glareEnabled, getString(R.string.glare_enabled),
-        getString(R.string.glare_disabled));
-  }
-
-  public void updateShadowSetting(boolean newSettingEnabled) {
-    analytics.track("Shadow " + (newSettingEnabled ? "Enabled" : "Disabled"));
-    analytics.identify(new Traits().putValue("shadow_enabled", newSettingEnabled));
-
-    updateBooleanPreference(newSettingEnabled, shadowEnabled, getString(R.string.shadow_enabled),
-        getString(R.string.shadow_disabled));
-  }
-
-  /**
-   * Update a boolean preference with the new value.
-   * Displays some text to the user dependending on the preference.
-   */
-  void updateBooleanPreference(boolean newSettingEnabled, BooleanPreference booleanPreference,
-      String enabledText, String disabledText) {
-    booleanPreference.set(newSettingEnabled);
-    if (newSettingEnabled) {
-      Crouton.makeText(this, enabledText, Style.CONFIRM).show();
-    } else {
-      Crouton.makeText(this, disabledText, Style.ALERT).show();
-    }
-    Ln.d("Setting updated to %s", newSettingEnabled);
-    invalidateOptionsMenu();
-  }
-
-  @Subscribe
-  public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
+  @Subscribe public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
     Ln.d("Device updated to %s", event.newDevice.name());
     Properties properties = new Properties();
     event.newDevice.into(properties);
@@ -198,8 +155,7 @@ public class MainActivity extends BaseActivity {
     invalidateOptionsMenu();
   }
 
-  @Subscribe
-  public void onSingleImageProcessed(final Events.SingleImageProcessed event) {
+  @Subscribe public void onSingleImageProcessed(final Events.SingleImageProcessed event) {
     Crouton.makeText(this, getString(R.string.single_screenshot_saved, event.device.name()),
         Style.INFO).setOnClickListener(new View.OnClickListener() {
       @Override public void onClick(View v) {
@@ -211,8 +167,7 @@ public class MainActivity extends BaseActivity {
     }).show();
   }
 
-  @Subscribe
-  public void onMultipleImagesProcessed(final Events.MultipleImagesProcessed event) {
+  @Subscribe public void onMultipleImagesProcessed(final Events.MultipleImagesProcessed event) {
     if (event.uriList.size() == 0) {
       return;
     }

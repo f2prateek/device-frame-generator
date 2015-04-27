@@ -74,5 +74,5 @@
         style="@style/AboutText.Clickable"/>
 
   </LinearLayout>
-  
+
 </ScrollView>

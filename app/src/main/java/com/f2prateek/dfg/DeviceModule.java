@@ -19,18 +19,11 @@ package com.f2prateek.dfg;
 import com.f2prateek.dfg.model.Device;
 import dagger.Module;
 import dagger.Provides;
-import java.util.HashSet;
-import java.util.Set;
 
 import static dagger.Provides.Type.SET;
-import static dagger.Provides.Type.SET_VALUES;
 
 @Module(library = true)
 public class DeviceModule {
-
-  @Provides(type = SET_VALUES) Set<Device> provideEmptyDevices() {
-    return new HashSet<>(); // Empty set to ensure the Set is initialized.
-  }
 
   @Provides(type = SET) Device provideNexusS() {
     return new Device.Builder().setId("nexus_s")
@@ -333,7 +326,7 @@ public class DeviceModule {
         .build();
   }
 
-    @Provides(type = SET) Device provideXiaomiMiNotew() {
+  @Provides(type = SET) Device provideXiaomiMiNotew() {
     return new Device.Builder().setId("xiaomi_minotew")
         .setName("Xiaomi MiNote White")
         .setUrl("http://www.mi.com/minote")

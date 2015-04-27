@@ -33,13 +33,18 @@
     <activity
         android:name=".ui.activities.MainActivity"
         android:label="@string/launcher_name"
-        android:launchMode="singleTop">
+        android:launchMode="singleTop"
+        android:theme="@style/MainActivityTheme">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
         <category android:name="android.intent.category.LAUNCHER"/>
         <category android:name="android.intent.category.DEFAULT"/>
       </intent-filter>
     </activity>
+
+    <activity
+        android:name=".ui.activities.UserPreferencesActivity"
+        android:launchMode="singleTop"/>
 
     <activity
         android:name=".ui.activities.ReceiverActivity"

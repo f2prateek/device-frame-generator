@@ -19,6 +19,7 @@ package com.f2prateek.dfg.ui;
 import android.content.Context;
 import com.f2prateek.dfg.ForApplication;
 import com.f2prateek.dfg.ui.activities.BaseActivity;
+import com.f2prateek.dfg.ui.activities.UserPreferencesActivity;
 import com.f2prateek.dfg.ui.activities.MainActivity;
 import com.f2prateek.dfg.ui.activities.ReceiverActivity;
 import com.f2prateek.dfg.ui.fragments.AboutFragment;
@@ -30,8 +31,8 @@ import javax.inject.Singleton;
 
 @Module(
     injects = {
-        BaseActivity.class, MainActivity.class, ReceiverActivity.class, DeviceFragment.class,
-        AboutFragment.class, AboutFragment.class
+        BaseActivity.class, MainActivity.class, UserPreferencesActivity.class,
+        ReceiverActivity.class, DeviceFragment.class, AboutFragment.class, AboutFragment.class
     },
     complete = false,
     library = true)

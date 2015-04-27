@@ -37,11 +37,9 @@
     <item name="android:windowBackground">@android:color/white</item>
   </style>
 
-  <style name="Widget.DFG.ActionBar"
-      parent="@android:style/Widget.Holo.Light.ActionBar.Solid.Inverse">
-    <item name="android:background">@color/action_bar_color</item>
-    <!-- Suppress the title and icon for launching animation. -->
-    <item name="android:displayOptions"></item>
+  <!-- Main Activity theme. -->
+  <style name="MainActivityTheme" parent="AppTheme">
+    <item name="android:actionBarStyle">@style/Widget.DFG.ActionBar.MainActivity</item>
   </style>
 
 </resources>

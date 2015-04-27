@@ -4,8 +4,8 @@ buildscript {
     maven { url 'https://maven.fabric.io/repo' }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:0.14.4'
-    classpath 'io.fabric.tools:gradle:1.+'
+    classpath 'com.android.tools.build:gradle:1.1.3'
+    classpath 'io.fabric.tools:gradle:1.18.0'
     classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
     classpath 'com.f2prateek.checkstyle:checkstyle:1.0.0'
   }
@@ -24,8 +24,10 @@ dependencies {
     maven { url 'https://oss.sonatype.org/content/repositories/snapshots/' }
   }
 
-  compile 'com.android.support:support-v13:21.0.2'
-  compile 'com.android.support:support-v4:21.0.2'
+  // Support Library
+  compile 'com.android.support:support-v13:21.0.3'
+  compile 'com.android.support:support-v4:21.0.3'
+  compile 'com.android.support:palette-v7:21.0.3'
 
   // Utilities
   compile 'com.squareup:otto:1.3.5'
@@ -44,10 +46,12 @@ dependencies {
   compile 'de.keyboardsurfer.android.widget:crouton:1.8.5@aar'
   compile 'com.readystatesoftware.systembartint:systembartint:1.0.4'
   compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
+  compile 'com.larswerkman:HoloColorPicker:1.5'
 
-  // Analytics
-  compile('com.segment.analytics.android:all:2.4.7-SNAPSHOT') {
-    transitive = true;
+  // Reporting
+  compile('com.segment.analytics.android:analytics:3.0.2') {
+    transitive = true
+    exclude group: 'com.segment.analytics.android', module: 'analytics-integration-leanplum'
   }
   compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
     transitive = true;
@@ -59,8 +63,8 @@ dependencies {
 }
 
 def versionMajor = 3
-def versionMinor = 1
-def versionPatch = 1
+def versionMinor = 2
+def versionPatch = 0
 // bump for dogfood builds, public betas, etc.
 def versionBuild = 0
 
@@ -71,8 +75,8 @@ def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
 
 android {
-  compileSdkVersion 21
-  buildToolsVersion '21.1.1'
+  compileSdkVersion 22
+  buildToolsVersion '21.1.2'
 
   dexOptions {
     // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
@@ -106,7 +110,7 @@ android {
 
   defaultConfig {
     minSdkVersion 14
-    targetSdkVersion 21
+    targetSdkVersion 22
 
     applicationId "com.f2prateek.dfg"
     versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
@@ -114,6 +118,10 @@ android {
 
     buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
     buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+
+    // Renderscript support http://bit.ly/1G9c1HQ
+    renderscriptTargetApi 19
+    renderscriptSupportModeEnabled true
   }
 
   compileOptions {

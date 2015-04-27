@@ -24,6 +24,7 @@
     android:padding="12dp"
     android:columnCount="2"
     tools:ignore="UselessParent|HardcodedText">
+
   <LinearLayout
       android:layout_columnSpan="2"
       android:layout_gravity="start|end"
@@ -82,7 +83,7 @@
       android:text="User Interface"
       style="@style/Widget.DFG.DebugDrawer.Header"
       />
-
+2
   <TextView
       android:layout_gravity="start|end|center_vertical"
       android:text="Animations"

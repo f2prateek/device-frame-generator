@@ -27,15 +27,15 @@ import com.f2prateek.dfg.ui.AppContainer;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
-@SuppressLint("Registered") public class BaseActivity extends Activity {
+@SuppressLint("Registered")
+public class BaseActivity extends Activity {
 
   @Inject Bus bus;
   @Inject AppContainer appContainer;
 
   private ViewGroup container;
 
-  @Override
-  protected void onCreate(Bundle savedInstanceState) {
+  @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
     DFGApplication app = DFGApplication.get(this);
@@ -46,7 +46,7 @@ import javax.inject.Inject;
     container = appContainer.get(this, app);
   }
 
-  void inflateView(int layoutId) {
+  protected void inflateView(int layoutId) {
     getLayoutInflater().inflate(layoutId, container);
     injectViews();
   }
@@ -55,14 +55,12 @@ import javax.inject.Inject;
     ButterKnife.inject(this);
   }
 
-  @Override
-  protected void onResume() {
+  @Override protected void onResume() {
     super.onResume();
     bus.register(this);
   }
 
-  @Override
-  protected void onPause() {
+  @Override protected void onPause() {
     bus.unregister(this);
     super.onPause();
   }
