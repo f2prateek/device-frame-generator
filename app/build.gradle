@@ -48,10 +48,11 @@ dependencies {
   compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
   compile 'com.larswerkman:HoloColorPicker:1.5'
 
+  compile 'com.f2prateek.rx.android.preferences:rx-preferences:0.1.0-SNAPSHOT'
+
   // Reporting
-  compile('com.segment.analytics.android:analytics:3.0.2') {
+  compile('com.segment.analytics.android:analytics-core:3.1.0') {
     transitive = true
-    exclude group: 'com.segment.analytics.android', module: 'analytics-integration-leanplum'
   }
   compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
     transitive = true;

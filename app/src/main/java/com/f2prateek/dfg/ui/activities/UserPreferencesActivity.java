@@ -22,9 +22,6 @@ import com.f2prateek.dfg.prefs.ColorBackgroundEnabled;
 import com.f2prateek.dfg.prefs.CustomBackgroundColor;
 import com.f2prateek.dfg.prefs.GlareEnabled;
 import com.f2prateek.dfg.prefs.ShadowEnabled;
-import com.f2prateek.dfg.prefs.model.BooleanPreference;
-import com.f2prateek.dfg.prefs.model.EnumPreference;
-import com.f2prateek.dfg.prefs.model.IntPreference;
 import com.f2prateek.dfg.ui.BackgroundColorOptionAdapter;
 import com.f2prateek.ln.Ln;
 import com.larswerkman.holocolorpicker.ColorPicker;
@@ -34,6 +31,9 @@ import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import java.util.List;
 import javax.inject.Inject;
+import rx.android.preferences.BooleanPreference;
+import rx.android.preferences.EnumPreference;
+import rx.android.preferences.IntPreference;
 
 public class UserPreferencesActivity extends BaseActivity {
 

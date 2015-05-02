@@ -18,15 +18,16 @@ package com.f2prateek.dfg.prefs;
 
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import com.f2prateek.dfg.prefs.model.BooleanPreference;
-import com.f2prateek.dfg.prefs.model.EnumPreference;
-import com.f2prateek.dfg.prefs.model.IntPreference;
-import com.f2prateek.dfg.prefs.model.StringPreference;
 import dagger.Module;
 import dagger.Provides;
 import javax.inject.Singleton;
+import rx.android.preferences.BooleanPreference;
+import rx.android.preferences.EnumPreference;
+import rx.android.preferences.IntPreference;
+import rx.android.preferences.StringPreference;
 
-@Module(library = true, complete = false) public class PreferencesModule {
+@Module(library = true, complete = false)
+public class PreferencesModule {
   private static final String DEFAULT_DEVICE_ID = "nexus_5"; // Nexus 5
   private static final boolean DEFAULT_GLARE_ENABLED = true; // Glare drawn
   private static final boolean DEFAULT_SHADOW_ENABLED = true; // Shadow drawn
@@ -79,8 +80,8 @@ import javax.inject.Singleton;
 
   @Provides @Singleton @BackgroundColor EnumPreference<BackgroundColor.Option> //
   provideBackgroundColorOptionPreference(SharedPreferences sharedPreferences) {
-    return new EnumPreference<>(sharedPreferences, KEY_PREF_OPTION_BACKGROUND_COLOR,
-        BackgroundColor.Option.MUTED, BackgroundColor.Option.class);
+    return new EnumPreference<>(sharedPreferences, BackgroundColor.Option.class,
+        KEY_PREF_OPTION_BACKGROUND_COLOR, BackgroundColor.Option.MUTED);
   }
 
   @Provides @Singleton @CustomBackgroundColor IntPreference //

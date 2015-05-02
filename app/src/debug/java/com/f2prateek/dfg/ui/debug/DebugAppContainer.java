@@ -38,6 +38,7 @@ import butterknife.InjectView;
 import com.f2prateek.dfg.BuildConfig;
 import com.f2prateek.dfg.DFGApplication;
 import com.f2prateek.dfg.R;
+import com.f2prateek.dfg.Utils;
 import com.f2prateek.dfg.prefs.debug.AnimationSpeed;
 import com.f2prateek.dfg.prefs.debug.PicassoDebugging;
 import com.f2prateek.dfg.prefs.debug.PixelGridEnabled;
@@ -45,10 +46,7 @@ import com.f2prateek.dfg.prefs.debug.PixelRatioEnabled;
 import com.f2prateek.dfg.prefs.debug.ScalpelEnabled;
 import com.f2prateek.dfg.prefs.debug.ScalpelWireframeEnabled;
 import com.f2prateek.dfg.prefs.debug.SeenDebugDrawer;
-import com.f2prateek.dfg.prefs.model.BooleanPreference;
-import com.f2prateek.dfg.prefs.model.IntPreference;
 import com.f2prateek.dfg.ui.AppContainer;
-import com.f2prateek.dfg.Utils;
 import com.f2prateek.ln.Ln;
 import com.jakewharton.madge.MadgeFrameLayout;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
@@ -64,13 +62,14 @@ import java.util.Set;
 import java.util.TimeZone;
 import javax.inject.Inject;
 import javax.inject.Singleton;
+import rx.android.preferences.BooleanPreference;
+import rx.android.preferences.IntPreference;
 
 import static butterknife.ButterKnife.findById;
 
 /**
  * An {@link com.f2prateek.dfg.ui.AppContainer} for debug builds which wrap the content view with a
- * sliding drawer on
- * the right that holds all of the debug information and settings.
+ * sliding drawer on the right that holds all of the debug information and settings.
  */
 @Singleton
 public class DebugAppContainer implements AppContainer {
@@ -358,7 +357,7 @@ public class DebugAppContainer implements AppContainer {
   }
 
   private static String getSizeString(long bytes) {
-    String[] units = new String[] {"B", "KB", "MB", "GB"};
+    String[] units = new String[] { "B", "KB", "MB", "GB" };
     int unit = 0;
     while (bytes >= 1024) {
       bytes /= 1024;

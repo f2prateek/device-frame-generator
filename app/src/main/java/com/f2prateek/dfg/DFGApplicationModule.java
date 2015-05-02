@@ -30,7 +30,6 @@ import com.f2prateek.dfg.core.GenerateMultipleFramesService;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.DefaultDevice;
 import com.f2prateek.dfg.prefs.PreferencesModule;
-import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.dfg.ui.UiModule;
 import com.segment.analytics.Analytics;
 import com.squareup.otto.Bus;
@@ -38,6 +37,7 @@ import dagger.Module;
 import dagger.Provides;
 import java.util.Set;
 import javax.inject.Singleton;
+import rx.android.preferences.StringPreference;
 
 @Module(
     includes = {
@@ -46,7 +46,8 @@ import javax.inject.Singleton;
     injects = {
         DFGApplication.class, AbstractGenerateFrameService.class, GenerateFrameService.class,
         GenerateMultipleFramesService.class
-    }) public class DFGApplicationModule {
+    })
+public class DFGApplicationModule {
 
   private final DFGApplication application;
 

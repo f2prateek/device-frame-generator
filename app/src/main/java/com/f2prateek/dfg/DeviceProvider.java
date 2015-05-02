@@ -23,7 +23,6 @@ import android.view.WindowManager;
 import com.f2prateek.dfg.model.Bounds;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.Orientation;
-import com.f2prateek.dfg.prefs.model.StringPreference;
 import com.f2prateek.ln.Ln;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -31,9 +30,9 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import rx.android.preferences.StringPreference;
 
 public class DeviceProvider {
-
   private final Map<String, Device> deviceMap;
   private final StringPreference defaultDevice;
   private List<Device> deviceList;
@@ -92,8 +91,7 @@ public class DeviceProvider {
    *
    * Returns null if not found.
    */
-  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
-  public Device find(WindowManager windowManager) {
+  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1) public Device find(WindowManager windowManager) {
     // look up devices by {@link android.os.Build#PRODUCT} value
     Device device = findByProductId(Build.PRODUCT);
     if (device != null) {

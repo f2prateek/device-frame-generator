@@ -23,7 +23,6 @@ import android.widget.Toast;
 import com.crashlytics.android.Crashlytics;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.FirstRun;
-import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.ui.ActivityHierarchyServer;
 import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
@@ -33,6 +32,7 @@ import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
 import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
+import rx.android.preferences.BooleanPreference;
 
 import static com.f2prateek.dfg.Utils.isStorageAvailable;
 

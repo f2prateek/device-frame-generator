@@ -34,9 +34,6 @@ import com.f2prateek.dfg.DeviceProvider;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
-import com.f2prateek.dfg.prefs.GlareEnabled;
-import com.f2prateek.dfg.prefs.ShadowEnabled;
-import com.f2prateek.dfg.prefs.model.BooleanPreference;
 import com.f2prateek.dfg.ui.DeviceFragmentPagerAdapter;
 import com.f2prateek.dfg.ui.fragments.AboutFragment;
 import com.f2prateek.ln.Ln;
@@ -52,8 +49,6 @@ import javax.inject.Inject;
 import static com.f2prateek.dfg.Utils.getColor;
 
 public class MainActivity extends BaseActivity {
-  @Inject @GlareEnabled BooleanPreference glareEnabled;
-  @Inject @ShadowEnabled BooleanPreference shadowEnabled;
   @Inject DeviceProvider deviceProvider;
   @Inject WindowManager windowManager;
   @Inject Analytics analytics;

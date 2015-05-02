@@ -35,14 +35,14 @@ import com.f2prateek.dfg.prefs.ColorBackgroundEnabled;
 import com.f2prateek.dfg.prefs.CustomBackgroundColor;
 import com.f2prateek.dfg.prefs.GlareEnabled;
 import com.f2prateek.dfg.prefs.ShadowEnabled;
-import com.f2prateek.dfg.prefs.model.BooleanPreference;
-import com.f2prateek.dfg.prefs.model.EnumPreference;
-import com.f2prateek.dfg.prefs.model.IntPreference;
 import com.f2prateek.dfg.ui.activities.MainActivity;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
+import rx.android.preferences.BooleanPreference;
+import rx.android.preferences.EnumPreference;
+import rx.android.preferences.IntPreference;
 
 public abstract class AbstractGenerateFrameService extends IntentService
     implements DeviceFrameGenerator.Callback {
