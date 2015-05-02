@@ -87,6 +87,20 @@ public class DeviceModule {
         .build();
   }
 
+  @Provides(type = SET) Device provideNexus6() {
+    return new Device.Builder().setId("nexus_6")
+        .setName("Nexus 6")
+        .setUrl("https://www.google.com/nexus/6")
+        .setPhysicalSize(5.9f)
+        .setDensity("XXXHDPI")
+        .setLandOffset(318, 77)
+        .setPortOffset(229, 239)
+        .setPortSize(1440, 2560)
+        .setRealSize(1440, 2560)
+        .addProductId("shamu")
+        .build();
+  }
+
   @Provides(type = SET) Device provideNexus72013() {
     return new Device.Builder().setId("nexus_7_2013")
         .setName("Nexus 7 (2013)")

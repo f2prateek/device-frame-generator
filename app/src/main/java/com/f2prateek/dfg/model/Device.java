@@ -23,8 +23,7 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 
-@AutoValue
-public abstract class Device implements Parcelable {
+@AutoValue public abstract class Device implements Parcelable {
 
   // Unique identifier for each device, also used to identify resources.
   public abstract String id();
@@ -47,7 +46,7 @@ public abstract class Device implements Parcelable {
   // offset of screenshot from edges when in portrait
   public abstract Bounds portOffset();
 
-  // Screen resolution in portrait
+  // Screen resolution in portrait for the device frame
   public abstract Bounds portSize();
 
   // Screen resolution in portrait, that will be displayed to the user.
