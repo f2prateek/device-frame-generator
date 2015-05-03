@@ -152,6 +152,12 @@ public class Utils {
         Math.round(bitmap.getHeight() * scaleRatio), false);
   }
 
+  /** Scale the bitmap down so that it's excludes the borders at {@code padding}. */
+  public static Bitmap cropBitmap(Bitmap bitmap, int padding) {
+    return Bitmap.createBitmap(bitmap, padding, padding, bitmap.getWidth() - (padding * 2),
+        bitmap.getHeight() - (padding * 2));
+  }
+
   /** Recycle the given {@code bitmap} if it is not null. */
   public static void recycleBitmap(Bitmap bitmap) {
     if (bitmap != null) bitmap.recycle();

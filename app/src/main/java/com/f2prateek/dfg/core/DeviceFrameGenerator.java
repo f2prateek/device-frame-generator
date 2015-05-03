@@ -49,6 +49,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static com.f2prateek.dfg.Utils.createDirectory;
+import static com.f2prateek.dfg.Utils.cropBitmap;
 import static com.f2prateek.dfg.Utils.recycleBitmap;
 import static com.f2prateek.dfg.Utils.scaleBitmapDown;
 
@@ -253,11 +254,17 @@ public class DeviceFrameGenerator {
   }
 
   private void drawBlur(Canvas canvas, Bitmap screenshot, Bitmap generatedBitmap) {
-    Bitmap downscaledScreenshot = scaleBitmapDown(screenshot, 200);
+    Bitmap downscaledScreenshot = scaleBitmapDown(screenshot, 250);
+    Bitmap croppedScreenshot = cropBitmap(downscaledScreenshot, 25);
+    // Recycle the temporary downscaled screenshot. This check is probably never true for
+    // the images we work with.
+    if (downscaledScreenshot != screenshot) {
+      recycleBitmap(downscaledScreenshot);
+    }
 
     // Create an empty bitmap with the same size of the bitmap we want to blur
     Bitmap blurredScreenshot =
-        Bitmap.createBitmap(downscaledScreenshot.getWidth(), downscaledScreenshot.getHeight(),
+        Bitmap.createBitmap(croppedScreenshot.getWidth(), croppedScreenshot.getHeight(),
             Bitmap.Config.ARGB_8888);
 
     // Instantiate a new Renderscript
@@ -269,7 +276,7 @@ public class DeviceFrameGenerator {
     blurScript.setRadius(backgroundBlurRadius);
 
     // Create the in/out Allocations with the Renderscript and the in/out bitmaps
-    Allocation allIn = Allocation.createFromBitmap(renderScript, downscaledScreenshot);
+    Allocation allIn = Allocation.createFromBitmap(renderScript, croppedScreenshot);
     Allocation allOut = Allocation.createFromBitmap(renderScript, blurredScreenshot);
 
     // Perform the Renderscript
@@ -286,8 +293,6 @@ public class DeviceFrameGenerator {
 
     // After finishing everything, we destroy the Renderscript.
     renderScript.destroy();
-
-    recycleBitmap(downscaledScreenshot);
   }
 
   int getBackgroundColor(Bitmap screenshot) {
