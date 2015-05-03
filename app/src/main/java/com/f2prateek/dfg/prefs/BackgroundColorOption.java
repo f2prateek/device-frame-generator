@@ -23,7 +23,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /** Identifies the user preference of what color should be used to color the background. */
 @Qualifier @Retention(RUNTIME)
-public @interface BackgroundColor {
+public @interface BackgroundColorOption {
   enum Option {
     VIBRANT,
     VIBRANT_DARK,

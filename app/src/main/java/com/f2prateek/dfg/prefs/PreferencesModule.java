@@ -34,71 +34,62 @@ public class PreferencesModule {
   private static final int DEFAULT_BACKGROUND_PADDING_PERCENTAGE = 10; // 10% of screenshot size
   private static final int DEFAULT_BACKGROUND_BLUR_RADIUS = 15;
 
-  private static final String KEY_FIRST_RUN = "KEY_FIRST_RUN";
-  private static final String KEY_PREF_DEFAULT_DEVICE_ID = "KEY_PREF_DEFAULT_DEVICE_ID";
-  private static final String KEY_PREF_OPTION_GLARE = "KEY_PREF_OPTION_GLARE";
-  private static final String KEY_PREF_OPTION_SHADOW = "KEY_PREF_OPTION_SHADOW";
-  private static final String KEY_PREF_OPTION_BLUR_BACKGROUND = "KEY_PREF_OPTION_BLUR_BACKGROUND";
-  private static final String KEY_PREF_OPTION_COLOR_BACKGROUND = "KEY_PREF_OPTION_COLOR_BACKGROUND";
-  private static final String KEY_PREF_OPTION_BACKGROUND_COLOR = "KEY_PREF_OPTION_BACKGROUND_COLOR";
-  private static final String KEY_PREF_OPTION_CUSTOM_BACKGROUND_COLOR =
-      "KEY_PREF_OPTION_CUSTOM_BACKGROUND_COLOR";
-  private static final String KEY_PREF_BACKGROUND_PADDING_PERCENTAGE =
-      "KEY_PREF_OPTION_BACKGROUND_PADDING_PERCENTAGE";
-  private static final String KEY_PREF_BACKGROUND_BLUR_RADIUS =
-      "KEY_PREF_OPTION_BACKGROUND_BLUR_RADIUS";
-
   @Provides @Singleton @FirstRun //
   BooleanPreference provideFirstRun(SharedPreferences sharedPreferences) {
-    return new BooleanPreference(sharedPreferences, KEY_FIRST_RUN, true);
+    return new BooleanPreference(sharedPreferences, "first_run", true);
   }
 
   @Provides @Singleton @DefaultDevice //
   StringPreference provideDefaultDevice(SharedPreferences sharedPreferences) {
-    return new StringPreference(sharedPreferences, KEY_PREF_DEFAULT_DEVICE_ID, DEFAULT_DEVICE_ID);
+    return new StringPreference(sharedPreferences, "default_device_id", DEFAULT_DEVICE_ID);
   }
 
   @Provides @Singleton @GlareEnabled //
   BooleanPreference provideGlareEnabled(SharedPreferences sharedPreferences) {
-    return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_GLARE, DEFAULT_GLARE_ENABLED);
+    return new BooleanPreference(sharedPreferences, "glare_enabled", DEFAULT_GLARE_ENABLED);
   }
 
   @Provides @Singleton @ShadowEnabled //
   BooleanPreference provideShadowEnabled(SharedPreferences sharedPreferences) {
-    return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_SHADOW, DEFAULT_SHADOW_ENABLED);
+    return new BooleanPreference(sharedPreferences, "shadow_enabled", DEFAULT_SHADOW_ENABLED);
   }
 
+  /** Mutually exclusive with {@link ColorBackgroundEnabled}. */
   @Provides @Singleton @BlurBackgroundEnabled //
   BooleanPreference provideBlurBackgroundEnabled(SharedPreferences sharedPreferences) {
-    return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_BLUR_BACKGROUND, false);
+    return new BooleanPreference(sharedPreferences, "blur_background_enabled", false);
   }
 
-  @Provides @Singleton @ColorBackgroundEnabled //
-  BooleanPreference provideColorBackgroundEnabled(SharedPreferences sharedPreferences) {
-    return new BooleanPreference(sharedPreferences, KEY_PREF_OPTION_COLOR_BACKGROUND, false);
-  }
-
-  @Provides @Singleton @BackgroundColor EnumPreference<BackgroundColor.Option> //
-  provideBackgroundColorOptionPreference(SharedPreferences sharedPreferences) {
-    return new EnumPreference<>(sharedPreferences, BackgroundColor.Option.class,
-        KEY_PREF_OPTION_BACKGROUND_COLOR, BackgroundColor.Option.MUTED);
-  }
-
-  @Provides @Singleton @CustomBackgroundColor IntPreference //
-  provideCustomBackgroundColorPreference(SharedPreferences sharedPreferences) {
-    return new IntPreference(sharedPreferences, KEY_PREF_OPTION_CUSTOM_BACKGROUND_COLOR,
-        Color.DKGRAY);
-  }
-
-  @Provides @Singleton @BackgroundPaddingPercentage IntPreference //
-  provideBackgroundPaddingPercentagePreference(SharedPreferences sharedPreferences) {
-    return new IntPreference(sharedPreferences, KEY_PREF_BACKGROUND_PADDING_PERCENTAGE,
-        DEFAULT_BACKGROUND_PADDING_PERCENTAGE);
-  }
-
+  /** Hidden from the UI, not controllable by the user. */
   @Provides @Singleton @BackgroundBlurRadius IntPreference //
   provideBackgroundBlurRadiusPreference(SharedPreferences sharedPreferences) {
-    return new IntPreference(sharedPreferences, KEY_PREF_BACKGROUND_BLUR_RADIUS,
+    return new IntPreference(sharedPreferences, "background_blur_radius",
         DEFAULT_BACKGROUND_BLUR_RADIUS);
+  }
+
+  /** Mutually exclusive with {@link BlurBackgroundEnabled}. */
+  @Provides @Singleton @ColorBackgroundEnabled //
+  BooleanPreference provideColorBackgroundEnabled(SharedPreferences sharedPreferences) {
+    return new BooleanPreference(sharedPreferences, "color_background_enabled", false);
+  }
+
+  /** Hidden from the UI, not controllable by the user. */
+  @Provides @Singleton @BackgroundColorOption EnumPreference<BackgroundColorOption.Option> //
+  provideBackgroundColorOptionPreference(SharedPreferences sharedPreferences) {
+    return new EnumPreference<>(sharedPreferences, BackgroundColorOption.Option.class,
+        "background_color_option", BackgroundColorOption.Option.MUTED);
+  }
+
+  /** Hidden from the UI, not controllable by the user. */
+  @Provides @Singleton @CustomBackgroundColor IntPreference //
+  provideCustomBackgroundColorPreference(SharedPreferences sharedPreferences) {
+    return new IntPreference(sharedPreferences, "custom_background_color", Color.DKGRAY);
+  }
+
+  /** Hidden from the UI, not controllable by the user. */
+  @Provides @Singleton @BackgroundPaddingPercentage IntPreference //
+  provideBackgroundPaddingPercentagePreference(SharedPreferences sharedPreferences) {
+    return new IntPreference(sharedPreferences, "background_padding_percentage",
+        DEFAULT_BACKGROUND_PADDING_PERCENTAGE);
   }
 }

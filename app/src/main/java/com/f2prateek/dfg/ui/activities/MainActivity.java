@@ -34,6 +34,10 @@ import com.f2prateek.dfg.DeviceProvider;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
+import com.f2prateek.dfg.prefs.BlurBackgroundEnabled;
+import com.f2prateek.dfg.prefs.ColorBackgroundEnabled;
+import com.f2prateek.dfg.prefs.GlareEnabled;
+import com.f2prateek.dfg.prefs.ShadowEnabled;
 import com.f2prateek.dfg.ui.DeviceFragmentPagerAdapter;
 import com.f2prateek.dfg.ui.fragments.AboutFragment;
 import com.f2prateek.ln.Ln;
@@ -45,6 +49,7 @@ import com.squareup.otto.Subscribe;
 import de.keyboardsurfer.android.widget.crouton.Crouton;
 import de.keyboardsurfer.android.widget.crouton.Style;
 import javax.inject.Inject;
+import rx.android.preferences.BooleanPreference;
 
 import static com.f2prateek.dfg.Utils.getColor;
 
@@ -55,6 +60,11 @@ public class MainActivity extends BaseActivity {
 
   @InjectView(R.id.pager) ViewPager pager;
   @InjectView(R.id.tabs) PagerSlidingTabStrip tabStrip;
+
+  @Inject @GlareEnabled BooleanPreference glareEnabled;
+  @Inject @ShadowEnabled BooleanPreference shadowEnabled;
+  @Inject @ColorBackgroundEnabled BooleanPreference colorBackgroundEnabled;
+  @Inject @BlurBackgroundEnabled BooleanPreference blurBackgroundEnabled;
 
   DeviceFragmentPagerAdapter pagerAdapter;
 
@@ -103,15 +113,33 @@ public class MainActivity extends BaseActivity {
   @Override public boolean onCreateOptionsMenu(Menu menu) {
     super.onCreateOptionsMenu(menu);
     getMenuInflater().inflate(R.menu.activity_main, menu);
+    initMenuItem(menu.findItem(R.id.menu_checkbox_glare), glareEnabled);
+    initMenuItem(menu.findItem(R.id.menu_checkbox_shadow), shadowEnabled);
+    initMenuItem(menu.findItem(R.id.menu_checkbox_blur_background), blurBackgroundEnabled);
+    initMenuItem(menu.findItem(R.id.menu_checkbox_color_background), colorBackgroundEnabled);
     return true;
+  }
+
+  void initMenuItem(MenuItem menuItem, BooleanPreference preference) {
+    menuItem.setChecked(preference.get());
   }
 
   @Override public boolean onOptionsItemSelected(MenuItem item) {
     switch (item.getItemId()) {
-      case R.id.menu_preferences:
-        Intent preferenceActivityIntent = new Intent(this, UserPreferencesActivity.class);
-        startActivity(preferenceActivityIntent);
-        return false;
+      // views aren't toggled automatically, so we
+      // just use the opposite of the state we're in
+      case R.id.menu_checkbox_glare:
+        updateGlareSetting(!item.isChecked());
+        return true;
+      case R.id.menu_checkbox_shadow:
+        updateShadowSetting(!item.isChecked());
+        return true;
+      case R.id.menu_checkbox_blur_background:
+        updateBlurBackgroundSetting(!item.isChecked());
+        return true;
+      case R.id.menu_checkbox_color_background:
+        updateColorBackgroundSetting(!item.isChecked());
+        return true;
       case R.id.menu_match_device:
         analytics.track("Match Device Menu Item Clicked");
         Device device = deviceProvider.find(windowManager);
@@ -130,6 +158,65 @@ public class MainActivity extends BaseActivity {
       default:
         return super.onOptionsItemSelected(item);
     }
+  }
+
+  public void updateGlareSetting(boolean newSettingEnabled) {
+    analytics.track("Glare " + (newSettingEnabled ? "Enabled" : "Disabled"));
+    analytics.identify(new Traits().putValue("glare_enabled", newSettingEnabled));
+
+    updateBooleanPreference(newSettingEnabled, glareEnabled, getString(R.string.glare_enabled),
+        getString(R.string.glare_disabled));
+  }
+
+  public void updateShadowSetting(boolean newSettingEnabled) {
+    analytics.track("Shadow " + (newSettingEnabled ? "Enabled" : "Disabled"));
+    analytics.identify(new Traits().putValue("shadow_enabled", newSettingEnabled));
+
+    updateBooleanPreference(newSettingEnabled, shadowEnabled, getString(R.string.shadow_enabled),
+        getString(R.string.shadow_disabled));
+  }
+
+  public void updateColorBackgroundSetting(boolean newSettingEnabled) {
+    analytics.track("Color Background " + (newSettingEnabled ? "Enabled" : "Disabled"));
+    analytics.identify(new Traits().putValue("color_background_enabled", newSettingEnabled));
+
+    updateBooleanPreference(newSettingEnabled, colorBackgroundEnabled,
+        getString(R.string.color_background_enabled),
+        getString(R.string.color_background_disabled));
+
+    if (newSettingEnabled && blurBackgroundEnabled.get()) {
+      // Both blur and color background cannot be enabled together
+      updateBlurBackgroundSetting(false);
+    }
+  }
+
+  public void updateBlurBackgroundSetting(boolean newSettingEnabled) {
+    analytics.track("Blur Background " + (newSettingEnabled ? "Enabled" : "Disabled"));
+    analytics.identify(new Traits().putValue("blur_background_enabled", newSettingEnabled));
+
+    updateBooleanPreference(newSettingEnabled, blurBackgroundEnabled,
+        getString(R.string.blur_background_enabled), getString(R.string.blur_background_disabled));
+
+    if (newSettingEnabled && colorBackgroundEnabled.get()) {
+      // Both blur and color background cannot be enabled together
+      updateColorBackgroundSetting(false);
+    }
+  }
+
+  /**
+   * Update a boolean preference with the new value.
+   * Displays some text to the user dependending on the preference.
+   */
+  void updateBooleanPreference(boolean newSettingEnabled, BooleanPreference booleanPreference,
+      String enabledText, String disabledText) {
+    booleanPreference.set(newSettingEnabled);
+    if (newSettingEnabled) {
+      Crouton.makeText(this, enabledText, Style.CONFIRM).show();
+    } else {
+      Crouton.makeText(this, disabledText, Style.ALERT).show();
+    }
+    Ln.d("Setting updated to %s", newSettingEnabled);
+    invalidateOptionsMenu();
   }
 
   @Subscribe public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {

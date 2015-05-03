@@ -39,7 +39,7 @@ import com.f2prateek.dfg.Utils;
 import com.f2prateek.dfg.model.Bounds;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.Orientation;
-import com.f2prateek.dfg.prefs.BackgroundColor;
+import com.f2prateek.dfg.prefs.BackgroundColorOption;
 import com.f2prateek.ln.Ln;
 import java.io.File;
 import java.io.IOException;
@@ -63,14 +63,14 @@ public class DeviceFrameGenerator {
   private final boolean glareEnabled;
   private final boolean colorBackgroundEnabled;
   private final boolean blurBackgroundEnabled;
-  private final BackgroundColor.Option backgroundColorOption;
+  private final BackgroundColorOption.Option backgroundColorOption;
   private final int customBackgroundColor;
   private final int backgroundPaddingPercentage;
   private final int backgroundBlurRadius;
 
   public DeviceFrameGenerator(Context context, Callback callback, Device device,
       boolean shadowEnabled, boolean glareEnabled, boolean colorBackgroundEnabled,
-      boolean blurBackgroundEnabled, BackgroundColor.Option backgroundColorOption,
+      boolean blurBackgroundEnabled, BackgroundColorOption.Option backgroundColorOption,
       int customBackgroundColor, int backgroundPaddingPercentage, int backgroundBlurRadius) {
     this.backgroundPaddingPercentage = backgroundPaddingPercentage;
     this.backgroundBlurRadius = backgroundBlurRadius;
@@ -291,7 +291,7 @@ public class DeviceFrameGenerator {
   }
 
   int getBackgroundColor(Bitmap screenshot) {
-    if (backgroundColorOption == BackgroundColor.Option.CUSTOM) {
+    if (backgroundColorOption == BackgroundColorOption.Option.CUSTOM) {
       return customBackgroundColor;
     } else {
       Palette palette = Palette.generate(screenshot);

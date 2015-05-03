@@ -2,14 +2,14 @@ package com.f2prateek.dfg.ui;
 
 import android.content.Context;
 import com.f2prateek.dfg.R;
-import com.f2prateek.dfg.prefs.BackgroundColor;
+import com.f2prateek.dfg.prefs.BackgroundColorOption;
 
-public class BackgroundColorOptionAdapter extends EnumAdapter<BackgroundColor.Option> {
+public class BackgroundColorOptionAdapter extends EnumAdapter<BackgroundColorOption.Option> {
   public BackgroundColorOptionAdapter(Context context) {
-    super(context, BackgroundColor.Option.class);
+    super(context, BackgroundColorOption.Option.class);
   }
 
-  @Override protected String getName(BackgroundColor.Option item) {
+  @Override protected String getName(BackgroundColorOption.Option item) {
     switch (item) {
       case CUSTOM:
         return getContext().getString(R.string.custom_color);

@@ -69,8 +69,6 @@
   <string name="muted_dark_color">Muted Dark</string>
   <string name="muted_light_color">Muted Light</string>
 
-  <string name="preferences">Preferences</string>
-
   <string name="shadow_preference">Shadow</string>
   <string name="shadow_enabled">Shadow will be drawn on screenshots.</string>
   <string name="shadow_disabled">Shadow will not be drawn on screenshots.</string>
@@ -84,13 +82,8 @@
   <string name="blur_background_disabled">Blurred screenshot will not used as the background.
   </string>
 
-
   <string name="color_background_preference">Color Background</string>
   <string name="color_background_enabled">Background will be colored.</string>
   <string name="color_background_disabled">Background will not be colored.</string>
-  <string name="background_color_preference">Background Color</string>
-  <string name="custom_background_color_preference">Custom Background\nColor</string>
-  <string name="background_padding_percentage_preference">Background Padding\nPercentage</string>
-  <string name="background_blur_preference">Background Blur</string>
 
 </resources>
