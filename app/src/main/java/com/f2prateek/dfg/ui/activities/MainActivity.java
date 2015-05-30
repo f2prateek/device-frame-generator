@@ -22,6 +22,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,8 +47,6 @@ import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
 import com.segment.analytics.Traits;
 import com.squareup.otto.Subscribe;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 import javax.inject.Inject;
 import rx.android.preferences.BooleanPreference;
 
@@ -145,7 +144,7 @@ public class MainActivity extends BaseActivity {
         Device device = deviceProvider.find(windowManager);
         if (device == null) {
           analytics.track("Device Not Matched");
-          Crouton.makeText(this, R.string.no_matching_device, Style.ALERT).show();
+          Snackbar.make(pager, R.string.no_matching_device, Snackbar.LENGTH_LONG).show();
         } else {
           pager.setCurrentItem(pagerAdapter.getDeviceIndex(device));
         }
@@ -211,9 +210,9 @@ public class MainActivity extends BaseActivity {
       String enabledText, String disabledText) {
     booleanPreference.set(newSettingEnabled);
     if (newSettingEnabled) {
-      Crouton.makeText(this, enabledText, Style.CONFIRM).show();
+      Snackbar.make(pager, enabledText, Snackbar.LENGTH_LONG).show();
     } else {
-      Crouton.makeText(this, disabledText, Style.ALERT).show();
+      Snackbar.make(pager, disabledText, Snackbar.LENGTH_LONG).show();
     }
     Ln.d("Setting updated to %s", newSettingEnabled);
     invalidateOptionsMenu();
@@ -228,8 +227,8 @@ public class MainActivity extends BaseActivity {
     event.newDevice.into(traits);
     analytics.identify(traits);
 
-    Crouton.makeText(this, getString(R.string.saved_as_default_message, event.newDevice.name()),
-        Style.CONFIRM).show();
+    Snackbar.make(pager, getString(R.string.saved_as_default_message, event.newDevice.name()),
+        Snackbar.LENGTH_LONG).show();
     // This might be from the application class, so update the position as well
     // the application class runs it on the main thread currently, so this more for a
     // future improvement
@@ -238,8 +237,8 @@ public class MainActivity extends BaseActivity {
   }
 
   @Subscribe public void onSingleImageProcessed(final Events.SingleImageProcessed event) {
-    Crouton.makeText(this, getString(R.string.single_screenshot_saved, event.device.name()),
-        Style.INFO).setOnClickListener(new View.OnClickListener() {
+    Snackbar.make(pager, getString(R.string.single_screenshot_saved, event.device.name()),
+        Snackbar.LENGTH_LONG).setAction(R.string.open, new View.OnClickListener() {
       @Override public void onClick(View v) {
         Intent launchIntent = new Intent(Intent.ACTION_VIEW);
         launchIntent.setDataAndType(event.uri, "image/png");
@@ -253,9 +252,9 @@ public class MainActivity extends BaseActivity {
     if (event.uriList.size() == 0) {
       return;
     }
-    Crouton.makeText(this,
+    Snackbar.make(pager,
         getString(R.string.multiple_screenshots_saved, event.uriList.size(), event.device.name()),
-        Style.INFO).setOnClickListener(new View.OnClickListener() {
+        Snackbar.LENGTH_LONG).setAction(R.string.open, new View.OnClickListener() {
       @Override public void onClick(View v) {
         Intent launchIntent = new Intent(Intent.ACTION_VIEW);
         launchIntent.setDataAndType(event.uriList.get(0), "image/png");
