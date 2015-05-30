@@ -23,6 +23,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,8 +42,6 @@ import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
 import com.squareup.otto.Subscribe;
 import com.squareup.picasso.Picasso;
-import de.keyboardsurfer.android.widget.crouton.Crouton;
-import de.keyboardsurfer.android.widget.crouton.Style;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -56,6 +55,7 @@ public class DeviceFragment extends BaseFragment {
   @Inject Analytics analytics;
   @Inject DeviceProvider deviceProvider;
 
+  @InjectView(R.id.device) View root;
   @InjectView(R.id.tv_device_resolution) TextView deviceResolutionText;
   @InjectView(R.id.tv_device_size) TextView deviceSizeText;
   @InjectView(R.id.tv_device_name) TextView deviceNameText;
@@ -73,20 +73,17 @@ public class DeviceFragment extends BaseFragment {
     return f;
   }
 
-  @Override
-  public void onCreate(Bundle savedInstanceState) {
+  @Override public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setHasOptionsMenu(true);
   }
 
-  @Override
-  public View onCreateView(LayoutInflater inflater, ViewGroup container,
+  @Override public View onCreateView(LayoutInflater inflater, ViewGroup container,
       Bundle savedInstanceState) {
     return inflater.inflate(R.layout.fragment_device, container, false);
   }
 
-  @Override
-  public void onViewCreated(View view, Bundle savedInstanceState) {
+  @Override public void onViewCreated(View view, Bundle savedInstanceState) {
     super.onViewCreated(view, savedInstanceState);
     picasso.load(getResourceIdentifierForDrawable(getActivity(), device.getThumbnailResourceName()))
         .fit()
@@ -100,8 +97,7 @@ public class DeviceFragment extends BaseFragment {
     deviceResolutionText.setText(device.realSize().x() + "x" + device.realSize().y());
   }
 
-  @OnClick(R.id.iv_device_default)
-  public void updateDefaultDevice() {
+  @OnClick(R.id.iv_device_default) public void updateDefaultDevice() {
     if (isDefault()) {
       return;
     }
@@ -109,8 +105,7 @@ public class DeviceFragment extends BaseFragment {
     bus.post(new Events.DefaultDeviceUpdated(device));
   }
 
-  @Subscribe
-  public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
+  @Subscribe public void onDefaultDeviceUpdated(Events.DefaultDeviceUpdated event) {
     deviceDefaultText.post(new Runnable() {
       @Override public void run() {
         deviceDefaultText.setImageResource(
@@ -123,8 +118,7 @@ public class DeviceFragment extends BaseFragment {
     return deviceProvider.getDefaultDevice().id().equals(device.id());
   }
 
-  @OnClick(R.id.iv_device_thumbnail)
-  public void getScreenshotImageFromUser() {
+  @OnClick(R.id.iv_device_thumbnail) public void getScreenshotImageFromUser() {
     Intent intent = new Intent();
     intent.setType("image/*");
     intent.setAction(Intent.ACTION_GET_CONTENT);
@@ -132,21 +126,18 @@ public class DeviceFragment extends BaseFragment {
       startActivityForResult(Intent.createChooser(intent, getString(R.string.select_picture)),
           RESULT_SELECT_PICTURE);
     } else {
-      Crouton.makeText(getActivity(), R.string.no_apps_available, Style.ALERT).show();
+      Snackbar.make(root, R.string.no_apps_available, Snackbar.LENGTH_LONG).show();
     }
   }
 
-  /**
-   * Check if any apps are installed on the app to receive this intent.
-   */
+  /** Check if any apps are installed on the app to receive this intent. */
   public static boolean isAvailable(Context ctx, Intent intent) {
     final PackageManager mgr = ctx.getPackageManager();
     List<ResolveInfo> list = mgr.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
     return list.size() > 0;
   }
 
-  @OnClick(R.id.tv_device_name)
-  public void openDevicePage() {
+  @OnClick(R.id.tv_device_name) public void openDevicePage() {
     Properties properties = new Properties();
     device.into(properties);
     analytics.track("Clicked Device Website", properties);
@@ -155,8 +146,7 @@ public class DeviceFragment extends BaseFragment {
     startActivity(i);
   }
 
-  @Override
-  public void onActivityResult(int requestCode, int resultCode, Intent data) {
+  @Override public void onActivityResult(int requestCode, int resultCode, Intent data) {
     if (requestCode == RESULT_SELECT_PICTURE && resultCode == Activity.RESULT_OK) {
       if (data == null) {
         return;

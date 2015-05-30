@@ -22,6 +22,7 @@
   <string name="match_device">Match a device</string>
   <string name="no_matching_device">No Matching Devices Available</string>
   <string name="saved_as_default_message">%s saved as default device.</string>
+  <string name="open">Open</string>
 
   <!-- Device Fragment !-->
   <string name="no_apps_available">No apps available to pick image.</string>
