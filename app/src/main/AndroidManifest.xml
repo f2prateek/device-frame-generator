@@ -32,7 +32,6 @@
 
     <activity
         android:name=".ui.activities.MainActivity"
-        android:label="@string/launcher_name"
         android:launchMode="singleTop"
         android:theme="@style/MainActivityTheme">
       <intent-filter>
@@ -45,8 +44,7 @@
     <activity
         android:name=".ui.activities.ReceiverActivity"
         android:configChanges="orientation|keyboardHidden|screenSize"
-        android:theme="@android:style/Theme.Translucent.NoTitleBar"
-        android:label="@string/application_name">
+        android:theme="@android:style/Theme.Translucent.NoTitleBar">
       <intent-filter>
         <action android:name="android.intent.action.SEND"/>
         <category android:name="android.intent.category.DEFAULT"/>

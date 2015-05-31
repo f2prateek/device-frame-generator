@@ -17,8 +17,8 @@
 package com.f2prateek.dfg.ui.activities;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.ViewGroup;
 import butterknife.ButterKnife;
 import com.f2prateek.dart.Dart;
@@ -28,7 +28,7 @@ import com.squareup.otto.Bus;
 import javax.inject.Inject;
 
 @SuppressLint("Registered")
-public class BaseActivity extends Activity {
+public class BaseActivity extends AppCompatActivity {
 
   @Inject Bus bus;
   @Inject AppContainer appContainer;

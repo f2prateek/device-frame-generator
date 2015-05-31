@@ -16,21 +16,17 @@
 
 package com.f2prateek.dfg.ui.activities;
 
-import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.content.Intent;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import butterknife.InjectView;
-import com.astuetz.PagerSlidingTabStrip;
 import com.f2prateek.dfg.DeviceProvider;
 import com.f2prateek.dfg.Events;
 import com.f2prateek.dfg.R;
@@ -42,7 +38,6 @@ import com.f2prateek.dfg.prefs.ShadowEnabled;
 import com.f2prateek.dfg.ui.DeviceFragmentPagerAdapter;
 import com.f2prateek.dfg.ui.fragments.AboutFragment;
 import com.f2prateek.ln.Ln;
-import com.readystatesoftware.systembartint.SystemBarTintManager;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
 import com.segment.analytics.Traits;
@@ -50,15 +45,14 @@ import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
 import rx.android.preferences.BooleanPreference;
 
-import static com.f2prateek.dfg.Utils.getColor;
-
 public class MainActivity extends BaseActivity {
   @Inject DeviceProvider deviceProvider;
   @Inject WindowManager windowManager;
   @Inject Analytics analytics;
 
+  @InjectView(R.id.toolbar) Toolbar toolbar;
+  @InjectView(R.id.tabs) TabLayout tabLayout;
   @InjectView(R.id.pager) ViewPager pager;
-  @InjectView(R.id.tabs) PagerSlidingTabStrip tabStrip;
 
   @Inject @GlareEnabled BooleanPreference glareEnabled;
   @Inject @ShadowEnabled BooleanPreference shadowEnabled;
@@ -70,43 +64,15 @@ public class MainActivity extends BaseActivity {
   @Override protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
 
-    ActionBar actionBar = getActionBar();
-    actionBar.setDisplayOptions(ActionBar.DISPLAY_SHOW_CUSTOM);
-    actionBar.setCustomView(R.layout.action_bar_custom);
-
-    analytics.screen(null, "Main");
-
     inflateView(R.layout.activity_main);
-
-    // create our manager instance after the content view is set
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-      // Though this could have been set in the theme as well, the launching animation
-      // looks a bit jarring (white status bar with white icons on launch)
-      // This looks a bit cleaner, turning from black to grey
-      setTranslucentStatus(true);
-
-      SystemBarTintManager tintManager = new SystemBarTintManager(this);
-      tintManager.setStatusBarTintEnabled(true);
-      tintManager.setStatusBarTintResource(R.color.action_bar_color);
-    }
+    setSupportActionBar(toolbar);
 
     pagerAdapter = new DeviceFragmentPagerAdapter(getFragmentManager(), deviceProvider.asList());
     pager.setAdapter(pagerAdapter);
     pager.setCurrentItem(pagerAdapter.getDeviceIndex(deviceProvider.getDefaultDevice()));
-    tabStrip.setTextColor(getColor(this, R.color.title_text_color, Color.WHITE));
-    tabStrip.setViewPager(pager);
-  }
+    tabLayout.setupWithViewPager(pager);
 
-  @TargetApi(19) private void setTranslucentStatus(boolean on) {
-    Window win = getWindow();
-    WindowManager.LayoutParams winParams = win.getAttributes();
-    final int bits = WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS;
-    if (on) {
-      winParams.flags |= bits;
-    } else {
-      winParams.flags &= ~bits;
-    }
-    win.setAttributes(winParams);
+    analytics.screen(null, "Main");
   }
 
   @Override public boolean onCreateOptionsMenu(Menu menu) {
