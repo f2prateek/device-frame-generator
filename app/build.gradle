@@ -4,9 +4,9 @@ buildscript {
     maven { url 'https://maven.fabric.io/repo' }
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:1.1.3'
+    classpath 'com.android.tools.build:gradle:1.2.3'
     classpath 'io.fabric.tools:gradle:1.18.0'
-    classpath 'com.jakewharton.hugo:hugo-plugin:1.1.0'
+    classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
     classpath 'com.f2prateek.checkstyle:checkstyle:1.0.0'
   }
 }
@@ -43,10 +43,6 @@ dependencies {
   compile 'com.squareup.picasso:picasso:2.3.4'
   compile 'com.github.frankiesardo:android-auto-value:0.1'
   provided 'com.github.frankiesardo:android-auto-value-processor:0.1'
-
-  // Views
-  compile 'com.readystatesoftware.systembartint:systembartint:1.0.4'
-  compile 'com.astuetz:pagerslidingtabstrip:1.0.1'
 
   compile 'com.f2prateek.rx.android.preferences:rx-preferences:0.1.0-SNAPSHOT'
 
