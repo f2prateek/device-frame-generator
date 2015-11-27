@@ -38,12 +38,12 @@ import com.f2prateek.dfg.prefs.ShadowEnabled;
 import com.f2prateek.dfg.ui.DeviceFragmentPagerAdapter;
 import com.f2prateek.dfg.ui.fragments.AboutFragment;
 import com.f2prateek.ln.Ln;
+import com.f2prateek.rx.preferences.Preference;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
 import com.segment.analytics.Traits;
 import com.squareup.otto.Subscribe;
 import javax.inject.Inject;
-import rx.android.preferences.BooleanPreference;
 
 public class MainActivity extends BaseActivity {
   @Inject DeviceProvider deviceProvider;
@@ -54,10 +54,10 @@ public class MainActivity extends BaseActivity {
   @InjectView(R.id.tabs) TabLayout tabLayout;
   @InjectView(R.id.pager) ViewPager pager;
 
-  @Inject @GlareEnabled BooleanPreference glareEnabled;
-  @Inject @ShadowEnabled BooleanPreference shadowEnabled;
-  @Inject @ColorBackgroundEnabled BooleanPreference colorBackgroundEnabled;
-  @Inject @BlurBackgroundEnabled BooleanPreference blurBackgroundEnabled;
+  @Inject @GlareEnabled Preference<Boolean> glareEnabled;
+  @Inject @ShadowEnabled Preference<Boolean> shadowEnabled;
+  @Inject @ColorBackgroundEnabled Preference<Boolean> colorBackgroundEnabled;
+  @Inject @BlurBackgroundEnabled Preference<Boolean> blurBackgroundEnabled;
 
   DeviceFragmentPagerAdapter pagerAdapter;
 
@@ -85,7 +85,7 @@ public class MainActivity extends BaseActivity {
     return true;
   }
 
-  void initMenuItem(MenuItem menuItem, BooleanPreference preference) {
+  void initMenuItem(MenuItem menuItem, Preference<Boolean> preference) {
     menuItem.setChecked(preference.get());
   }
 
@@ -129,7 +129,7 @@ public class MainActivity extends BaseActivity {
     analytics.track("Glare " + (newSettingEnabled ? "Enabled" : "Disabled"));
     analytics.identify(new Traits().putValue("glare_enabled", newSettingEnabled));
 
-    updateBooleanPreference(newSettingEnabled, glareEnabled, getString(R.string.glare_enabled),
+    updatePreference(newSettingEnabled, glareEnabled, getString(R.string.glare_enabled),
         getString(R.string.glare_disabled));
   }
 
@@ -137,7 +137,7 @@ public class MainActivity extends BaseActivity {
     analytics.track("Shadow " + (newSettingEnabled ? "Enabled" : "Disabled"));
     analytics.identify(new Traits().putValue("shadow_enabled", newSettingEnabled));
 
-    updateBooleanPreference(newSettingEnabled, shadowEnabled, getString(R.string.shadow_enabled),
+    updatePreference(newSettingEnabled, shadowEnabled, getString(R.string.shadow_enabled),
         getString(R.string.shadow_disabled));
   }
 
@@ -145,7 +145,7 @@ public class MainActivity extends BaseActivity {
     analytics.track("Color Background " + (newSettingEnabled ? "Enabled" : "Disabled"));
     analytics.identify(new Traits().putValue("color_background_enabled", newSettingEnabled));
 
-    updateBooleanPreference(newSettingEnabled, colorBackgroundEnabled,
+    updatePreference(newSettingEnabled, colorBackgroundEnabled,
         getString(R.string.color_background_enabled),
         getString(R.string.color_background_disabled));
 
@@ -159,7 +159,7 @@ public class MainActivity extends BaseActivity {
     analytics.track("Blur Background " + (newSettingEnabled ? "Enabled" : "Disabled"));
     analytics.identify(new Traits().putValue("blur_background_enabled", newSettingEnabled));
 
-    updateBooleanPreference(newSettingEnabled, blurBackgroundEnabled,
+    updatePreference(newSettingEnabled, blurBackgroundEnabled,
         getString(R.string.blur_background_enabled), getString(R.string.blur_background_disabled));
 
     if (newSettingEnabled && colorBackgroundEnabled.get()) {
@@ -172,9 +172,9 @@ public class MainActivity extends BaseActivity {
    * Update a boolean preference with the new value.
    * Displays some text to the user dependending on the preference.
    */
-  void updateBooleanPreference(boolean newSettingEnabled, BooleanPreference booleanPreference,
+  void updatePreference(boolean newSettingEnabled, Preference<Boolean> preference,
       String enabledText, String disabledText) {
-    booleanPreference.set(newSettingEnabled);
+    preference.set(newSettingEnabled);
     if (newSettingEnabled) {
       Snackbar.make(pager, enabledText, Snackbar.LENGTH_LONG).show();
     } else {

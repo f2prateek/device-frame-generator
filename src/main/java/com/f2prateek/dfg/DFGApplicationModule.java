@@ -31,13 +31,14 @@ import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.DefaultDevice;
 import com.f2prateek.dfg.prefs.PreferencesModule;
 import com.f2prateek.dfg.ui.UiModule;
+import com.f2prateek.rx.preferences.Preference;
+import com.f2prateek.rx.preferences.RxSharedPreferences;
 import com.segment.analytics.Analytics;
 import com.squareup.otto.Bus;
 import dagger.Module;
 import dagger.Provides;
 import java.util.Set;
 import javax.inject.Singleton;
-import rx.android.preferences.StringPreference;
 
 @Module(
     includes = {
@@ -46,9 +47,9 @@ import rx.android.preferences.StringPreference;
     injects = {
         DFGApplication.class, AbstractGenerateFrameService.class, GenerateFrameService.class,
         GenerateMultipleFramesService.class
-    })
+    } //
+) //
 public class DFGApplicationModule {
-
   private final DFGApplication application;
 
   public DFGApplicationModule(DFGApplication application) {
@@ -62,6 +63,11 @@ public class DFGApplicationModule {
   @Provides @Singleton //
   SharedPreferences provideDefaultSharedPreferences(@ForApplication Context context) {
     return PreferenceManager.getDefaultSharedPreferences(context);
+  }
+
+  @Provides @Singleton //
+  RxSharedPreferences provideRxSharedPreferences(SharedPreferences sharedPreferences) {
+    return RxSharedPreferences.create(sharedPreferences);
   }
 
   @Provides @Singleton Resources provideResources(@ForApplication Context context) {
@@ -90,16 +96,17 @@ public class DFGApplicationModule {
     return getSystemService(context, Context.WINDOW_SERVICE);
   }
 
-  @Provides @Singleton Bus provideOttoBus() {
+  @Provides @Singleton Bus provideBus() {
     return new Bus();
   }
 
   @Provides @Singleton //
-  DeviceProvider devices(Set<Device> deviceSet, @DefaultDevice StringPreference defaultDevice) {
+  DeviceProvider devices(Set<Device> deviceSet, @DefaultDevice Preference<String> defaultDevice) {
     return DeviceProvider.fromSet(deviceSet, defaultDevice);
   }
 
   @Provides @Singleton @AnalyticsKey String provideAnalyticsKey() {
+    // todo: pass in from build script.
     return "6bsdtx1twy";
   }
 

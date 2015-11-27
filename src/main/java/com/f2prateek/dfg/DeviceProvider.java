@@ -24,25 +24,25 @@ import com.f2prateek.dfg.model.Bounds;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.model.Orientation;
 import com.f2prateek.ln.Ln;
+import com.f2prateek.rx.preferences.Preference;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import rx.android.preferences.StringPreference;
 
 public class DeviceProvider {
   private final Map<String, Device> deviceMap;
-  private final StringPreference defaultDevice;
+  private final Preference<String> defaultDevice;
   private List<Device> deviceList;
 
-  private DeviceProvider(Map<String, Device> deviceMap, StringPreference defaultDevice) {
+  private DeviceProvider(Map<String, Device> deviceMap, Preference<String> defaultDevice) {
     this.deviceMap = deviceMap;
     this.defaultDevice = defaultDevice;
   }
 
-  public static DeviceProvider fromSet(Set<Device> deviceSet, StringPreference defaultDevice) {
+  public static DeviceProvider fromSet(Set<Device> deviceSet, Preference<String> defaultDevice) {
     HashMap<String, Device> deviceMap = new LinkedHashMap<>(deviceSet.size());
     for (Device device : deviceSet) {
       deviceMap.put(device.id(), device);

@@ -1,8 +1,157 @@
-// Top-level build file where you can add configuration options common to all sub-projects/modules.
-allprojects {
+buildscript {
   repositories {
     mavenCentral()
+    maven { url 'https://maven.fabric.io/repo' }
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:1.3.1'
+    classpath 'io.fabric.tools:gradle:1.18.0'
+    classpath 'com.jakewharton.hugo:hugo-plugin:1.2.1'
+    classpath 'com.f2prateek.checkstyle:checkstyle:1.0.1'
   }
 }
 
-apply plugin: 'idea'
+apply plugin: 'com.android.application'
+apply plugin: 'io.fabric'
+apply plugin: 'checkstyle'
+apply plugin: 'com.f2prateek.checkstyle'
+apply plugin: 'hugo'
+
+dependencies {
+  repositories {
+    mavenCentral()
+    maven { url 'https://maven.fabric.io/repo' }
+  }
+
+  // Support Library
+  def supportLibraryVersion = '22.2.1'
+  compile "com.android.support:support-v13:${supportLibraryVersion}"
+  compile "com.android.support:support-v4:${supportLibraryVersion}"
+  compile "com.android.support:palette-v7:${supportLibraryVersion}"
+  compile "com.android.support:design:${supportLibraryVersion}"
+
+  // Utilities
+  compile 'com.squareup:otto:1.3.5'
+  compile 'com.f2prateek.ln:ln:1.1.1'
+  compile 'com.f2prateek.dart:dart:1.1.0'
+
+  // Code Generators
+  compile 'com.jakewharton:butterknife:5.1.2'
+  compile 'com.squareup.dagger:dagger:1.2.2'
+  provided 'com.squareup.dagger:dagger-compiler:1.2.2'
+  compile 'com.squareup.picasso:picasso:2.3.4'
+  compile 'com.github.frankiesardo:android-auto-value:0.1'
+  provided 'com.github.frankiesardo:android-auto-value-processor:0.1'
+
+  compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.1'
+
+  // Reporting
+  compile 'com.segment.analytics.android:analytics:4.0.0'
+  compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
+    transitive = true;
+  }
+
+  // Debugging
+  debugCompile 'com.jakewharton.scalpel:scalpel:1.1.2'
+  debugCompile 'com.jakewharton.madge:madge:1.1.1'
+}
+
+def versionMajor = 3
+def versionMinor = 2
+def versionPatch = 1
+// bump for dogfood builds, public betas, etc.
+def versionBuild = 0
+
+def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
+def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+
+def isTravis = "true".equals(System.getenv("TRAVIS"))
+def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
+
+android {
+  compileSdkVersion 22
+  buildToolsVersion '23.0.1'
+
+  dexOptions {
+    // Skip pre-dexing when running on Travis CI or when disabled via -Dpre-dex=false.
+    preDexLibraries = preDexEnabled && !isTravis
+  }
+
+  packagingOptions {
+    exclude 'META-INF/services/javax.annotation.processing.Processor'
+  }
+
+  lintOptions {
+    abortOnError false
+  }
+
+  signingConfigs {
+    release
+  }
+
+  buildTypes {
+    debug {
+      applicationIdSuffix ".debug"
+      versionNameSuffix "-debug"
+      ext.enableCrashlytics = false
+    }
+    release {
+      signingConfig signingConfigs.release
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.txt'
+    }
+  }
+
+  defaultConfig {
+    minSdkVersion 14
+    targetSdkVersion 22
+
+    applicationId "com.f2prateek.dfg"
+    versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
+    versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+
+    buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
+    buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+
+    // Renderscript support http://bit.ly/1G9c1HQ
+    renderscriptTargetApi 19
+    renderscriptSupportModeEnabled true
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
+}
+
+checkstyle {
+  configFile rootProject.file('checkstyle.xml')
+}
+
+tasks.withType(Checkstyle) {
+  exclude '**/ForegroundImageView.java'
+  exclude '**/*\$\$*.java' // Dagger, ButterKnife, Dart
+}
+
+def propFile = new File('signing.properties')
+if (propFile.canRead()) {
+  def Properties signingProps = new Properties()
+  signingProps.load(new FileInputStream(propFile))
+
+  if (signingProps != null &&
+      signingProps.containsKey('STORE_FILE') &&
+      signingProps.containsKey('STORE_PASSWORD') &&
+      signingProps.containsKey('KEY_ALIAS') &&
+      signingProps.containsKey('KEY_PASSWORD')) {
+    android.signingConfigs.release.storeFile = file(signingProps['STORE_FILE'])
+    android.signingConfigs.release.storePassword = signingProps['STORE_PASSWORD']
+    android.signingConfigs.release.keyAlias = signingProps['KEY_ALIAS']
+    android.signingConfigs.release.keyPassword = signingProps['KEY_PASSWORD']
+  } else {
+    println 'signing.properties found but some entries are missing'
+    android.buildTypes.release.signingConfig = null
+  }
+} else {
+  println 'signing.properties not found'
+  android.buildTypes.release.signingConfig = null
+}

@@ -29,6 +29,7 @@ import com.f2prateek.dfg.R;
 import com.f2prateek.dfg.model.Device;
 import com.f2prateek.dfg.prefs.BackgroundBlurRadius;
 import com.f2prateek.dfg.prefs.BackgroundColorOption;
+import com.f2prateek.dfg.prefs.BackgroundColorOption.Option;
 import com.f2prateek.dfg.prefs.BackgroundPaddingPercentage;
 import com.f2prateek.dfg.prefs.BlurBackgroundEnabled;
 import com.f2prateek.dfg.prefs.ColorBackgroundEnabled;
@@ -36,13 +37,11 @@ import com.f2prateek.dfg.prefs.CustomBackgroundColor;
 import com.f2prateek.dfg.prefs.GlareEnabled;
 import com.f2prateek.dfg.prefs.ShadowEnabled;
 import com.f2prateek.dfg.ui.activities.MainActivity;
+import com.f2prateek.rx.preferences.Preference;
 import com.segment.analytics.Analytics;
 import com.segment.analytics.Properties;
 import com.squareup.otto.Bus;
 import javax.inject.Inject;
-import rx.android.preferences.BooleanPreference;
-import rx.android.preferences.EnumPreference;
-import rx.android.preferences.IntPreference;
 
 public abstract class AbstractGenerateFrameService extends IntentService
     implements DeviceFrameGenerator.Callback {
@@ -53,15 +52,14 @@ public abstract class AbstractGenerateFrameService extends IntentService
   @Inject Bus bus;
   @Inject Analytics analytics;
 
-  @Inject @ShadowEnabled BooleanPreference shadowEnabledPreference;
-  @Inject @GlareEnabled BooleanPreference glareEnabledPreference;
-  @Inject @BlurBackgroundEnabled BooleanPreference blurBackgroundEnabledPreference;
-  @Inject @ColorBackgroundEnabled BooleanPreference colorBackgroundEnabledPreference;
-  @Inject @BackgroundColorOption EnumPreference<BackgroundColorOption.Option>
-      backgroundColorOptionPreference;
-  @Inject @CustomBackgroundColor IntPreference customBackgroundColorPreference;
-  @Inject @BackgroundPaddingPercentage IntPreference backgroundPaddingPercentagePreference;
-  @Inject @BackgroundBlurRadius IntPreference backgroundBlurRadiusPreference;
+  @Inject @ShadowEnabled Preference<Boolean> shadowEnabledPreference;
+  @Inject @GlareEnabled Preference<Boolean> glareEnabledPreference;
+  @Inject @BlurBackgroundEnabled Preference<Boolean> blurBackgroundEnabledPreference;
+  @Inject @ColorBackgroundEnabled Preference<Boolean> colorBackgroundEnabledPreference;
+  @Inject @BackgroundColorOption Preference<Option> backgroundColorOptionPreference;
+  @Inject @CustomBackgroundColor Preference<Integer> customBackgroundColorPreference;
+  @Inject @BackgroundPaddingPercentage Preference<Integer> backgroundPaddingPercentagePreference;
+  @Inject @BackgroundBlurRadius Preference<Integer> backgroundBlurRadiusPreference;
 
   @InjectExtra(KEY_EXTRA_DEVICE) Device device;
   NotificationCompat.Builder notificationBuilder;

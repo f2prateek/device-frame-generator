@@ -20,9 +20,9 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.os.Build;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.util.DisplayMetrics;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,6 +48,7 @@ import com.f2prateek.dfg.prefs.debug.ScalpelWireframeEnabled;
 import com.f2prateek.dfg.prefs.debug.SeenDebugDrawer;
 import com.f2prateek.dfg.ui.AppContainer;
 import com.f2prateek.ln.Ln;
+import com.f2prateek.rx.preferences.Preference;
 import com.jakewharton.madge.MadgeFrameLayout;
 import com.jakewharton.scalpel.ScalpelFrameLayout;
 import com.squareup.picasso.Picasso;
@@ -62,8 +63,6 @@ import java.util.Set;
 import java.util.TimeZone;
 import javax.inject.Inject;
 import javax.inject.Singleton;
-import rx.android.preferences.BooleanPreference;
-import rx.android.preferences.IntPreference;
 
 import static butterknife.ButterKnife.findById;
 
@@ -71,30 +70,30 @@ import static butterknife.ButterKnife.findById;
  * An {@link com.f2prateek.dfg.ui.AppContainer} for debug builds which wrap the content view with a
  * sliding drawer on the right that holds all of the debug information and settings.
  */
-@Singleton
-public class DebugAppContainer implements AppContainer {
+@Singleton public class DebugAppContainer implements AppContainer {
   private static final DateFormat DATE_DISPLAY_FORMAT = new SimpleDateFormat("yyyy-MM-dd hh:mm a");
 
   private final Picasso picasso;
-  private final IntPreference animationSpeed;
-  private final BooleanPreference picassoDebugging;
-  private final BooleanPreference pixelGridEnabled;
-  private final BooleanPreference pixelRatioEnabled;
-  private final BooleanPreference scalpelEnabled;
-  private final BooleanPreference scalpelWireframeEnabled;
-  private final BooleanPreference seenDebugDrawer;
+  private final Preference<Integer> animationSpeed;
+  private final Preference<Boolean> picassoDebugging;
+  private final Preference<Boolean> pixelGridEnabled;
+  private final Preference<Boolean> pixelRatioEnabled;
+  private final Preference<Boolean> scalpelEnabled;
+  private final Preference<Boolean> scalpelWireframeEnabled;
+  private final Preference<Boolean> seenDebugDrawer;
 
   DFGApplication app;
   Activity activity;
   Context drawerContext;
 
-  @Inject public DebugAppContainer(Picasso picasso, @AnimationSpeed IntPreference animationSpeed,
-      @PicassoDebugging BooleanPreference picassoDebugging,
-      @PixelGridEnabled BooleanPreference pixelGridEnabled,
-      @PixelRatioEnabled BooleanPreference pixelRatioEnabled,
-      @ScalpelEnabled BooleanPreference scalpelEnabled,
-      @ScalpelWireframeEnabled BooleanPreference scalpelWireframeEnabled,
-      @SeenDebugDrawer BooleanPreference seenDebugDrawer) {
+  @Inject
+  public DebugAppContainer(Picasso picasso, @AnimationSpeed Preference<Integer> animationSpeed,
+      @PicassoDebugging Preference<Boolean> picassoDebugging,
+      @PixelGridEnabled Preference<Boolean> pixelGridEnabled,
+      @PixelRatioEnabled Preference<Boolean> pixelRatioEnabled,
+      @ScalpelEnabled Preference<Boolean> scalpelEnabled,
+      @ScalpelWireframeEnabled Preference<Boolean> scalpelWireframeEnabled,
+      @SeenDebugDrawer Preference<Boolean> seenDebugDrawer) {
     this.picasso = picasso;
     this.scalpelEnabled = scalpelEnabled;
     this.scalpelWireframeEnabled = scalpelWireframeEnabled;
@@ -163,7 +162,7 @@ public class DebugAppContainer implements AppContainer {
     ContextualDebugActions contextualActions = new ContextualDebugActions(this, debugActions);
     content.setOnHierarchyChangeListener(HierarchyTreeChangeListener.wrap(contextualActions));
 
-    drawerLayout.setDrawerShadow(R.drawable.debug_drawer_shadow, Gravity.END);
+    drawerLayout.setDrawerShadow(R.drawable.debug_drawer_shadow, GravityCompat.END);
     drawerLayout.setDrawerListener(new DrawerLayout.SimpleDrawerListener() {
       @Override public void onDrawerOpened(View drawerView) {
         refreshPicassoStats();
@@ -174,7 +173,7 @@ public class DebugAppContainer implements AppContainer {
     if (!seenDebugDrawer.get()) {
       drawerLayout.postDelayed(new Runnable() {
         @Override public void run() {
-          drawerLayout.openDrawer(Gravity.END);
+          drawerLayout.openDrawer(GravityCompat.END);
           Toast.makeText(activity, R.string.debug_drawer_welcome, Toast.LENGTH_LONG).show();
         }
       }, 1000);

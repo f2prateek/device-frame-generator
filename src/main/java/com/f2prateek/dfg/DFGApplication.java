@@ -26,25 +26,24 @@ import com.f2prateek.dfg.prefs.FirstRun;
 import com.f2prateek.dfg.ui.ActivityHierarchyServer;
 import com.f2prateek.ln.DebugLn;
 import com.f2prateek.ln.Ln;
+import com.f2prateek.rx.preferences.Preference;
 import com.segment.analytics.Analytics;
 import com.squareup.otto.Bus;
 import dagger.ObjectGraph;
 import hugo.weaving.DebugLog;
 import io.fabric.sdk.android.Fabric;
 import javax.inject.Inject;
-import rx.android.preferences.BooleanPreference;
 
 import static com.f2prateek.dfg.Utils.isStorageAvailable;
 
 public class DFGApplication extends Application {
-
   ObjectGraph applicationGraph;
   @Inject ActivityHierarchyServer activityHierarchyServer;
   @Inject Bus bus;
 
   @Inject WindowManager windowManager;
   @Inject DeviceProvider deviceProvider;
-  @Inject @FirstRun BooleanPreference firstRun;
+  @Inject @FirstRun Preference<Boolean> firstRun;
   @Inject Analytics analytics;
 
   @Override public void onCreate() {
