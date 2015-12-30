@@ -87,6 +87,20 @@ public class DeviceModule {
         .build();
   }
 
+  @Provides(type = SET) Device provideNexus5x() {
+    return new Device.Builder().setId("nexus_5x")
+        .setName("Nexus 5X")
+        .setUrl("http://www.google.com/nexus/5x/")
+        .setPhysicalSize(5.2f)
+        .setDensity("XXHDPI")
+        .setLandOffset(484, 313)
+        .setPortOffset(305, 485)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .addProductId("bullhead")
+        .build();
+  }
+
   @Provides(type = SET) Device provideNexus6() {
     return new Device.Builder().setId("nexus_6")
         .setName("Nexus 6")
@@ -98,6 +112,20 @@ public class DeviceModule {
         .setPortSize(1440, 2560)
         .setRealSize(1440, 2560)
         .addProductId("shamu")
+        .build();
+  }
+
+  @Provides(type = SET) Device provideNexus6p() {
+    return new Device.Builder().setId("nexus_6p")
+        .setName("Nexus 6P")
+        .setUrl("https://www.google.com/nexus/6p")
+        .setPhysicalSize(5.7f)
+        .setDensity("XXXHDPI")
+        .setLandOffset(579, 320)
+        .setPortOffset(312, 579)
+        .setPortSize(1440, 2560)
+        .setRealSize(1440, 2560)
+        .addProductId("angler")
         .build();
   }
 
