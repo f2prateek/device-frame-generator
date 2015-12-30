@@ -21,8 +21,10 @@ import javax.inject.Qualifier;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** Identifies the user preference of whether to how much to blur the background. */
-@Qualifier
-@Retention(RUNTIME)
+/**
+ * Identifies the user preference of whether to how much to blur the background. Hidden from the UI,
+ * not controllable by the user.
+ */
+@Qualifier @Retention(RUNTIME)
 public @interface BackgroundBlurRadius {
 }

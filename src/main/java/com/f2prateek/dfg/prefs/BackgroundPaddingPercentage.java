@@ -23,9 +23,8 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Identifies the user preference of how much padding (relative to the screenshot size) the
- * background should have.
+ * background should have. Hidden from the UI, not controllable by the user.
  */
-@Qualifier
-@Retention(RUNTIME)
+@Qualifier @Retention(RUNTIME)
 public @interface BackgroundPaddingPercentage {
 }

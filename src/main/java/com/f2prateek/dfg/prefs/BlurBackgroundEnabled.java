@@ -21,8 +21,10 @@ import javax.inject.Qualifier;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-/** Identifies the user preference of whether to blur the screenshot as a background. */
-@Qualifier
-@Retention(RUNTIME)
+/**
+ * Identifies the user preference of whether to blur the screenshot as a background. Mutually
+ * exclusive with {@link ColorBackgroundEnabled}.
+ */
+@Qualifier @Retention(RUNTIME)
 public @interface BlurBackgroundEnabled {
 }

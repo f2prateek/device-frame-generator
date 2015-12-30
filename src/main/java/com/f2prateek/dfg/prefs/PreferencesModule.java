@@ -46,37 +46,31 @@ public class PreferencesModule {
     return preferences.getBoolean("shadow_enabled", true);
   }
 
-  /** Mutually exclusive with {@link ColorBackgroundEnabled}. */
   @Provides @Singleton @BlurBackgroundEnabled //
   Preference<Boolean> provideBlurBackgroundEnabled(RxSharedPreferences preferences) {
     return preferences.getBoolean("blur_background_enabled", false);
   }
 
-  /** Hidden from the UI, not controllable by the user. */
   @Provides @Singleton @BackgroundBlurRadius Preference<Integer> //
   provideBackgroundBlurRadiusPreference(RxSharedPreferences preferences) {
     return preferences.getInteger("background_blur_radius", 15);
   }
 
-  /** Mutually exclusive with {@link BlurBackgroundEnabled}. */
   @Provides @Singleton @ColorBackgroundEnabled Preference<Boolean> //
   provideColorBackgroundEnabled(RxSharedPreferences preferences) {
     return preferences.getBoolean("color_background_enabled", false);
   }
 
-  /** Hidden from the UI, not controllable by the user. */
   @Provides @Singleton @BackgroundColorOption Preference<Option> //
   provideBackgroundColorOptionPreference(RxSharedPreferences preferences) {
     return preferences.getEnum("background_color_option", Option.MUTED, Option.class);
   }
 
-  /** Hidden from the UI, not controllable by the user. */
   @Provides @Singleton @CustomBackgroundColor Preference<Integer> //
   provideCustomBackgroundColorPreference(RxSharedPreferences preferences) {
     return preferences.getInteger("custom_background_color", Color.DKGRAY);
   }
 
-  /** Hidden from the UI, not controllable by the user. */
   @Provides @Singleton @BackgroundPaddingPercentage Preference<Integer> //
   provideBackgroundPaddingPercentagePreference(RxSharedPreferences preferences) {
     return preferences.getInteger("background_padding_percentage", 10);
