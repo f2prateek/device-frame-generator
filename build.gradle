@@ -56,14 +56,8 @@ dependencies {
   debugCompile 'com.jakewharton.madge:madge:1.1.1'
 }
 
-def versionMajor = 3
-def versionMinor = 2
-def versionPatch = 1
-// bump for dogfood builds, public betas, etc.
-def versionBuild = 0
-
 def gitSha = 'git rev-parse --short HEAD'.execute([], project.rootDir).text.trim()
-def buildTime = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+def buildTime = new Date()
 
 def isTravis = "true".equals(System.getenv("TRAVIS"))
 def preDexEnabled = "true".equals(System.getProperty("pre-dex", "true"))
@@ -107,11 +101,15 @@ android {
     targetSdkVersion 22
 
     applicationId "com.f2prateek.dfg"
-    versionCode versionMajor * 10000 + versionMinor * 1000 + versionPatch * 100 + versionBuild
-    versionName "${versionMajor}.${versionMinor}.${versionPatch}"
+    def year = buildTime.getAt(Calendar.YEAR)
+    def month = buildTime.getAt(Calendar.MONTH) + 1
+    def day = buildTime.getAt(Calendar.DAY_OF_MONTH)
+    versionCode year * 10000 + month * 100 + day
+    versionName "${year}-${month}-${day}"
 
     buildConfigField "String", "GIT_SHA", "\"${gitSha}\""
-    buildConfigField "String", "BUILD_TIME", "\"${buildTime}\""
+    def buildTimeString = new Date().format("yyyy-MM-dd'T'HH:mm'Z'", TimeZone.getTimeZone("UTC"))
+    buildConfigField "String", "BUILD_TIME", "\"${buildTimeString}\""
 
     // Renderscript support http://bit.ly/1G9c1HQ
     renderscriptTargetApi 19
