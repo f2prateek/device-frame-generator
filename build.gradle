@@ -46,7 +46,7 @@ dependencies {
   compile 'com.f2prateek.rx.preferences:rx-preferences:1.0.1'
 
   // Reporting
-  compile 'com.segment.analytics.android:analytics:4.0.0'
+  compile 'com.segment.analytics.android:analytics:4.0.3'
   compile('com.crashlytics.sdk.android:crashlytics:2.1.0@aar') {
     transitive = true;
   }
