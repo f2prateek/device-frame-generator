@@ -19,11 +19,18 @@ package com.f2prateek.dfg;
 import com.f2prateek.dfg.model.Device;
 import dagger.Module;
 import dagger.Provides;
+import java.util.HashSet;
+import java.util.Set;
 
 import static dagger.Provides.Type.SET;
+import static dagger.Provides.Type.SET_VALUES;
 
 @Module(library = true)
 public class DeviceModule {
+
+  @Provides(type = SET_VALUES) Set<Device> provideEmptyDevices() {
+    return new HashSet<>(); // Empty set to ensure the Set is initialized.
+  }
 
   @Provides(type = SET) Device provideNexusS() {
     return new Device.Builder().setId("nexus_s")
@@ -84,48 +91,6 @@ public class DeviceModule {
         .setPortSize(1080, 1920)
         .setRealSize(1080, 1920)
         .addProductId("hammerhead")
-        .build();
-  }
-
-  @Provides(type = SET) Device provideNexus5x() {
-    return new Device.Builder().setId("nexus_5x")
-        .setName("Nexus 5X")
-        .setUrl("http://www.google.com/nexus/5x/")
-        .setPhysicalSize(5.2f)
-        .setDensity("XXHDPI")
-        .setLandOffset(484, 313)
-        .setPortOffset(305, 485)
-        .setPortSize(1080, 1920)
-        .setRealSize(1080, 1920)
-        .addProductId("bullhead")
-        .build();
-  }
-
-  @Provides(type = SET) Device provideNexus6() {
-    return new Device.Builder().setId("nexus_6")
-        .setName("Nexus 6")
-        .setUrl("https://www.google.com/nexus/6")
-        .setPhysicalSize(5.9f)
-        .setDensity("XXXHDPI")
-        .setLandOffset(318, 77)
-        .setPortOffset(229, 239)
-        .setPortSize(1440, 2560)
-        .setRealSize(1440, 2560)
-        .addProductId("shamu")
-        .build();
-  }
-
-  @Provides(type = SET) Device provideNexus6p() {
-    return new Device.Builder().setId("nexus_6p")
-        .setName("Nexus 6P")
-        .setUrl("https://www.google.com/nexus/6p")
-        .setPhysicalSize(5.7f)
-        .setDensity("XXXHDPI")
-        .setLandOffset(579, 320)
-        .setPortOffset(312, 579)
-        .setPortSize(1440, 2560)
-        .setRealSize(1440, 2560)
-        .addProductId("angler")
         .build();
   }
 
@@ -368,11 +333,7 @@ public class DeviceModule {
         .build();
   }
 
-<<<<<<< HEAD:app/src/main/java/com/f2prateek/dfg/DeviceModule.java
     @Provides(type = SET) Device provideXiaomiMiNotew() {
-=======
-  @Provides(type = SET) Device provideXiaomiMiNotew() {
->>>>>>> 5a1a61535f05bdf26b376c1366f996637b9db7f0:src/main/java/com/f2prateek/dfg/DeviceModule.java
     return new Device.Builder().setId("xiaomi_minotew")
         .setName("Xiaomi MiNote White")
         .setUrl("http://www.mi.com/minote")
@@ -380,6 +341,32 @@ public class DeviceModule {
         .setDensity("XXHDPI")
         .setLandOffset(367, 473)
         .setPortOffset(484, 367)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
+    @Provides(type = SET) Device provideXiaomiMi5() {
+    return new Device.Builder().setId("xiaomi_mi5")
+        .setName("Xiaomi MI5 Black")
+        .setUrl("http://www.mi.com/mi5")
+        .setPhysicalSize(5.2f)
+        .setDensity("XXHDPI")
+        .setLandOffset(320, 210)
+        .setPortOffset(210, 320)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
+    @Provides(type = SET) Device provideXiaomiMi5s() {
+    return new Device.Builder().setId("xiaomi_mi5s")
+        .setName("Xiaomi MI5S Black")
+        .setUrl("http://www.mi.com/mi5s")
+        .setPhysicalSize(5.2f)
+        .setDensity("XXHDPI")
+        .setLandOffset(340, 210)
+        .setPortOffset(210, 340)
         .setPortSize(1080, 1920)
         .setRealSize(1080, 1920)
         .build();
