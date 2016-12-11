@@ -1,16 +1,30 @@
-language: java
+language: android
+
+android:
+  components:
+    - build-tools-23.0.1
+    - extra-android-m2repository
+    - extra-google-m2repository
+    - android-22
+  licenses:
+    - android-sdk-license-5be876d5
 
 jdk:
+#  - oraclejdk7
   - oraclejdk8
 
-notifications:
-  email: false
+script:
+  - ./gradlew clean check
 
 branches:
   except:
     - gh-pages
 
-before_install:
-  - export TERM=dumb
-  - sudo apt-get update
-  - sudo apt-get install -qq libstdc++6:i386 lib32z1
+notifications:
+  email: false
+
+sudo: false
+
+cache:
+  directories:
+    - $HOME/.gradle

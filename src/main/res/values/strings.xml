@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  ~ Copyright 2014 Prateek Srivastava (@f2prateek)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+  <!-- Main Activity !-->
+  <string name="match_device">Match a device</string>
+  <string name="no_matching_device">No Matching Devices Available</string>
+  <string name="saved_as_default_message">%s saved as default device.</string>
+  <string name="open">Open</string>
+
+  <!-- Device Fragment !-->
+  <string name="no_apps_available">No apps available to pick image.</string>
+
+  <!-- Notifications !-->
+  <string name="screenshot_saving_ticker">@string/screenshot_saving_title</string>
+  <string name="screenshot_saving_title">Saving....</string>
+  <string name="screenshot_saved_title">Saved Device Frame</string>
+  <string name="single_screenshot_saved">Saved frame for %s.</string>
+  <string name="multiple_screenshots_saved">Saved %1$d images for %2$s.</string>
+  <string name="processing_image">Processing image %1$d of %2$d.</string>
+  <string name="share">Share</string>
+  <string name="rate">Rate App</string>
+
+  <!-- Notification Error Messages !-->
+  <string name="failed_open_screenshot_title">Couldn\'t open screenshot.</string>
+  <string name="failed_open_screenshot_text">Failed to retrieve the screenshot at %s.</string>
+  <string name="failed_match_dimensions_title">Dimensions don\'t match.</string>
+  <string name="failed_match_dimensions_text">Device is %1$d by %2$d. Screenshot is %3$d by %4$d.
+  </string>
+  <string name="no_image_received">Didn\'t get any path to an image!</string>
+  <string name="unknown_error_title">Unknown Error.</string>
+  <string name="unknown_error_text">An unknown error occurred.</string>
+  <string name="device_chosen">%s chosen.</string>
+
+  <!-- Misc !-->
+  <string name="select_picture">Select Picture</string>
+  <string name="storage_unavailable">Storage Unavailable</string>
+  <string name="description_device_thumbnail">Device Thumbnail</string>
+
+  <!-- About screen !-->
+  <string name="about">About</string>
+  <string name="developer">Developer</string>
+  <string name="gplus_profile" translatable="false">+Prateek Srivastava</string>
+  <string name="twitter" translatable="false">\@f2prateek</string>
+  <string name="designer">Designer</string>
+  <string name="taylor_ling" translatable="false">Taylor Ling</string>
+
+  <!-- Preferences !-->
+  <string name="custom_color">Custom</string>
+  <string name="vibrant_color">Vibrant</string>
+  <string name="vibrant_dark_color">Vibrant Dark</string>
+  <string name="vibrant_light_color">Vibrant Light</string>
+  <string name="muted_color">Muted</string>
+  <string name="muted_dark_color">Muted Dark</string>
+  <string name="muted_light_color">Muted Light</string>
+
+  <string name="shadow_preference">Shadow</string>
+  <string name="shadow_enabled">Shadow will be drawn on screenshots.</string>
+  <string name="shadow_disabled">Shadow will not be drawn on screenshots.</string>
+
+  <string name="glare_preference">Glare</string>
+  <string name="glare_enabled">Glare will be drawn on screenshots.</string>
+  <string name="glare_disabled">Glare will not be drawn on screenshots.</string>
+
+  <string name="blur_background_preference">Blur Background</string>
+  <string name="blur_background_enabled">Blurred screenshot will be used as the background.</string>
+  <string name="blur_background_disabled">Blurred screenshot will not used as the background.
+  </string>
+
+  <string name="color_background_preference">Color Background</string>
+  <string name="color_background_enabled">Background will be colored.</string>
+  <string name="color_background_disabled">Background will not be colored.</string>
+
+</resources>

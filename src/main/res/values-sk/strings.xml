@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2014 Prateek Srivastava (@f2prateek)
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+  <!-- Main Activity !-->
+  <string name="shadow_preference">Tieň</string>
+  <string name="match_device">Podľa zariadenia</string>
+  <string name="glare_preference">Odlesk</string>
+  <string name="no_matching_device">Nenašlo sa žiadne podobné zariadenie</string>
+  <string name="background_color_preference">Farba pozadia</string>
+
+  <!-- Device Fragment !-->
+  <string name="saved_as_default_message">%s nastavené ako predvolené zariadenie.</string>
+  <string name="glare_enabled">Odlesk bude zobrazený vo výslednom obrázku.</string>
+  <string name="glare_disabled">Odlesk nebude zobrazený vo výslednom obrázku.</string>
+  <string name="shadow_enabled">Tieň bude zobrazený vo výslednom obrázku.</string>
+  <string name="shadow_disabled">Tieň nebude zobrazený vo výslednom obrázku.</string>
+  <string name="no_apps_available">Žiadna dostupná aplikácia pre vybranie obrázku.</string>
+
+  <!-- Notifications !-->
+  <string name="screenshot_saving_title">Ukladanie…</string>
+  <string name="screenshot_saved_title">Rám uložený</string>
+  <string name="single_screenshot_saved">Rám pre %s uložený.</string>
+  <string name="multiple_screenshots_saved">Uložené %1$d obrázky pre %2$s.</string>
+  <string name="processing_image">Spracovávanie obrázkov: %1$d / %2$d.</string>
+  <string name="share">Zdieľať</string>
+  <string name="rate">Hodnotiť</string>
+
+  <!-- Notification Error Messages !-->
+  <string name="failed_open_screenshot_title">Nie je možné otvoriť screenshot.</string>
+  <string name="failed_open_screenshot_text">Získanie screenshotu %s zlyhalo.</string>
+  <string name="failed_match_dimensions_title">Rozmery nesúhlasia.</string>
+  <string name="failed_match_dimensions_text">Zariadenie je %1$d x %2$d. Screenshot je %3$d x %4$d.
+  </string>
+  <string name="no_image_received">Žiadna cesta k obrázku!</string>
+
+  <string name="unknown_error_title">Neznáma chyba.</string>
+  <string name="unknown_error_text">Nastala neznáma chyba.</string>
+  <string name="select_picture">Vyberte obrázok</string>
+  <string name="storage_unavailable">Úložisko je nedostupné</string>
+  <string name="description_device_thumbnail">Náhľad zariadenia</string>
+  <string name="device_chosen">Zvolené: %s.</string>
+
+  <!-- About screen !-->
+  <string name="about">O aplikácii</string>
+  <string name="developer">Autor</string>
+  <string name="designer">Designer</string>
+</resources>
