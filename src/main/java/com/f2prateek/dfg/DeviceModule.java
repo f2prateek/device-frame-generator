@@ -381,6 +381,33 @@ public class DeviceModule {
         .build();
   }
 
+
+    @Provides(type = SET) Device provideXiaomiMi5() {
+    return new Device.Builder().setId("xiaomi_mi5")
+        .setName("Xiaomi MI5 Black")
+        .setUrl("http://www.mi.com/mi5")
+        .setPhysicalSize(5.2f)
+        .setDensity("XXHDPI")
+        .setLandOffset(320, 210)
+        .setPortOffset(210, 320)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
+    @Provides(type = SET) Device provideXiaomiMi5s() {
+    return new Device.Builder().setId("xiaomi_mi5s")
+        .setName("Xiaomi MI5S Black")
+        .setUrl("http://www.mi.com/mi5s")
+        .setPhysicalSize(5.2f)
+        .setDensity("XXHDPI")
+        .setLandOffset(340, 210)
+        .setPortOffset(210, 340)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
   @Provides(type = SET) Device provideXiaomiMIPAD() {
     return new Device.Builder().setId("xiaomi_mipad")
         .setName("Xiaomi MiPAD")
