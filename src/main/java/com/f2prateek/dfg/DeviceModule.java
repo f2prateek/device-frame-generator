@@ -408,6 +408,32 @@ public class DeviceModule {
         .build();
   }
 
+    @Provides(type = SET) Device provideXiaomiMi6() {
+    return new Device.Builder().setId("xiaomi_mi6")
+        .setName("Xiaomi MI6 Black")
+        .setUrl("http://www.mi.com/mi6")
+        .setPhysicalSize(5.2f)
+        .setDensity("XXHDPI")
+        .setLandOffset(300, 185)
+        .setPortOffset(185, 300)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
+    @Provides(type = SET) Device provideXiaomiMi6b() {
+    return new Device.Builder().setId("xiaomi_mi6b")
+        .setName("Xiaomi MI6 Blue")
+        .setUrl("http://www.mi.com/mi6")
+        .setPhysicalSize(5.2f)
+        .setDensity("XXHDPI")
+        .setLandOffset(300, 186)
+        .setPortOffset(186, 300)
+        .setPortSize(1080, 1920)
+        .setRealSize(1080, 1920)
+        .build();
+  }
+
   @Provides(type = SET) Device provideXiaomiMIPAD() {
     return new Device.Builder().setId("xiaomi_mipad")
         .setName("Xiaomi MiPAD")
