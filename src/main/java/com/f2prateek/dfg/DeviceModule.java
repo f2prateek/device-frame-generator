@@ -446,4 +446,17 @@ public class DeviceModule {
         .setRealSize(1536, 2048)
         .build();
   }
+
+  @Provides(type = SET) Device provideOnePlus5T() {
+    return new Device.Builder().setId("oneplus_5t")
+        .setName("OnePlus 5T")
+        .setUrl("http://www.oneplus.net/5t")
+        .setPhysicalSize(6f)
+        .setDensity("XXHDPI")
+        .setLandOffset(198, 199)
+        .setPortOffset(199, 198)
+        .setPortSize(602, 1204)
+        .setRealSize(1080, 2160)
+        .build();
+  }
 }
